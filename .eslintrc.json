@@ -1,0 +1,76 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "next/core-web-vitals"
+  ],
+  "settings": {
+    "import/resolver": {
+      "typescript": true,
+      "node": true
+    }
+  },
+  "rules": {
+    "semi": ["warn", "always"],
+    "curly": ["warn", "multi"],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "jsx-quotes": ["error", "prefer-single"],
+    "linebreak-style": ["error", "unix"],
+    "no-console": "warn",
+    "comma-dangle": ["error", "never"],
+    "no-unused-expressions": "error",
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "*.scss",
+            "group": "builtin",
+            "position": "before",
+            "patternOptions": { "matchBase": true }
+          },
+          {
+            "pattern": "@lib/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@components/**",
+            "group": "external",
+            "position": "after"
+          }
+        ],
+        "warnOnUnassignedImports": true,
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ]
+      }
+    ],
+    "@typescript-eslint/no-misused-promises": [
+      "error",
+      {
+        "checksVoidReturn": {
+          "attributes": false
+        }
+      }
+    ],
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    "@typescript-eslint/explicit-function-return-type": "error"
+  }
+}

@@ -1,3 +1,4 @@
+import { Sidebar } from './sidebar';
 import type { ReactNode } from 'react';
 
 type LayoutProps = {
@@ -5,5 +6,11 @@ type LayoutProps = {
 };
 
 export function Layout({ children }: LayoutProps): JSX.Element {
-  return <>{children}</>;
+  return (
+    <div className='flex'>
+      <Sidebar />
+      {children}
+      {children}
+    </div>
+  );
 }

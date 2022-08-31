@@ -16,7 +16,7 @@ export function Button({
 
   return (
     <button
-      className={cn(className)}
+      className={cn('custom-button smooth-tab', className)}
       type='button'
       disabled={isDisabled}
       {...rest}

@@ -1,5 +1,5 @@
 {
-  "name": "next-template",
+  "name": "twitter-clone",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -13,6 +13,7 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@heroicons/react": "^2.0.10",
     "clsx": "^1.2.1",
     "next": "12.2.4",
     "react": "18.2.0",

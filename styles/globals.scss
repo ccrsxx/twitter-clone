@@ -1,11 +1,27 @@
+@use 'fonts';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply h-full font-twitter-chirp dark:bg-black dark:text-white;
+  }
 }
 
 @layer components {
+  .custom-button {
+    @apply hover-animation rounded-full p-3;
+  }
+
+  .smooth-tab {
+    @apply rounded-full outline-none transition focus-visible:ring-2 focus-visible:ring-white;
+  }
+
+  .hover-animation {
+    @apply transition-colors hover:bg-hover-color hover:duration-200;
+  }
 }
 
 @layer utilities {

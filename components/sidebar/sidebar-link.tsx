@@ -1,26 +1,26 @@
 import Link from 'next/link';
 import cn from 'clsx';
-import { HeroIcon } from './hero-icon';
-import type { IconName } from './hero-icon';
+import { HeroIcon } from '../ui/hero-icon';
+import type { IconName } from '../ui/hero-icon';
 
-type NavLinkProps = {
+type SidebarLinkProps = {
   href: string;
   iconName: IconName;
   linkName: string;
   pathname: string;
 };
 
-export function NavLink({
+export function SidebarLink({
   href,
   iconName,
   linkName,
   pathname
-}: NavLinkProps): JSX.Element {
+}: SidebarLinkProps): JSX.Element {
   const isActive = pathname === href;
 
   return (
     <Link href={href}>
-      <a className='group flex outline-none'>
+      <a className='group flex py-1 outline-none'>
         <div
           className={cn(
             'custom-button flex items-center gap-4 self-start pr-5 text-xl',

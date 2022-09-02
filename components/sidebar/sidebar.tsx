@@ -1,8 +1,8 @@
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FaTwitter } from 'react-icons/fa';
-import { useRouter } from 'next/router';
 import NextImage from '@components/ui/next-image';
-import { NavLink } from '@components/ui/nav-link';
+import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import type { IconName } from '@components/ui/hero-icon';
@@ -27,21 +27,28 @@ export function Sidebar(): JSX.Element {
   const { pathname } = useRouter();
 
   return (
-    <header className='flex flex-1 justify-end'>
+    <header className='flex max-w-xs flex-1 justify-end'>
       <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3'>
-        <div className='flex flex-col gap-4'>
+        <div className='flex flex-col gap-2'>
           <h1 className='flex'>
             <Link href='/home'>
-              <a className='custom-button smooth-tab transition focus-visible:ring-accent-secondary-blue'>
+              <a
+                className='custom-button smooth-tab relative text-icon-background transition
+                           hover:bg-hover-color focus-visible:ring-accent-blue-focus'
+              >
                 <FaTwitter className='h-7 w-7' />
               </a>
             </Link>
           </h1>
-          <nav className='flex flex-col gap-2'>
+          <nav>
             {navLinks.map(({ ...linkData }) => (
-              <NavLink pathname={pathname} {...linkData} key={linkData.href} />
+              <SidebarLink
+                pathname={pathname}
+                {...linkData}
+                key={linkData.href}
+              />
             ))}
-            <div className='group flex'>
+            <div className='group flex py-1'>
               <Button className='flex gap-4 pr-5 text-xl group-hover:bg-hover-color'>
                 <HeroIcon
                   className='h-7 w-7'
@@ -52,19 +59,19 @@ export function Sidebar(): JSX.Element {
             </div>
           </nav>
           <Button
-            className='w-[90%] bg-accent-blue outline-none transition hover:bg-accent-blue
-                       hover:brightness-90'
+            className='w-11/12 bg-accent-blue font-bold text-white outline-none
+                       transition hover:brightness-90'
           >
             Tweet
           </Button>
         </div>
-        <Button className='flex items-center justify-between'>
+        <Button className='flex items-center justify-between hover:bg-hover-color focus-visible:bg-hover-color'>
           <div className='flex items-center gap-3'>
             <NextImage
               imgClassName='rounded-full'
               width={40}
               height={40}
-              src='/placeholder.jpg'
+              src='/placeholder/yagakimi.jpg'
               alt='ccrsxx'
               useSkeleton
             />

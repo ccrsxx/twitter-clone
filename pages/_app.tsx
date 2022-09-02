@@ -1,12 +1,39 @@
 import '@styles/globals.scss';
 
-import { Layout } from '@components/common/layout';
+import { SWRConfig } from 'swr';
+import { AppHead } from '@components/common/app-head';
+import type { ReactElement, ReactNode } from 'react';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
-export default function App({ Component, pageProps }: AppProps): JSX.Element {
+// eslint-disable-next-line @typescript-eslint/ban-types
+type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function App({
+  Component,
+  pageProps
+}: AppPropsWithLayout): ReactNode {
+  const getLayout = Component.getLayout ?? ((page): ReactNode => page);
+
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      <AppHead />
+      <SWRConfig
+        value={{
+          fetcher: (
+            resource: RequestInfo | URL,
+            init?: RequestInit | undefined
+          ) => fetch(resource, init).then((res) => res.json())
+        }}
+      >
+        {getLayout(<Component {...pageProps} />)}
+      </SWRConfig>
+    </>
   );
 }

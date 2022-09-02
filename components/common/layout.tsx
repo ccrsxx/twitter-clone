@@ -1,15 +1,24 @@
-import { Sidebar } from './sidebar';
+import { Sidebar } from '@components/sidebar/sidebar';
+import { Aside } from '@components/aside/aside';
 import type { ReactNode } from 'react';
 
-type LayoutProps = {
+type Props = {
   children: ReactNode;
 };
 
-export function Layout({ children }: LayoutProps): JSX.Element {
+export function MainLayout({ children }: Props): JSX.Element {
   return (
-    <div className='flex'>
-      <Sidebar />
+    <>
       {children}
+      <Aside />
+    </>
+  );
+}
+
+export function Layout({ children }: Props): JSX.Element {
+  return (
+    <div className='flex justify-center gap-4'>
+      <Sidebar />
       {children}
     </div>
   );

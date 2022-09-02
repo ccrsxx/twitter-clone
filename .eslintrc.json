@@ -49,6 +49,7 @@
           }
         ],
         "warnOnUnassignedImports": true,
+        "pathGroupsExcludedImportTypes": ["type"],
         "groups": [
           "builtin",
           "external",

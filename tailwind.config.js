@@ -16,6 +16,7 @@ module.exports = {
         'accent-blue-secondary': '#1D9BF0',
         'accent-blue-focus': '#8ECDF8',
         'border-color': '#2F3336',
+        'border-color-secondary': '#536471',
         'hover-color': '#181818',
         'search-background': '#202327',
         'search-close-background': '#1D9BF0',

@@ -1,9 +1,10 @@
 import cn from 'clsx';
-import { VscLoading } from 'react-icons/vsc';
+import { HeroIcon } from './hero-icon';
+import type { ComponentPropsWithRef } from 'react';
 
-type ButtonProps = {
+type ButtonProps = ComponentPropsWithRef<'button'> & {
   isLoading?: boolean;
-} & React.ComponentPropsWithRef<'button'>;
+};
 
 export function Button({
   className,
@@ -23,7 +24,7 @@ export function Button({
     >
       {isLoading && (
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <VscLoading className='animate-spin' />
+          <HeroIcon iconName='SpinnerIcon' />
         </div>
       )}
       {children}

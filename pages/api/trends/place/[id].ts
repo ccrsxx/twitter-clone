@@ -1,32 +1,57 @@
-import { getTrends } from '@lib/api/trends';
+import { AUTH } from '@lib/api/auth';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { TrendsResponse } from '@lib/api/trends';
+import type {
+  TrendsData,
+  ErrorResponse,
+  TrendsResponse,
+  FilteredTrends
+} from '@lib/api/types/place';
 
-export default async function handler(
+type PlaceIdEndpointQuery = {
+  id: string;
+  limit?: string;
+};
+
+export default async function placeIdEndpoint(
   req: NextApiRequest,
   res: NextApiResponse<TrendsResponse>
 ): Promise<void> {
-  const { id, limit } = req.query;
+  const { id, limit } = req.query as PlaceIdEndpointQuery;
 
-  const { status, data } = await getTrends(id as string);
+  const response = await fetch(
+    `https://api.twitter.com/1.1/trends/place.json?id=${id}`,
+    AUTH
+  );
 
-  let formattedData = !('errors' in data) ? data : null;
+  const rawData = (await response.json()) as TrendsData | ErrorResponse;
 
-  if (formattedData) {
-    const limitParam = limit ? parseInt(limit as string, 10) : null;
+  const data =
+    'errors' in rawData
+      ? rawData
+      : { trends: rawData[0].trends, location: rawData[0].locations[0].name };
 
-    if (limitParam && Number.isInteger(limitParam))
-      formattedData = formattedData.slice(0, limitParam);
+  const limitParam = limit ? parseInt(limit, 10) : null;
 
-    formattedData = formattedData
-      .filter(({ tweet_volume }) => tweet_volume)
+  let formattedTrends = limitParam && !('errors' in data) ? data.trends : null;
+
+  if (formattedTrends) {
+    const filteredTrends = formattedTrends.filter(
+      ({ tweet_volume }) => tweet_volume
+    ) as FilteredTrends;
+
+    formattedTrends = filteredTrends
       .map(({ url, ...rest }) => ({
         ...rest,
         url: url.replace(/http.*.com/, '')
       }))
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      .sort((a, b) => b.tweet_volume! - a.tweet_volume!);
+      .sort((a, b) => b.tweet_volume - a.tweet_volume);
+
+    if (limitParam) formattedTrends = formattedTrends.slice(0, limitParam);
   }
 
-  res.status(status).json(formattedData ?? data);
+  const formattedData = formattedTrends
+    ? { ...data, trends: formattedTrends }
+    : null;
+
+  res.status(response.status).json(formattedData ?? data);
 }

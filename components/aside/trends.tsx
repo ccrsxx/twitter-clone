@@ -1,31 +1,25 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatNumber } from '@lib/format';
-import { logger } from '@lib/logger';
-import { useTrends } from '@lib/twitter';
+import { useTrends } from '@lib/api/trends';
+import { Error } from '@components/ui/error';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import { Tooltips } from '@components/ui/tooltips';
+import { Loading } from '@components/ui/loading';
 
 export function Trending(): JSX.Element {
-  const { trends, isLoading, isError } = useTrends(1, 10);
+  const { data, isLoading, isError } = useTrends(23424846, 10, {
+    refreshInterval: 10000
+  });
 
-  logger({ trends, isLoading, isError }, 'swr hooks');
+  const { trends, location } = data ?? {};
 
   return (
-    <motion.section className='rounded-2xl bg-sidebar-background' layout='size'>
+    <section className='rounded-2xl bg-sidebar-background'>
       {isLoading ? (
-        <i className='flex justify-center p-4'>
-          <HeroIcon
-            className='h-7 w-7 text-accent-blue'
-            iconName='SpinnerIcon'
-          />
-        </i>
-      ) : isError ? (
-        <i>
-          <HeroIcon iconName='XMarkIcon' />
-        </i>
-      ) : (
+        <Loading />
+      ) : trends && location ? (
         <motion.div
           className='inner:px-4 inner:py-3'
           initial={{ opacity: 0 }}
@@ -33,7 +27,7 @@ export function Trending(): JSX.Element {
           transition={{ duration: 0.8 }}
         >
           <h2 className='text-xl font-extrabold'>Trends for you</h2>
-          {trends?.map(({ name, query, tweet_volume, url }) => (
+          {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
               <a
                 className='hover-animation smooth-tab relative flex flex-col 
@@ -48,11 +42,13 @@ export function Trending(): JSX.Element {
                     <Tooltips tips='More' />
                   </Button>
                 </div>
-                <p className='text-sm text-secondary'>Trending Worldwide</p>
-                <p className='font-bold'>#{name.replace(/^#+/g, '')}</p>
                 <p className='text-sm text-secondary'>
-                  {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-                  {formatNumber(tweet_volume!)} tweets
+                  Trending{' '}
+                  {location === 'Worldwide' ? 'Worldwide' : `in ${location}`}
+                </p>
+                <p className='font-bold'>{name}</p>
+                <p className='text-sm text-secondary'>
+                  {formatNumber(tweet_volume)} tweets
                 </p>
               </a>
             </Link>
@@ -64,7 +60,9 @@ export function Trending(): JSX.Element {
             Show more
           </Button>
         </motion.div>
+      ) : (
+        <Error />
       )}
-    </motion.section>
+    </section>
   );
 }

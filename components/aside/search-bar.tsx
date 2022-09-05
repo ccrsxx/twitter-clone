@@ -4,7 +4,7 @@ import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import type { ChangeEvent } from 'react';
 
-export function InputBox(): JSX.Element {
+export function SearchBar(): JSX.Element {
   const [inputValue, setInputValue] = useState('');
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +19,7 @@ export function InputBox(): JSX.Element {
   };
 
   return (
-    <form className='sticky top-0 z-10 -my-3 bg-black py-3'>
+    <form className='sticky top-0 z-10 -my-2 bg-black py-2'>
       <label
         className='group flex items-center justify-between gap-4 rounded-full
                    bg-search-background px-4 py-3 transition focus-within:bg-black

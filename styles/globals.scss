@@ -12,7 +12,7 @@
 
 @layer components {
   .custom-button {
-    @apply hover-animation rounded-full p-3;
+    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:brightness-50;
   }
 
   .custom-underline {

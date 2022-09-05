@@ -1,34 +1,57 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FaTwitter } from 'react-icons/fa';
-import NextImage from '@components/ui/next-image';
+import { NextImage } from '@components/ui/next-image';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import type { IconName } from '@components/ui/hero-icon';
 
-const rawLinks: [string, IconName][] = [
-  ['home', 'HomeIcon'],
-  ['explore', 'HashtagIcon'],
-  ['notifications', 'BellIcon'],
-  ['messages', 'EnvelopeIcon'],
-  ['bookmarks', 'BookmarkIcon'],
-  ['lists', 'Bars3BottomLeftIcon'],
-  ['profile', 'UserIcon']
-];
+type NavLinks = { href: string; linkName: string; iconName: IconName }[];
 
-const navLinks = rawLinks.map(([link, iconName]) => ({
-  href: `/${link}`,
-  iconName,
-  linkName: link[0].toUpperCase() + link.slice(1)
-}));
+const navLinks: NavLinks = [
+  {
+    href: '/home',
+    linkName: 'Home',
+    iconName: 'HomeIcon'
+  },
+  {
+    href: '/explore',
+    linkName: 'Explore',
+    iconName: 'HashtagIcon'
+  },
+  {
+    href: '/notifications',
+    linkName: 'Notifications',
+    iconName: 'BellIcon'
+  },
+  {
+    href: '/messages',
+    linkName: 'Messages',
+    iconName: 'EnvelopeIcon'
+  },
+  {
+    href: '/bookmarks',
+    linkName: 'Bookmarks',
+    iconName: 'BookmarkIcon'
+  },
+  {
+    href: '/lists',
+    linkName: 'Lists',
+    iconName: 'Bars3BottomLeftIcon'
+  },
+  {
+    href: '/profile',
+    linkName: 'Profile',
+    iconName: 'UserIcon'
+  }
+];
 
 export function Sidebar(): JSX.Element {
   const { pathname } = useRouter();
 
   return (
-    <header className='flex max-w-xs flex-1 justify-end'>
-      <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3'>
+    <header className='-mr-4 flex w-full max-w-xs justify-end'>
+      <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
         <div className='flex flex-col gap-2'>
           <h1 className='flex'>
             <Link href='/home'>
@@ -36,7 +59,7 @@ export function Sidebar(): JSX.Element {
                 className='custom-button smooth-tab relative text-icon-background transition
                            hover:bg-hover-color focus-visible:ring-accent-blue-focus'
               >
-                <FaTwitter className='h-7 w-7' />
+                <HeroIcon className='h-7 w-7' iconName='TwitterIcon' />
               </a>
             </Link>
           </h1>

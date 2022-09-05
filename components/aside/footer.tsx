@@ -15,7 +15,7 @@ export function Footer(): JSX.Element {
       <nav className='flex flex-wrap justify-center gap-2'>
         {footerLinks.map(([linkName, href]) => (
           <a
-            className='custom-underline'
+            className='custom-underline outline-none focus-visible:decoration-inherit'
             href={href}
             key={href}
           >

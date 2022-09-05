@@ -23,8 +23,8 @@ export function SidebarLink({
       <a className='group flex py-1 outline-none'>
         <div
           className={cn(
-            'custom-button flex items-center gap-4 self-start pr-5 text-xl',
-            'transition group-hover:bg-hover-color group-focus-visible:ring-2',
+            'custom-button flex items-center gap-4 self-start pr-5 text-xl transition',
+            'group-hover:bg-hover-color group-hover:duration-200 group-focus-visible:ring-2',
             'group-focus-visible:ring-white group-focus-visible:duration-200',
             isActive && 'font-bold'
           )}

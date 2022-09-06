@@ -1,17 +1,20 @@
+import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Tooltips } from '@components/ui/tooltips';
-import { TweetProgress } from './tweet-progress';
+import { ProgressBar } from './progress-bar';
+import type { ChangeEvent, ClipboardEvent } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
 
-type TweetOptions = {
+type Options = {
   name: string;
   iconName: IconName;
   disabled: boolean;
+  onClick?: () => void;
 }[];
 
-const tweetOptions: TweetOptions = [
+const options: Options = [
   {
     name: 'Media',
     iconName: 'PhotoIcon',
@@ -20,7 +23,7 @@ const tweetOptions: TweetOptions = [
   {
     name: 'GIF',
     iconName: 'GifIcon',
-    disabled: true
+    disabled: false
   },
   {
     name: 'Poll',
@@ -44,23 +47,43 @@ const tweetOptions: TweetOptions = [
   }
 ];
 
-type TweetOptionsProps = {
+type OptionsProps = {
   inputValue: string;
   isValidInput: boolean;
+  isUploadingImages: boolean;
+  handleImageUpload: (
+    e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
+  ) => void;
 };
 
-export function TweetOptions({
+export function Options({
   inputValue,
-  isValidInput
-}: TweetOptionsProps): JSX.Element {
+  isValidInput,
+  isUploadingImages,
+  handleImageUpload
+}: OptionsProps): JSX.Element {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const onClick = (): void => inputFileRef.current?.click();
+
   const isCharLimitExceeded = inputValue.length > 280;
 
   return (
     <div className='flex justify-between'>
-      <div className='text-accent-blue-secondary'>
-        {tweetOptions.map(({ name, iconName, disabled }) => (
+      <div className='flex text-accent-blue-secondary'>
+        <input
+          className='hidden'
+          type='file'
+          accept='image/*'
+          onChange={handleImageUpload}
+          ref={inputFileRef}
+          multiple
+        />
+        {options.map(({ name, iconName, disabled }, index) => (
           <Button
-            className='group relative rounded-full p-2 hover:bg-accent-blue-secondary/10'
+            className='group relative rounded-full p-2 hover:bg-accent-blue-secondary/10 
+                       focus-visible:ring-accent-blue-focus'
+            onClick={index === 0 ? onClick : undefined}
             disabled={disabled}
             key={name}
           >
@@ -76,7 +99,7 @@ export function TweetOptions({
             inputValue ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
           }
         >
-          <TweetProgress
+          <ProgressBar
             inputValue={inputValue}
             isCharLimitExceeded={isCharLimitExceeded}
           />
@@ -93,7 +116,7 @@ export function TweetOptions({
         <Button
           className='bg-accent-blue-secondary px-4 py-1.5 font-bold text-white
                      transition duration-200 disabled:brightness-50'
-          disabled={!isValidInput || isCharLimitExceeded}
+          disabled={isCharLimitExceeded || !(isValidInput || isUploadingImages)}
         >
           Tweet
         </Button>

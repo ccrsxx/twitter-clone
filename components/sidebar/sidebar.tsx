@@ -99,7 +99,16 @@ export function Sidebar(): JSX.Element {
               useSkeleton
             />
             <div className='leading-5'>
-              <p className='text-start font-bold'>Ami</p>
+              <div className='flex items-center gap-1'>
+                <p className='text-start font-bold'>Ami</p>
+                <i>
+                  <HeroIcon
+                    className='h-5 w-5'
+                    iconName='CheckBadgeIcon'
+                    solid
+                  />
+                </i>
+              </div>
               <p className='text-secondary'>@ccrsxx</p>
             </div>
           </div>

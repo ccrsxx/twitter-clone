@@ -1,7 +1,7 @@
 import cn from 'clsx';
 import { Tooltips } from '@components/ui/tooltips';
 
-type TweetProgressProps = {
+type ProgressBarProps = {
   inputValue: string;
   isCharLimitExceeded: boolean;
 };
@@ -23,17 +23,16 @@ const circleStyles = [
   }
 ];
 
-export function TweetProgress({
+export function ProgressBar({
   inputValue,
   isCharLimitExceeded
-}: TweetProgressProps): JSX.Element {
+}: ProgressBarProps): JSX.Element {
   const inputLength = inputValue.length;
 
   const isCloseToLimit = inputLength >= 260;
   const baseCircle = baseOffset[+isCloseToLimit];
 
   const inputPercentage = (inputLength / 280) * 100;
-
   const circleLength = baseCircle - (baseCircle * inputPercentage) / 100;
 
   const remainingCharacters = 280 - inputLength;
@@ -83,9 +82,9 @@ export function TweetProgress({
       <span
         className={cn(
           'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[45%]',
-          'scale-50 text-xs opacity-0 transition',
+          'scale-50 text-xs opacity-0',
           {
-            'scale-100 opacity-100': isCloseToLimit,
+            'scale-100 opacity-100 transition': isCloseToLimit,
             'text-[#F4212E]': isHittingCharLimit
           }
         )}

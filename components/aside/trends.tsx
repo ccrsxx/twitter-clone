@@ -10,7 +10,7 @@ import { Loading } from '@components/ui/loading';
 
 export function Trending(): JSX.Element {
   const { data, isLoading, isError } = useTrends(23424846, 10, {
-    refreshInterval: 10000
+    refreshInterval: 30000
   });
 
   const { trends, location } = data ?? {};
@@ -53,12 +53,14 @@ export function Trending(): JSX.Element {
               </a>
             </Link>
           ))}
-          <Button
-            className='w-full rounded-2xl rounded-t-none text-center
-                       text-accent-blue-secondary hover:bg-sidebar-hover-color'
-          >
-            Show more
-          </Button>
+          <Link href='/trends'>
+            <a
+              className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
+                         text-center text-accent-blue-secondary hover:bg-sidebar-hover-color'
+            >
+              Show more
+            </a>
+          </Link>
         </motion.div>
       ) : (
         <Error />

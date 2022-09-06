@@ -24,7 +24,9 @@ module.exports = {
         'sidebar-hover-color': '#1D1F23',
         'tooltips-background': '#4B5C6B',
         'follow-button-background': '#EFF3F4',
-        'follow-text-color': '#0F1419'
+        'follow-text-color': '#0F1419',
+        'image-preview-hover-color': '#272C30'
+
       },
       animation: {},
       keyframes: {}

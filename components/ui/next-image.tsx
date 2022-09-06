@@ -1,50 +1,45 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import cn from 'clsx';
+import type { ReactNode } from 'react';
 import type { ImageProps } from 'next/image';
 
 type NextImageProps = {
+  alt: string;
+  width?: string | number;
+  children?: ReactNode;
   useSkeleton?: boolean;
   imgClassName?: string;
   blurClassName?: string;
-  alt: string;
-  width: string | number;
-} & (
-  | { width: string | number; height: string | number }
-  | { layout: 'fill'; width?: string | number; height?: string | number }
-) &
-  ImageProps;
+} & ImageProps;
 
 /**
  *
- * @description Must set width using `w-` className
+ * @description Must set width and height, if not add layout='fill'
  * @param useSkeleton add background with pulse animation, don't use it if image is transparent
  */
 export function NextImage({
-  useSkeleton,
   src,
+  alt,
   width,
   height,
-  alt,
+  children,
   className,
+  useSkeleton,
   imgClassName,
   blurClassName,
   ...rest
 }: NextImageProps): JSX.Element {
-  const [status, setStatus] = useState(useSkeleton ? 'loading' : 'complete');
-  const widthIsSet = className?.includes('w-') ?? false;
+  const [isLoading, setIsLoading] = useState(!!useSkeleton);
 
-  const handleLoad = (): void => setStatus('complete');
+  const handleLoad = (): void => setIsLoading(false);
 
   return (
-    <figure
-      style={!widthIsSet ? { width: `${width}px` } : undefined}
-      className={className}
-    >
+    <figure style={{ width }} className={className}>
       <Image
         className={cn(
           imgClassName,
-          status === 'loading' && cn('animate-pulse', blurClassName)
+          isLoading && cn('animate-pulse bg-white', blurClassName)
         )}
         src={src}
         width={width}
@@ -54,6 +49,7 @@ export function NextImage({
         layout='responsive'
         {...rest}
       />
+      {children}
     </figure>
   );
 }

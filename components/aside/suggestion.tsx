@@ -91,12 +91,14 @@ export function Suggestion(): JSX.Element {
               </a>
             </Link>
           ))}
-          <Button
-            className='w-full rounded-2xl rounded-t-none text-center text-accent-blue-secondary 
-        hover:bg-sidebar-hover-color'
-          >
-            Show more
-          </Button>
+          <Link href='/people'>
+            <a
+              className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
+                         text-center text-accent-blue-secondary hover:bg-sidebar-hover-color'
+            >
+              Show more
+            </a>
+          </Link>
         </motion.div>
       )}
     </section>

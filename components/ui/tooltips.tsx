@@ -2,6 +2,11 @@ type TooltipsProps = {
   tips: string;
 };
 
+/**
+ *
+ * @description Parent element must have 'relative' and 'group' className
+ * @param tips tooltip text
+ */
 export function Tooltips({ tips }: TooltipsProps): JSX.Element {
   return (
     <div

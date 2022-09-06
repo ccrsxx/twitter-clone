@@ -2,29 +2,37 @@ import TextArea from 'react-textarea-autosize';
 import { AnimatePresence, motion } from 'framer-motion';
 import { setTransition } from '@lib/transition';
 import { HeroIcon } from '@components/ui/hero-icon';
-import type { RefObject, ChangeEvent } from 'react';
+import type { ReactNode, RefObject, ChangeEvent, ClipboardEvent } from 'react';
 
-type TweetFormProps = {
+type FormProps = {
+  children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
   isFormEnabled: boolean;
-  inputContainer: RefObject<HTMLDivElement>;
+  inputContainerRef: RefObject<HTMLDivElement>;
+  isUploadingImages: boolean;
   handleBlur: () => void;
   handleFocus: () => void;
   handleChange: ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>) => void;
+  handleImageUpload: (
+    e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
+  ) => void;
 };
 
-export function TweetForm({
+export function Form({
+  children,
   inputRef,
   inputValue,
   isFormEnabled,
-  inputContainer,
+  inputContainerRef,
+  isUploadingImages,
   handleBlur,
   handleFocus,
-  handleChange
-}: TweetFormProps): JSX.Element {
+  handleChange,
+  handleImageUpload
+}: FormProps): JSX.Element {
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
       <div className='flex flex-col gap-6'>
@@ -41,24 +49,26 @@ export function TweetForm({
             </motion.button>
           )}
         </AnimatePresence>
-        <div className='flex items-center' ref={inputContainer}>
+        <div className='flex items-center' ref={inputContainerRef}>
           <TextArea
             className='w-full resize-none bg-transparent text-xl outline-none
                        placeholder:text-secondary'
             value={inputValue}
             placeholder="What's happening?"
-            maxRows={10}
+            maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
+            onPaste={handleImageUpload}
             ref={inputRef}
           />
         </div>
       </div>
+      {children}
       <AnimatePresence>
         {isFormEnabled && (
           <motion.div
-            className='border-b border-border-color'
+            className='flex border-b border-border-color'
             {...setTransition({ direction: 'right', distance: 25 })}
           >
             <button

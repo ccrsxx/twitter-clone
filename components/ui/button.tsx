@@ -1,5 +1,5 @@
 import cn from 'clsx';
-import { HeroIcon } from './hero-icon';
+import { CustomIcon } from './custom-icon';
 import type { ComponentPropsWithRef } from 'react';
 
 type ButtonProps = ComponentPropsWithRef<'button'> & {
@@ -24,7 +24,7 @@ export function Button({
     >
       {isLoading && (
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <HeroIcon iconName='SpinnerIcon' />
+          <CustomIcon iconName='SpinnerIcon' />
         </div>
       )}
       {children}

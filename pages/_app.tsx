@@ -1,6 +1,8 @@
 import '@styles/globals.scss';
 
 import { SWRConfig } from 'swr';
+import { fetchJson } from '@lib/fetchJson';
+import { AuthContextProvider } from '@lib/context/auth-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
@@ -22,18 +24,11 @@ export default function App({
   const getLayout = Component.getLayout ?? ((page): ReactNode => page);
 
   return (
-    <>
+    <AuthContextProvider>
       <AppHead />
-      <SWRConfig
-        value={{
-          fetcher: (
-            resource: RequestInfo | URL,
-            init?: RequestInit | undefined
-          ) => fetch(resource, init).then((res) => res.json())
-        }}
-      >
+      <SWRConfig value={{ fetcher: fetchJson }}>
         {getLayout(<Component {...pageProps} />)}
       </SWRConfig>
-    </>
+    </AuthContextProvider>
   );
 }

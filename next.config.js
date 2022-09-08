@@ -4,15 +4,6 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: []
-  },
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/home',
-        permanent: true
-      }
-    ];
   }
 };
 

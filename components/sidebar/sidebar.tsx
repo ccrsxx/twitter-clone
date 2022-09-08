@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { NextImage } from '@components/ui/next-image';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { HeroIcon } from '@components/ui/hero-icon';
+import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
 import type { IconName } from '@components/ui/hero-icon';
 
@@ -59,7 +60,7 @@ export function Sidebar(): JSX.Element {
                 className='custom-button smooth-tab relative text-icon-background transition
                            hover:bg-hover-color focus-visible:ring-accent-blue-focus'
               >
-                <HeroIcon className='h-7 w-7' iconName='TwitterIcon' />
+                <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
               </a>
             </Link>
           </h1>

@@ -8,7 +8,7 @@ import type { ReactElement, ReactNode } from 'react';
 
 export default function Home(): JSX.Element {
   return (
-    <main className='flex min-h-screen w-full max-w-xl flex-col border-x border-border-color'>
+    <main className='flex min-h-screen w-full max-w-xl flex-col border-x border-border-color h-[500vh]'>
       <SEO
         title='Home / Twitter'
         description='Twitter is the best place to see what’s happening in the world. Follow your interests to get unfiltered news, live updates, and the latest trends.'

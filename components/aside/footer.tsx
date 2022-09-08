@@ -11,11 +11,13 @@ const footerLinks = [
 
 export function Footer(): JSX.Element {
   return (
-    <footer className='flex flex-col gap-3 text-center inner:text-sm inner:text-secondary'>
+    <footer className='flex flex-col gap-3 text-center text-sm text-secondary'>
       <nav className='flex flex-wrap justify-center gap-2'>
         {footerLinks.map(([linkName, href]) => (
           <a
             className='custom-underline outline-none focus-visible:decoration-inherit'
+            target='_blank'
+            rel='noreferrer'
             href={href}
             key={href}
           >

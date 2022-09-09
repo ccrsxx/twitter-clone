@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 import { isValidImage } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
 import { Form } from './form';
 import { ImagesPreview } from './images-preview';
 import { Options } from './options';
-import type { ChangeEvent, ClipboardEvent } from 'react';
+import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 
 type ImageData = {
   src: string;
@@ -46,15 +47,24 @@ export function Tweet(): JSX.Element {
   const handleImageUpload = (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ): void => {
-    if (previewCount === 4) return;
-
     const files = 'clipboardData' in e ? e.clipboardData.files : e.target.files;
 
     if (!files || !files.length) return;
 
-    const rawImages = Array.from(files).filter(({ name, size }) =>
-      isValidImage(name, size)
-    );
+    const rawImages = !(previewCount === 4 || files.length > 4 - previewCount)
+      ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
+      : null;
+
+    if (!rawImages) {
+      toast.error('Please choose a GIF or photo up to 4', {
+        style: {
+          backgroundColor: '#1D9BF0',
+          borderRadius: '4px',
+          color: 'white'
+        }
+      });
+      return;
+    }
 
     const imagesId = rawImages.map((_, index) =>
       Math.floor(Date.now() + Math.random() + index)
@@ -93,6 +103,26 @@ export function Tweet(): JSX.Element {
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>): void => setInputValue(value);
 
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    toast.success(
+      `Tweeted ${inputValue}${
+        imagesPreview.length
+          ? ` ${inputValue ? 'with' : ''} ${imagesPreview.length} photo${
+              imagesPreview.length > 1 ? 's' : ''
+            }`
+          : ''
+      }`,
+      {
+        style: {
+          backgroundColor: '#1D9BF0',
+          borderRadius: '4px',
+          color: 'white'
+        }
+      }
+    );
+  };
+
   const handleFocus = (): void => setIsFocus(true);
   const handleBlur = (): void => setIsFocus(false);
 
@@ -105,12 +135,13 @@ export function Tweet(): JSX.Element {
     (isUploadingImages ? tweetHeight + 304 : tweetHeight) + 176;
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <motion.label
         className='flex gap-4 border-b border-border-color px-4 py-3'
         style={!isFormEnabled ? { height: 125 } : undefined}
         animate={{ height: isFormEnabled ? totalContainerHeight : 125 }}
         transition={{ type: 'tween', duration: 0.2 }}
+        htmlFor='tweet'
       >
         <NextImage
           className='shrink-0'

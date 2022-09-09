@@ -23,11 +23,11 @@ export function SearchBar(): JSX.Element {
       <label
         className='group flex items-center justify-between gap-4 rounded-full
                    bg-search-background px-4 py-3 transition focus-within:bg-black
-                   focus-within:ring-2 focus-within:ring-search-close-background'
+                   focus-within:ring-2 focus-within:ring-accent-blue-secondary'
       >
         <i>
           <HeroIcon
-            className='h-5 w-5 text-secondary transition-colors group-focus-within:text-search-close-background'
+            className='h-5 w-5 text-secondary transition-colors group-focus-within:text-accent-blue-secondary'
             iconName='MagnifyingGlassIcon'
           />
         </i>
@@ -41,7 +41,7 @@ export function SearchBar(): JSX.Element {
         />
         <Button
           className={cn(
-            'scale-50 bg-search-close-background p-1 opacity-0 hover:brightness-90',
+            'scale-50 bg-accent-blue-secondary p-1 opacity-0 hover:brightness-90',
             inputValue && 'scale-100 opacity-100'
           )}
           onClick={clearInputValue}

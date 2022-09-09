@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAuth } from '@lib/context/auth-context';
 import { NextImage } from '@components/ui/next-image';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { HeroIcon } from '@components/ui/hero-icon';
@@ -48,6 +49,7 @@ const navLinks: NavLinks = [
 ];
 
 export function Sidebar(): JSX.Element {
+  const { signOut } = useAuth();
   const { pathname } = useRouter();
 
   return (
@@ -58,7 +60,7 @@ export function Sidebar(): JSX.Element {
             <Link href='/home'>
               <a
                 className='custom-button smooth-tab relative text-icon-background transition
-                           hover:bg-hover-color focus-visible:ring-accent-blue-focus'
+                           hover:bg-primary/10 focus-visible:ring-accent-blue-focus'
               >
                 <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
               </a>
@@ -73,7 +75,7 @@ export function Sidebar(): JSX.Element {
               />
             ))}
             <div className='group flex py-1'>
-              <Button className='flex gap-4 pr-5 text-xl group-hover:bg-hover-color'>
+              <Button className='flex gap-4 pr-5 text-xl group-hover:bg-primary/10'>
                 <HeroIcon
                   className='h-7 w-7'
                   iconName='EllipsisHorizontalCircleIcon'
@@ -83,13 +85,17 @@ export function Sidebar(): JSX.Element {
             </div>
           </nav>
           <Button
-            className='w-11/12 bg-accent-blue font-bold text-white outline-none
-                       transition hover:brightness-90'
+            className='w-11/12 bg-accent-blue-secondary font-bold text-white outline-none
+                       hover:bg-accent-blue-secondary/90 active:bg-accent-blue-secondary/75'
           >
             Tweet
           </Button>
         </div>
-        <Button className='flex items-center justify-between hover:bg-hover-color focus-visible:bg-hover-color'>
+        <Button
+          className='flex items-center justify-between hover:bg-primary/10 
+                     focus-visible:bg-primary/10 active:bg-primary/20'
+          onClick={signOut}
+        >
           <div className='flex items-center gap-3'>
             <NextImage
               imgClassName='rounded-full'

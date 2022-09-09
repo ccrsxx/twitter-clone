@@ -23,7 +23,7 @@ const options: Options = [
   {
     name: 'GIF',
     iconName: 'GifIcon',
-    disabled: false
+    disabled: true
   },
   {
     name: 'Poll',
@@ -82,7 +82,7 @@ export function Options({
         {options.map(({ name, iconName, disabled }, index) => (
           <Button
             className='group relative rounded-full p-2 hover:bg-accent-blue-secondary/10 
-                       focus-visible:ring-accent-blue-focus'
+                       focus-visible:ring-accent-blue-focus active:bg-accent-blue-secondary/20'
             onClick={index === 0 ? onClick : undefined}
             disabled={disabled}
             key={name}
@@ -114,8 +114,10 @@ export function Options({
           </Button>
         </motion.div>
         <Button
+          type='submit'
           className='bg-accent-blue-secondary px-4 py-1.5 font-bold text-white
-                     transition duration-200 disabled:brightness-50'
+                     transition duration-200 enabled:hover:bg-accent-blue-secondary/90
+                     enabled:active:bg-accent-blue-secondary/75 disabled:brightness-50'
           disabled={isCharLimitExceeded || !(isValidInput || isUploadingImages)}
         >
           Tweet

@@ -27,7 +27,7 @@ export function ImagesPreview({
       <AnimatePresence mode='popLayout'>
         {imagesPreview.map(({ src, alt, id }, index) => (
           <motion.div
-            className={cn('relative', {
+            className={cn({
               'col-span-2 row-span-2': previewCount === 1,
               'row-span-2':
                 previewCount === 2 || (index === 0 && previewCount === 3)
@@ -40,6 +40,7 @@ export function ImagesPreview({
             key={id}
           >
             <NextImage
+              className='relative w-full h-full'
               imgClassName={cn(
                 'rounded-2xl',
                 previewCount === 1

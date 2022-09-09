@@ -39,7 +39,7 @@ export function NextImage({
       <Image
         className={cn(
           imgClassName,
-          isLoading && cn('animate-pulse bg-white', blurClassName)
+          isLoading && cn('animate-pulse', blurClassName ?? 'bg-white')
         )}
         src={src}
         width={width}

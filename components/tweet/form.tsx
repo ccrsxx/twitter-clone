@@ -39,8 +39,9 @@ export function Form({
         <AnimatePresence>
           {isFormEnabled && (
             <motion.button
-              className='flex items-center gap-1 self-start rounded-full border border-border-color-secondary
-                         px-3 text-accent-blue-secondary disabled:cursor-not-allowed'
+              className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
+                         py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
+                         active:bg-accent-blue-secondary/20 disabled:brightness-100'
               disabled
               {...setTransition({ direction: 'top', distance: 25 })}
             >
@@ -51,6 +52,7 @@ export function Form({
         </AnimatePresence>
         <div className='flex items-center' ref={inputContainerRef}>
           <TextArea
+            id='tweet'
             className='w-full resize-none bg-transparent text-xl outline-none
                        placeholder:text-secondary'
             value={inputValue}
@@ -68,12 +70,13 @@ export function Form({
       <AnimatePresence>
         {isFormEnabled && (
           <motion.div
-            className='flex border-b border-border-color'
+            className='flex border-b border-border-color pb-2'
             {...setTransition({ direction: 'right', distance: 25 })}
           >
             <button
-              className='flex items-center gap-1 pb-2 text-accent-blue-secondary 
-                         disabled:cursor-not-allowed'
+              className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 
+                         hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20
+                         disabled:brightness-100'
               disabled
             >
               <HeroIcon

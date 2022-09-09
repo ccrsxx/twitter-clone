@@ -7,11 +7,16 @@ import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import { Tooltips } from '@components/ui/tooltips';
 import { Loading } from '@components/ui/loading';
+import type { MouseEvent } from 'react';
 
 export function Trending(): JSX.Element {
   const { data, isLoading, isError } = useTrends(23424846, 10, {
     refreshInterval: 30000
   });
+
+  const handleClick = (e: MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+  };
 
   const { trends, location } = data ?? {};
 
@@ -34,7 +39,11 @@ export function Trending(): JSX.Element {
                            gap-0.5 hover:bg-sidebar-hover-color'
               >
                 <div className='absolute right-2 top-2'>
-                  <Button className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10'>
+                  <Button
+                    className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10
+                               active:bg-accent-blue-secondary/20'
+                    onClick={handleClick}
+                  >
                     <HeroIcon
                       className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
                       iconName='EllipsisHorizontalIcon'

@@ -1,38 +1,82 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { Dialog } from '@headlessui/react';
+import cn from 'clsx';
+import type { ReactNode } from 'react';
+import type { Variants } from 'framer-motion';
 
 type ModalProps = {
   open: boolean;
+  children: ReactNode;
+  className?: string;
+  modalClassName?: string;
+  closePanelOnClick?: boolean;
   closeModal: () => void;
 };
 
-export function Modal({ open, closeModal }: ModalProps): JSX.Element {
+const variants: Variants[] = [
+  {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 }
+  },
+  {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: { type: 'spring', duration: 0.5, bounce: 0.4 }
+    },
+    exit: { opacity: 0, scale: 0.8, transition: { duration: 0.15 } }
+  }
+];
+
+export const [backdrop, modal] = variants;
+
+export function Modal({
+  open,
+  children,
+  className,
+  modalClassName,
+  closePanelOnClick,
+  closeModal
+}: ModalProps): JSX.Element {
   return (
-    <Dialog
-      className='fixed top-1/2 left-1/2 z-10 max-w-md -translate-y-1/2 -translate-x-1/2
-                 rounded-xl bg-accent-blue p-4 text-primary'
-      open={open}
-      onClose={closeModal}
-    >
-      <Dialog.Panel className='flex flex-col gap-2'>
-        <Dialog.Title className='text-xl font-bold'>
-          Deactivate account
-        </Dialog.Title>
-        <Dialog.Description>
-          This will permanently deactivate your account
-        </Dialog.Description>
-        <p>
-          Are you sure you want to deactivate your account? All of your data
-          will be permanently removed. This action cannot be undone.
-        </p>
-        <div className='flex gap-2 inner:rounded inner:px-2 inner:py-1 inner:font-bold'>
-          <button className='bg-red-400' onClick={closeModal}>
-            Deactivate
-          </button>
-          <button className='bg-green-400' onClick={closeModal}>
-            Cancel
-          </button>
-        </div>
-      </Dialog.Panel>
-    </Dialog>
+    <AnimatePresence>
+      {open && (
+        <Dialog
+          className='relative z-50'
+          open={open}
+          onClose={closeModal}
+          static
+        >
+          <motion.div
+            className='fixed inset-0 bg-modal-backdrop-color/40'
+            aria-hidden='true'
+            variants={backdrop}
+            initial='initial'
+            animate='animate'
+            exit='exit'
+          />
+          <div
+            className={cn(
+              'fixed inset-0 p-4',
+              className ?? 'flex items-center justify-center'
+            )}
+          >
+            <Dialog.Panel
+              className={modalClassName}
+              as={motion.div}
+              variants={modal}
+              initial='initial'
+              animate='animate'
+              exit='exit'
+              onClick={closePanelOnClick ? closeModal : undefined}
+            >
+              {children}
+            </Dialog.Panel>
+          </div>
+        </Dialog>
+      )}
+    </AnimatePresence>
   );
 }

@@ -1,11 +1,13 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useAuth } from '@lib/context/auth-context';
-import { NextImage } from '@components/ui/next-image';
+import { useModal } from '@lib/hooks/useModal';
+import { Modal } from '@components/modal/modal';
+import { Tweet } from '@components/tweet/tweet';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
-import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
+import { More } from './more';
+import { Profile } from './profile';
 import type { IconName } from '@components/ui/hero-icon';
 
 type NavLinks = { href: string; linkName: string; iconName: IconName }[];
@@ -49,11 +51,20 @@ const navLinks: NavLinks = [
 ];
 
 export function Sidebar(): JSX.Element {
-  const { signOut } = useAuth();
+  const { open, openModal, closeModal } = useModal();
+
   const { pathname } = useRouter();
 
   return (
     <header className='-mr-4 flex w-full max-w-xs justify-end'>
+      <Modal
+        className='flex items-start justify-center'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
+        open={open}
+        closeModal={closeModal}
+      >
+        <Tweet modal />
+      </Modal>
       <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
         <div className='flex flex-col gap-2'>
           <h1 className='flex'>
@@ -74,53 +85,17 @@ export function Sidebar(): JSX.Element {
                 key={linkData.href}
               />
             ))}
-            <div className='group flex py-1'>
-              <Button className='flex gap-4 pr-5 text-xl group-hover:bg-primary/10'>
-                <HeroIcon
-                  className='h-7 w-7'
-                  iconName='EllipsisHorizontalCircleIcon'
-                />{' '}
-                More
-              </Button>
-            </div>
+            <More />
           </nav>
           <Button
             className='w-11/12 bg-accent-blue-secondary font-bold text-white outline-none
                        hover:bg-accent-blue-secondary/90 active:bg-accent-blue-secondary/75'
+            onClick={openModal}
           >
             Tweet
           </Button>
         </div>
-        <Button
-          className='flex items-center justify-between hover:bg-primary/10 
-                     focus-visible:bg-primary/10 active:bg-primary/20'
-          onClick={signOut}
-        >
-          <div className='flex items-center gap-3'>
-            <NextImage
-              imgClassName='rounded-full'
-              width={40}
-              height={40}
-              src='/placeholder/yagakimi.jpg'
-              alt='ccrsxx'
-              useSkeleton
-            />
-            <div className='leading-5'>
-              <div className='flex items-center gap-1'>
-                <p className='text-start font-bold'>Ami</p>
-                <i>
-                  <HeroIcon
-                    className='h-5 w-5'
-                    iconName='CheckBadgeIcon'
-                    solid
-                  />
-                </i>
-              </div>
-              <p className='text-secondary'>@ccrsxx</p>
-            </div>
-          </div>
-          <HeroIcon iconName='EllipsisHorizontalIcon' />
-        </Button>
+        <Profile />
       </div>
     </header>
   );

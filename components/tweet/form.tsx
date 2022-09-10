@@ -1,10 +1,12 @@
 import TextArea from 'react-textarea-autosize';
 import { AnimatePresence, motion } from 'framer-motion';
-import { setTransition } from '@lib/transition';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactNode, RefObject, ChangeEvent, ClipboardEvent } from 'react';
+import type { Variants } from 'framer-motion';
 
 type FormProps = {
+  modal?: boolean;
+  formId: string;
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
@@ -21,7 +23,24 @@ type FormProps = {
   ) => void;
 };
 
+const variants: Variants[] = [
+  {
+    initial: { y: -25, opacity: 0 },
+    animate: { y: 0, opacity: 1, transition: { type: 'spring' } },
+    exit: { y: -25, opacity: 0, transition: { type: 'tween' } }
+  },
+  {
+    initial: { x: 25, opacity: 0 },
+    animate: { x: 0, opacity: 1, transition: { type: 'spring' } },
+    exit: { x: 25, opacity: 0, transition: { type: 'tween' } }
+  }
+];
+
+const [top, bottom] = variants;
+
 export function Form({
+  modal,
+  formId,
   children,
   inputRef,
   inputValue,
@@ -42,8 +61,11 @@ export function Form({
               className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
                          py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
                          active:bg-accent-blue-secondary/20 disabled:brightness-100'
+              variants={top}
+              initial='initial'
+              animate='animate'
+              exit='exit'
               disabled
-              {...setTransition({ direction: 'top', distance: 25 })}
             >
               <p className='font-bold'>Everyone</p>
               <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
@@ -52,11 +74,11 @@ export function Form({
         </AnimatePresence>
         <div className='flex items-center' ref={inputContainerRef}>
           <TextArea
-            id='tweet'
-            className='w-full resize-none bg-transparent text-xl outline-none
-                       placeholder:text-secondary'
+            id={formId}
+            className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
             value={inputValue}
             placeholder="What's happening?"
+            minRows={modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
             onBlur={handleBlur}
@@ -71,7 +93,10 @@ export function Form({
         {isFormEnabled && (
           <motion.div
             className='flex border-b border-border-color pb-2'
-            {...setTransition({ direction: 'right', distance: 25 })}
+            variants={bottom}
+            initial='initial'
+            animate='animate'
+            exit='exit'
           >
             <button
               className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 

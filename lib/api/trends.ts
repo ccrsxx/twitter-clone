@@ -3,7 +3,7 @@ import type { SWRConfiguration } from 'swr';
 import type { FilteredTrends, SuccessResponse } from '@lib/api/types/place';
 
 type SwrHooksReturn = {
-  isLoading: boolean;
+  loading: boolean;
   isError: Error | undefined;
 };
 
@@ -44,13 +44,13 @@ export function useTrends(
   if (data && 'errors' in data)
     return {
       data: undefined,
-      isLoading: false,
+      loading: false,
       isError: new Error('Sorry we could not find any trends for this place')
     };
 
   return {
     data,
-    isLoading: !error && !data,
+    loading: !error && !data,
     isError: error
   };
 }

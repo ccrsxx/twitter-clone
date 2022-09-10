@@ -27,6 +27,10 @@
   .smooth-tab {
     @apply outline-none transition focus-visible:ring-2 focus-visible:ring-white;
   }
+
+  .trim-alt {
+    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
+  }
 }
 
 @layer utilities {

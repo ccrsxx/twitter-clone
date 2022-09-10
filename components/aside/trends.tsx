@@ -1,28 +1,24 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatNumber } from '@lib/format';
+import { preventBubbling } from '@lib/event';
 import { useTrends } from '@lib/api/trends';
 import { Error } from '@components/ui/error';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import { Tooltips } from '@components/ui/tooltips';
 import { Loading } from '@components/ui/loading';
-import type { MouseEvent } from 'react';
 
 export function Trending(): JSX.Element {
-  const { data, isLoading, isError } = useTrends(23424846, 10, {
+  const { data, loading, isError } = useTrends(23424846, 10, {
     refreshInterval: 30000
   });
-
-  const handleClick = (e: MouseEvent<HTMLButtonElement>): void => {
-    e.preventDefault();
-  };
 
   const { trends, location } = data ?? {};
 
   return (
     <section className='rounded-2xl bg-sidebar-background'>
-      {isLoading ? (
+      {loading ? (
         <Loading />
       ) : trends && location ? (
         <motion.div
@@ -36,13 +32,13 @@ export function Trending(): JSX.Element {
             <Link href={url} key={query}>
               <a
                 className='hover-animation smooth-tab relative flex flex-col 
-                           gap-0.5 hover:bg-sidebar-hover-color'
+                           gap-0.5 hover:bg-white/[0.03]'
               >
                 <div className='absolute right-2 top-2'>
                   <Button
                     className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10
                                active:bg-accent-blue-secondary/20'
-                    onClick={handleClick}
+                    onClick={preventBubbling(null, true)}
                   >
                     <HeroIcon
                       className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
@@ -65,7 +61,7 @@ export function Trending(): JSX.Element {
           <Link href='/trends'>
             <a
               className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
-                         text-center text-accent-blue-secondary hover:bg-sidebar-hover-color'
+                         text-center text-accent-blue-secondary hover:bg-white/[0.03]'
             >
               Show more
             </a>

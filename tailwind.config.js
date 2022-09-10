@@ -20,12 +20,12 @@ module.exports = {
         'border-color-secondary': '#536471',
         'search-background': '#202327',
         'sidebar-background': '#16181C',
-        'sidebar-hover-color': '#1D1F23',
         'tooltips-background': '#4B5C6B',
         'follow-button-background': '#EFF3F4',
         'follow-text-color': '#0F1419',
         'image-preview-hover-color': '#272C30',
-        'login-button-color': '#0F1419'
+        'login-button-color': '#0F1419',
+        'modal-backdrop-color': '#5B7083'
       },
       animation: {},
       keyframes: {}

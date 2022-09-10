@@ -10,8 +10,8 @@ export function Placeholder(): JSX.Element {
           iconName='TwitterIcon'
         />
       </i>
-      <div className='flex items-center gap-1'>
-        <Loading className='p-0' />
+      <div className='flex items-center gap-2'>
+        <Loading className='!p-0' />
         <p className='text-lg font-bold'>Verifying session...</p>
       </div>
     </main>

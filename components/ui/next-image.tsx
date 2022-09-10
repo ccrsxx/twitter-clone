@@ -30,16 +30,16 @@ export function NextImage({
   blurClassName,
   ...rest
 }: NextImageProps): JSX.Element {
-  const [isLoading, setIsLoading] = useState(!!useSkeleton);
+  const [loading, setLoading] = useState(!!useSkeleton);
 
-  const handleLoad = (): void => setIsLoading(false);
+  const handleLoad = (): void => setLoading(false);
 
   return (
     <figure style={{ width }} className={className}>
       <Image
         className={cn(
           imgClassName,
-          isLoading && cn('animate-pulse', blurClassName ?? 'bg-white')
+          loading && cn('animate-pulse', blurClassName ?? 'bg-white')
         )}
         src={src}
         width={width}

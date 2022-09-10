@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@lib/context/auth-context';
 import { isValidImage } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
 import { Form } from './form';
-import { ImagesPreview } from './images-preview';
+import { ImagePreview } from './image-preview';
 import { Options } from './options';
 import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 
-type ImageData = {
+export type ImageData = {
   src: string;
   alt: string;
 };
@@ -21,17 +22,24 @@ type FilesWithId = (File & {
   id: number;
 })[];
 
-export function Tweet(): JSX.Element {
+type TweetProps = {
+  modal?: boolean;
+};
+
+export function Tweet({ modal }: TweetProps): JSX.Element {
   const [tweetHeight, setTweetHeight] = useState(0);
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
   const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
   const [inputValue, setInputValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
+  const { user } = useAuth();
+
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
 
   const previewCount = imagesPreview.length;
+  const isUploadingImages = !!previewCount;
 
   useEffect(
     () => () => imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src)),
@@ -42,7 +50,7 @@ export function Tweet(): JSX.Element {
   useEffect(() => {
     if (!inputContainerRef.current) return;
     setTweetHeight(inputContainerRef.current.offsetHeight);
-  }, [inputValue]);
+  }, [inputValue, isUploadingImages]);
 
   const handleImageUpload = (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
@@ -126,7 +134,8 @@ export function Tweet(): JSX.Element {
   const handleFocus = (): void => setIsFocus(true);
   const handleBlur = (): void => setIsFocus(false);
 
-  const isUploadingImages = !!previewCount;
+  const formId = modal ? 'tweet-modal' : 'tweet';
+  const baseHeight = modal ? 160 : 125;
 
   const isFormEnabled = isUploadingImages || !!(isFocus || inputValue);
   const isValidInput = !!inputValue.trim().length;
@@ -138,22 +147,24 @@ export function Tweet(): JSX.Element {
     <form onSubmit={handleSubmit}>
       <motion.label
         className='flex gap-4 border-b border-border-color px-4 py-3'
-        style={!isFormEnabled ? { height: 125 } : undefined}
-        animate={{ height: isFormEnabled ? totalContainerHeight : 125 }}
+        style={!isFormEnabled ? { height: baseHeight } : undefined}
+        animate={{ height: isFormEnabled ? totalContainerHeight : baseHeight }}
         transition={{ type: 'tween', duration: 0.2 }}
-        htmlFor='tweet'
+        htmlFor={formId}
       >
         <NextImage
           className='shrink-0'
           imgClassName='rounded-full'
           width={48}
           height={48}
-          src='/placeholder/yagakimi.jpg'
+          src={user?.photoURL as string}
           alt='ccrsxx'
           useSkeleton
         />
         <div className='flex w-full flex-col gap-4'>
           <Form
+            modal={modal}
+            formId={formId}
             inputRef={inputRef}
             inputValue={inputValue}
             isFormEnabled={isFormEnabled}
@@ -166,7 +177,7 @@ export function Tweet(): JSX.Element {
           >
             <AnimatePresence>
               {isUploadingImages && (
-                <ImagesPreview
+                <ImagePreview
                   previewCount={previewCount}
                   imagesPreview={imagesPreview}
                   removeImage={removeImage}

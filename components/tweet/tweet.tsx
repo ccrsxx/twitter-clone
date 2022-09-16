@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
 import { addDoc, serverTimestamp } from 'firebase/firestore';
-import { postsCollection } from '@lib/firebase/firestore-ref';
+import { postsCollection } from '@lib/firebase/collections';
 import { useAuth } from '@lib/context/auth-context';
 import { isValidImage } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
@@ -35,7 +35,7 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
   const [inputValue, setInputValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
-  const { userData } = useAuth();
+  const { user } = useAuth();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
@@ -56,9 +56,9 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
 
   const sendTweet = async (): Promise<void> => {
     const tweetData = {
-      id: userData?.id,
       text: inputValue,
-      images: imagesPreview.map(({ src }) => src),
+      images: imagesPreview.length ? imagesPreview.map(({ src }) => src) : null,
+      userRef: user?.ref,
       createdAt: serverTimestamp()
     };
 
@@ -70,8 +70,7 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
       });
 
       setInputValue('');
-      setSelectedImages([]);
-      setImagesPreview([]);
+      cleanImage();
     } catch (error) {
       toast.error('Failed to send tweet');
     }
@@ -132,6 +131,13 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
     URL.revokeObjectURL(src);
   };
 
+  const cleanImage = (): void => {
+    imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src));
+
+    setSelectedImages([]);
+    setImagesPreview([]);
+  };
+
   const handleChange = ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>): void => setInputValue(value);
@@ -167,7 +173,7 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
           imgClassName='rounded-full'
           width={48}
           height={48}
-          src={userData?.photoURL as string}
+          src={user?.photoURL as string}
           alt='ccrsxx'
           useSkeleton
         />

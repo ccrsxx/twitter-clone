@@ -9,7 +9,7 @@ import { UsernameModal } from '@components/modal/username-modal';
 import type { FormEvent, ChangeEvent } from 'react';
 
 export function NewUsername(): null | JSX.Element {
-  const { userData } = useAuth();
+  const { user } = useAuth();
 
   const [available, setAvailable] = useState(false);
   const [visited, setVisited] = useState(false);
@@ -26,8 +26,7 @@ export function NewUsername(): null | JSX.Element {
         return 'Username can only contain letters, numbers and _';
       if (!/[a-z]/i.test(value))
         return 'Username must include at least one letter';
-
-      if (value === userData?.username) return 'This is your current username';
+      if (value === user?.username) return 'This is your current username';
 
       return null;
     };
@@ -57,7 +56,7 @@ export function NewUsername(): null | JSX.Element {
   }, [inputValue]);
 
   useEffect(() => {
-    if (!userData?.updatedAt) openModal();
+    if (!user?.updatedAt) openModal();
   }, []);
 
   const changeUsername = async (
@@ -65,13 +64,13 @@ export function NewUsername(): null | JSX.Element {
   ): Promise<void> => {
     e.preventDefault();
     if (!available) return;
-    await updateUsername(userData?.id as string, inputValue);
+    await updateUsername(user?.id as string, inputValue);
     closeModal();
   };
 
   const cancelUpdateUsername = (): void => {
     closeModal();
-    void updateUsername(userData?.id as string);
+    void updateUsername(user?.id as string);
   };
 
   const handleChange = ({

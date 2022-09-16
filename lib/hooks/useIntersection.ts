@@ -2,32 +2,23 @@ import { useState, useEffect } from 'react';
 import type { RefObject } from 'react';
 
 export function useIntersection(
-  root: RefObject<HTMLElement> | null,
   target: RefObject<HTMLElement>,
-  options?: {
-    rootMargin?: string;
-    threshold?: number | number[];
-  }
+  options?: IntersectionObserverInit
 ): boolean {
-  const [isActive, setIsActive] = useState(false);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     const intersectionCallback = ([
       { isIntersecting }
-    ]: IntersectionObserverEntry[]): void => setIsActive(isIntersecting);
+    ]: IntersectionObserverEntry[]): void => setActive(isIntersecting);
 
-    const observer = new IntersectionObserver(intersectionCallback, {
-      root: root ? root?.current : null,
-      rootMargin: options?.rootMargin ?? '0px',
-      threshold: options?.threshold ?? 1.0
-    });
+    const observer = new IntersectionObserver(intersectionCallback, options);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    observer.observe(target.current!);
+    observer.observe(target.current as HTMLElement);
 
     return () => observer.disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return isActive;
+  return active;
 }

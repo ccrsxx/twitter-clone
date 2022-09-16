@@ -7,7 +7,7 @@ import {
   updateDoc,
   where
 } from 'firebase/firestore';
-import { usersCollection } from './firestore-ref';
+import { usersCollection } from './collections';
 
 export async function checkUsernameAvailability(
   username: string

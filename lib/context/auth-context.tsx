@@ -13,31 +13,18 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
-import { usersCollection } from '@lib/firebase/firestore-ref';
+import { usersCollection } from '@lib/firebase/collections';
 import { getRandomInt } from '@lib/random';
 import type { ReactNode } from 'react';
-import type { User } from 'firebase/auth';
-import type { FieldValue } from 'firebase/firestore';
+import type { User } from '@lib/types/user';
+import type { User as AuthUser } from 'firebase/auth';
 
 type AuthContext = {
-  userData: UserData | null;
+  user: User | null;
   loading: boolean;
   error: Error | null;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
-};
-
-export type UserData = {
-  id: string;
-  name: string;
-  bio: null | string;
-  website: null | string;
-  location: null | string;
-  username: string;
-  photoURL: string;
-  verified: boolean;
-  createdAt: FieldValue;
-  updatedAt: null | FieldValue;
 };
 
 export const AuthContext = createContext<AuthContext | null>(null);
@@ -49,25 +36,38 @@ type AuthContextProviderProps = {
 export function AuthContextProvider({
   children
 }: AuthContextProviderProps): JSX.Element {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const createNewUser = async (user: User): Promise<void> => {
-      const { uid, displayName, photoURL } = user;
+    const createNewUser = async (authUser: AuthUser): Promise<void> => {
+      const { uid, displayName, photoURL } = authUser;
 
-      const userRef = await getDoc(doc(usersCollection, uid));
+      const userSnapshot = await getDoc(doc(usersCollection, uid));
 
-      if (!userRef.exists()) {
-        const normalizeName = displayName?.replace(/\s/g, '').toLowerCase();
-        const randomInt = getRandomInt(1, 1000);
-        const randomUsername = `${normalizeName as string}${randomInt}`;
+      if (!userSnapshot.exists()) {
+        let available = false;
+        let randomUsername = '';
 
-        const userData: UserData = {
+        while (!available) {
+          const normalizeName = displayName?.replace(/\s/g, '').toLowerCase();
+          const randomInt = getRandomInt(1, 10_000);
+
+          randomUsername = `${normalizeName as string}${randomInt}`;
+
+          const randomUserSnapshot = await getDoc(
+            doc(usersCollection, randomUsername)
+          );
+
+          if (!randomUserSnapshot.exists()) available = true;
+        }
+
+        const userData = {
           id: uid,
           name: displayName as string,
           bio: null,
+          ref: doc(usersCollection, uid),
           website: null,
           location: null,
           photoURL: photoURL as string,
@@ -79,24 +79,25 @@ export function AuthContextProvider({
 
         try {
           await setDoc(doc(usersCollection, uid), userData);
-          setUserData(userData);
+          const newUser = (await getDoc(doc(usersCollection, uid))).data();
+          setUser(newUser as User);
         } catch (error) {
           setError(error as Error);
         }
       } else {
-        const userData = userRef.data() as UserData;
-        setUserData(userData);
+        const userData = userSnapshot.data();
+        setUser(userData);
       }
 
       setLoading(false);
     };
 
-    const handleUserAuth = (user: User | null): void => {
+    const handleUserAuth = (authUser: AuthUser | null): void => {
       setLoading(true);
 
-      if (user) void createNewUser(user);
+      if (authUser) void createNewUser(authUser);
       else {
-        setUserData(null);
+        setUser(null);
         setLoading(false);
       }
     };
@@ -105,15 +106,15 @@ export function AuthContextProvider({
   }, []);
 
   useEffect(() => {
-    if (!userData) return;
+    if (!user) return;
 
-    const unsubscribe = onSnapshot(doc(usersCollection, userData.id), (doc) => {
-      setUserData(doc.data() as UserData);
+    const unsubscribe = onSnapshot(doc(usersCollection, user?.id), (doc) => {
+      setUser(doc.data() as User);
     });
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData?.id]);
+  }, [user?.id]);
 
   const signInWithGoogle = async (): Promise<void> => {
     try {
@@ -133,7 +134,7 @@ export function AuthContextProvider({
   };
 
   const value = {
-    userData,
+    user,
     loading,
     error,
     signInWithGoogle,

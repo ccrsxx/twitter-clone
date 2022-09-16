@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 import type { SWRConfiguration } from 'swr';
-import type { FilteredTrends, SuccessResponse } from '@lib/api/types/place';
+import type { FilteredTrends, SuccessResponse } from '@lib/types/place';
 
 type SwrHooksReturn = {
   loading: boolean;

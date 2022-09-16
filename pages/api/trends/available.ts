@@ -1,6 +1,6 @@
 import { AUTH } from '@lib/api/auth';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { AvailablePlaces } from '@lib/api/types/available';
+import type { AvailablePlaces } from '@lib/types/available';
 
 export default async function availableEndpoint(
   _req: NextApiRequest,

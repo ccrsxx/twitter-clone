@@ -5,7 +5,7 @@ import type {
   ErrorResponse,
   TrendsResponse,
   FilteredTrends
-} from '@lib/api/types/place';
+} from '@lib/types/place';
 
 type PlaceIdEndpointQuery = {
   id: string;

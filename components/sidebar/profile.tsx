@@ -9,13 +9,13 @@ import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
 import { variant } from './more';
-import type { UserData } from '@lib/context/auth-context';
+import type { User } from '@lib/types/user';
 
 export function Profile(): JSX.Element {
-  const { userData, signOut } = useAuth();
+  const { user, signOut } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
-  const { name, username, verified, photoURL } = userData as UserData;
+  const { name, username, verified, photoURL } = user as User;
 
   return (
     <>

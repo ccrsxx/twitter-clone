@@ -46,11 +46,9 @@ export function UsernameModal({
               className={cn(
                 'peer w-full rounded border border-border-color bg-inherit',
                 'px-3 pb-2 pt-5 placeholder-transparent outline-none transition',
-                {
-                  'border-input-error-color focus:ring-1 focus:ring-input-error-color':
-                    errorMessage,
-                  'focus:border-accent-blue-secondary': !errorMessage
-                }
+                errorMessage
+                  ? 'border-input-error-color focus:ring-1 focus:ring-input-error-color'
+                  : 'focus:border-accent-blue-secondary'
               )}
               id='username'
               type='text'
@@ -66,11 +64,9 @@ export function UsernameModal({
                 'peer-placeholder-shown:text-lg',
                 'peer-focus:translate-y-1',
                 'peer-focus:text-sm',
-                {
-                  'text-input-error-color peer-focus:text-input-error-color':
-                    errorMessage,
-                  'peer-focus:text-accent-blue-secondary': !errorMessage
-                }
+                errorMessage
+                  ? 'text-input-error-color peer-focus:text-input-error-color'
+                  : 'peer-focus:text-accent-blue-secondary'
               )}
               htmlFor='username'
             >
@@ -85,7 +81,7 @@ export function UsernameModal({
       <div className='flex flex-col gap-3 inner:py-2 inner:font-bold'>
         <Button
           className='bg-follow-button-background text-follow-text-color transition hover:bg-follow-button-background/90 
-                       active:bg-follow-button-background/75 disabled:brightness-50'
+                     active:bg-follow-button-background/75 disabled:brightness-50'
           type='submit'
           disabled={!available}
         >

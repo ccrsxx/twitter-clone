@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { onSnapshot } from 'firebase/firestore';
+import { useState, useEffect, useRef } from 'react';
+import { onSnapshot, queryEqual } from 'firebase/firestore';
 import type { Query } from 'firebase/firestore';
 
 type FirestoreQuery<T> = {
@@ -13,11 +13,19 @@ export function useFirestoreQuery<T>(query: Query<T>): FirestoreQuery<T> {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const cachedQuery = useRef(query);
+
+  useEffect(() => {
+    if (!queryEqual(query, cachedQuery.current)) cachedQuery.current = query;
+  }, [query]);
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query,
+      cachedQuery.current,
       (snapshot) => {
-        const data = snapshot.docs.map((doc) => doc.data());
+        const data = snapshot.docs.map((doc) =>
+          doc.data({ serverTimestamps: 'estimate' })
+        );
         setData(data);
         setLoading(false);
       },
@@ -28,7 +36,8 @@ export function useFirestoreQuery<T>(query: Query<T>): FirestoreQuery<T> {
     );
 
     return unsubscribe;
-  }, [query]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cachedQuery.current]);
 
   return { data, loading, error };
 }

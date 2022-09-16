@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@lib/context/auth-context';
-import type { UserData } from '@lib/context/auth-context';
+import type { User } from '@lib/types/user';
 
 type RequireAuth = {
-  userData: UserData | null;
+  user: User | null;
   pending: boolean;
 };
 
 export function useRequireAuth(redirectUrl = '/'): RequireAuth {
   const [pending, setPending] = useState(true);
 
-  const { userData, loading } = useAuth();
+  const { user, loading } = useAuth();
   const { replace } = useRouter();
 
   useEffect(() => {
@@ -20,9 +20,9 @@ export function useRequireAuth(redirectUrl = '/'): RequireAuth {
   }, []);
 
   useEffect(() => {
-    if (!pending && !loading && !userData) void replace(redirectUrl);
+    if (!pending && !loading && !user) void replace(redirectUrl);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData, loading, pending]);
+  }, [user, loading, pending]);
 
-  return { userData, pending };
+  return { user, pending };
 }

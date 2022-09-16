@@ -9,13 +9,13 @@ export function Controls(): JSX.Element {
     <div className='flex max-w-xs flex-col gap-6 [&_button]:py-2'>
       <div className='grid gap-3 font-bold'>
         <Button
-          className='flex justify-center gap-2 bg-white text-login-button-color 
+          className='flex justify-center gap-2 bg-white text-follow-text-color 
                      hover:brightness-90 active:brightness-75'
         >
           <CustomIcon iconName='GoogleIcon' /> Sign up with Google
         </Button>
         <Button
-          className='flex justify-center gap-2 bg-white text-login-button-color
+          className='flex justify-center gap-2 bg-white text-follow-text-color
                      hover:brightness-90 active:brightness-75'
         >
           <CustomIcon iconName='AppleIcon' /> Sign up with Apple

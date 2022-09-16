@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
+import { addDoc, serverTimestamp } from 'firebase/firestore';
+import { postsCollection } from '@lib/firebase/firestore-ref';
 import { useAuth } from '@lib/context/auth-context';
 import { isValidImage } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
@@ -33,7 +35,7 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
   const [inputValue, setInputValue] = useState('');
   const [isFocus, setIsFocus] = useState(false);
 
-  const { user } = useAuth();
+  const { userData } = useAuth();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const inputContainerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +53,29 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
     if (!inputContainerRef.current) return;
     setTweetHeight(inputContainerRef.current.offsetHeight);
   }, [inputValue, isUploadingImages]);
+
+  const sendTweet = async (): Promise<void> => {
+    const tweetData = {
+      id: userData?.id,
+      text: inputValue,
+      images: imagesPreview.map(({ src }) => src),
+      createdAt: serverTimestamp()
+    };
+
+    try {
+      await toast.promise(addDoc(postsCollection, tweetData), {
+        loading: 'Sending tweet...',
+        success: 'Tweet sent!',
+        error: 'Failed to send tweet'
+      });
+
+      setInputValue('');
+      setSelectedImages([]);
+      setImagesPreview([]);
+    } catch (error) {
+      toast.error('Failed to send tweet');
+    }
+  };
 
   const handleImageUpload = (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
@@ -113,29 +138,14 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    toast.success(
-      `Tweeted ${inputValue}${
-        imagesPreview.length
-          ? ` ${inputValue ? 'with' : ''} ${imagesPreview.length} photo${
-              imagesPreview.length > 1 ? 's' : ''
-            }`
-          : ''
-      }`,
-      {
-        style: {
-          backgroundColor: '#1D9BF0',
-          borderRadius: '4px',
-          color: 'white'
-        }
-      }
-    );
+    void sendTweet();
   };
 
   const handleFocus = (): void => setIsFocus(true);
   const handleBlur = (): void => setIsFocus(false);
 
   const formId = modal ? 'tweet-modal' : 'tweet';
-  const baseHeight = modal ? 160 : 125;
+  const baseHeight = modal ? 161 : 125;
 
   const isFormEnabled = isUploadingImages || !!(isFocus || inputValue);
   const isValidInput = !!inputValue.trim().length;
@@ -157,7 +167,7 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
           imgClassName='rounded-full'
           width={48}
           height={48}
-          src={user?.photoURL as string}
+          src={userData?.photoURL as string}
           alt='ccrsxx'
           useSkeleton
         />

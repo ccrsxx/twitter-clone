@@ -61,10 +61,7 @@ export function Form({
               className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
                          py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
                          active:bg-accent-blue-secondary/20 disabled:brightness-100'
-              variants={top}
-              initial='initial'
-              animate='animate'
-              exit='exit'
+              {...top}
               disabled
             >
               <p className='font-bold'>Everyone</p>
@@ -93,10 +90,7 @@ export function Form({
         {isFormEnabled && (
           <motion.div
             className='flex border-b border-border-color pb-2'
-            variants={bottom}
-            initial='initial'
-            animate='animate'
-            exit='exit'
+            {...bottom}
           >
             <button
               className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 

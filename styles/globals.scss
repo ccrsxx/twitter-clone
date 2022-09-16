@@ -25,7 +25,7 @@
   }
 
   .smooth-tab {
-    @apply outline-none transition focus-visible:ring-2 focus-visible:ring-white;
+    @apply outline-none transition-[box-shadow] focus-visible:ring-2 focus-visible:ring-white;
   }
 
   .trim-alt {

@@ -6,6 +6,7 @@ import { NextImage } from '@components/ui/next-image';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Loading } from '@components/ui/loading';
+import { variant } from './trends';
 
 const placeholderProfiles = [
   {
@@ -41,12 +42,7 @@ export function Suggestion(): JSX.Element {
       {loading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : (
-        <motion.div
-          className='inner:px-4 inner:py-3'
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
+        <motion.div className='inner:px-4 inner:py-3' {...variant}>
           <h2 className='text-xl font-bold'>Who to follow</h2>
           {placeholderProfiles.map(({ name, username, image, verified }) => (
             <Link href={`/${username}`} key={username}>

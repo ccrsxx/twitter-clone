@@ -11,7 +11,7 @@ import { Placeholder } from '@components/common/placeholder';
 export default function Login(): JSX.Element {
   const [pending, setPending] = useState(true);
 
-  const { user, loading } = useAuth();
+  const { userData, loading } = useAuth();
   const { replace } = useRouter();
 
   useEffect(() => {
@@ -20,9 +20,9 @@ export default function Login(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    if (user) void replace('/home');
+    if (userData) void replace('/home');
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [userData]);
 
   if (pending || loading) return <Placeholder />;
 

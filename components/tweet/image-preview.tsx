@@ -8,7 +8,7 @@ import { Modal } from '@components/modal/modal';
 import { NextImage } from '@components/ui/next-image';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
-import type { Variants } from 'framer-motion';
+import type { MotionProps } from 'framer-motion';
 import type { ImagesPreview, ImageData } from './tweet';
 
 type ImagePreviewProps = {
@@ -17,11 +17,12 @@ type ImagePreviewProps = {
   removeImage: (targetId: number) => () => void;
 };
 
-const variants: Variants[] = [
+const variant: MotionProps[] = [
   {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    exit: { opacity: 0 }
+    exit: { opacity: 0 },
+    transition: { duration: 0.15 }
   },
   {
     initial: { opacity: 0, scale: 0.5 },
@@ -30,11 +31,12 @@ const variants: Variants[] = [
       scale: 1,
       transition: { duration: 0.3 }
     },
-    exit: { opacity: 0, scale: 0.5 }
+    exit: { opacity: 0, scale: 0.5 },
+    transition: { type: 'spring', duration: 0.5 }
   }
 ];
 
-const [container, image] = variants;
+const [container, image] = variant;
 
 export function ImagePreview({
   previewCount,
@@ -73,11 +75,7 @@ export function ImagePreview({
   return (
     <motion.div
       className='grid h-72 grid-cols-2 grid-rows-2 gap-3'
-      variants={container}
-      initial='initial'
-      animate='animate'
-      exit='exit'
-      transition={{ duration: 0.15 }}
+      {...container}
     >
       <Modal
         modalClassName='flex justify-between w-full items-center'
@@ -93,17 +91,14 @@ export function ImagePreview({
       </Modal>
       <AnimatePresence mode='popLayout'>
         {imagesPreview.map(({ src, alt, id }, index) => (
-          <motion.div
-            className={cn('relative', {
+          <motion.button
+            type='button'
+            className={cn('smooth-tab relative rounded-2xl', {
               'col-span-2 row-span-2': previewCount === 1,
               'row-span-2':
                 previewCount === 2 || (index === 0 && previewCount === 3)
             })}
-            variants={image}
-            initial='initial'
-            animate='animate'
-            exit='exit'
-            transition={{ type: 'spring', duration: 0.5 }}
+            {...image}
             onClick={preventBubbling(handleSelectedImage(index))}
             layout
             key={id}
@@ -122,13 +117,14 @@ export function ImagePreview({
               alt={alt}
             />
             <Button
-              className='absolute top-0 translate-x-1 translate-y-1 bg-follow-text-color/75
-                         p-1 backdrop-blur-sm hover:bg-image-preview-hover-color/75'
+              className='absolute top-0 left-0 translate-x-1 translate-y-1
+                         bg-follow-text-color/75 p-1 backdrop-blur-sm 
+                         hover:bg-image-preview-hover-color/75'
               onClick={preventBubbling(removeImage(id))}
             >
               <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
             </Button>
-          </motion.div>
+          </motion.button>
         ))}
       </AnimatePresence>
     </motion.div>

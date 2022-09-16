@@ -28,7 +28,7 @@
     "comma-dangle": ["error", "never"],
     "no-unused-expressions": "error",
     "import/order": [
-      "error",
+      "warn",
       {
         "pathGroups": [
           {
@@ -72,6 +72,6 @@
     ],
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/prefer-nullish-coalescing": "error",
-    "@typescript-eslint/explicit-function-return-type": "error"
+    "@typescript-eslint/explicit-function-return-type": "warn"
   }
 }

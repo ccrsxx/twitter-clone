@@ -9,9 +9,9 @@ type LayoutProps = {
 };
 
 export function ProtectedRoute({ children }: LayoutProps): JSX.Element {
-  const { user, pending } = useRequireAuth();
+  const { userData, pending } = useRequireAuth();
 
-  if (!user || pending) return <Placeholder />;
+  if (!userData || pending) return <Placeholder />;
 
   return <>{children}</>;
 }

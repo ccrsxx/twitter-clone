@@ -1,6 +1,8 @@
 import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
 import { SEO } from '@components/common/seo';
+import { Posts } from '@components/posts/posts';
 import { Tweet } from '@components/tweet/tweet';
+import { NewUsername } from '@components/home/new-username';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Tooltips } from '@components/ui/tooltips';
@@ -25,6 +27,8 @@ export default function Home(): JSX.Element {
         </Button>
       </div>
       <Tweet />
+      <Posts />
+      <NewUsername />
     </main>
   );
 }

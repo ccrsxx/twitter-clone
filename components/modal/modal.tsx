@@ -52,10 +52,7 @@ export function Modal({
           <motion.div
             className='fixed inset-0 bg-modal-backdrop-color/40'
             aria-hidden='true'
-            variants={backdrop}
-            initial='initial'
-            animate='animate'
-            exit='exit'
+            {...backdrop}
           />
           <div
             className={cn(
@@ -66,10 +63,7 @@ export function Modal({
             <Dialog.Panel
               className={modalClassName}
               as={motion.div}
-              variants={modal}
-              initial='initial'
-              animate='animate'
-              exit='exit'
+              {...modal}
               onClick={closePanelOnClick ? closeModal : undefined}
             >
               {children}

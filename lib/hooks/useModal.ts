@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
-type ModalReturn = {
+type Modal = {
   open: boolean;
   openModal: () => void;
   closeModal: () => void;
 };
 
-export function useModal(): ModalReturn {
+export function useModal(): Modal {
   const [open, setOpen] = useState(false);
 
   const openModal = (): void => setOpen(true);

@@ -10,7 +10,7 @@ type MainLayoutProps = {
 };
 
 // ! This is a site placeholder, replace with your own url
-const siteUrl = 'https://github.com/ccrsxx/next-template';
+const siteUrl = 'https://twitter-clone-ccrsxx.vercel.app';
 
 export function SEO({
   title,

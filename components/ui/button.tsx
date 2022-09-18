@@ -1,9 +1,10 @@
 import cn from 'clsx';
-import { VscLoading } from 'react-icons/vsc';
+import { CustomIcon } from './custom-icon';
+import type { ComponentPropsWithRef } from 'react';
 
-type ButtonProps = {
+type ButtonProps = ComponentPropsWithRef<'button'> & {
   isLoading?: boolean;
-} & React.ComponentPropsWithRef<'button'>;
+};
 
 export function Button({
   className,
@@ -16,14 +17,14 @@ export function Button({
 
   return (
     <button
-      className={cn(className)}
+      className={cn('custom-button smooth-tab', className)}
       type='button'
       disabled={isDisabled}
       {...rest}
     >
       {isLoading && (
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-          <VscLoading className='animate-spin' />
+          <CustomIcon iconName='SpinnerIcon' />
         </div>
       )}
       {children}

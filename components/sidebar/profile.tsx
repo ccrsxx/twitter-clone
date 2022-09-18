@@ -4,11 +4,11 @@ import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
-import { LogOutModal } from '@components/modal/log-out-modal';
-import { Button } from '@components/ui/button';
+import { ActionModal } from '@components/modal/action-modal';
 import { HeroIcon } from '@components/ui/hero-icon';
+import { CustomIcon } from '@components/ui/custom-icon';
 import { NextImage } from '@components/ui/next-image';
-import { variant } from './more';
+import { variants } from './more';
 import type { User } from '@lib/types/user';
 
 export function Profile(): JSX.Element {
@@ -20,12 +20,21 @@ export function Profile(): JSX.Element {
   return (
     <>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs 
-                        bg-black w-full p-8 rounded-2xl'
+        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
-        <LogOutModal signOut={signOut} closeModal={closeModal} />
+        <ActionModal
+          useIcon
+          title='Log out of Twitter?'
+          description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
+          mainBtnLabel='Log out'
+          mainBtnClassName='bg-follow-button-background text-follow-text-color
+                            hover:bg-follow-button-background/90 
+                            active:bg-follow-button-background/75'
+          action={signOut}
+          closeModal={closeModal}
+        />
       </Modal>
       <Menu className='relative' as='div'>
         {({ open }): JSX.Element => (
@@ -71,12 +80,12 @@ export function Profile(): JSX.Element {
                   className='absolute left-0 right-0 -top-36 w-full rounded-md bg-black outline-none
                              [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
                   as={motion.div}
-                  {...variant}
+                  {...variants}
                   static
                 >
                   <Menu.Item
                     className='flex items-center justify-between gap-2 
-                               border-b border-border-color px-4 py-3'
+                                 border-b border-border-color px-4 py-3'
                     as='div'
                     disabled
                   >
@@ -102,8 +111,9 @@ export function Profile(): JSX.Element {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }): JSX.Element => (
-                      <Button
+                      <Menu.Button
                         className={cn(
+                          'custom-button smooth-tab',
                           'flex w-full gap-3 rounded-md rounded-t-none p-4',
                           active && 'bg-sidebar-background'
                         )}
@@ -111,9 +121,15 @@ export function Profile(): JSX.Element {
                       >
                         <HeroIcon iconName='ArrowRightOnRectangleIcon' />
                         Log out {name}
-                      </Button>
+                      </Menu.Button>
                     )}
                   </Menu.Item>
+                  <i
+                    className='absolute -bottom-[10px] left-1/2 rotate-180
+                                 [filter:drop-shadow(rgb(51,54,57)1px_-1px_1px)]'
+                  >
+                    <CustomIcon className='h-4 w-6' iconName='TriangleIcon' />
+                  </i>
                 </Menu.Items>
               )}
             </AnimatePresence>

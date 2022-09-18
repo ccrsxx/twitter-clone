@@ -11,27 +11,28 @@
 }
 
 @layer components {
-  .custom-button {
-    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:brightness-50;
+  .trim-alt {
+    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
   }
 
-  .custom-underline {
-    @apply underline decoration-transparent outline-none transition duration-200 [text-decoration-thickness:1px] 
-           hover:decoration-inherit focus-visible:decoration-inherit;
+  .custom-button {
+    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:brightness-50;
   }
 
   .hover-animation {
     @apply transition-colors hover:duration-200;
   }
 
+  .custom-underline {
+    @apply hover-animation underline decoration-transparent outline-none transition [text-decoration-thickness:1px] 
+           hover:decoration-inherit focus-visible:decoration-inherit;
+  }
+
   .smooth-tab {
-    @apply outline-none transition-[box-shadow] focus-visible:ring-2 focus-visible:ring-white;
+    @apply outline-none transition focus-visible:ring-2 focus-visible:ring-white;
   }
 
-  .trim-alt {
-    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
+  .blur-picture {
+    @apply hover-animation transition hover:brightness-90 active:brightness-100;
   }
-}
-
-@layer utilities {
 }

@@ -1,17 +1,9 @@
-import type {
-  Timestamp,
-  FieldValue,
-  SnapshotOptions,
-  DocumentReference,
-  QueryDocumentSnapshot,
-  FirestoreDataConverter
-} from 'firebase/firestore';
+import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 
 export type User = {
-  id: string;
-  name: string;
+  uid: string;
   bio: string | null;
-  ref: DocumentReference;
+  name: string;
   website: string | null;
   location: string | null;
   username: string;
@@ -21,19 +13,11 @@ export type User = {
   updatedAt: Timestamp | null;
 };
 
-export type ServerUser = Omit<User, 'createdAt' | 'updatedAt'> & {
-  createdAt: FieldValue;
-  updatedAt: FieldValue | null;
-};
-
 export const userConverter: FirestoreDataConverter<User> = {
-  toFirestore(user: ServerUser): ServerUser {
+  toFirestore(user) {
     return { ...user };
   },
-  fromFirestore(
-    snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions
-  ): User {
+  fromFirestore(snapshot, options) {
     const data = snapshot.data(options);
     return { ...data } as User;
   }

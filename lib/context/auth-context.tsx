@@ -16,8 +16,9 @@ import { auth } from '@lib/firebase/app';
 import { usersCollection } from '@lib/firebase/collections';
 import { getRandomInt } from '@lib/random';
 import type { ReactNode } from 'react';
-import type { User } from '@lib/types/user';
 import type { User as AuthUser } from 'firebase/auth';
+import type { WithFieldValue } from 'firebase/firestore';
+import type { User } from '@lib/types/user';
 
 type AuthContext = {
   user: User | null;
@@ -63,11 +64,10 @@ export function AuthContextProvider({
           if (!randomUserSnapshot.exists()) available = true;
         }
 
-        const userData = {
-          id: uid,
-          name: displayName as string,
+        const userData: WithFieldValue<User> = {
+          uid,
           bio: null,
-          ref: doc(usersCollection, uid),
+          name: displayName as string,
           website: null,
           location: null,
           photoURL: photoURL as string,
@@ -108,13 +108,13 @@ export function AuthContextProvider({
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = onSnapshot(doc(usersCollection, user?.id), (doc) => {
+    const unsubscribe = onSnapshot(doc(usersCollection, user?.uid), (doc) => {
       setUser(doc.data() as User);
     });
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
+  }, [user?.uid]);
 
   const signInWithGoogle = async (): Promise<void> => {
     try {

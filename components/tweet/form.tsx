@@ -1,7 +1,16 @@
 import TextArea from 'react-textarea-autosize';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useModal } from '@lib/hooks/useModal';
+import { Modal } from '@components/modal/modal';
+import { ActionModal } from '@components/modal/action-modal';
 import { HeroIcon } from '@components/ui/hero-icon';
-import type { ReactNode, RefObject, ChangeEvent, ClipboardEvent } from 'react';
+import type {
+  ReactNode,
+  RefObject,
+  ChangeEvent,
+  KeyboardEvent,
+  ClipboardEvent
+} from 'react';
 import type { Variants } from 'framer-motion';
 
 type FormProps = {
@@ -10,11 +19,12 @@ type FormProps = {
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
+  isValidInput: boolean;
   isFormEnabled: boolean;
-  inputContainerRef: RefObject<HTMLDivElement>;
   isUploadingImages: boolean;
-  handleBlur: () => void;
+  sendTweet: () => Promise<void>;
   handleFocus: () => void;
+  discardTweet: () => void;
   handleChange: ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>) => void;
@@ -26,13 +36,11 @@ type FormProps = {
 const variants: Variants[] = [
   {
     initial: { y: -25, opacity: 0 },
-    animate: { y: 0, opacity: 1, transition: { type: 'spring' } },
-    exit: { y: -25, opacity: 0, transition: { type: 'tween' } }
+    animate: { y: 0, opacity: 1, transition: { type: 'spring' } }
   },
   {
     initial: { x: 25, opacity: 0 },
-    animate: { x: 0, opacity: 1, transition: { type: 'spring' } },
-    exit: { x: 25, opacity: 0, transition: { type: 'tween' } }
+    animate: { x: 0, opacity: 1, transition: { type: 'spring' } }
   }
 ];
 
@@ -44,32 +52,62 @@ export function Form({
   children,
   inputRef,
   inputValue,
+  isValidInput,
   isFormEnabled,
-  inputContainerRef,
   isUploadingImages,
-  handleBlur,
+  sendTweet,
   handleFocus,
+  discardTweet,
   handleChange,
   handleImageUpload
 }: FormProps): JSX.Element {
+  const { open, openModal, closeModal } = useModal();
+
+  const handleKeyboardShortcut = ({ ctrlKey, key }: KeyboardEvent): void => {
+    const isValidTweet = isValidInput || isUploadingImages;
+
+    if (!modal && key === 'Escape')
+      if (isValidTweet) {
+        inputRef.current?.blur();
+        openModal();
+      } else discardTweet();
+    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet();
+  };
+
+  const handleClose = (): void => {
+    discardTweet();
+    closeModal();
+  };
+
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
+      <Modal
+        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        open={open}
+        closeModal={closeModal}
+      >
+        <ActionModal
+          title='Discard Tweet?'
+          description='This can’t be undone and you’ll lose your draft.'
+          mainBtnLabel='Discard'
+          action={handleClose}
+          closeModal={closeModal}
+        />
+      </Modal>
       <div className='flex flex-col gap-6'>
-        <AnimatePresence>
-          {isFormEnabled && (
-            <motion.button
-              className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
+        {isFormEnabled && (
+          <motion.button
+            className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
                          py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
                          active:bg-accent-blue-secondary/20 disabled:brightness-100'
-              {...top}
-              disabled
-            >
-              <p className='font-bold'>Everyone</p>
-              <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
-            </motion.button>
-          )}
-        </AnimatePresence>
-        <div className='flex items-center' ref={inputContainerRef}>
+            {...top}
+            disabled
+          >
+            <p className='font-bold'>Everyone</p>
+            <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
+          </motion.button>
+        )}
+        <div className='flex items-center'>
           <TextArea
             id={formId}
             className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
@@ -78,36 +116,30 @@ export function Form({
             minRows={modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
-            onBlur={handleBlur}
-            onChange={handleChange}
             onPaste={handleImageUpload}
+            onKeyUp={handleKeyboardShortcut}
+            onChange={handleChange}
             ref={inputRef}
           />
         </div>
       </div>
       {children}
-      <AnimatePresence>
-        {isFormEnabled && (
-          <motion.div
-            className='flex border-b border-border-color pb-2'
-            {...bottom}
-          >
-            <button
-              className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 
+      {isFormEnabled && (
+        <motion.div
+          className='flex border-b border-border-color pb-2'
+          {...bottom}
+        >
+          <button
+            className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 
                          hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20
                          disabled:brightness-100'
-              disabled
-            >
-              <HeroIcon
-                className='h-4 w-4'
-                iconName='GlobeAmericasIcon'
-                solid
-              />
-              <p className='font-bold'>Everyone can reply</p>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            disabled
+          >
+            <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' solid />
+            <p className='font-bold'>Everyone can reply</p>
+          </button>
+        </motion.div>
+      )}
     </div>
   );
 }

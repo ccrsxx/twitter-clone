@@ -1,6 +1,5 @@
 import { NextImage } from '@components/ui/next-image';
 import { CustomIcon } from '@components/ui/custom-icon';
-import { Button } from '@components/ui/button';
 import type { ReactNode } from 'react';
 
 type MainProps = {

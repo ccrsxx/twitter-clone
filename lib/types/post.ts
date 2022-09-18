@@ -1,27 +1,19 @@
-import type {
-  Timestamp,
-  SnapshotOptions,
-  DocumentReference,
-  QueryDocumentSnapshot,
-  FirestoreDataConverter
-} from 'firebase/firestore';
+import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
+import type { ImagesPreview } from './file';
 
 export type Post = {
   id: string;
   text: string;
-  images: null | string[];
-  userRef: DocumentReference;
+  images: ImagesPreview | null;
+  createdBy: string;
   createdAt: Timestamp;
 };
 
 export const postConverter: FirestoreDataConverter<Post> = {
-  toFirestore(user: Post): Post {
-    return { ...user };
+  toFirestore(post) {
+    return { ...post };
   },
-  fromFirestore(
-    snapshot: QueryDocumentSnapshot,
-    options: SnapshotOptions
-  ): Post {
+  fromFirestore(snapshot, options) {
     const { id } = snapshot;
     const data = snapshot.data(options);
 

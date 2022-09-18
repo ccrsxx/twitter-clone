@@ -1,12 +1,12 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import cn from 'clsx';
-import { MenuLink } from '@components/ui/menu-link';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
+import { MenuLink } from './menu-link';
 import type { Variants } from 'framer-motion';
 
-export const variant: Variants = {
+export const variants: Variants = {
   initial: { opacity: 0, y: 50 },
   animate: {
     opacity: 1,
@@ -42,7 +42,7 @@ export function More(): JSX.Element {
                 className='absolute -top-44 w-11/12 rounded-md bg-black outline-none
                            [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
                 as={motion.div}
-                {...variant}
+                {...variants}
                 static
               >
                 <Menu.Item>

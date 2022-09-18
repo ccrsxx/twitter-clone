@@ -64,13 +64,13 @@ export function NewUsername(): null | JSX.Element {
   ): Promise<void> => {
     e.preventDefault();
     if (!available) return;
-    await updateUsername(user?.id as string, inputValue);
+    await updateUsername(user?.uid as string, inputValue);
     closeModal();
   };
 
   const cancelUpdateUsername = (): void => {
     closeModal();
-    void updateUsername(user?.id as string);
+    void updateUsername(user?.uid as string);
   };
 
   const handleChange = ({

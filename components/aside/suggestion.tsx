@@ -6,7 +6,7 @@ import { NextImage } from '@components/ui/next-image';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Loading } from '@components/ui/loading';
-import { variant } from './trends';
+import { variants } from './trends';
 
 const placeholderProfiles = [
   {
@@ -42,14 +42,14 @@ export function Suggestion(): JSX.Element {
       {loading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : (
-        <motion.div className='inner:px-4 inner:py-3' {...variant}>
+        <motion.div className='inner:px-4 inner:py-3' {...variants}>
           <h2 className='text-xl font-bold'>Who to follow</h2>
           {placeholderProfiles.map(({ name, username, image, verified }) => (
-            <Link href={`/${username}`} key={username}>
-              <a className='smooth-tab flex items-center justify-between hover:bg-white/[0.03]'>
+            <Link href={`/user/${username}`} key={username}>
+              <a className='smooth-tab hover-animation flex items-center justify-between hover:bg-white/[0.03]'>
                 <div className='flex items-center gap-3'>
                   <NextImage
-                    className='transition duration-200 hover:brightness-90'
+                    className='blur-picture'
                     imgClassName='rounded-full object-cover'
                     width={48}
                     height={48}
@@ -75,7 +75,7 @@ export function Suggestion(): JSX.Element {
                 </div>
                 <Button
                   className='bg-follow-button-background px-4 py-1 font-bold text-follow-text-color
-                               transition duration-200 hover:brightness-90'
+                             transition duration-200 hover:brightness-90'
                   onClick={preventBubbling(null, true)}
                 >
                   Follow

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Tooltips } from '@components/ui/tooltips';
+import { variants } from './tweet';
 import { ProgressBar } from './progress-bar';
 import type { ChangeEvent, ClipboardEvent } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
@@ -69,7 +70,7 @@ export function Options({
   const isCharLimitExceeded = inputValue.length > 280;
 
   return (
-    <div className='flex justify-between'>
+    <motion.div className='flex justify-between' {...variants}>
       <div className='flex text-accent-blue-secondary'>
         <input
           className='hidden'
@@ -123,6 +124,6 @@ export function Options({
           Tweet
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 }

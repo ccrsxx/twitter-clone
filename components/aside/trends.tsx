@@ -10,14 +10,15 @@ import { Tooltips } from '@components/ui/tooltips';
 import { Loading } from '@components/ui/loading';
 import type { MotionProps } from 'framer-motion';
 
-export const variant: MotionProps = {
+export const variants: MotionProps = {
   initial: { opacity: 0 },
   animate: { opacity: 1 },
   transition: { duration: 0.8 }
 };
 
 export function Trending(): JSX.Element {
-  const { data, loading, isError } = useTrends(23424846, 10, {
+  // error can be used
+  const { data, loading } = useTrends(23424846, 10, {
     refreshInterval: 30000
   });
 
@@ -28,10 +29,10 @@ export function Trending(): JSX.Element {
       {loading ? (
         <Loading />
       ) : trends && location ? (
-        <motion.div className='inner:px-4 inner:py-3' {...variant}>
+        <motion.div className='inner:px-4 inner:py-3' {...variants}>
           <h2 className='text-xl font-extrabold'>Trends for you</h2>
           {trends.map(({ name, query, tweet_volume, url }) => (
-            <Link href='/logout' key={query}>
+            <Link href={url} key={query}>
               <a
                 className='hover-animation smooth-tab relative flex flex-col 
                            gap-0.5 hover:bg-white/[0.03]'

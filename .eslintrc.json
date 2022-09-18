@@ -19,7 +19,7 @@
     }
   },
   "rules": {
-    "semi": ["warn", "always"],
+    "semi": ["error", "always"],
     "curly": ["warn", "multi"],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "jsx-quotes": ["error", "prefer-single"],
@@ -70,8 +70,8 @@
         }
       }
     ],
-    "@typescript-eslint/consistent-type-imports": "error",
-    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/prefer-nullish-coalescing": "warn",
     "@typescript-eslint/explicit-function-return-type": "warn"
   }
 }

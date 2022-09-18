@@ -47,7 +47,7 @@ export function UsernameModal({
                 'peer w-full rounded border border-border-color bg-inherit',
                 'px-3 pb-2 pt-5 placeholder-transparent outline-none transition',
                 errorMessage
-                  ? 'border-input-error-color focus:ring-1 focus:ring-input-error-color'
+                  ? 'border-accent-red focus:ring-1 focus:ring-accent-red'
                   : 'focus:border-accent-blue-secondary'
               )}
               id='username'
@@ -65,7 +65,7 @@ export function UsernameModal({
                 'peer-focus:translate-y-1',
                 'peer-focus:text-sm',
                 errorMessage
-                  ? 'text-input-error-color peer-focus:text-input-error-color'
+                  ? 'text-accent-red peer-focus:text-accent-red'
                   : 'peer-focus:text-accent-blue-secondary'
               )}
               htmlFor='username'
@@ -73,7 +73,7 @@ export function UsernameModal({
               Username
             </label>
             {errorMessage && (
-              <p className='text-sm text-input-error-color'>{errorMessage}</p>
+              <p className='text-sm text-accent-red'>{errorMessage}</p>
             )}
           </div>
         </div>
@@ -88,8 +88,7 @@ export function UsernameModal({
           Set username
         </Button>
         <Button
-          className='border border-border-color hover:bg-primary/10 
-                       active:bg-primary/20'
+          className='border border-border-color hover:bg-primary/10  active:bg-primary/20'
           onClick={cancelUpdateUsername}
         >
           Skip

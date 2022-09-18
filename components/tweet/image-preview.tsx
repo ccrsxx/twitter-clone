@@ -9,36 +9,39 @@ import { NextImage } from '@components/ui/next-image';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { MotionProps } from 'framer-motion';
-import type { ImagesPreview, ImageData } from './tweet';
+import type { ImagesPreview, ImageData } from '@lib/types/file';
 
 type ImagePreviewProps = {
+  post?: boolean;
   previewCount: number;
   imagesPreview: ImagesPreview;
-  removeImage: (targetId: number) => () => void;
+  removeImage?: (targetId: number) => () => void;
 };
 
-const variant: MotionProps[] = [
-  {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
-    transition: { duration: 0.15 }
+const variants: MotionProps = {
+  initial: { opacity: 0, scale: 0.5 },
+  animate: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.3 }
   },
-  {
-    initial: { opacity: 0, scale: 0.5 },
-    animate: {
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.3 }
-    },
-    exit: { opacity: 0, scale: 0.5 },
-    transition: { type: 'spring', duration: 0.5 }
-  }
-];
+  exit: { opacity: 0, scale: 0.5 },
+  transition: { type: 'spring', duration: 0.5 }
+};
 
-const [container, image] = variant;
+type PostImageBorderRadius = {
+  [key: number]: string[];
+};
+
+const postImageBorderRadius: PostImageBorderRadius = {
+  1: ['rounded-2xl'],
+  2: ['rounded-tl-2xl rounded-bl-2xl', 'rounded-tr-2xl rounded-br-2xl'],
+  3: ['rounded-tl-2xl rounded-bl-2xl', 'rounded-tr-2xl', 'rounded-br-2xl'],
+  4: ['rounded-tl-2xl', 'rounded-tr-2xl', 'rounded-bl-2xl', 'rounded-br-2xl']
+};
 
 export function ImagePreview({
+  post,
   previewCount,
   imagesPreview,
   removeImage
@@ -73,9 +76,11 @@ export function ImagePreview({
   };
 
   return (
-    <motion.div
-      className='grid h-72 grid-cols-2 grid-rows-2 gap-3'
-      {...container}
+    <div
+      className={cn(
+        'grid h-72 grid-cols-2 grid-rows-2',
+        post ? 'mt-2 gap-0.5' : 'gap-3'
+      )}
     >
       <Modal
         modalClassName='flex justify-between w-full items-center'
@@ -84,30 +89,38 @@ export function ImagePreview({
         closePanelOnClick
       >
         <ImageModal
+          post={post}
           imageData={selectedImage as ImageData}
           previewCount={previewCount}
+          selectedIndex={selectedIndex}
           handleNextIndex={handleNextIndex}
         />
       </Modal>
       <AnimatePresence mode='popLayout'>
-        {imagesPreview.map(({ src, alt, id }, index) => (
+        {imagesPreview.map(({ id, src, alt }, index) => (
           <motion.button
             type='button'
-            className={cn('smooth-tab relative rounded-2xl', {
-              'col-span-2 row-span-2': previewCount === 1,
-              'row-span-2':
-                previewCount === 2 || (index === 0 && previewCount === 3)
-            })}
-            {...image}
+            className={cn(
+              'smooth-tab relative transition-none transition-[box-shadow]',
+              post ? postImageBorderRadius[previewCount][index] : 'rounded-2xl',
+              {
+                'col-span-2 row-span-2': previewCount === 1,
+                'row-span-2':
+                  previewCount === 2 || (index === 0 && previewCount === 3)
+              }
+            )}
+            {...variants}
             onClick={preventBubbling(handleSelectedImage(index))}
-            layout
+            layout={!post ? true : false}
             key={id}
           >
             <NextImage
               className='relative h-full w-full cursor-pointer transition 
-                         hover:brightness-75 hover:duration-200'
+                         hover:brightness-90 hover:duration-200'
               imgClassName={cn(
-                'rounded-2xl',
+                post
+                  ? postImageBorderRadius[previewCount][index]
+                  : 'rounded-2xl',
                 previewCount === 1
                   ? 'object-contain !min-w-0 rounded-lg !w-auto !min-h-0 !h-auto'
                   : 'object-cover'
@@ -115,18 +128,21 @@ export function ImagePreview({
               layout='fill'
               src={src}
               alt={alt}
+              useSkeleton={post}
             />
-            <Button
-              className='absolute top-0 left-0 translate-x-1 translate-y-1
-                         bg-follow-text-color/75 p-1 backdrop-blur-sm 
-                         hover:bg-image-preview-hover-color/75'
-              onClick={preventBubbling(removeImage(id))}
-            >
-              <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
-            </Button>
+            {removeImage && (
+              <Button
+                className='absolute top-0 left-0 translate-x-1 translate-y-1
+                           bg-follow-text-color/75 p-1 backdrop-blur-sm 
+                           hover:bg-image-preview-hover-color/75'
+                onClick={preventBubbling(removeImage(id))}
+              >
+                <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
+              </Button>
+            )}
           </motion.button>
         ))}
       </AnimatePresence>
-    </motion.div>
+    </div>
   );
 }

@@ -63,7 +63,7 @@ export function Sidebar(): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <Tweet modal />
+        <Tweet modal closeModal={closeModal} />
       </Modal>
       <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
         <div className='flex flex-col gap-2'>

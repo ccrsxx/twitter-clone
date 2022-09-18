@@ -1,8 +1,12 @@
+import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, serverTimestamp } from 'firebase/firestore';
 import { postsCollection } from '@lib/firebase/collections';
+import { uploadImages } from '@lib/firebase/utils';
+import { sleep } from '@lib/sleep';
 import { useAuth } from '@lib/context/auth-context';
 import { isValidImage } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
@@ -10,70 +14,63 @@ import { Form } from './form';
 import { ImagePreview } from './image-preview';
 import { Options } from './options';
 import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
-
-export type ImageData = {
-  src: string;
-  alt: string;
-};
-
-export type ImagesPreview = (ImageData & {
-  id: number;
-})[];
-
-type FilesWithId = (File & {
-  id: number;
-})[];
+import type { WithFieldValue } from 'firebase/firestore';
+import type { Variants } from 'framer-motion';
+import type { Post } from '@lib/types/post';
+import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
 type TweetProps = {
   modal?: boolean;
+  closeModal?: () => void;
 };
 
-export function Tweet({ modal }: TweetProps): JSX.Element {
-  const [tweetHeight, setTweetHeight] = useState(0);
+export const variants: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 }
+};
+
+export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
   const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
   const [inputValue, setInputValue] = useState('');
-  const [isFocus, setIsFocus] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [focus, setFocus] = useState(false);
 
   const { user } = useAuth();
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const inputContainerRef = useRef<HTMLDivElement>(null);
 
   const previewCount = imagesPreview.length;
   const isUploadingImages = !!previewCount;
 
   useEffect(
-    () => () => imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src)),
+    () => {
+      if (modal) inputRef.current?.focus();
+      return () => imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src));
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  useEffect(() => {
-    if (!inputContainerRef.current) return;
-    setTweetHeight(inputContainerRef.current.offsetHeight);
-  }, [inputValue, isUploadingImages]);
-
   const sendTweet = async (): Promise<void> => {
-    const tweetData = {
+    inputRef.current?.blur();
+
+    setLoading(true);
+
+    const tweetData: WithFieldValue<Omit<Post, 'id'>> = {
       text: inputValue,
-      images: imagesPreview.length ? imagesPreview.map(({ src }) => src) : null,
-      userRef: user?.ref,
+      images: await uploadImages(user?.uid as string, selectedImages),
+      createdBy: user?.uid as string,
       createdAt: serverTimestamp()
     };
 
-    try {
-      await toast.promise(addDoc(postsCollection, tweetData), {
-        loading: 'Sending tweet...',
-        success: 'Tweet sent!',
-        error: 'Failed to send tweet'
-      });
+    await sleep(500);
+    await addDoc(postsCollection, tweetData);
 
-      setInputValue('');
-      cleanImage();
-    } catch (error) {
-      toast.error('Failed to send tweet');
-    }
+    discardTweet();
+    setLoading(false);
+
+    if (closeModal) closeModal();
   };
 
   const handleImageUpload = (
@@ -138,6 +135,14 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
     setImagesPreview([]);
   };
 
+  const discardTweet = (): void => {
+    setInputValue('');
+    setFocus(false);
+    cleanImage();
+
+    inputRef.current?.blur();
+  };
+
   const handleChange = ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>): void => setInputValue(value);
@@ -147,68 +152,76 @@ export function Tweet({ modal }: TweetProps): JSX.Element {
     void sendTweet();
   };
 
-  const handleFocus = (): void => setIsFocus(true);
-  const handleBlur = (): void => setIsFocus(false);
+  const handleFocus = (): void => setFocus(!loading);
 
   const formId = modal ? 'tweet-modal' : 'tweet';
-  const baseHeight = modal ? 161 : 125;
 
-  const isFormEnabled = isUploadingImages || !!(isFocus || inputValue);
   const isValidInput = !!inputValue.trim().length;
-
-  const totalContainerHeight =
-    (isUploadingImages ? tweetHeight + 304 : tweetHeight) + 176;
+  const isFormEnabled = focus && !loading;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <motion.label
-        className='flex gap-4 border-b border-border-color px-4 py-3'
-        style={!isFormEnabled ? { height: baseHeight } : undefined}
-        animate={{ height: isFormEnabled ? totalContainerHeight : baseHeight }}
-        transition={{ type: 'tween', duration: 0.2 }}
+    <form className='flex flex-col' onSubmit={handleSubmit}>
+      {loading && (
+        <motion.i
+          className={cn(
+            'h-1 animate-pulse bg-accent-blue',
+            modal && 'mx-auto w-[calc(100%-0.75rem)] rounded-t-2xl'
+          )}
+          {...variants}
+        />
+      )}
+      <label
+        className={cn(
+          'flex gap-3 border-b border-border-color px-4 py-3 transition',
+          loading && 'brightness-75'
+        )}
         htmlFor={formId}
       >
-        <NextImage
-          className='shrink-0'
-          imgClassName='rounded-full'
-          width={48}
-          height={48}
-          src={user?.photoURL as string}
-          alt='ccrsxx'
-          useSkeleton
-        />
+        <Link href='/user/ccrsxx'>
+          <a className='blur-picture shrink-0 self-start'>
+            <NextImage
+              imgClassName='rounded-full'
+              width={48}
+              height={48}
+              src={user?.photoURL as string}
+              useSkeleton
+              alt='ccrsxx'
+            />
+          </a>
+        </Link>
         <div className='flex w-full flex-col gap-4'>
           <Form
             modal={modal}
             formId={formId}
             inputRef={inputRef}
             inputValue={inputValue}
+            isValidInput={isValidInput}
             isFormEnabled={isFormEnabled}
-            inputContainerRef={inputContainerRef}
             isUploadingImages={isUploadingImages}
-            handleBlur={handleBlur}
+            sendTweet={sendTweet}
             handleFocus={handleFocus}
+            discardTweet={discardTweet}
             handleChange={handleChange}
             handleImageUpload={handleImageUpload}
           >
-            <AnimatePresence>
-              {isUploadingImages && (
-                <ImagePreview
-                  previewCount={previewCount}
-                  imagesPreview={imagesPreview}
-                  removeImage={removeImage}
-                />
-              )}
-            </AnimatePresence>
+            {isUploadingImages && (
+              <ImagePreview
+                previewCount={previewCount}
+                imagesPreview={imagesPreview}
+                removeImage={!loading ? removeImage : undefined}
+              />
+            )}
           </Form>
-          <Options
-            inputValue={inputValue}
-            isValidInput={isValidInput}
-            isUploadingImages={isUploadingImages}
-            handleImageUpload={handleImageUpload}
-          />
+          {!loading && (
+            <Options
+              inputValue={inputValue}
+              isValidInput={isValidInput}
+              isUploadingImages={isUploadingImages}
+              handleImageUpload={handleImageUpload}
+            />
+          )}
         </div>
-      </motion.label>
+      </label>
     </form>
   );
 }

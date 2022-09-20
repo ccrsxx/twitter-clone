@@ -19,7 +19,7 @@
     }
   },
   "rules": {
-    "semi": ["error", "always"],
+    "semi": ["warn", "always"],
     "curly": ["warn", "multi"],
     "quotes": ["error", "single", { "avoidEscape": true }],
     "jsx-quotes": ["error", "prefer-single"],
@@ -28,7 +28,7 @@
     "comma-dangle": ["error", "never"],
     "no-unused-expressions": "error",
     "import/order": [
-      "warn",
+      "error",
       {
         "pathGroups": [
           {
@@ -49,7 +49,6 @@
           }
         ],
         "warnOnUnassignedImports": true,
-        "pathGroupsExcludedImportTypes": ["type"],
         "groups": [
           "builtin",
           "external",
@@ -70,8 +69,8 @@
         }
       }
     ],
-    "@typescript-eslint/consistent-type-imports": "warn",
-    "@typescript-eslint/prefer-nullish-coalescing": "warn",
-    "@typescript-eslint/explicit-function-return-type": "warn"
+    "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "error",
+    "@typescript-eslint/explicit-function-return-type": "error"
   }
 }

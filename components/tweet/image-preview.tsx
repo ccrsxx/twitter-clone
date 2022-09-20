@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { useModal } from '@lib/hooks/useModal';
-import { preventBubbling } from '@lib/event';
+import { preventBubbling } from '@lib/utils';
 import { ImageModal } from '@components/modal/image-modal';
 import { Modal } from '@components/modal/modal';
 import { NextImage } from '@components/ui/next-image';
@@ -116,7 +116,7 @@ export function ImagePreview({
           >
             <NextImage
               className='relative h-full w-full cursor-pointer transition 
-                         hover:brightness-90 hover:duration-200'
+                         hover:brightness-75 hover:duration-200'
               imgClassName={cn(
                 post
                   ? postImageBorderRadius[previewCount][index]

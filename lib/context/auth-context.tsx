@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
 import { usersCollection } from '@lib/firebase/collections';
-import { getRandomInt } from '@lib/random';
+import { getRandomInt } from '@lib/utils';
 import type { ReactNode } from 'react';
 import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';

@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { formatNumber } from '@lib/format';
-import { preventBubbling } from '@lib/event';
+import { preventBubbling } from '@lib/utils';
 import { useTrends } from '@lib/api/trends';
 import { Error } from '@components/ui/error';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
-import { Tooltips } from '@components/ui/tooltips';
+import { ToolTip } from '@components/ui/tooltip';
 import { Loading } from '@components/ui/loading';
 import type { MotionProps } from 'framer-motion';
 
@@ -47,7 +47,7 @@ export function Trending(): JSX.Element {
                       className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
                       iconName='EllipsisHorizontalIcon'
                     />
-                    <Tooltips tips='More' />
+                    <ToolTip tip='More' />
                   </Button>
                 </div>
                 <p className='text-sm text-secondary'>

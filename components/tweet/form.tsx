@@ -98,8 +98,8 @@ export function Form({
         {isFormEnabled && (
           <motion.button
             className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
-                         py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
-                         active:bg-accent-blue-secondary/20 disabled:brightness-100'
+                       py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
+                       active:bg-accent-blue-secondary/20 disabled:brightness-100'
             {...top}
             disabled
           >
@@ -131,8 +131,8 @@ export function Form({
         >
           <button
             className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 
-                         hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20
-                         disabled:brightness-100'
+                       hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20
+                       disabled:brightness-100'
             disabled
           >
             <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' solid />

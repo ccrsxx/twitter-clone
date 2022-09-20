@@ -3,12 +3,12 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
-import { addDoc, serverTimestamp } from 'firebase/firestore';
+import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { postsCollection } from '@lib/firebase/collections';
 import { uploadImages } from '@lib/firebase/utils';
-import { sleep } from '@lib/sleep';
 import { useAuth } from '@lib/context/auth-context';
-import { isValidImage } from '@lib/file';
+import { sleep } from '@lib/utils';
+import { isValidImage } from '@lib/format';
 import { NextImage } from '@components/ui/next-image';
 import { Form } from './form';
 import { ImagePreview } from './image-preview';
@@ -60,17 +60,35 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
     const tweetData: WithFieldValue<Omit<Post, 'id'>> = {
       text: inputValue,
       images: await uploadImages(user?.uid as string, selectedImages),
+      userLikes: [],
       createdBy: user?.uid as string,
-      createdAt: serverTimestamp()
+      createdAt: serverTimestamp(),
+      updatedAt: null,
+      userTweets: [],
+      userReplies: 0
     };
 
     await sleep(500);
-    await addDoc(postsCollection, tweetData);
+
+    const postRef = await addDoc(postsCollection, tweetData);
+    const post = await getDoc(postRef);
 
     discardTweet();
     setLoading(false);
 
     if (closeModal) closeModal();
+
+    toast.success(
+      () => (
+        <span className='flex gap-2'>
+          Your Tweet was sent.
+          <Link href={`/post/${post.id}`}>
+            <a className='custom-underline font-bold'>View</a>
+          </Link>
+        </span>
+      ),
+      { duration: 6000 }
+    );
   };
 
   const handleImageUpload = (
@@ -85,13 +103,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
       : null;
 
     if (!rawImages) {
-      toast.error('Please choose a GIF or photo up to 4', {
-        style: {
-          backgroundColor: '#1D9BF0',
-          borderRadius: '4px',
-          color: 'white'
-        }
-      });
+      toast.error('Please choose a GIF or photo up to 4');
       return;
     }
 
@@ -172,13 +184,13 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
       )}
       <label
         className={cn(
-          'flex gap-3 border-b border-border-color px-4 py-3 transition',
-          loading && 'brightness-75'
+          'grid grid-cols-[auto,1fr] gap-3 border-b border-border-color px-4 py-3 transition',
+          loading && 'pointer-events-none brightness-75'
         )}
         htmlFor={formId}
       >
-        <Link href='/user/ccrsxx'>
-          <a className='blur-picture shrink-0 self-start'>
+        <Link href={`/user/${user?.username as string}`}>
+          <a className='blur-picture self-start'>
             <NextImage
               imgClassName='rounded-full'
               width={48}

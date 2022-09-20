@@ -28,6 +28,7 @@ export function Profile(): JSX.Element {
           useIcon
           title='Log out of Twitter?'
           description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
+          focusOnMainBtn
           mainBtnLabel='Log out'
           mainBtnClassName='bg-follow-button-background text-follow-text-color
                             hover:bg-follow-button-background/90 
@@ -41,9 +42,9 @@ export function Profile(): JSX.Element {
           <>
             <Menu.Button
               className={cn(
-                'custom-button smooth-tab flex w-full',
-                'items-center justify-between hover:bg-primary/10',
-                'focus-visible:bg-primary/10 active:bg-primary/20',
+                `custom-button smooth-tab flex w-full
+                 items-center justify-between hover:bg-primary/10
+                 focus-visible:bg-primary/10 active:bg-primary/20`,
                 open && 'bg-primary/10'
               )}
             >
@@ -85,7 +86,7 @@ export function Profile(): JSX.Element {
                 >
                   <Menu.Item
                     className='flex items-center justify-between gap-2 
-                                 border-b border-border-color px-4 py-3'
+                               border-b border-border-color px-4 py-3'
                     as='div'
                     disabled
                   >
@@ -126,7 +127,7 @@ export function Profile(): JSX.Element {
                   </Menu.Item>
                   <i
                     className='absolute -bottom-[10px] left-1/2 rotate-180
-                                 [filter:drop-shadow(rgb(51,54,57)1px_-1px_1px)]'
+                               [filter:drop-shadow(rgb(51,54,57)1px_-1px_1px)]'
                   >
                     <CustomIcon className='h-4 w-6' iconName='TriangleIcon' />
                   </i>

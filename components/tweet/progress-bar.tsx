@@ -1,5 +1,5 @@
 import cn from 'clsx';
-import { Tooltips } from '@components/ui/tooltips';
+import { ToolTip } from '@components/ui/tooltip';
 
 type ProgressBarProps = {
   inputValue: string;
@@ -81,8 +81,8 @@ export function ProgressBar({
       </i>
       <span
         className={cn(
-          'absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[45%]',
-          'scale-50 text-xs opacity-0',
+          `absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[45%]
+           scale-50 text-xs opacity-0`,
           {
             'scale-100 opacity-100 transition': isCloseToLimit,
             'text-[#F4212E]': isHittingCharLimit
@@ -91,8 +91,8 @@ export function ProgressBar({
       >
         {remainingCharacters}
       </span>
-      <Tooltips
-        tips={
+      <ToolTip
+        tip={
           isCharLimitExceeded
             ? 'You have exceeded the character limit'
             : `${remainingCharacters} characters remaining`

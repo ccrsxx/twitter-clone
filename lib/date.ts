@@ -1,21 +1,10 @@
 import type { Timestamp } from 'firebase/firestore';
 
-const FORMATTER = new Intl.DateTimeFormat('en-gb', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-  hour: 'numeric',
-  minute: 'numeric'
-});
-
 const RELATIVE_FORMATTER = new Intl.RelativeTimeFormat('en-gb', {
   numeric: 'auto'
 });
 
 const units = {
-  year: 24 * 60 * 60 * 1000 * 365,
-  month: (24 * 60 * 60 * 1000 * 365) / 12,
-  week: 7 * 24 * 60 * 60 * 1000,
   day: 24 * 60 * 60 * 1000,
   hour: 60 * 60 * 1000,
   minute: 60 * 1000,
@@ -25,7 +14,7 @@ const units = {
 function getRelativeTime(date: Date): string {
   const elapsed = +date - +new Date();
 
-  if (elapsed > 0) return 'Now';
+  if (elapsed > 0) return 'now';
 
   const unitsItems = Object.entries(units).slice(0, -1);
 
@@ -42,10 +31,25 @@ function getRelativeTime(date: Date): string {
   );
 }
 
-function getShortTime(date: Date, type: 'today' | 'yesterday'): string {
-  return `${type === 'today' ? 'Today' : 'Yesterday'} at ${date
-    .toLocaleTimeString('en-gb')
-    .slice(0, -3)}`;
+function getFullTime(date: Date): string {
+  const fullDate = new Intl.DateTimeFormat('en-gb', {
+    hour: 'numeric',
+    minute: 'numeric',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date);
+
+  const splittedDate = fullDate.split(', ');
+
+  const formattedDate =
+    splittedDate.length === 2
+      ? [...splittedDate].reverse().join(' · ')
+      : [splittedDate.slice(0, 2).join(', '), splittedDate.slice(-1)]
+          .reverse()
+          .join(' · ');
+
+  return formattedDate;
 }
 
 function isToday(date: Date): boolean {
@@ -58,12 +62,47 @@ function isYesterday(date: Date): boolean {
   return yesterday.toDateString() === date.toDateString();
 }
 
-export function convertDate(targetDate: Timestamp, relative?: boolean): string {
+function isCurrentYear(date: Date): boolean {
+  return date.getFullYear() === new Date().getFullYear();
+}
+
+function getPostTime(date: Date): string {
+  if (isToday(date)) return getRelativeTime(date);
+  if (isYesterday(date))
+    return new Intl.DateTimeFormat('en-gb', {
+      day: 'numeric',
+      month: 'short'
+    }).format(date);
+
+  return new Intl.DateTimeFormat('en-gb', {
+    day: 'numeric',
+    month: 'short',
+    year: isCurrentYear(date) ? undefined : 'numeric'
+  }).format(date);
+}
+
+function getShortTime(date: Date): string {
+  const isNear = isToday(date)
+    ? 'today'
+    : isYesterday(date)
+    ? 'yesterday'
+    : null;
+
+  return isNear
+    ? `${isNear === 'today' ? 'Today' : 'Yesterday'} at ${date
+        .toLocaleTimeString('en-gb')
+        .slice(0, -3)}`
+    : getFullTime(date);
+}
+
+export function formatDate(
+  targetDate: Timestamp,
+  mode: 'post' | 'message' | 'full'
+): string {
   const date = targetDate.toDate();
 
-  if (relative) return getRelativeTime(date);
-  if (isToday(date)) return getShortTime(date, 'today');
-  if (isYesterday(date)) return getShortTime(date, 'yesterday');
+  if (mode === 'full') return getFullTime(date);
+  if (mode === 'post') return getPostTime(date);
 
-  return FORMATTER.format(date);
+  return getShortTime(date);
 }

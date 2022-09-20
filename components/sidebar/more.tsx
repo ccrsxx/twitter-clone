@@ -21,11 +21,10 @@ export function More(): JSX.Element {
     <Menu className='relative' as='div'>
       {({ open }): JSX.Element => (
         <>
-          <div className='group relative flex py-1'>
-            <Menu.Button
+          <Menu.Button className='group relative flex w-full py-1'>
+            <div
               className={cn(
-                'custom-button smooth-tab flex gap-4 pr-5',
-                'text-xl group-hover:bg-primary/10',
+                'custom-button smooth-tab flex gap-4 pr-5 text-xl group-hover:bg-primary/10',
                 open && 'bg-primary/10'
               )}
             >
@@ -34,8 +33,8 @@ export function More(): JSX.Element {
                 iconName='EllipsisHorizontalCircleIcon'
               />{' '}
               More
-            </Menu.Button>
-          </div>
+            </div>
+          </Menu.Button>
           <AnimatePresence>
             {open && (
               <Menu.Items

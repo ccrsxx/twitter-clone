@@ -5,8 +5,12 @@ export type Post = {
   id: string;
   text: string;
   images: ImagesPreview | null;
+  userLikes: string[];
   createdBy: string;
   createdAt: Timestamp;
+  updatedAt: Timestamp | null;
+  userTweets: string[];
+  userReplies: number;
 };
 
 export const postConverter: FirestoreDataConverter<Post> = {

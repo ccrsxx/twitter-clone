@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
-import { Tooltips } from '@components/ui/tooltips';
+import { ToolTip } from '@components/ui/tooltip';
 import { variants } from './tweet';
 import { ProgressBar } from './progress-bar';
 import type { ChangeEvent, ClipboardEvent } from 'react';
@@ -89,7 +89,7 @@ export function Options({
             key={name}
           >
             <HeroIcon className='h-5 w-5' iconName={iconName} />
-            <Tooltips tips={name} />
+            <ToolTip tip={name} />
           </Button>
         ))}
       </div>
@@ -111,7 +111,7 @@ export function Options({
             disabled
           >
             <HeroIcon className='h-5 w-5' iconName='PlusIcon' />
-            <Tooltips tips='Add' />
+            <ToolTip tip='Add' />
           </Button>
         </motion.div>
         <Button

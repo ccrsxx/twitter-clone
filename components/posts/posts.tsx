@@ -15,12 +15,10 @@ export function Posts(): JSX.Element {
   if (loading) return <Loading className='mx-auto mt-4' />;
 
   return (
-    <div>
-      <AnimatePresence mode='popLayout'>
-        {data.map((post) => (
-          <Article {...post} key={post.id} />
-        ))}
-      </AnimatePresence>
-    </div>
+    <AnimatePresence mode='popLayout'>
+      {data.map((post) => (
+        <Article {...post} key={post.id} />
+      ))}
+    </AnimatePresence>
   );
 }

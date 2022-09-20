@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply h-full font-twitter-chirp dark:bg-black dark:text-primary;
+    @apply h-full bg-black font-twitter-chirp text-primary;
   }
 }
 
@@ -33,6 +33,6 @@
   }
 
   .blur-picture {
-    @apply hover-animation transition hover:brightness-90 active:brightness-100;
+    @apply hover-animation smooth-tab rounded-full transition hover:brightness-75 active:brightness-100;
   }
 }

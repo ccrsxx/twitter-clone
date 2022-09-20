@@ -3,14 +3,14 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@lib/context/auth-context';
 import { removePost } from '@lib/firebase/utils';
 import { useModal } from '@lib/hooks/useModal';
-import { convertDate } from '@lib/date';
+import { formatDate } from '@lib/date';
 import { ImagePreview } from '@components/tweet/image-preview';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { Tooltips } from '@components/ui/tooltips';
+import { ToolTip } from '@components/ui/tooltip';
 import { Options } from './options';
 import type { Variants } from 'framer-motion';
 import type { Post } from '@lib/types/post';
@@ -25,25 +25,29 @@ const variants: Variants = {
 };
 
 export function Article({
-  id,
+  id: postId,
   text,
   images,
+  userLikes,
   createdBy,
   createdAt,
+  userTweets,
+  userReplies,
   user: { name, username, verified, photoURL }
 }: ArticleProps): JSX.Element {
   const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
   const handleClose = async (): Promise<void> => {
-    await removePost(id);
+    await removePost(postId);
     closeModal();
   };
 
+  const userId = user?.uid as string;
   const userLink = `/user/${username}`;
 
   const isAdmin = user?.username === 'ccrsxx' && user?.verified;
-  const isOwner = isAdmin || user?.uid === createdBy;
+  const isOwner = userId === createdBy;
 
   return (
     <motion.article
@@ -82,9 +86,7 @@ export function Article({
             <div className='flex gap-1'>
               <div className='flex items-center gap-1 text-primary'>
                 <Link href={userLink}>
-                  <a className='custom-underline'>
-                    <p className='font-bold'>{name}</p>
-                  </a>
+                  <a className='custom-underline font-bold'>{name}</a>
                 </Link>
                 {verified && (
                   <i>
@@ -97,30 +99,35 @@ export function Article({
                 )}
               </div>
               <Link href={userLink}>
-                <a>
-                  <p>@{username}</p>
+                <a className='outline-none' tabIndex={-1}>
+                  @{username}
                 </a>
               </Link>
             </div>
             <i>·</i>
             <div className='group relative'>
-              <p className='custom-underline'>{convertDate(createdAt, true)}</p>
-              <Tooltips
-                className='translate-y-1'
-                tips={convertDate(createdAt)}
+              <Link href={`/post/${postId}`}>
+                <a className='custom-underline peer'>
+                  {formatDate(createdAt, 'post')}
+                </a>
+              </Link>
+              <ToolTip
+                className='translate-y-1 peer-focus:opacity-100 peer-focus-visible:visible
+                           peer-focus-visible:delay-200'
+                tip={formatDate(createdAt, 'full')}
               />
             </div>
             <div className='absolute right-2 top-2'>
               <Button
                 className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10
                        active:bg-accent-blue-secondary/20'
-                onClick={isOwner ? openModal : undefined}
+                onClick={isAdmin || isOwner ? openModal : undefined}
               >
                 <HeroIcon
                   className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
                   iconName='EllipsisHorizontalIcon'
                 />
-                <Tooltips tips='More' />
+                <ToolTip tip='More' />
               </Button>
             </div>
           </div>
@@ -134,7 +141,14 @@ export function Article({
               previewCount={images.length}
             />
           )}
-          <Options />
+          <Options
+            userId={userId}
+            postId={postId}
+            isOwner={isOwner}
+            userLikes={userLikes}
+            userTweets={userTweets}
+            userReplies={userReplies}
+          />
         </div>
       </div>
     </motion.article>

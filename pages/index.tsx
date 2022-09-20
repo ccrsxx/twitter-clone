@@ -24,7 +24,7 @@ export default function Login(): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
-  if (pending || loading) return <Placeholder />;
+  if (loading || pending) return <Placeholder />;
 
   return (
     <div className='grid min-h-screen grid-rows-[1fr,auto]'>

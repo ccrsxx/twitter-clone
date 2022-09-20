@@ -1,3 +1,5 @@
+import { useRef, useEffect } from 'react';
+import cn from 'clsx';
 import { Dialog } from '@headlessui/react';
 import { Button } from '@components/ui/button';
 import { CustomIcon } from '@components/ui/custom-icon';
@@ -7,6 +9,7 @@ type ActionModalProps = {
   useIcon?: boolean;
   description: string;
   mainBtnLabel: string;
+  focusOnMainBtn?: boolean;
   mainBtnClassName?: string;
   secondaryBtnLabel?: string;
   secondaryBtnClassName?: string;
@@ -19,12 +22,22 @@ export function ActionModal({
   useIcon,
   description,
   mainBtnLabel,
+  focusOnMainBtn,
   mainBtnClassName,
   secondaryBtnLabel,
   secondaryBtnClassName,
   action,
   closeModal
 }: ActionModalProps): JSX.Element {
+  const mainBtn = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!focusOnMainBtn) return;
+    const timeoutId = setTimeout(() => mainBtn.current?.focus(), 50);
+    return () => clearTimeout(timeoutId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className='flex flex-col gap-6'>
       <div className='flex flex-col gap-4'>
@@ -41,17 +54,19 @@ export function ActionModal({
         </div>
       </div>
       <div className='flex flex-col gap-3 inner:py-2 inner:font-bold'>
-        <Button
-          className={
+        <button
+          className={cn(
+            'custom-button smooth-tab',
             mainBtnClassName ??
-            `bg-accent-red text-primary
+              `bg-accent-red text-primary
              hover:bg-accent-red/90
              active:bg-accent-red/75`
-          }
+          )}
+          ref={mainBtn}
           onClick={action}
         >
           {mainBtnLabel}
-        </Button>
+        </button>
         <Button
           className={
             secondaryBtnClassName ??

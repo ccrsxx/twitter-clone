@@ -44,8 +44,8 @@ export function UsernameModal({
           <div className='relative flex flex-col gap-1'>
             <input
               className={cn(
-                'peer w-full rounded border border-border-color bg-inherit',
-                'px-3 pb-2 pt-5 placeholder-transparent outline-none transition',
+                `peer w-full rounded border border-border-color bg-inherit
+                 px-3 pb-2 pt-5 placeholder-transparent outline-none transition`,
                 errorMessage
                   ? 'border-accent-red focus:ring-1 focus:ring-accent-red'
                   : 'focus:border-accent-blue-secondary'
@@ -58,12 +58,12 @@ export function UsernameModal({
             />
             <label
               className={cn(
-                'absolute left-3 translate-y-1 text-sm',
-                'text-secondary transition-all',
-                'peer-placeholder-shown:translate-y-3',
-                'peer-placeholder-shown:text-lg',
-                'peer-focus:translate-y-1',
-                'peer-focus:text-sm',
+                `absolute left-3 translate-y-1 text-sm
+                 text-secondary transition-all
+                 peer-placeholder-shown:translate-y-3
+                 peer-placeholder-shown:text-lg
+                 peer-focus:translate-y-1
+                 peer-focus:text-sm`,
                 errorMessage
                   ? 'text-accent-red peer-focus:text-accent-red'
                   : 'peer-focus:text-accent-blue-secondary'

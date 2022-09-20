@@ -2,12 +2,13 @@ import '@styles/globals.scss';
 
 import { SWRConfig } from 'swr';
 import { Toaster } from 'react-hot-toast';
-import { fetchJson } from '@lib/fetchJson';
+import { fetchJson } from '@lib/fetch';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import type { DefaultToastOptions } from 'react-hot-toast';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -16,6 +17,15 @@ type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
+};
+
+const toastOptions: DefaultToastOptions = {
+  style: {
+    backgroundColor: '#1D9BF0',
+    borderRadius: '4px',
+    color: 'white'
+  },
+  success: { duration: 4000 }
 };
 
 export default function App({
@@ -30,7 +40,7 @@ export default function App({
       <SWRConfig value={{ fetcher: fetchJson }}>
         {getLayout(<Component {...pageProps} />)}
       </SWRConfig>
-      <Toaster position='bottom-center' />
+      <Toaster position='bottom-center' toastOptions={toastOptions} />
     </AuthContextProvider>
   );
 }

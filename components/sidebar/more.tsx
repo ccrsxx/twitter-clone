@@ -38,7 +38,7 @@ export function More(): JSX.Element {
           <AnimatePresence>
             {open && (
               <Menu.Items
-                className='absolute -top-44 w-11/12 rounded-md bg-black outline-none
+                className='absolute -top-44 z-10 w-11/12 rounded-md bg-black outline-none
                            [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
                 as={motion.div}
                 {...variants}

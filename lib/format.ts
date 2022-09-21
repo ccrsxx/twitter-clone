@@ -3,10 +3,6 @@ const FORMATTER = new Intl.NumberFormat('en-GB', {
   maximumFractionDigits: 1
 });
 
-export function formatNumber(number: number): string {
-  return FORMATTER.format(number);
-}
-
 const IMAGE_EXTENSIONS = [
   'apng',
   'avif',
@@ -20,6 +16,10 @@ const IMAGE_EXTENSIONS = [
   'svg',
   'webp'
 ];
+
+export function formatNumber(number: number): string {
+  return FORMATTER.format(number);
+}
 
 export function isValidImage(name: string, bytes: number): boolean {
   return (

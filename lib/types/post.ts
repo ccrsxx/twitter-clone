@@ -10,7 +10,7 @@ export type Post = {
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
   userTweets: string[];
-  userReplies: number;
+  userReplies: string[];
 };
 
 export const postConverter: FirestoreDataConverter<Post> = {

@@ -4,9 +4,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { manageTweet, manageLike } from '@lib/firebase/utils';
+import { getAnimationMove, preventBubbling } from '@lib/utils';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import type { MotionProps } from 'framer-motion';
 import type { Post } from '@lib/types/post';
 
 type OptionsProps = Pick<Post, 'userLikes' | 'userTweets' | 'userReplies'> & {
@@ -14,27 +14,6 @@ type OptionsProps = Pick<Post, 'userLikes' | 'userTweets' | 'userReplies'> & {
   postId: string;
   isOwner: boolean;
 };
-
-function getAnimationMove(movePixels: number): MotionProps {
-  return {
-    initial: {
-      opacity: 0,
-      y: -movePixels
-    },
-    animate: {
-      opacity: 1,
-      y: 0
-    },
-    exit: {
-      opacity: 0,
-      y: movePixels
-    },
-    transition: {
-      type: 'tween',
-      duration: 0.15
-    }
-  };
-}
 
 export function Options({
   userId,
@@ -44,26 +23,27 @@ export function Options({
   userTweets,
   userReplies
 }: OptionsProps): JSX.Element {
+  const totalReplies = userReplies.length;
   const totalLikes = userLikes.length;
   const totalTweets = userTweets.length;
 
   const [{ currentReplies, currentTweets, currentLikes }, setCurrentStats] =
     useState({
-      currentReplies: userReplies,
+      currentReplies: totalReplies,
       currentLikes: totalLikes,
       currentTweets: totalTweets
     });
 
   useEffect(() => {
     setCurrentStats({
-      currentReplies: userReplies,
+      currentReplies: totalReplies,
       currentLikes: totalLikes,
       currentTweets: totalTweets
     });
   }, [userReplies, totalLikes, totalTweets]);
 
   const replyMove = useMemo(
-    () => (userReplies > currentReplies ? -25 : 25),
+    () => (totalReplies > currentReplies ? -25 : 25),
     [userReplies]
   );
 
@@ -86,6 +66,7 @@ export function Options({
         className='group flex items-center gap-1 p-0 transition-none
                    hover:text-accent-blue-secondary inner:transition
                    inner:duration-200'
+        onClick={preventBubbling()}
       >
         <i
           className='relative rounded-full p-2 not-italic
@@ -111,18 +92,15 @@ export function Options({
           </AnimatePresence>
         </div>
       </button>
-      <motion.button
+      <button
         className={cn(
           `transition-non group flex items-center gap-1 p-0
            hover:text-accent-green inner:transition
            inner:duration-200`,
           postIsTweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
         )}
-        layout='position'
-        onClick={manageTweet(
-          postIsTweeted ? 'untweet' : 'tweet',
-          userId,
-          postId
+        onClick={preventBubbling(
+          manageTweet(postIsTweeted ? 'untweet' : 'tweet', userId, postId)
         )}
       >
         <i
@@ -148,16 +126,17 @@ export function Options({
             )}
           </AnimatePresence>
         </div>
-      </motion.button>
-      <motion.button
+      </button>
+      <button
         className={cn(
           `transition-non group flex items-center gap-1 p-0
            hover:text-accent-pink inner:transition
            inner:duration-200`,
           postIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
         )}
-        layout='position'
-        onClick={manageLike(postIsLiked ? 'unlike' : 'like', userId, postId)}
+        onClick={preventBubbling(
+          manageLike(postIsLiked ? 'unlike' : 'like', userId, postId)
+        )}
       >
         <i
           className='relative rounded-full p-2 not-italic
@@ -182,12 +161,12 @@ export function Options({
             )}
           </AnimatePresence>
         </div>
-      </motion.button>
-      <motion.button
+      </button>
+      <button
         className='group flex items-center gap-1 p-0 transition-none
                    hover:text-accent-blue-secondary inner:transition
                    inner:duration-200'
-        layout='position'
+        onClick={preventBubbling()}
       >
         <i
           className='relative rounded-full p-2 not-italic
@@ -199,12 +178,13 @@ export function Options({
           <HeroIcon className='h-5 w-5' iconName='ArrowUpTrayIcon' />
           <ToolTip tip='Share' />
         </i>
-      </motion.button>
+      </button>
       {isOwner && (
         <button
           className='group flex items-center gap-1 p-0 transition-none
                      hover:text-accent-blue-secondary inner:transition
                      inner:duration-200'
+          onClick={preventBubbling()}
         >
           <i
             className='relative rounded-full p-2 not-italic
@@ -213,7 +193,7 @@ export function Options({
                        group-focus-visible:ring-white
                        group-active:bg-accent-blue-secondary/20'
           >
-            <HeroIcon className='h-5 w-5' iconName='RocketLaunchIcon' />
+            <HeroIcon className='h-5 w-5' iconName='ChartPieIcon' />
             <ToolTip tip='Analytics' />
           </i>
         </button>

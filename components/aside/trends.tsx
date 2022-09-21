@@ -41,7 +41,7 @@ export function Trending(): JSX.Element {
                   <Button
                     className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10
                                active:bg-accent-blue-secondary/20'
-                    onClick={preventBubbling(null, true)}
+                    onClick={preventBubbling()}
                   >
                     <HeroIcon
                       className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'

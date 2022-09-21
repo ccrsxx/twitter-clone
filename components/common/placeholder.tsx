@@ -6,8 +6,8 @@ export function Placeholder(): JSX.Element {
   return (
     <main className='flex min-h-screen flex-col items-center justify-center gap-8'>
       <SEO
-        title='Twitter'
-        description='Twitter is the best place to see what’s happening in the world. Follow your interests to get unfiltered news, live updates, and the latest trends.'
+        title='Twitter - It’s what’s happening'
+        description='From breaking news and entertainment to sports and politics, get the full story with all the live commentary.'
         image='/home.png'
       />
       <i>

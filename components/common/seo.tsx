@@ -1,16 +1,12 @@
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { siteURL } from '@lib/env';
 
 type MainLayoutProps = {
-  title?: string;
+  title: string;
   image?: string;
-  product?: boolean;
-  className?: string;
   description?: string;
 };
-
-// ! This is a site placeholder, replace with your own url
-const siteUrl = 'https://twitter-clone-ccrsxx.vercel.app';
 
 export function SEO({
   title,
@@ -19,20 +15,16 @@ export function SEO({
 }: MainLayoutProps): JSX.Element {
   const { asPath } = useRouter();
 
-  const siteTitle = title;
-  const siteDescription = description;
-  const siteImage = image;
-
   return (
     <Head>
-      <title>{siteTitle}</title>
-      <meta name='og:title' content={siteTitle} />
-      <meta name='description' content={siteDescription} />
-      <meta name='og:description' content={siteDescription} />
-      <meta property='og:image' content={siteImage} />
+      <title>{title}</title>
+      <meta name='og:title' content={title} />
+      {description && <meta name='description' content={description} />}
+      {description && <meta name='og:description' content={description} />}
+      {image && <meta property='og:image' content={image} />}
       <meta
         name='og:url'
-        content={`${siteUrl}${asPath === '/' ? '' : asPath}`}
+        content={`${siteURL}${asPath === '/' ? '' : asPath}`}
       />
     </Head>
   );

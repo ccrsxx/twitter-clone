@@ -5,6 +5,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
+import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { NextImage } from '@components/ui/next-image';
@@ -78,8 +79,8 @@ export function Profile(): JSX.Element {
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='absolute left-0 right-0 -top-36 w-full rounded-md bg-black outline-none
-                             [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
+                  className='absolute left-0 right-0 -top-36 z-10 w-full rounded-md bg-black
+                             outline-none [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
                   as={motion.div}
                   {...variants}
                   static
@@ -112,9 +113,8 @@ export function Profile(): JSX.Element {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }): JSX.Element => (
-                      <Menu.Button
+                      <Button
                         className={cn(
-                          'custom-button smooth-tab',
                           'flex w-full gap-3 rounded-md rounded-t-none p-4',
                           active && 'bg-sidebar-background'
                         )}
@@ -122,7 +122,7 @@ export function Profile(): JSX.Element {
                       >
                         <HeroIcon iconName='ArrowRightOnRectangleIcon' />
                         Log out {name}
-                      </Menu.Button>
+                      </Button>
                     )}
                   </Menu.Item>
                   <i

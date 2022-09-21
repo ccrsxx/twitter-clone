@@ -65,9 +65,7 @@
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
-        "checksVoidReturn": {
-          "attributes": false
-        }
+        "checksVoidReturn": { "attributes": false }
       }
     ],
     "@typescript-eslint/consistent-type-imports": "warn",

@@ -65,7 +65,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
       createdAt: serverTimestamp(),
       updatedAt: null,
       userTweets: [],
-      userReplies: 0
+      userReplies: []
     };
 
     await sleep(500);

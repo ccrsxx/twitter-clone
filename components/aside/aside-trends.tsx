@@ -16,7 +16,7 @@ export const variants: MotionProps = {
   transition: { duration: 0.8 }
 };
 
-export function Trending(): JSX.Element {
+export function AsideTrends(): JSX.Element {
   // error can be used
   const { data, loading } = useTrends(23424846, 10, {
     refreshInterval: 30000

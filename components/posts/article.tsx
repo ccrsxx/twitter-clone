@@ -1,18 +1,19 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
-import { formatDate } from '@lib/date';
+import { preventBubbling } from '@lib/utils';
 import { ImagePreview } from '@components/tweet/image-preview';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { ToolTip } from '@components/ui/tooltip';
-import { Actions } from './actions';
-import { Options } from './options';
+import { PostActions } from './post-actions';
+import { PostStats } from './post-stats';
+import { PostDate } from './post-date';
 import type { Variants } from 'framer-motion';
 import type { Post } from '@lib/types/post';
 import type { User } from '@lib/types/user';
 
-type ArticleProps = Post & { user: User };
+type ArticleProps = Post & { user: User; viewPost?: boolean };
 
 const variants: Variants = {
   initial: { opacity: 0 },
@@ -24,6 +25,7 @@ export function Article({
   id: postId,
   text,
   images,
+  viewPost,
   userLikes,
   createdBy,
   createdAt,
@@ -45,8 +47,13 @@ export function Article({
     <motion.article layout='position' {...variants}>
       <Link href={postLink}>
         <a
-          className='smooth-tab relative grid grid-cols-[auto,1fr] gap-3
-                     border-b border-border-color px-4 py-3 outline-none'
+          className={cn(
+            `smooth-tab relative grid grid-cols-[auto,1fr] gap-x-3
+             border-b border-border-color px-4 py-3 outline-none`,
+            viewPost && 'cursor-default'
+          )}
+          tabIndex={viewPost ? -1 : 0}
+          onClick={viewPost ? preventBubbling() : undefined}
         >
           <Link href={userLink}>
             <a className='blur-picture self-start'>
@@ -83,20 +90,15 @@ export function Article({
                     </a>
                   </Link>
                 </div>
-                <i>·</i>
-                <div className='group relative'>
-                  <Link href={postLink}>
-                    <a className='custom-underline peer'>
-                      {formatDate(createdAt, 'post')}
-                    </a>
-                  </Link>
-                  <ToolTip
-                    className='translate-y-1 peer-focus:opacity-100 peer-focus-visible:visible
-                             peer-focus-visible:delay-200'
-                    tip={formatDate(createdAt, 'full')}
-                  />
-                </div>
-                <Actions postId={postId} isAdmin={isAdmin} isOwner={isOwner} />
+                {!viewPost && (
+                  <PostDate postLink={postLink} createdAt={createdAt} />
+                )}
+                <PostActions
+                  postId={postId}
+                  isAdmin={isAdmin}
+                  isOwner={isOwner}
+                  username={username}
+                />
               </div>
               {text && (
                 <p className='whitespace-pre-line break-words'>{text}</p>
@@ -110,7 +112,26 @@ export function Article({
                   previewCount={images.length}
                 />
               )}
-              <Options
+              {!viewPost && (
+                <PostStats
+                  userId={userId}
+                  postId={postId}
+                  isOwner={isOwner}
+                  userLikes={userLikes}
+                  userTweets={userTweets}
+                  userReplies={userReplies}
+                />
+              )}
+            </div>
+          </div>
+          {viewPost && (
+            <div
+              className='col-span-2 inner:border-b inner:border-border-color
+                         [&>*:not(:nth-child(3))]:py-4'
+            >
+              <PostDate postLink={postLink} createdAt={createdAt} viewPost />
+              <PostStats
+                viewPost
                 userId={userId}
                 postId={postId}
                 isOwner={isOwner}
@@ -119,7 +140,7 @@ export function Article({
                 userReplies={userReplies}
               />
             </div>
-          </div>
+          )}
         </a>
       </Link>
     </motion.article>

@@ -10,9 +10,9 @@ import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { isValidImage } from '@lib/format';
 import { NextImage } from '@components/ui/next-image';
-import { Form } from './form';
+import { TweetForm } from './tweet-form';
 import { ImagePreview } from './image-preview';
-import { Options } from './options';
+import { TweetOptions } from './tweet-options';
 import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
@@ -202,7 +202,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
           </a>
         </Link>
         <div className='flex w-full flex-col gap-4'>
-          <Form
+          <TweetForm
             modal={modal}
             formId={formId}
             inputRef={inputRef}
@@ -223,9 +223,9 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
                 removeImage={!loading ? removeImage : undefined}
               />
             )}
-          </Form>
+          </TweetForm>
           {!loading && (
-            <Options
+            <TweetOptions
               inputValue={inputValue}
               isValidInput={isValidInput}
               isUploadingImages={isUploadingImages}

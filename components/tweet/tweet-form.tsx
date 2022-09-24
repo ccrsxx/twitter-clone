@@ -13,7 +13,7 @@ import type {
 } from 'react';
 import type { Variants } from 'framer-motion';
 
-type FormProps = {
+type TweetFormProps = {
   modal?: boolean;
   formId: string;
   children: ReactNode;
@@ -46,7 +46,7 @@ const variants: Variants[] = [
 
 const [top, bottom] = variants;
 
-export function Form({
+export function TweetForm({
   modal,
   formId,
   children,
@@ -60,7 +60,7 @@ export function Form({
   discardTweet,
   handleChange,
   handleImageUpload
-}: FormProps): JSX.Element {
+}: TweetFormProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
   const handleKeyboardShortcut = ({ ctrlKey, key }: KeyboardEvent): void => {

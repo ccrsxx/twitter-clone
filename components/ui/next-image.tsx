@@ -10,6 +10,7 @@ type NextImageProps = {
   children?: ReactNode;
   useSkeleton?: boolean;
   imgClassName?: string;
+  previewCount?: number;
   blurClassName?: string;
 } & ImageProps;
 
@@ -27,6 +28,7 @@ export function NextImage({
   className,
   useSkeleton,
   imgClassName,
+  previewCount,
   blurClassName,
   ...rest
 }: NextImageProps): JSX.Element {
@@ -39,7 +41,11 @@ export function NextImage({
       <Image
         className={cn(
           imgClassName,
-          loading && cn('animate-pulse', blurClassName ?? 'bg-white')
+          loading
+            ? cn('animate-pulse', blurClassName ?? 'bg-white')
+            : previewCount === 1
+            ? '!h-auto !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
+            : 'object-cover'
         )}
         src={src}
         width={width}

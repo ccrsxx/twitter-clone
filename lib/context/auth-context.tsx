@@ -13,17 +13,22 @@ import {
   serverTimestamp
 } from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
-import { usersCollection } from '@lib/firebase/collections';
+import {
+  usersCollection,
+  userBookmarksCollection
+} from '@lib/firebase/collections';
 import { getRandomInt } from '@lib/utils';
 import type { ReactNode } from 'react';
 import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { User } from '@lib/types/user';
+import type { Bookmark } from '@lib/types/bookmark';
 
 type AuthContext = {
   user: User | null;
-  loading: boolean;
   error: Error | null;
+  loading: boolean;
+  userBookmarks: Bookmark[] | null;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
 };
@@ -38,11 +43,12 @@ export function AuthContextProvider({
   children
 }: AuthContextProviderProps): JSX.Element {
   const [user, setUser] = useState<User | null>(null);
+  const [userBookmarks, setUserBookmarks] = useState<Bookmark[] | null>(null);
   const [error, setError] = useState<Error | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const createNewUser = async (authUser: AuthUser): Promise<void> => {
+    const manageUser = async (authUser: AuthUser): Promise<void> => {
       const { uid, displayName, photoURL } = authUser;
 
       const userSnapshot = await getDoc(doc(usersCollection, uid));
@@ -95,7 +101,7 @@ export function AuthContextProvider({
     const handleUserAuth = (authUser: AuthUser | null): void => {
       setLoading(true);
 
-      if (authUser) void createNewUser(authUser);
+      if (authUser) void manageUser(authUser);
       else {
         setUser(null);
         setLoading(false);
@@ -108,11 +114,24 @@ export function AuthContextProvider({
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = onSnapshot(doc(usersCollection, user?.uid), (doc) => {
+    const { uid } = user;
+
+    const unsubscribeUser = onSnapshot(doc(usersCollection, uid), (doc) => {
       setUser(doc.data() as User);
     });
 
-    return unsubscribe;
+    const unsubscribeBookmarks = onSnapshot(
+      userBookmarksCollection(uid),
+      (snapshot) => {
+        const bookmarks = snapshot.docs.map((doc) => doc.data());
+        setUserBookmarks(bookmarks);
+      }
+    );
+
+    return () => {
+      unsubscribeUser();
+      unsubscribeBookmarks();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.uid]);
 
@@ -135,8 +154,9 @@ export function AuthContextProvider({
 
   const value = {
     user,
-    loading,
     error,
+    loading,
+    userBookmarks,
     signInWithGoogle,
     signOut
   };

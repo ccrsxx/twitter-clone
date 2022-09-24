@@ -2,7 +2,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { Button } from '@components/ui/button';
 import { CustomIcon } from '@components/ui/custom-icon';
 
-export function Controls(): JSX.Element {
+export function LoginControls(): JSX.Element {
   const { signInWithGoogle } = useAuth();
 
   return (

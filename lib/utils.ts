@@ -2,7 +2,7 @@ import type { SyntheticEvent } from 'react';
 import type { MotionProps } from 'framer-motion';
 
 export function preventBubbling(
-  callback?: (...args: unknown[]) => unknown | null,
+  callback?: ((...args: never[]) => unknown) | null,
   stopPropagation?: boolean
 ) {
   return (e: SyntheticEvent): void => {

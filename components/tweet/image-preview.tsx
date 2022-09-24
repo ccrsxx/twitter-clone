@@ -83,7 +83,10 @@ export function ImagePreview({
       )}
     >
       <Modal
-        modalClassName='flex justify-between w-full items-center'
+        modalClassName={cn(
+          'flex justify-between w-full items-center',
+          post && 'h-full'
+        )}
         open={open}
         closeModal={closeModal}
         closePanelOnClick
@@ -120,11 +123,9 @@ export function ImagePreview({
               imgClassName={cn(
                 post
                   ? postImageBorderRadius[previewCount][index]
-                  : 'rounded-2xl',
-                previewCount === 1
-                  ? 'object-contain !min-w-0 rounded-lg !w-auto !min-h-0 !h-auto'
-                  : 'object-cover'
+                  : 'rounded-2xl'
               )}
+              previewCount={previewCount}
               layout='fill'
               src={src}
               alt={alt}
@@ -135,7 +136,7 @@ export function ImagePreview({
                 className='absolute top-0 left-0 translate-x-1 translate-y-1
                            bg-follow-text-color/75 p-1 backdrop-blur-sm 
                            hover:bg-image-preview-hover-color/75'
-                onClick={preventBubbling(removeImage(id))}
+                onClick={preventBubbling(removeImage(id), true)}
               >
                 <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
               </Button>

@@ -16,15 +16,16 @@ export const variants: Variants = {
   exit: { opacity: 0, y: 50, transition: { duration: 0.2 } }
 };
 
-export function More(): JSX.Element {
+export function MoreSettings(): JSX.Element {
   return (
     <Menu className='relative' as='div'>
       {({ open }): JSX.Element => (
         <>
-          <Menu.Button className='group relative flex w-full py-1'>
+          <Menu.Button className='group relative flex w-full py-1 outline-none'>
             <div
               className={cn(
-                'custom-button smooth-tab flex gap-4 pr-5 text-xl group-hover:bg-primary/10',
+                `custom-button flex gap-4 pr-5 text-xl transition group-hover:bg-primary/10
+                 group-focus-visible:ring-2 group-focus-visible:ring-white`,
                 open && 'bg-primary/10'
               )}
             >
@@ -48,7 +49,7 @@ export function More(): JSX.Element {
                   {({ active }): JSX.Element => (
                     <MenuLink
                       className={cn(
-                        'flex w-full gap-3 rounded p-4 duration-200',
+                        'flex w-full gap-3 rounded-t-md p-4 duration-200',
                         active && 'bg-sidebar-background'
                       )}
                       href='/settings'
@@ -61,11 +62,11 @@ export function More(): JSX.Element {
                 <Menu.Item>
                   {({ active }): JSX.Element => (
                     <a
-                      href='https://support.twitter.com'
                       className={cn(
-                        'flex w-full gap-3 rounded p-4 duration-200',
+                        'flex w-full gap-3 rounded-none p-4 duration-200',
                         active && 'bg-sidebar-background'
                       )}
+                      href='https://support.twitter.com'
                       target='_blank'
                       rel='noreferrer'
                     >
@@ -78,7 +79,7 @@ export function More(): JSX.Element {
                   {({ active }): JSX.Element => (
                     <Button
                       className={cn(
-                        'flex w-full gap-3 rounded p-4 duration-200',
+                        'flex w-full gap-3 rounded-none rounded-b-md p-4 duration-200',
                         active && 'bg-sidebar-background'
                       )}
                     >

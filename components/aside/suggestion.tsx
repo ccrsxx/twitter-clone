@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Loading } from '@components/ui/loading';
-import { variants } from './trends';
+import { variants } from './aside-trends';
 import { SuggestionCard } from './suggestion-card';
 
 const placeholderProfiles = [

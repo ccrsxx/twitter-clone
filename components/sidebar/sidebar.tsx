@@ -6,8 +6,8 @@ import { Tweet } from '@components/tweet/tweet';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
-import { More } from './more';
-import { Profile } from './profile';
+import { MoreSettings } from './more-settings';
+import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
 
 type NavLinks = { href: string; linkName: string; iconName: IconName }[];
@@ -85,7 +85,7 @@ export function Sidebar(): JSX.Element {
                 key={linkData.href}
               />
             ))}
-            <More />
+            <MoreSettings />
           </nav>
           <Button
             className='w-11/12 bg-accent-blue-secondary font-bold text-white outline-none
@@ -95,7 +95,7 @@ export function Sidebar(): JSX.Element {
             Tweet
           </Button>
         </div>
-        <Profile />
+        <SidebarProfile />
       </div>
     </header>
   );

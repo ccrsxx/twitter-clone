@@ -2,11 +2,11 @@ import { NextImage } from '@components/ui/next-image';
 import { CustomIcon } from '@components/ui/custom-icon';
 import type { ReactNode } from 'react';
 
-type MainProps = {
+type LoginMainProps = {
   children: ReactNode;
 };
 
-export function Main({ children }: MainProps): JSX.Element {
+export function LoginMain({ children }: LoginMainProps): JSX.Element {
   return (
     <main className='grid grid-cols-[1fr,45vw]'>
       <div className='relative flex items-center justify-center'>

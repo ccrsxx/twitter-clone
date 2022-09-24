@@ -9,10 +9,10 @@ import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { NextImage } from '@components/ui/next-image';
-import { variants } from './more';
+import { variants } from './more-settings';
 import type { User } from '@lib/types/user';
 
-export function Profile(): JSX.Element {
+export function SidebarProfile(): JSX.Element {
   const { user, signOut } = useAuth();
   const { open, openModal, closeModal } = useModal();
 

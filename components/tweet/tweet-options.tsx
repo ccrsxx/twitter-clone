@@ -48,7 +48,7 @@ const options: Options = [
   }
 ];
 
-type OptionsProps = {
+type TweetOptionsProps = {
   inputValue: string;
   isValidInput: boolean;
   isUploadingImages: boolean;
@@ -57,12 +57,12 @@ type OptionsProps = {
   ) => void;
 };
 
-export function Options({
+export function TweetOptions({
   inputValue,
   isValidInput,
   isUploadingImages,
   handleImageUpload
-}: OptionsProps): JSX.Element {
+}: TweetOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const onClick = (): void => inputFileRef.current?.click();

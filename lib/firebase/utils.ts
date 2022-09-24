@@ -9,13 +9,19 @@ import {
   increment,
   arrayUnion,
   arrayRemove,
-  serverTimestamp
+  serverTimestamp,
+  setDoc
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { toast } from 'react-hot-toast';
 import { storage } from './app';
-import { usersCollection, postsCollection } from './collections';
+import {
+  usersCollection,
+  postsCollection,
+  userBookmarksCollection
+} from './collections';
+import type { WithFieldValue } from 'firebase/firestore';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
+import type { Bookmark } from '@lib/types/bookmark';
 
 export async function checkUsernameAvailability(
   username: string
@@ -40,8 +46,6 @@ export async function updateUsername(
 export async function removePost(postId: string): Promise<void> {
   const docRef = doc(postsCollection, postId);
   await deleteDoc(docRef);
-
-  toast.success('Your Tweet was deleted');
 }
 
 export async function uploadImages(
@@ -104,4 +108,22 @@ export function manageLike(
       updatedAt: serverTimestamp()
     });
   };
+}
+
+export async function manageBookmark(
+  type: 'bookmark' | 'unbookmark',
+  userId: string,
+  postId: string
+): Promise<void> {
+  const bookmarkRef = doc(userBookmarksCollection(userId), postId);
+
+  if (type === 'bookmark') {
+    const bookmarkData: WithFieldValue<Bookmark> = {
+      id: postId,
+      ref: doc(postsCollection, postId),
+      createdAt: serverTimestamp()
+    };
+
+    await setDoc(bookmarkRef, bookmarkData);
+  } else await deleteDoc(bookmarkRef);
 }

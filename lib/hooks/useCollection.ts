@@ -5,32 +5,30 @@ import { useCacheQuery } from './useCacheQuery';
 import type { Query } from 'firebase/firestore';
 import type { User } from '@lib/types/user';
 
-type FirestoreQuery<T> = {
-  data: T[];
+type UseCollection<T> = {
+  data: T[] | null;
   loading: boolean;
-  error: Error | null;
 };
 
 type DataWithRef<T> = (T & { createdBy: string })[];
-type DataWithUser<T> = FirestoreQuery<T & { user: User }>;
+type DataWithUser<T> = UseCollection<T & { user: User }>;
 
-export function useFirestoreQuery<T>(
+export function useCollection<T>(
   query: Query<T>,
   options: { includeUser: true }
 ): DataWithUser<T>;
 
-export function useFirestoreQuery<T>(
+export function useCollection<T>(
   query: Query<T>,
   options?: { includeUser: false }
-): FirestoreQuery<T>;
+): UseCollection<T>;
 
-export function useFirestoreQuery<T>(
+export function useCollection<T>(
   query: Query<T>,
   options?: { includeUser?: boolean }
-): FirestoreQuery<T> | DataWithUser<T> {
-  const [data, setData] = useState<T[]>([]);
+): UseCollection<T> | DataWithUser<T> {
+  const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
   const cachedQuery = useCacheQuery(query);
 
@@ -50,27 +48,26 @@ export function useFirestoreQuery<T>(
       setLoading(false);
     };
 
-    const unsubscribe = onSnapshot(
-      cachedQuery.current,
-      (snapshot) => {
-        const data = snapshot.docs.map((doc) =>
-          doc.data({ serverTimestamps: 'estimate' })
-        );
-        if (includeUser) void populateUser(data as DataWithRef<T>);
-        else {
-          setData(data);
-          setLoading(false);
-        }
-      },
-      (error) => {
-        setError(error);
+    const unsubscribe = onSnapshot(cachedQuery.current, (snapshot) => {
+      const data = snapshot.docs.map((doc) =>
+        doc.data({ serverTimestamps: 'estimate' })
+      );
+
+      if (!data.length) {
+        setLoading(false);
+        return;
+      }
+
+      if (includeUser) void populateUser(data as DataWithRef<T>);
+      else {
+        setData(data);
         setLoading(false);
       }
-    );
+    });
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cachedQuery.current]);
 
-  return { data, loading, error };
+  return { data, loading };
 }

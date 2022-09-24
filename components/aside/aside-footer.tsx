@@ -9,7 +9,7 @@ const footerLinks = [
   ]
 ];
 
-export function Footer(): JSX.Element {
+export function AsideFooter(): JSX.Element {
   return (
     <footer className='flex flex-col gap-3 text-center text-sm text-secondary'>
       <nav className='flex flex-wrap justify-center gap-2'>

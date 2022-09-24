@@ -20,7 +20,7 @@ const footerLinks = [
   ['Settings', 'https://twitter.com/settings']
 ];
 
-export function Footer(): JSX.Element {
+export function LoginFooter(): JSX.Element {
   return (
     <footer className='flex justify-center p-4 text-sm text-secondary'>
       <nav className='flex flex-wrap justify-center gap-4'>

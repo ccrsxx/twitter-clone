@@ -1,21 +1,18 @@
+import { forwardRef } from 'react';
 import Link from 'next/link';
-import type { ComponentPropsWithRef, ReactNode } from 'react';
+import type { ComponentPropsWithRef } from 'react';
 
 type MenuLinkProps = ComponentPropsWithRef<'a'> & {
   href: string;
 };
 
-export function MenuLink({
-  href,
-  className,
-  children,
-  ...rest
-}: MenuLinkProps): JSX.Element {
-  return (
+// eslint-disable-next-line react/display-name
+export const MenuLink = forwardRef<HTMLAnchorElement, MenuLinkProps>(
+  ({ href, children, ...rest }, ref) => (
     <Link href={href}>
-      <a className={className} {...rest}>
+      <a ref={ref} {...rest}>
         {children}
       </a>
     </Link>
-  );
-}
+  )
+);

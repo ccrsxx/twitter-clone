@@ -3,7 +3,9 @@
 
 # next.js
 /.next/
+/.vercel/
 /out/
+
 
 # production
 /build

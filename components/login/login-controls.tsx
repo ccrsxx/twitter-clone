@@ -26,14 +26,14 @@ export function LoginControls(): JSX.Element {
           <i className='border-b border-border-color' />
         </div>
         <Button
-          className='bg-accent-blue-secondary text-white
-                       hover:brightness-90 active:brightness-75'
+          className='bg-accent-blue text-white
+                     hover:brightness-90 active:brightness-75'
         >
           Sign up with phone or email
         </Button>
         <p
           className='inner:custom-underline inner:custom-underline text-center text-xs
-                     text-secondary inner:text-accent-blue-secondary'
+                     text-secondary inner:text-accent-blue'
         >
           By signing up, you agree to the{' '}
           <a href='https://twitter.com/tos' target='_blank' rel='noreferrer'>
@@ -61,8 +61,8 @@ export function LoginControls(): JSX.Element {
       <div className='flex flex-col gap-3'>
         <p className='font-bold'>Already have an account? </p>
         <Button
-          className='border border-border-color-secondary font-bold text-accent-blue-secondary
-          hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20'
+          className='border border-border-color-secondary font-bold text-accent-blue
+                     hover:bg-accent-blue/10 active:bg-accent-blue/20'
           onClick={signInWithGoogle}
         >
           Sign in

@@ -12,6 +12,7 @@ export function LoginMain({ children }: LoginMainProps): JSX.Element {
       <div className='relative flex items-center justify-center'>
         <NextImage
           imgClassName='object-cover'
+          blurClassName='bg-accent-blue'
           src='/assets/twitter-banner.png'
           alt='Twitter banner'
           layout='fill'

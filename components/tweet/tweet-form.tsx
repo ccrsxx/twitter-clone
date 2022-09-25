@@ -4,6 +4,7 @@ import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
 import { HeroIcon } from '@components/ui/hero-icon';
+import { Button } from '@components/ui/button';
 import type {
   ReactNode,
   RefObject,
@@ -16,11 +17,13 @@ import type { Variants } from 'framer-motion';
 type TweetFormProps = {
   modal?: boolean;
   formId: string;
+  loading: boolean;
+  visited: boolean;
+  comment?: boolean;
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
   isValidInput: boolean;
-  isFormEnabled: boolean;
   isUploadingImages: boolean;
   sendTweet: () => Promise<void>;
   handleFocus: () => void;
@@ -49,11 +52,13 @@ const [top, bottom] = variants;
 export function TweetForm({
   modal,
   formId,
+  loading,
+  visited,
+  comment,
   children,
   inputRef,
   inputValue,
   isValidInput,
-  isFormEnabled,
   isUploadingImages,
   sendTweet,
   handleFocus,
@@ -79,6 +84,8 @@ export function TweetForm({
     closeModal();
   };
 
+  const isVisitedTweet = visited && !comment && !loading;
+
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
       <Modal
@@ -95,11 +102,11 @@ export function TweetForm({
         />
       </Modal>
       <div className='flex flex-col gap-6'>
-        {isFormEnabled && (
+        {isVisitedTweet && (
           <motion.button
             className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
-                       py-0 px-3 text-accent-blue-secondary hover:bg-accent-blue-secondary/10 
-                       active:bg-accent-blue-secondary/20 disabled:brightness-100'
+                       py-0 px-3 text-accent-blue hover:bg-accent-blue/10 
+                       active:bg-accent-blue/20 disabled:brightness-100'
             {...top}
             disabled
           >
@@ -107,13 +114,13 @@ export function TweetForm({
             <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
           </motion.button>
         )}
-        <div className='flex items-center'>
+        <div className='flex items-center gap-3'>
           <TextArea
             id={formId}
             className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
             value={inputValue}
-            placeholder="What's happening?"
-            minRows={modal && !isUploadingImages ? 3 : 1}
+            placeholder={comment ? 'Tweet your reply' : "What's happening?"}
+            minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
             onPaste={handleImageUpload}
@@ -121,17 +128,26 @@ export function TweetForm({
             onChange={handleChange}
             ref={inputRef}
           />
+          {comment && !visited && (
+            <Button
+              className='bg-accent-blue px-4 py-1.5 font-bold text-white
+                         brightness-50 transition duration-200'
+              onClick={handleFocus}
+            >
+              Reply
+            </Button>
+          )}
         </div>
       </div>
       {children}
-      {isFormEnabled && (
+      {isVisitedTweet && (
         <motion.div
           className='flex border-b border-border-color pb-2'
           {...bottom}
         >
           <button
-            className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue-secondary 
-                       hover:bg-accent-blue-secondary/10 active:bg-accent-blue-secondary/20
+            className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue 
+                       hover:bg-accent-blue/10 active:bg-accent-blue/20
                        disabled:brightness-100'
             disabled
           >

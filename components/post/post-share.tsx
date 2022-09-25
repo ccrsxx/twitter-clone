@@ -61,14 +61,14 @@ export function PostShare({
         <>
           <Popover.Button
             className='group relative flex items-center gap-1 p-0 outline-none transition-none
-                       transition hover:text-accent-blue-secondary'
+                       transition hover:text-accent-blue'
           >
             <i
               className='relative rounded-full p-2 not-italic duration-200
-                         group-hover:bg-accent-blue-secondary/10
+                         group-hover:bg-accent-blue/10
                          group-focus-visible:ring-2
                          group-focus-visible:ring-white
-                         group-active:bg-accent-blue-secondary/20'
+                         group-active:bg-accent-blue/20'
             >
               <HeroIcon
                 className={viewPost ? 'h-6 w-6' : 'h-5 w-5'}
@@ -87,7 +87,7 @@ export function PostShare({
                 static
               >
                 <Popover.Button
-                  className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                  className='flex w-full gap-3 rounded-md rounded-b-none p-4 hover:bg-sidebar-background'
                   as={Button}
                   onClick={preventBubbling(handleCopy(close))}
                 >

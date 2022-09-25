@@ -106,7 +106,7 @@ export function SidebarProfile(): JSX.Element {
                     </div>
                     <i>
                       <HeroIcon
-                        className='h-5 w-5 text-accent-blue-secondary'
+                        className='h-5 w-5 text-accent-blue'
                         iconName='CheckIcon'
                       />
                     </i>

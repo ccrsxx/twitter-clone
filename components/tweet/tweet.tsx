@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect, useRef, useId } from 'react';
 import { motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
@@ -8,7 +8,7 @@ import { postsCollection } from '@lib/firebase/collections';
 import { uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
-import { isValidImage } from '@lib/format';
+import { getImagesData } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
 import { TweetForm } from './tweet-form';
 import { ImagePreview } from './image-preview';
@@ -21,6 +21,8 @@ import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
 type TweetProps = {
   modal?: boolean;
+  comment?: boolean;
+  username?: string;
   closeModal?: () => void;
 };
 
@@ -29,14 +31,20 @@ export const variants: Variants = {
   animate: { opacity: 1 }
 };
 
-export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
+export function Tweet({
+  modal,
+  comment,
+  username,
+  closeModal
+}: TweetProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
   const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [focus, setFocus] = useState(false);
+  const [visited, setVisited] = useState(false);
 
   const { user } = useAuth();
+  const { name, photoURL } = user ?? {};
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -71,7 +79,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
     await sleep(500);
 
     const postRef = await addDoc(postsCollection, tweetData);
-    const post = await getDoc(postRef);
+    const { id } = await getDoc(postRef);
 
     discardTweet();
     setLoading(false);
@@ -82,7 +90,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
       () => (
         <span className='flex gap-2'>
           Your Tweet was sent.
-          <Link href={`/post/${post.id}`}>
+          <Link href={`/post/${id}`}>
             <a className='custom-underline font-bold'>View</a>
           </Link>
         </span>
@@ -96,37 +104,16 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
   ): void => {
     const files = 'clipboardData' in e ? e.clipboardData.files : e.target.files;
 
-    if (!files || !files.length) return;
+    const imagesData = getImagesData(files, previewCount);
 
-    const rawImages = !(previewCount === 4 || files.length > 4 - previewCount)
-      ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
-      : null;
+    if (imagesData) {
+      const { imagesPreviewData, selectedImagesData } = imagesData;
 
-    if (!rawImages) {
-      toast.error('Please choose a GIF or photo up to 4');
-      return;
+      setImagesPreview([...imagesPreview, ...imagesPreviewData]);
+      setSelectedImages([...selectedImages, ...selectedImagesData]);
+
+      inputRef.current?.focus();
     }
-
-    const imagesId = rawImages.map((_, index) =>
-      Math.floor(Date.now() + Math.random() + index)
-    );
-
-    setSelectedImages([
-      ...selectedImages,
-      ...rawImages.map((image, index) =>
-        Object.assign(image, { id: imagesId[index] })
-      )
-    ]);
-
-    const imagesData = rawImages.map((image, index) => ({
-      id: imagesId[index],
-      src: URL.createObjectURL(image),
-      alt: image.name
-    }));
-
-    setImagesPreview([...imagesPreview, ...imagesData]);
-
-    inputRef.current?.focus();
   };
 
   const removeImage = (targetId: number) => (): void => {
@@ -149,7 +136,7 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
 
   const discardTweet = (): void => {
     setInputValue('');
-    setFocus(false);
+    setVisited(false);
     cleanImage();
 
     inputRef.current?.blur();
@@ -164,15 +151,17 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
     void sendTweet();
   };
 
-  const handleFocus = (): void => setFocus(!loading);
+  const handleFocus = (): void => setVisited(!loading);
 
-  const formId = modal ? 'tweet-modal' : 'tweet';
+  const formId = useId();
 
   const isValidInput = !!inputValue.trim().length;
-  const isFormEnabled = focus && !loading;
 
   return (
-    <form className='flex flex-col' onSubmit={handleSubmit}>
+    <form
+      className={cn('flex flex-col', comment && '-mx-4')}
+      onSubmit={handleSubmit}
+    >
       {loading && (
         <motion.i
           className={cn(
@@ -182,9 +171,18 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
           {...variants}
         />
       )}
+      {comment && visited && (
+        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...variants}>
+          Replying to{' '}
+          <Link href={`/user/${username as string}`}>
+            <a className='custom-underline text-accent-blue'>{username}</a>
+          </Link>
+        </motion.p>
+      )}
       <label
         className={cn(
-          'grid grid-cols-[auto,1fr] gap-3 border-b border-border-color px-4 py-3 transition',
+          'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
+          comment ? 'pt-3 pb-1' : ' border-b border-border-color',
           loading && 'pointer-events-none brightness-75'
         )}
         htmlFor={formId}
@@ -195,9 +193,9 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
               imgClassName='rounded-full'
               width={48}
               height={48}
-              src={user?.photoURL as string}
+              src={photoURL as string}
+              alt={name as string}
               useSkeleton
-              alt='ccrsxx'
             />
           </a>
         </Link>
@@ -205,10 +203,12 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
           <TweetForm
             modal={modal}
             formId={formId}
+            visited={visited}
+            comment={comment}
+            loading={loading}
             inputRef={inputRef}
             inputValue={inputValue}
             isValidInput={isValidInput}
-            isFormEnabled={isFormEnabled}
             isUploadingImages={isUploadingImages}
             sendTweet={sendTweet}
             handleFocus={handleFocus}
@@ -224,8 +224,9 @@ export function Tweet({ modal, closeModal }: TweetProps): JSX.Element {
               />
             )}
           </TweetForm>
-          {!loading && (
+          {(comment ? comment && visited && !loading : !loading) && (
             <TweetOptions
+              comment={comment}
               inputValue={inputValue}
               isValidInput={isValidInput}
               isUploadingImages={isUploadingImages}

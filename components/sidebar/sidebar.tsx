@@ -88,8 +88,8 @@ export function Sidebar(): JSX.Element {
             <MoreSettings />
           </nav>
           <Button
-            className='w-11/12 bg-accent-blue-secondary font-bold text-white outline-none
-                       hover:bg-accent-blue-secondary/90 active:bg-accent-blue-secondary/75'
+            className='w-11/12 bg-accent-blue font-bold text-white outline-none
+                       hover:bg-accent-blue/90 active:bg-accent-blue/75'
             onClick={openModal}
           >
             Tweet

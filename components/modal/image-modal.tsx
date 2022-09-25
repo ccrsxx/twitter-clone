@@ -48,7 +48,7 @@ export function ImageModal({
     const image = new Image();
     image.src = src;
     image.onload = (): void => setLoading(false);
-  }, [...(post ? [src] : [])]);
+  }, [...(post && previewCount > 1 ? [src] : [])]);
 
   useEffect(() => {
     if (!requireArrows) return;
@@ -94,28 +94,25 @@ export function ImageModal({
             <Loading iconClassName='w-20 h-20' />
           </motion.div>
         ) : (
-          <motion.div
-            className='relative mx-auto'
-            {...modal}
-            onClick={preventBubbling()}
-            key={src}
-          >
+          <motion.div className='relative mx-auto' {...modal} key={src}>
             <picture className='group relative'>
               <source srcSet={src} type='image/*' />
               <img
                 className='max-h-[75vh] max-w-3xl rounded-md object-contain md:max-h-[80vh]'
                 src={src}
                 alt={alt}
+                onClick={preventBubbling()}
               />
               <a
                 className='trim-alt smooth-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
                            rounded-md bg-black/40 px-2 py-1 text-sm text-primary/80 opacity-0
-                           transition hover:bg-blue-400 hover:text-primary focus-visible:translate-y-0
-                           focus-visible:bg-blue-400 focus-visible:text-primary focus-visible:opacity-100
+                           transition hover:bg-accent-blue hover:text-primary focus-visible:translate-y-0
+                           focus-visible:bg-accent-blue focus-visible:text-primary focus-visible:opacity-100
                            group-hover:translate-y-0 group-hover:opacity-100'
                 href={src}
                 target='_blank'
                 rel='noreferrer'
+                onClick={preventBubbling(null, true)}
               >
                 {alt}
               </a>
@@ -127,6 +124,7 @@ export function ImageModal({
               href={src}
               target='_blank'
               rel='noreferrer'
+              onClick={preventBubbling(null, true)}
             >
               Open original
             </a>

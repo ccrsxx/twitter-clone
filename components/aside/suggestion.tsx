@@ -47,7 +47,7 @@ export function Suggestion(): JSX.Element {
           <Link href='/people'>
             <a
               className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
-                         text-center text-accent-blue-secondary hover:bg-white/[0.03]'
+                         text-center text-accent-blue hover:bg-white/[0.03]'
             >
               Show more
             </a>

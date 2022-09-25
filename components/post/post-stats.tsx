@@ -3,7 +3,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import cn from 'clsx';
 import { manageTweet, manageLike } from '@lib/firebase/utils';
-import { ViewPostStats } from './view-post-stats';
+import { ViewPostStats } from '@components/view/view-post-stats';
 import { PostOption } from './post-option';
 import { PostShare } from './post-share';
 import type { Post } from '@lib/types/post';
@@ -61,10 +61,16 @@ export function PostStats({
   const postIsLiked = userLikes.includes(userId);
   const postIsTweeted = userTweets.includes(userId);
 
+  const isStatsVisible = !!(
+    viewPost &&
+    (totalReplies || totalTweets || totalLikes)
+  );
+
   return (
     <>
-      {viewPost && (
+      {isStatsVisible && (
         <ViewPostStats
+          postId={postId}
           likeMove={likeMove}
           tweetMove={tweetMove}
           replyMove={replyMove}
@@ -80,8 +86,8 @@ export function PostStats({
         )}
       >
         <PostOption
-          className='hover:text-accent-blue-secondary inner:transition'
-          iconClassName='group-hover:bg-accent-blue-secondary/10 group-active:bg-accent-blue-secondary/20'
+          className='hover:text-accent-blue'
+          iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
           tip='Reply'
           move={replyMove}
           stats={currentReplies}
@@ -90,7 +96,7 @@ export function PostStats({
         />
         <PostOption
           className={cn(
-            'hover:text-accent-green inner:transition',
+            'hover:text-accent-green',
             postIsTweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
           )}
           iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20'
@@ -107,7 +113,7 @@ export function PostStats({
         />
         <PostOption
           className={cn(
-            'hover:text-accent-pink inner:transition',
+            'hover:text-accent-pink',
             postIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
           )}
           iconClassName='group-hover:bg-accent-pink/10 group-active:bg-accent-pink/20'
@@ -121,8 +127,8 @@ export function PostStats({
         <PostShare userId={userId} postId={postId} viewPost={viewPost} />
         {isOwner && (
           <PostOption
-            className='hover:text-accent-blue-secondary inner:transition'
-            iconClassName='group-hover:bg-accent-blue-secondary/10 group-active:bg-accent-blue-secondary/20'
+            className='hover:text-accent-blue'
+            iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
             tip='Analytics'
             iconName='ChartPieIcon'
           />

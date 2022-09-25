@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import cn from 'clsx';
-import { formatDate } from '@lib/date';
+import { formatDate } from '@lib/format';
 import { ToolTip } from '@components/ui/tooltip';
 import type { Post } from '@lib/types/post';
 
@@ -15,7 +15,7 @@ export function PostDate({
   createdAt
 }: PostDateProps): JSX.Element {
   return (
-    <div className='flex gap-1'>
+    <div className={cn('flex gap-1', viewPost && 'py-4')}>
       {!viewPost && <i>·</i>}
       <div className='group relative'>
         <Link href={postLink}>

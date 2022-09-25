@@ -3,14 +3,14 @@ import {
   query,
   where,
   limit,
+  setDoc,
   getDocs,
   updateDoc,
   deleteDoc,
   increment,
   arrayUnion,
   arrayRemove,
-  serverTimestamp,
-  setDoc
+  serverTimestamp
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from './app';

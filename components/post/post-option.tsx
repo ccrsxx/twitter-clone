@@ -2,7 +2,7 @@ import cn from 'clsx';
 import { preventBubbling } from '@lib/utils';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { TextStats } from './text-stats';
+import { NumberStats } from './number-stats';
 import type { IconName } from '@components/ui/hero-icon';
 
 type PostOptionProps = {
@@ -49,7 +49,9 @@ export function PostOption({
         />
         <ToolTip tip={tip} />
       </i>
-      {!viewPost && <TextStats move={move as number} stats={stats as number} />}
+      {!viewPost && (
+        <NumberStats move={move as number} stats={stats as number} />
+      )}
     </button>
   );
 }

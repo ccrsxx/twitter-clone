@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getDoc, doc, onSnapshot } from 'firebase/firestore';
 import { usersCollection } from '@lib/firebase/collections';
+import { useCacheRef } from './useCacheRef';
 import type { DocumentReference } from 'firebase/firestore';
 import type { User } from '@lib/types/user';
 
@@ -29,8 +30,10 @@ export function useDocument<T>(
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const cachedDocRef = useCacheRef(docRef);
+
   useEffect(() => {
-    const { includeUser } = options ?? {};
+    setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const userData = await getDoc(
@@ -50,7 +53,7 @@ export function useDocument<T>(
         return;
       }
 
-      if (includeUser) void populateUser(data as DataWithRef<T>);
+      if (options?.includeUser) void populateUser(data as DataWithRef<T>);
       else {
         setData(data);
         setLoading(false);
@@ -59,7 +62,7 @@ export function useDocument<T>(
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cachedDocRef]);
 
   return { data, loading };
 }

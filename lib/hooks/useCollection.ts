@@ -33,7 +33,7 @@ export function useCollection<T>(
   const cachedQuery = useCacheQuery(query);
 
   useEffect(() => {
-    const { includeUser } = options ?? {};
+    setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(
@@ -48,7 +48,7 @@ export function useCollection<T>(
       setLoading(false);
     };
 
-    const unsubscribe = onSnapshot(cachedQuery.current, (snapshot) => {
+    const unsubscribe = onSnapshot(cachedQuery, (snapshot) => {
       const data = snapshot.docs.map((doc) =>
         doc.data({ serverTimestamps: 'estimate' })
       );
@@ -58,7 +58,7 @@ export function useCollection<T>(
         return;
       }
 
-      if (includeUser) void populateUser(data as DataWithRef<T>);
+      if (options?.includeUser) void populateUser(data as DataWithRef<T>);
       else {
         setData(data);
         setLoading(false);
@@ -67,7 +67,7 @@ export function useCollection<T>(
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cachedQuery.current]);
+  }, [cachedQuery]);
 
   return { data, loading };
 }

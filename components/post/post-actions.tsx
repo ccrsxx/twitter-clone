@@ -80,15 +80,14 @@ export function PostActions({
               as={Button}
               className={cn(
                 `group absolute top-2 right-2 p-2 
-                 hover:bg-accent-blue-secondary/10
-                 active:bg-accent-blue-secondary/20`,
-                open &&
-                  'bg-accent-blue-secondary/10 [&>div>svg]:text-accent-blue-secondary'
+                 hover:bg-accent-blue/10
+                 active:bg-accent-blue/20`,
+                open && 'bg-accent-blue/10 [&>div>svg]:text-accent-blue'
               )}
             >
               <div className='group relative'>
                 <HeroIcon
-                  className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
+                  className='h-5 w-5 text-secondary group-hover:text-accent-blue'
                   iconName='EllipsisHorizontalIcon'
                 />
                 {!open && <ToolTip tip='More' />}
@@ -105,7 +104,7 @@ export function PostActions({
                 >
                   {isAuthorized && (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 text-accent-red
+                      className='flex w-full gap-3 rounded-md rounded-b-none p-4 text-accent-red
                                  hover:bg-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(openModal)}

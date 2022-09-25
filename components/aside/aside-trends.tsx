@@ -39,12 +39,12 @@ export function AsideTrends(): JSX.Element {
               >
                 <div className='absolute right-2 top-2'>
                   <Button
-                    className='hover-animation group relative p-2 hover:bg-accent-blue-secondary/10
-                               active:bg-accent-blue-secondary/20'
+                    className='hover-animation group relative p-2 hover:bg-accent-blue/10
+                               active:bg-accent-blue/20'
                     onClick={preventBubbling()}
                   >
                     <HeroIcon
-                      className='h-5 w-5 text-secondary group-hover:text-accent-blue-secondary'
+                      className='h-5 w-5 text-secondary group-hover:text-accent-blue'
                       iconName='EllipsisHorizontalIcon'
                     />
                     <ToolTip tip='More' />
@@ -64,7 +64,7 @@ export function AsideTrends(): JSX.Element {
           <Link href='/trends'>
             <a
               className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
-                         text-center text-accent-blue-secondary hover:bg-white/[0.03]'
+                         text-center text-accent-blue hover:bg-white/[0.03]'
             >
               Show more
             </a>

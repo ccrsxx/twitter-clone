@@ -48,7 +48,7 @@ export function UsernameModal({
                  px-3 pb-2 pt-5 placeholder-transparent outline-none transition`,
                 errorMessage
                   ? 'border-accent-red focus:ring-1 focus:ring-accent-red'
-                  : 'focus:border-accent-blue-secondary'
+                  : 'focus:border-accent-blue'
               )}
               id='username'
               type='text'
@@ -66,7 +66,7 @@ export function UsernameModal({
                  peer-focus:text-sm`,
                 errorMessage
                   ? 'text-accent-red peer-focus:text-accent-red'
-                  : 'peer-focus:text-accent-blue-secondary'
+                  : 'peer-focus:text-accent-blue'
               )}
               htmlFor='username'
             >

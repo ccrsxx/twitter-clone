@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
 import { HomeHeader } from '@components/home/home-header';
-import { ViewPost } from '@components/posts/view-post';
+import { ViewPost } from '@components/view/view-post';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function Post(): JSX.Element {
   const {
-    query: { id },
+    query: { pid },
     back
   } = useRouter();
 
@@ -23,7 +23,7 @@ export default function Post(): JSX.Element {
         </Button>
         <h2 className='text-xl font-bold'>Tweet</h2>
       </HomeHeader>
-      <ViewPost postId={id as string} />
+      <ViewPost postId={pid as string} />
     </main>
   );
 }

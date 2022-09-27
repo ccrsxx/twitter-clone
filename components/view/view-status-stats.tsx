@@ -1,8 +1,8 @@
 import Link from 'next/link';
-import { NumberStats } from '@components/post/number-stats';
+import { NumberStats } from '@components/status/number-stats';
 
-type ViewPostStats = {
-  postId: string;
+type ViewStatusStats = {
+  statusId: string;
   likeMove: number;
   tweetMove: number;
   replyMove: number;
@@ -11,15 +11,15 @@ type ViewPostStats = {
   currentReplies: number;
 };
 
-export function ViewPostStats({
-  postId,
+export function ViewStatusStats({
+  statusId,
   likeMove,
   tweetMove,
   replyMove,
   currentLikes,
   currentTweets,
   currentReplies
-}: ViewPostStats): JSX.Element {
+}: ViewStatusStats): JSX.Element {
   const allStats: [string, string | null, number, number][] = [
     ['Reply', null, replyMove, currentReplies],
     ['Retweet', 'retweets', tweetMove, currentTweets],
@@ -34,10 +34,10 @@ export function ViewPostStats({
       {allStats.map(
         ([title, path, move, stats]) =>
           !!stats && (
-            <Link href={`/post/${postId}${path ? `/${path}` : ''}`}>
+            <Link href={`/post/${statusId}${path ? `/${path}` : ''}`}>
               <a
-                className='custom-underline flex items-center
-                           gap-1 hover:decoration-primary'
+                className='mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
+                           transition hover:border-b-primary hover:duration-200'
                 key={title}
               >
                 <NumberStats move={move} stats={stats} />

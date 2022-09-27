@@ -3,28 +3,30 @@
 import { useState, useEffect, useMemo } from 'react';
 import cn from 'clsx';
 import { manageTweet, manageLike } from '@lib/firebase/utils';
-import { ViewPostStats } from '@components/view/view-post-stats';
-import { PostOption } from './post-option';
-import { PostShare } from './post-share';
-import type { Post } from '@lib/types/post';
+import { ViewStatusStats } from '@components/view/view-status-stats';
+import { StatusOption } from './status-option';
+import { StatusShare } from './status-share';
+import type { Status } from '@lib/types/status';
 
-type PostStatsProps = Pick<Post, 'userLikes' | 'userTweets' | 'userReplies'> & {
+type StatusStatsProps = Pick<
+  Status,
+  'userLikes' | 'userTweets' | 'userReplies'
+> & {
   userId: string;
-  postId: string;
   isOwner: boolean;
-  viewPost?: boolean;
+  statusId: string;
+  viewStatus?: boolean;
 };
 
-export function PostStats({
+export function StatusStats({
   userId,
-  postId,
   isOwner,
-  viewPost,
+  statusId,
   userLikes,
+  viewStatus,
   userTweets,
-  userReplies
-}: PostStatsProps): JSX.Element {
-  const totalReplies = userReplies.length;
+  userReplies: totalReplies
+}: StatusStatsProps): JSX.Element {
   const totalLikes = userLikes.length;
   const totalTweets = userTweets.length;
 
@@ -41,11 +43,11 @@ export function PostStats({
       currentLikes: totalLikes,
       currentTweets: totalTweets
     });
-  }, [userReplies, totalLikes, totalTweets]);
+  }, [totalReplies, totalLikes, totalTweets]);
 
   const replyMove = useMemo(
     () => (totalReplies > currentReplies ? -25 : 25),
-    [userReplies]
+    [totalReplies]
   );
 
   const likeMove = useMemo(
@@ -62,15 +64,15 @@ export function PostStats({
   const postIsTweeted = userTweets.includes(userId);
 
   const isStatsVisible = !!(
-    viewPost &&
+    viewStatus &&
     (totalReplies || totalTweets || totalLikes)
   );
 
   return (
     <>
       {isStatsVisible && (
-        <ViewPostStats
-          postId={postId}
+        <ViewStatusStats
+          statusId={statusId}
           likeMove={likeMove}
           tweetMove={tweetMove}
           replyMove={replyMove}
@@ -82,19 +84,19 @@ export function PostStats({
       <div
         className={cn(
           'flex text-secondary inner:outline-none',
-          viewPost ? 'justify-around py-2' : 'max-w-md justify-between'
+          viewStatus ? 'justify-around py-2' : 'max-w-md justify-between'
         )}
       >
-        <PostOption
+        <StatusOption
           className='hover:text-accent-blue'
           iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
           tip='Reply'
           move={replyMove}
           stats={currentReplies}
           iconName='ChatBubbleOvalLeftIcon'
-          viewPost={viewPost}
+          viewStatus={viewStatus}
         />
-        <PostOption
+        <StatusOption
           className={cn(
             'hover:text-accent-green',
             postIsTweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
@@ -104,14 +106,14 @@ export function PostStats({
           move={tweetMove}
           stats={currentTweets}
           iconName='ArrowPathRoundedSquareIcon'
-          viewPost={viewPost}
+          viewStatus={viewStatus}
           onClick={manageTweet(
             postIsTweeted ? 'untweet' : 'tweet',
             userId,
-            postId
+            statusId
           )}
         />
-        <PostOption
+        <StatusOption
           className={cn(
             'hover:text-accent-pink',
             postIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
@@ -121,12 +123,20 @@ export function PostStats({
           move={likeMove}
           stats={currentLikes}
           iconName='HeartIcon'
-          viewPost={viewPost}
-          onClick={manageLike(postIsLiked ? 'unlike' : 'like', userId, postId)}
+          viewStatus={viewStatus}
+          onClick={manageLike(
+            postIsLiked ? 'unlike' : 'like',
+            userId,
+            statusId
+          )}
         />
-        <PostShare userId={userId} postId={postId} viewPost={viewPost} />
+        <StatusShare
+          userId={userId}
+          statusId={statusId}
+          viewStatus={viewStatus}
+        />
         {isOwner && (
-          <PostOption
+          <StatusOption
             className='hover:text-accent-blue'
             iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
             tip='Analytics'

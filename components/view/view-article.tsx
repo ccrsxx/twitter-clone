@@ -4,18 +4,18 @@ import { useAuth } from '@lib/context/auth-context';
 import { ImagePreview } from '@components/tweet/image-preview';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { variants } from '@components/post/article';
-import { PostActions } from '@components/post/post-actions';
-import { PostStats } from '@components/post/post-stats';
-import { PostDate } from '@components/post/post-date';
+import { variants } from '@components/status/article';
+import { StatusActions } from '@components/status/status-actions';
+import { StatusStats } from '@components/status/status-stats';
+import { StatusDate } from '@components/status/status-date';
 import { Tweet } from '@components/tweet/tweet';
 import type { User } from '@lib/types/user';
-import type { Post } from '@lib/types/post';
+import type { Status } from '@lib/types/status';
 
-type ViewArticleProps = Post & { user: User };
+type ViewArticleProps = Status & { user: User };
 
 export function ViewArticle({
-  id: postId,
+  id: statusId,
   text,
   images,
   userLikes,
@@ -27,7 +27,7 @@ export function ViewArticle({
 }: ViewArticleProps): JSX.Element {
   const { user } = useAuth();
 
-  const postLink = `/post/${postId}`;
+  const statusLink = `/status/${statusId}`;
 
   const userId = user?.uid as string;
   const userLink = `/user/${username}`;
@@ -35,12 +35,14 @@ export function ViewArticle({
   const isAdmin = user?.username === 'ccrsxx' && user?.verified;
   const isOwner = userId === createdBy;
 
+  const parent = { id: statusId, username: username };
+
   return (
     <motion.article
       className='smooth-tab relative flex cursor-default flex-col gap-4
                  border-b border-border-color px-4 py-3 outline-none'
-      layout='position'
       {...variants}
+      exit={undefined}
     >
       <div className='grid grid-cols-[auto,1fr] gap-3'>
         <Link href={userLink}>
@@ -76,10 +78,10 @@ export function ViewArticle({
               </a>
             </Link>
           </div>
-          <PostActions
-            postId={postId}
+          <StatusActions
             isAdmin={isAdmin}
             isOwner={isOwner}
+            statusId={statusId}
             username={username}
           />
         </div>
@@ -90,24 +92,28 @@ export function ViewArticle({
         )}
         {images && (
           <ImagePreview
-            post
+            status
             imagesPreview={images}
             previewCount={images.length}
           />
         )}
         <div className='inner:border-b inner:border-border-color'>
-          <PostDate viewPost postLink={postLink} createdAt={createdAt} />
-          <PostStats
-            viewPost
+          <StatusDate
+            viewStatus
+            statusLink={statusLink}
+            createdAt={createdAt}
+          />
+          <StatusStats
+            viewStatus
             userId={userId}
-            postId={postId}
+            statusId={statusId}
             isOwner={isOwner}
             userLikes={userLikes}
             userTweets={userTweets}
             userReplies={userReplies}
           />
         </div>
-        <Tweet comment username={username} />
+        <Tweet reply parent={parent} />
       </div>
     </motion.article>
   );

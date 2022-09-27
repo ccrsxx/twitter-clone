@@ -1,14 +1,14 @@
 import { useRouter } from 'next/router';
 import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
 import { HomeHeader } from '@components/home/home-header';
-import { ViewPost } from '@components/view/view-post';
+import { ViewStatus } from '@components/view/view-status';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactElement, ReactNode } from 'react';
 
-export default function Post(): JSX.Element {
+export default function Status(): JSX.Element {
   const {
-    query: { pid },
+    query: { id },
     back
   } = useRouter();
 
@@ -23,12 +23,12 @@ export default function Post(): JSX.Element {
         </Button>
         <h2 className='text-xl font-bold'>Tweet</h2>
       </HomeHeader>
-      <ViewPost postId={pid as string} />
+      <ViewStatus statusId={id as string} />
     </main>
   );
 }
 
-Post.getLayout = (page: ReactElement): ReactNode => (
+Status.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedRoute>
     <Layout>
       <HomeLayout>{page}</HomeLayout>

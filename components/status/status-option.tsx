@@ -5,27 +5,27 @@ import { ToolTip } from '@components/ui/tooltip';
 import { NumberStats } from './number-stats';
 import type { IconName } from '@components/ui/hero-icon';
 
-type PostOptionProps = {
+type StatusOption = {
   tip: string;
   move?: number;
   stats?: number;
   iconName: IconName;
-  viewPost?: boolean;
   className: string;
+  viewStatus?: boolean;
   iconClassName: string;
   onClick?: (...args: unknown[]) => unknown;
 };
 
-export function PostOption({
+export function StatusOption({
   tip,
   move,
   stats,
-  viewPost,
   iconName,
   className,
+  viewStatus,
   iconClassName,
   onClick
-}: PostOptionProps): JSX.Element {
+}: StatusOption): JSX.Element {
   return (
     <button
       className={cn(
@@ -44,12 +44,12 @@ export function PostOption({
         )}
       >
         <HeroIcon
-          className={viewPost ? 'h-6 w-6' : 'h-5 w-5'}
+          className={viewStatus ? 'h-6 w-6' : 'h-5 w-5'}
           iconName={iconName}
         />
         <ToolTip tip={tip} />
       </i>
-      {!viewPost && (
+      {!viewStatus && (
         <NumberStats move={move as number} stats={stats as number} />
       )}
     </button>

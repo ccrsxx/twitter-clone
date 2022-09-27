@@ -2,30 +2,30 @@ import Link from 'next/link';
 import cn from 'clsx';
 import { formatDate } from '@lib/format';
 import { ToolTip } from '@components/ui/tooltip';
-import type { Post } from '@lib/types/post';
+import type { Status } from '@lib/types/status';
 
-type PostDateProps = Pick<Post, 'createdAt'> & {
-  viewPost?: boolean;
-  postLink: string;
+type StatusDateProps = Pick<Status, 'createdAt'> & {
+  statusLink: string;
+  viewStatus?: boolean;
 };
 
-export function PostDate({
-  viewPost,
-  postLink,
-  createdAt
-}: PostDateProps): JSX.Element {
+export function StatusDate({
+  createdAt,
+  statusLink,
+  viewStatus
+}: StatusDateProps): JSX.Element {
   return (
-    <div className={cn('flex gap-1', viewPost && 'py-4')}>
-      {!viewPost && <i>·</i>}
+    <div className={cn('flex gap-1', viewStatus && 'py-4')}>
+      {!viewStatus && <i>·</i>}
       <div className='group relative'>
-        <Link href={postLink}>
+        <Link href={statusLink}>
           <a
             className={cn(
               'custom-underline peer',
-              viewPost && 'text-secondary'
+              viewStatus && 'text-secondary'
             )}
           >
-            {formatDate(createdAt, viewPost ? 'full' : 'post')}
+            {formatDate(createdAt, viewStatus ? 'full' : 'status')}
           </a>
         </Link>
         <ToolTip

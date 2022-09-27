@@ -15,17 +15,17 @@ type DataWithUser<T> = UseCollection<T & { user: User }>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options: { includeUser: true }
+  options: { includeUser: true; allowNull?: boolean }
 ): DataWithUser<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser: false }
+  options?: { includeUser: false; allowNull?: boolean }
 ): UseCollection<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: boolean }
+  options?: { includeUser?: boolean; allowNull?: boolean }
 ): UseCollection<T> | DataWithUser<T> {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -53,7 +53,7 @@ export function useCollection<T>(
         doc.data({ serverTimestamps: 'estimate' })
       );
 
-      if (!data.length) {
+      if (!options?.allowNull && !data.length) {
         setLoading(false);
         return;
       }

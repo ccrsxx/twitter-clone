@@ -49,7 +49,7 @@ const options: Options = [
 ];
 
 type TweetOptionsProps = {
-  comment?: boolean;
+  reply?: boolean;
   inputValue: string;
   isValidInput: boolean;
   isUploadingImages: boolean;
@@ -59,7 +59,7 @@ type TweetOptionsProps = {
 };
 
 export function TweetOptions({
-  comment,
+  reply,
   inputValue,
   isValidInput,
   isUploadingImages,
@@ -70,6 +70,13 @@ export function TweetOptions({
   const onClick = (): void => inputFileRef.current?.click();
 
   const isCharLimitExceeded = inputValue.length > 280;
+
+  let filteredOptions = options;
+
+  if (reply)
+    filteredOptions = filteredOptions.filter(
+      (_, index) => ![2, 4].includes(index)
+    );
 
   return (
     <motion.div className='flex justify-between' {...variants}>
@@ -82,7 +89,7 @@ export function TweetOptions({
           ref={inputFileRef}
           multiple
         />
-        {options.map(({ name, iconName, disabled }, index) => (
+        {filteredOptions.map(({ name, iconName, disabled }, index) => (
           <Button
             className='group relative rounded-full p-2 hover:bg-accent-blue/10 
                        focus-visible:ring-accent-blue-focus active:bg-accent-blue/20'
@@ -106,7 +113,7 @@ export function TweetOptions({
             inputValue={inputValue}
             isCharLimitExceeded={isCharLimitExceeded}
           />
-          {!comment && (
+          {!reply && (
             <>
               <i className='h-8 border-l border-l-border-color' />
               <Button
@@ -127,7 +134,7 @@ export function TweetOptions({
                      enabled:active:bg-accent-blue/75 disabled:brightness-50'
           disabled={isCharLimitExceeded || !(isValidInput || isUploadingImages)}
         >
-          {comment ? 'Reply' : 'Tweet'}
+          {reply ? 'Reply' : 'Tweet'}
         </Button>
       </div>
     </motion.div>

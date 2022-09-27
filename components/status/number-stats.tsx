@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { getAnimationMove } from '@lib/utils';
+import { getStatsMove } from '@lib/utils';
 import { formatNumber } from '@lib/format';
 
 type NumberStatsProps = {
@@ -12,7 +12,7 @@ export function NumberStats({ move, stats }: NumberStatsProps): JSX.Element {
     <div className='overflow-hidden'>
       <AnimatePresence mode='wait'>
         {!!stats && (
-          <motion.p className='text-sm' {...getAnimationMove(move)} key={stats}>
+          <motion.p className='text-sm' {...getStatsMove(move)} key={stats}>
             {formatNumber(stats)}
           </motion.p>
         )}

@@ -19,13 +19,13 @@ type TweetFormProps = {
   formId: string;
   loading: boolean;
   visited: boolean;
-  comment?: boolean;
+  reply?: boolean;
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
   isValidInput: boolean;
   isUploadingImages: boolean;
-  sendTweet: () => Promise<void>;
+  sendTweet: (reply?: boolean) => Promise<void>;
   handleFocus: () => void;
   discardTweet: () => void;
   handleChange: ({
@@ -47,14 +47,14 @@ const variants: Variants[] = [
   }
 ];
 
-const [top, bottom] = variants;
+export const [top, bottom] = variants;
 
 export function TweetForm({
   modal,
+  reply,
   formId,
   loading,
   visited,
-  comment,
   children,
   inputRef,
   inputValue,
@@ -76,7 +76,7 @@ export function TweetForm({
         inputRef.current?.blur();
         openModal();
       } else discardTweet();
-    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet();
+    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet(reply);
   };
 
   const handleClose = (): void => {
@@ -84,7 +84,7 @@ export function TweetForm({
     closeModal();
   };
 
-  const isVisitedTweet = visited && !comment && !loading;
+  const isVisitedTweet = visited && !reply && !loading;
 
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
@@ -119,7 +119,7 @@ export function TweetForm({
             id={formId}
             className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
             value={inputValue}
-            placeholder={comment ? 'Tweet your reply' : "What's happening?"}
+            placeholder={reply ? 'Tweet your reply' : "What's happening?"}
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
@@ -128,7 +128,7 @@ export function TweetForm({
             onChange={handleChange}
             ref={inputRef}
           />
-          {comment && !visited && (
+          {reply && !visited && (
             <Button
               className='bg-accent-blue px-4 py-1.5 font-bold text-white
                          brightness-50 transition duration-200'
@@ -151,7 +151,7 @@ export function TweetForm({
                        disabled:brightness-100'
             disabled
           >
-            <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' solid />
+            <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' />
             <p className='font-bold'>Everyone can reply</p>
           </button>
         </motion.div>

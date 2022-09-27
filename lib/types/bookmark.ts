@@ -3,11 +3,11 @@ import type {
   DocumentReference,
   FirestoreDataConverter
 } from 'firebase/firestore';
-import type { Post } from './post';
+import type { Status } from './status';
 
 export type Bookmark = {
   id: string;
-  ref: DocumentReference<Post>;
+  ref: DocumentReference<Status>;
   createdAt: Timestamp;
 };
 

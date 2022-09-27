@@ -8,27 +8,27 @@ import { preventBubbling } from '@lib/utils';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { variants } from './post-actions';
+import { variants } from './status-actions';
 
-type PostShareProps = {
+type StatusShareProps = {
   userId: string;
-  postId: string;
-  viewPost?: boolean;
+  statusId: string;
+  viewStatus?: boolean;
 };
 
-export function PostShare({
+export function StatusShare({
   userId,
-  postId,
-  viewPost
-}: PostShareProps): JSX.Element {
+  statusId,
+  viewStatus
+}: StatusShareProps): JSX.Element {
   const { userBookmarks } = useAuth();
 
   const handleBookmark =
-    (callback: () => void, ...args: Parameters<typeof manageBookmark>) =>
+    (closeMenu: () => void, ...args: Parameters<typeof manageBookmark>) =>
     async (): Promise<void> => {
       const [type] = args;
 
-      callback();
+      closeMenu();
       await manageBookmark(...args);
 
       toast.success(
@@ -45,15 +45,15 @@ export function PostShare({
       );
     };
 
-  const handleCopy = (callback: () => void) => async (): Promise<void> => {
-    callback();
+  const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
+    closeMenu();
     await navigator.clipboard.writeText(
-      `https://twitter-clone-ccrsxx.vercel.app/post/${postId}`
+      `https://twitter-clone-ccrsxx.vercel.app/status/${statusId}`
     );
     toast.success('Copied to clipboard');
   };
 
-  const isBookmarked = !!userBookmarks?.some(({ id }) => id === postId);
+  const isBookmarked = !!userBookmarks?.some(({ id }) => id === statusId);
 
   return (
     <Popover className='relative'>
@@ -71,7 +71,7 @@ export function PostShare({
                          group-active:bg-accent-blue/20'
             >
               <HeroIcon
-                className={viewPost ? 'h-6 w-6' : 'h-5 w-5'}
+                className={viewStatus ? 'h-6 w-6' : 'h-5 w-5'}
                 iconName='ArrowUpTrayIcon'
               />
               {!open && <ToolTip tip='Share' />}
@@ -99,7 +99,7 @@ export function PostShare({
                     className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'bookmark', userId, postId)
+                      handleBookmark(close, 'bookmark', userId, statusId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkIcon' />
@@ -110,7 +110,7 @@ export function PostShare({
                     className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'unbookmark', userId, postId)
+                      handleBookmark(close, 'unbookmark', userId, statusId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkSlashIcon' />

@@ -4,14 +4,17 @@ import { useAuth } from '@lib/context/auth-context';
 import { ImagePreview } from '@components/tweet/image-preview';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { PostActions } from './post-actions';
-import { PostStats } from './post-stats';
-import { PostDate } from './post-date';
+import { StatusActions } from './status-actions';
+import { StatusStats } from './status-stats';
+import { StatusDate } from './status-date';
 import type { Variants } from 'framer-motion';
-import type { Post } from '@lib/types/post';
+import type { Status } from '@lib/types/status';
 import type { User } from '@lib/types/user';
 
-type ArticleProps = Post & { user: User };
+type ArticleProps = Status & {
+  user: User;
+  reply?: boolean;
+};
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -20,9 +23,11 @@ export const variants: Variants = {
 };
 
 export function Article({
-  id: postId,
+  id: statusId,
   text,
+  reply,
   images,
+  parent,
   userLikes,
   createdBy,
   createdAt,
@@ -32,7 +37,7 @@ export function Article({
 }: ArticleProps): JSX.Element {
   const { user } = useAuth();
 
-  const postLink = `/post/${postId}`;
+  const statusLink = `/status/${statusId}`;
 
   const userId = user?.uid as string;
   const userLink = `/user/${username}`;
@@ -42,7 +47,7 @@ export function Article({
 
   return (
     <motion.article layout='position' {...variants}>
-      <Link href={postLink}>
+      <Link href={statusLink}>
         <a
           className='smooth-tab relative flex flex-col gap-4 border-b
                      border-border-color px-4 py-3 outline-none'
@@ -60,34 +65,49 @@ export function Article({
               </a>
             </Link>
             <div className='flex min-w-0 flex-col gap-1'>
-              <div className='flex flex-col'>
-                <div className='flex gap-1 text-secondary'>
-                  <div className='flex gap-1'>
-                    <div className='flex items-center gap-1 text-primary'>
+              <div>
+                <div>
+                  <div className='text-secondary'>
+                    <div className='flex gap-1'>
+                      <div className='flex items-center gap-1 text-primary'>
+                        <Link href={userLink}>
+                          <a className='custom-underline font-bold'>{name}</a>
+                        </Link>
+                        {verified && (
+                          <i>
+                            <HeroIcon
+                              className='h-5 w-5'
+                              iconName='CheckBadgeIcon'
+                              solid
+                            />
+                          </i>
+                        )}
+                      </div>
                       <Link href={userLink}>
-                        <a className='custom-underline font-bold'>{name}</a>
+                        <a className='outline-none' tabIndex={-1}>
+                          @{username}
+                        </a>
                       </Link>
-                      {verified && (
-                        <i>
-                          <HeroIcon
-                            className='h-5 w-5'
-                            iconName='CheckBadgeIcon'
-                            solid
-                          />
-                        </i>
-                      )}
+                      <StatusDate
+                        statusLink={statusLink}
+                        createdAt={createdAt}
+                      />
                     </div>
-                    <Link href={userLink}>
-                      <a className='outline-none' tabIndex={-1}>
-                        @{username}
-                      </a>
-                    </Link>
+                    {reply && (
+                      <p>
+                        Replying to{' '}
+                        <Link href={`/user/${parent?.username as string}`}>
+                          <a className='custom-underline text-accent-blue'>
+                            @{parent?.username as string}
+                          </a>
+                        </Link>
+                      </p>
+                    )}
                   </div>
-                  <PostDate postLink={postLink} createdAt={createdAt} />
-                  <PostActions
-                    postId={postId}
+                  <StatusActions
                     isAdmin={isAdmin}
                     isOwner={isOwner}
+                    statusId={statusId}
                     username={username}
                   />
                 </div>
@@ -98,15 +118,15 @@ export function Article({
               <div className='flex flex-col gap-2'>
                 {images && (
                   <ImagePreview
-                    post
+                    status
                     imagesPreview={images}
                     previewCount={images.length}
                   />
                 )}
-                <PostStats
+                <StatusStats
                   userId={userId}
-                  postId={postId}
                   isOwner={isOwner}
+                  statusId={statusId}
                   userLikes={userLikes}
                   userTweets={userTweets}
                   userReplies={userReplies}

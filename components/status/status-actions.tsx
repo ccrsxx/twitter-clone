@@ -23,31 +23,30 @@ export const variants: Variants = {
   exit: { opacity: 0, y: -25, transition: { duration: 0.2 } }
 };
 
-type PostActionsProps = {
-  postId: string;
+type StatusActionsProps = {
   isAdmin: boolean;
   isOwner: boolean;
+  statusId: string;
   username: string;
 };
 
 // TODO: fix bugs on hover, use popover for now instead of menu
 
-export function PostActions({
-  postId,
+export function StatusActions({
   isAdmin,
   isOwner,
+  statusId,
   username
-}: PostActionsProps): JSX.Element {
+}: StatusActionsProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
   const isInAdminControl = isAdmin && !isOwner;
 
   const handleClose = async (): Promise<void> => {
-    await removePost(postId);
+    await removePost(statusId);
     toast.success(
       `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
     );
-
     closeModal();
   };
 

@@ -2,13 +2,13 @@ import cn from 'clsx';
 import type { ReactNode } from 'react';
 
 type HomeHeaderProps = {
-  className?: string;
   children: ReactNode;
+  className?: string;
 };
 
 export function HomeHeader({
-  className,
-  children
+  children,
+  className
 }: HomeHeaderProps): JSX.Element {
   return (
     <div

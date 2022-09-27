@@ -4,25 +4,26 @@ import { motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { postsCollection } from '@lib/firebase/collections';
-import { uploadImages } from '@lib/firebase/utils';
+import { statusesCollection } from '@lib/firebase/collections';
+import { manageReply, uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/file';
 import { NextImage } from '@components/ui/next-image';
-import { TweetForm } from './tweet-form';
+import { TweetForm, top } from './tweet-form';
 import { ImagePreview } from './image-preview';
 import { TweetOptions } from './tweet-options';
 import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
-import type { Post } from '@lib/types/post';
+import type { User } from '@lib/types/user';
+import type { Status } from '@lib/types/status';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
 type TweetProps = {
   modal?: boolean;
-  comment?: boolean;
-  username?: string;
+  reply?: boolean;
+  parent?: { id: string; username: string };
   closeModal?: () => void;
 };
 
@@ -33,8 +34,8 @@ export const variants: Variants = {
 
 export function Tweet({
   modal,
-  comment,
-  username,
+  reply,
+  parent,
   closeModal
 }: TweetProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
@@ -44,7 +45,7 @@ export function Tweet({
   const [visited, setVisited] = useState(false);
 
   const { user } = useAuth();
-  const { name, photoURL } = user ?? {};
+  const { name, username, photoURL } = user as User;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,26 +61,31 @@ export function Tweet({
     []
   );
 
-  const sendTweet = async (): Promise<void> => {
+  const sendTweet = async (reply?: boolean): Promise<void> => {
     inputRef.current?.blur();
 
     setLoading(true);
 
-    const tweetData: WithFieldValue<Omit<Post, 'id'>> = {
-      text: inputValue,
+    const tweetData: WithFieldValue<Omit<Status, 'id'>> = {
+      text: inputValue.trim(),
+      parent: reply && parent ? parent : null,
       images: await uploadImages(user?.uid as string, selectedImages),
       userLikes: [],
       createdBy: user?.uid as string,
       createdAt: serverTimestamp(),
       updatedAt: null,
       userTweets: [],
-      userReplies: []
+      userReplies: 0
     };
 
     await sleep(500);
 
-    const postRef = await addDoc(postsCollection, tweetData);
-    const { id } = await getDoc(postRef);
+    const [statusRef] = await Promise.all([
+      addDoc(statusesCollection, tweetData),
+      reply ? manageReply('increment', parent?.id as string) : null
+    ]);
+
+    const { id } = await getDoc(statusRef);
 
     discardTweet();
     setLoading(false);
@@ -148,7 +154,7 @@ export function Tweet({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    void sendTweet();
+    void sendTweet(reply);
   };
 
   const handleFocus = (): void => setVisited(!loading);
@@ -159,7 +165,7 @@ export function Tweet({
 
   return (
     <form
-      className={cn('flex flex-col', comment && '-mx-4')}
+      className={cn('flex flex-col', reply && '-mx-4')}
       onSubmit={handleSubmit}
     >
       {loading && (
@@ -171,30 +177,32 @@ export function Tweet({
           {...variants}
         />
       )}
-      {comment && visited && (
-        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...variants}>
+      {reply && visited && (
+        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...top}>
           Replying to{' '}
-          <Link href={`/user/${username as string}`}>
-            <a className='custom-underline text-accent-blue'>{username}</a>
+          <Link href={`/user/${parent?.username as string}`}>
+            <a className='custom-underline text-accent-blue'>
+              {parent?.username as string}
+            </a>
           </Link>
         </motion.p>
       )}
       <label
         className={cn(
           'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
-          comment ? 'pt-3 pb-1' : ' border-b border-border-color',
+          reply ? 'pt-3 pb-1' : ' border-b border-border-color',
           loading && 'pointer-events-none brightness-75'
         )}
         htmlFor={formId}
       >
-        <Link href={`/user/${user?.username as string}`}>
+        <Link href={`/user/${username}`}>
           <a className='blur-picture self-start'>
             <NextImage
               imgClassName='rounded-full'
               width={48}
               height={48}
-              src={photoURL as string}
-              alt={name as string}
+              src={photoURL}
+              alt={name}
               useSkeleton
             />
           </a>
@@ -202,9 +210,9 @@ export function Tweet({
         <div className='flex w-full flex-col gap-4'>
           <TweetForm
             modal={modal}
+            reply={reply}
             formId={formId}
             visited={visited}
-            comment={comment}
             loading={loading}
             inputRef={inputRef}
             inputValue={inputValue}
@@ -224,9 +232,9 @@ export function Tweet({
               />
             )}
           </TweetForm>
-          {(comment ? comment && visited && !loading : !loading) && (
+          {(reply ? reply && visited && !loading : !loading) && (
             <TweetOptions
-              comment={comment}
+              reply={reply}
               inputValue={inputValue}
               isValidInput={isValidInput}
               isUploadingImages={isUploadingImages}

@@ -12,7 +12,7 @@ import type { MotionProps } from 'framer-motion';
 import type { ImagesPreview, ImageData } from '@lib/types/file';
 
 type ImagePreviewProps = {
-  post?: boolean;
+  status?: boolean;
   previewCount: number;
   imagesPreview: ImagesPreview;
   removeImage?: (targetId: number) => () => void;
@@ -41,7 +41,7 @@ const postImageBorderRadius: PostImageBorderRadius = {
 };
 
 export function ImagePreview({
-  post,
+  status,
   previewCount,
   imagesPreview,
   removeImage
@@ -79,20 +79,20 @@ export function ImagePreview({
     <div
       className={cn(
         'grid h-72 grid-cols-2 grid-rows-2',
-        post ? 'mt-2 gap-0.5' : 'gap-3'
+        status ? 'mt-2 gap-0.5' : 'gap-3'
       )}
     >
       <Modal
         modalClassName={cn(
           'flex justify-between w-full items-center',
-          post && 'h-full'
+          status && 'h-full'
         )}
         open={open}
         closeModal={closeModal}
         closePanelOnClick
       >
         <ImageModal
-          post={post}
+          status={status}
           imageData={selectedImage as ImageData}
           previewCount={previewCount}
           selectedIndex={selectedIndex}
@@ -105,7 +105,9 @@ export function ImagePreview({
             type='button'
             className={cn(
               'smooth-tab relative transition-none transition-[box-shadow]',
-              post ? postImageBorderRadius[previewCount][index] : 'rounded-2xl',
+              status
+                ? postImageBorderRadius[previewCount][index]
+                : 'rounded-2xl',
               {
                 'col-span-2 row-span-2': previewCount === 1,
                 'row-span-2':
@@ -114,14 +116,14 @@ export function ImagePreview({
             )}
             {...variants}
             onClick={preventBubbling(handleSelectedImage(index))}
-            layout={!post ? true : false}
+            layout={!status ? true : false}
             key={id}
           >
             <NextImage
               className='relative h-full w-full cursor-pointer transition 
                          hover:brightness-75 hover:duration-200'
               imgClassName={cn(
-                post
+                status
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl'
               )}
@@ -129,7 +131,7 @@ export function ImagePreview({
               layout='fill'
               src={src}
               alt={alt}
-              useSkeleton={post}
+              useSkeleton={status}
             />
             {removeImage && (
               <Button

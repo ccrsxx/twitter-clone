@@ -6,15 +6,15 @@ import * as OutlineIcons from '@heroicons/react/24/outline';
 export type IconName = keyof typeof SolidIcons | keyof typeof OutlineIcons;
 
 type HeroIconProps = {
+  solid?: boolean;
   iconName: IconName;
   className?: string;
-  solid?: boolean;
 };
 
 export function HeroIcon({
+  solid,
   iconName,
-  className,
-  solid
+  className
 }: HeroIconProps): JSX.Element {
   const Icon = solid ? SolidIcons[iconName] : OutlineIcons[iconName];
 

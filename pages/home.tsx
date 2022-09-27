@@ -1,6 +1,6 @@
 import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
 import { SEO } from '@components/common/seo';
-import { Posts } from '@components/post/posts';
+import { Statuses } from '@components/status/statuses';
 import { Tweet } from '@components/tweet/tweet';
 import { NewUsername } from '@components/home/new-username';
 import { Button } from '@components/ui/button';
@@ -21,7 +21,7 @@ export default function Home(): JSX.Element {
         </Button>
       </HomeHeader>
       <Tweet />
-      <Posts />
+      <Statuses />
       <NewUsername />
     </main>
   );

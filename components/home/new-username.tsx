@@ -9,13 +9,12 @@ import { UsernameModal } from '@components/modal/username-modal';
 import type { FormEvent, ChangeEvent } from 'react';
 
 export function NewUsername(): null | JSX.Element {
-  const { user } = useAuth();
-
   const [available, setAvailable] = useState(false);
   const [visited, setVisited] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
   useEffect(() => {

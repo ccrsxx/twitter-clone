@@ -1,41 +1,33 @@
 import type { Timestamp } from 'firebase/firestore';
 
 const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('en-gb', {
+  style: 'short',
   numeric: 'auto'
 });
 
 const units = {
   day: 24 * 60 * 60 * 1000,
   hour: 60 * 60 * 1000,
-  minute: 60 * 1000,
-  second: 1000
+  minute: 60 * 1000
 };
+
+export function formatDate(
+  targetDate: Timestamp,
+  mode: 'status' | 'message' | 'full'
+): string {
+  const date = targetDate.toDate();
+
+  if (mode === 'full') return getFullTime(date);
+  if (mode === 'status') return getPostTime(date);
+
+  return getShortTime(date);
+}
 
 export function formatNumber(number: number): string {
   return new Intl.NumberFormat('en-GB', {
     notation: number > 10_000 ? 'compact' : 'standard',
     maximumFractionDigits: 1
   }).format(number);
-}
-
-function getRelativeTime(date: Date): string {
-  const elapsed = +date - +new Date();
-
-  if (elapsed > 0) return 'now';
-
-  const unitsItems = Object.entries(units).slice(0, -1);
-
-  for (const [unit, millis] of unitsItems)
-    if (Math.abs(elapsed) > millis)
-      return RELATIVE_TIME_FORMATTER.format(
-        Math.round(elapsed / millis),
-        unit as Intl.RelativeTimeFormatUnit
-      );
-
-  return RELATIVE_TIME_FORMATTER.format(
-    Math.round(elapsed / units.second),
-    'second'
-  );
 }
 
 function getFullTime(date: Date): string {
@@ -57,20 +49,6 @@ function getFullTime(date: Date): string {
           .join(' · ');
 
   return formattedDate;
-}
-
-function isToday(date: Date): boolean {
-  return new Date().toDateString() === date.toDateString();
-}
-
-function isYesterday(date: Date): boolean {
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  return yesterday.toDateString() === date.toDateString();
-}
-
-function isCurrentYear(date: Date): boolean {
-  return date.getFullYear() === new Date().getFullYear();
 }
 
 function getPostTime(date: Date): string {
@@ -102,14 +80,43 @@ function getShortTime(date: Date): string {
     : getFullTime(date);
 }
 
-export function formatDate(
-  targetDate: Timestamp,
-  mode: 'post' | 'message' | 'full'
-): string {
-  const date = targetDate.toDate();
+function getRelativeTime(date: Date): string {
+  const relativeTime = calculateRelativeTime(date);
 
-  if (mode === 'full') return getFullTime(date);
-  if (mode === 'post') return getPostTime(date);
+  if (relativeTime === 'now') return relativeTime;
 
-  return getShortTime(date);
+  const [number, unit] = relativeTime.split(' ');
+
+  return `${number}${unit[0]}`;
+}
+
+function calculateRelativeTime(date: Date): string {
+  const elapsed = +date - +new Date();
+
+  if (elapsed > 0) return 'now';
+
+  const unitsItems = Object.entries(units);
+
+  for (const [unit, millis] of unitsItems)
+    if (Math.abs(elapsed) > millis)
+      return RELATIVE_TIME_FORMATTER.format(
+        Math.round(elapsed / millis),
+        unit as Intl.RelativeTimeFormatUnit
+      );
+
+  return RELATIVE_TIME_FORMATTER.format(Math.round(elapsed / 1000), 'second');
+}
+
+function isToday(date: Date): boolean {
+  return new Date().toDateString() === date.toDateString();
+}
+
+function isYesterday(date: Date): boolean {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  return yesterday.toDateString() === date.toDateString();
+}
+
+function isCurrentYear(date: Date): boolean {
+  return date.getFullYear() === new Date().getFullYear();
 }

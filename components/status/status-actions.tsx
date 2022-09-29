@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { useModal } from '@lib/hooks/useModal';
-import { removePost } from '@lib/firebase/utils';
+import { manageReply, removePost } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
@@ -26,15 +26,19 @@ export const variants: Variants = {
 type StatusActionsProps = {
   isAdmin: boolean;
   isOwner: boolean;
+  parentId?: string;
   statusId: string;
   username: string;
 };
 
 // TODO: fix bugs on hover, use popover for now instead of menu
+// ! There's a workaround for this bug, but it's not ideal, you can prevent bubbling
+// ! by putting the modal component outside of this component, like in the status.tsx modal
 
 export function StatusActions({
   isAdmin,
   isOwner,
+  parentId,
   statusId,
   username
 }: StatusActionsProps): JSX.Element {
@@ -43,7 +47,10 @@ export function StatusActions({
   const isInAdminControl = isAdmin && !isOwner;
 
   const handleClose = async (): Promise<void> => {
-    await removePost(statusId);
+    await Promise.all([
+      removePost(statusId),
+      parentId && manageReply('decrement', parentId)
+    ]);
     toast.success(
       `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
     );

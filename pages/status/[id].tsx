@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
 import { HomeHeader } from '@components/home/home-header';
-import { ViewStatus } from '@components/view/view-status';
+import { View } from '@components/view/view';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactElement, ReactNode } from 'react';
@@ -23,7 +23,7 @@ export default function Status(): JSX.Element {
         </Button>
         <h2 className='text-xl font-bold'>Tweet</h2>
       </HomeHeader>
-      <ViewStatus statusId={id as string} />
+      <View statusId={id as string} />
     </main>
   );
 }

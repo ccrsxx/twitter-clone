@@ -16,6 +16,7 @@ type StatusStatsProps = Pick<
   isOwner: boolean;
   statusId: string;
   viewStatus?: boolean;
+  openModal?: () => void;
 };
 
 export function StatusStats({
@@ -25,7 +26,8 @@ export function StatusStats({
   userLikes,
   viewStatus,
   userTweets,
-  userReplies: totalReplies
+  userReplies: totalReplies,
+  openModal
 }: StatusStatsProps): JSX.Element {
   const totalLikes = userLikes.length;
   const totalTweets = userTweets.length;
@@ -95,6 +97,7 @@ export function StatusStats({
           stats={currentReplies}
           iconName='ChatBubbleOvalLeftIcon'
           viewStatus={viewStatus}
+          onClick={openModal}
         />
         <StatusOption
           className={cn(

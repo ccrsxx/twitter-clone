@@ -23,9 +23,10 @@ type TweetFormProps = {
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
-  isValidInput: boolean;
+  replyTweet?: boolean;
+  isValidTweet: boolean;
   isUploadingImages: boolean;
-  sendTweet: (reply?: boolean) => Promise<void>;
+  sendTweet: () => Promise<void>;
   handleFocus: () => void;
   discardTweet: () => void;
   handleChange: ({
@@ -57,8 +58,9 @@ export function TweetForm({
   visited,
   children,
   inputRef,
+  replyTweet,
   inputValue,
-  isValidInput,
+  isValidTweet,
   isUploadingImages,
   sendTweet,
   handleFocus,
@@ -69,14 +71,12 @@ export function TweetForm({
   const { open, openModal, closeModal } = useModal();
 
   const handleKeyboardShortcut = ({ ctrlKey, key }: KeyboardEvent): void => {
-    const isValidTweet = isValidInput || isUploadingImages;
-
     if (!modal && key === 'Escape')
       if (isValidTweet) {
         inputRef.current?.blur();
         openModal();
       } else discardTweet();
-    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet(reply);
+    else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet();
   };
 
   const handleClose = (): void => {
@@ -84,7 +84,7 @@ export function TweetForm({
     closeModal();
   };
 
-  const isVisitedTweet = visited && !reply && !loading;
+  const isVisibilityShown = visited && !reply && !replyTweet && !loading;
 
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
@@ -102,7 +102,7 @@ export function TweetForm({
         />
       </Modal>
       <div className='flex flex-col gap-6'>
-        {isVisitedTweet && (
+        {isVisibilityShown && (
           <motion.button
             className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
                        py-0 px-3 text-accent-blue hover:bg-accent-blue/10 
@@ -119,7 +119,9 @@ export function TweetForm({
             id={formId}
             className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
             value={inputValue}
-            placeholder={reply ? 'Tweet your reply' : "What's happening?"}
+            placeholder={
+              reply || replyTweet ? 'Tweet your reply' : "What's happening?"
+            }
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
             onFocus={handleFocus}
@@ -140,7 +142,7 @@ export function TweetForm({
         </div>
       </div>
       {children}
-      {isVisitedTweet && (
+      {isVisibilityShown && (
         <motion.div
           className='flex border-b border-border-color pb-2'
           {...bottom}

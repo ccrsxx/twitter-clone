@@ -13,7 +13,7 @@ import { NextImage } from '@components/ui/next-image';
 import { TweetForm, top } from './tweet-form';
 import { ImagePreview } from './image-preview';
 import { TweetOptions } from './tweet-options';
-import type { FormEvent, ChangeEvent, ClipboardEvent } from 'react';
+import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
@@ -24,6 +24,9 @@ type TweetProps = {
   modal?: boolean;
   reply?: boolean;
   parent?: { id: string; username: string };
+  disabled?: boolean;
+  children?: ReactNode;
+  replyTweet?: boolean;
   closeModal?: () => void;
 };
 
@@ -36,6 +39,9 @@ export function Tweet({
   modal,
   reply,
   parent,
+  disabled,
+  children,
+  replyTweet,
   closeModal
 }: TweetProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
@@ -61,14 +67,16 @@ export function Tweet({
     []
   );
 
-  const sendTweet = async (reply?: boolean): Promise<void> => {
+  const sendTweet = async (): Promise<void> => {
     inputRef.current?.blur();
 
     setLoading(true);
 
+    const isReplying = reply ?? replyTweet;
+
     const tweetData: WithFieldValue<Omit<Status, 'id'>> = {
       text: inputValue.trim(),
-      parent: reply && parent ? parent : null,
+      parent: isReplying && parent ? parent : null,
       images: await uploadImages(user?.uid as string, selectedImages),
       userLikes: [],
       createdBy: user?.uid as string,
@@ -82,13 +90,15 @@ export function Tweet({
 
     const [statusRef] = await Promise.all([
       addDoc(statusesCollection, tweetData),
-      reply ? manageReply('increment', parent?.id as string) : null
+      isReplying && manageReply('increment', parent?.id as string)
     ]);
 
     const { id } = await getDoc(statusRef);
 
-    discardTweet();
-    setLoading(false);
+    if (!modal && !replyTweet) {
+      discardTweet();
+      setLoading(false);
+    }
 
     if (closeModal) closeModal();
 
@@ -96,7 +106,7 @@ export function Tweet({
       () => (
         <span className='flex gap-2'>
           Your Tweet was sent.
-          <Link href={`/post/${id}`}>
+          <Link href={`/status/${id}`}>
             <a className='custom-underline font-bold'>View</a>
           </Link>
         </span>
@@ -154,18 +164,27 @@ export function Tweet({
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    void sendTweet(reply);
+    void sendTweet();
   };
 
   const handleFocus = (): void => setVisited(!loading);
 
   const formId = useId();
 
+  const inputLength = inputValue.length;
   const isValidInput = !!inputValue.trim().length;
+  const isCharLimitExceeded = inputLength > 280;
+
+  const isValidTweet =
+    !isCharLimitExceeded && (isValidInput || isUploadingImages);
 
   return (
     <form
-      className={cn('flex flex-col', reply && '-mx-4')}
+      className={cn('flex flex-col', {
+        'cursor-not-allowed': disabled,
+        '-mx-4': reply,
+        'gap-2': replyTweet
+      })}
       onSubmit={handleSubmit}
     >
       {loading && (
@@ -177,6 +196,7 @@ export function Tweet({
           {...variants}
         />
       )}
+      {children}
       {reply && visited && (
         <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...top}>
           Replying to{' '}
@@ -190,8 +210,12 @@ export function Tweet({
       <label
         className={cn(
           'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
-          reply ? 'pt-3 pb-1' : ' border-b border-border-color',
-          loading && 'pointer-events-none brightness-75'
+          reply
+            ? 'pt-3 pb-1'
+            : replyTweet
+            ? 'pt-0'
+            : ' border-b border-border-color',
+          (disabled || loading) && 'pointer-events-none brightness-75'
         )}
         htmlFor={formId}
       >
@@ -215,8 +239,9 @@ export function Tweet({
             visited={visited}
             loading={loading}
             inputRef={inputRef}
+            replyTweet={replyTweet}
             inputValue={inputValue}
-            isValidInput={isValidInput}
+            isValidTweet={isValidTweet}
             isUploadingImages={isUploadingImages}
             sendTweet={sendTweet}
             handleFocus={handleFocus}
@@ -235,9 +260,9 @@ export function Tweet({
           {(reply ? reply && visited && !loading : !loading) && (
             <TweetOptions
               reply={reply}
-              inputValue={inputValue}
-              isValidInput={isValidInput}
-              isUploadingImages={isUploadingImages}
+              inputLength={inputLength}
+              isValidTweet={isValidTweet}
+              isCharLimitExceeded={isCharLimitExceeded}
               handleImageUpload={handleImageUpload}
             />
           )}

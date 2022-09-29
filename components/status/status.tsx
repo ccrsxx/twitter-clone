@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuth } from '@lib/context/auth-context';
+import { useModal } from '@lib/hooks/useModal';
+import { Modal } from '@components/modal/modal';
+import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
 import { ImagePreview } from '@components/tweet/image-preview';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
@@ -11,7 +14,7 @@ import type { Variants } from 'framer-motion';
 import type { Status } from '@lib/types/status';
 import type { User } from '@lib/types/user';
 
-type ArticleProps = Status & {
+type StatusProps = Status & {
   user: User;
   reply?: boolean;
 };
@@ -22,7 +25,7 @@ export const variants: Variants = {
   exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-export function Article({
+export function Status({
   id: statusId,
   text,
   reply,
@@ -34,8 +37,10 @@ export function Article({
   userTweets,
   userReplies,
   user: { name, username, verified, photoURL }
-}: ArticleProps): JSX.Element {
+}: StatusProps): JSX.Element {
   const { user } = useAuth();
+
+  const { open, openModal, closeModal } = useModal();
 
   const statusLink = `/status/${statusId}`;
 
@@ -45,8 +50,23 @@ export function Article({
   const isAdmin = user?.username === 'ccrsxx' && user?.verified;
   const isOwner = userId === createdBy;
 
+  const { id: parentId, username: parentUsername } = parent ?? {};
+
   return (
     <motion.article layout='position' {...variants}>
+      <Modal
+        className='flex items-start justify-center'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
+        open={open}
+        closeModal={closeModal}
+      >
+        <ReplyTweetModal
+          user={{ name, username, verified, photoURL }}
+          status={{ text, images, createdAt }}
+          statusId={statusId}
+          closeModal={closeModal}
+        />
+      </Modal>
       <Link href={statusLink}>
         <a
           className='smooth-tab relative flex flex-col gap-4 border-b
@@ -96,9 +116,9 @@ export function Article({
                     {reply && (
                       <p>
                         Replying to{' '}
-                        <Link href={`/user/${parent?.username as string}`}>
+                        <Link href={`/user/${parentUsername as string}`}>
                           <a className='custom-underline text-accent-blue'>
-                            @{parent?.username as string}
+                            @{parentUsername as string}
                           </a>
                         </Link>
                       </p>
@@ -107,6 +127,7 @@ export function Article({
                   <StatusActions
                     isAdmin={isAdmin}
                     isOwner={isOwner}
+                    parentId={parentId}
                     statusId={statusId}
                     username={username}
                   />
@@ -130,6 +151,7 @@ export function Article({
                   userLikes={userLikes}
                   userTweets={userTweets}
                   userReplies={userReplies}
+                  openModal={!parent ? openModal : undefined}
                 />
               </div>
             </div>

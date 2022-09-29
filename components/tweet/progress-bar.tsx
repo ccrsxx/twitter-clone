@@ -2,7 +2,7 @@ import cn from 'clsx';
 import { ToolTip } from '@components/ui/tooltip';
 
 type ProgressBarProps = {
-  inputValue: string;
+  inputLength: number;
   isCharLimitExceeded: boolean;
 };
 
@@ -24,11 +24,9 @@ const circleStyles = [
 ];
 
 export function ProgressBar({
-  inputValue,
+  inputLength,
   isCharLimitExceeded
 }: ProgressBarProps): JSX.Element {
-  const inputLength = inputValue.length;
-
   const isCloseToLimit = inputLength >= 260;
   const baseCircle = baseOffset[+isCloseToLimit];
 
@@ -85,7 +83,7 @@ export function ProgressBar({
            scale-50 text-xs opacity-0`,
           {
             'scale-100 opacity-100 transition': isCloseToLimit,
-            'text-[#F4212E]': isHittingCharLimit
+            'text-accent-red': isHittingCharLimit
           }
         )}
       >

@@ -50,9 +50,9 @@ const options: Options = [
 
 type TweetOptionsProps = {
   reply?: boolean;
-  inputValue: string;
-  isValidInput: boolean;
-  isUploadingImages: boolean;
+  inputLength: number;
+  isValidTweet: boolean;
+  isCharLimitExceeded: boolean;
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
@@ -60,16 +60,14 @@ type TweetOptionsProps = {
 
 export function TweetOptions({
   reply,
-  inputValue,
-  isValidInput,
-  isUploadingImages,
+  inputLength,
+  isValidTweet,
+  isCharLimitExceeded,
   handleImageUpload
 }: TweetOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const onClick = (): void => inputFileRef.current?.click();
-
-  const isCharLimitExceeded = inputValue.length > 280;
 
   let filteredOptions = options;
 
@@ -106,16 +104,16 @@ export function TweetOptions({
         <motion.div
           className='flex items-center gap-4'
           animate={
-            inputValue ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
+            inputLength ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0 }
           }
         >
           <ProgressBar
-            inputValue={inputValue}
+            inputLength={inputLength}
             isCharLimitExceeded={isCharLimitExceeded}
           />
           {!reply && (
             <>
-              <i className='h-8 border-l border-l-border-color' />
+              <i className='h-8 w-[1px] bg-[#3e4144]' />
               <Button
                 className='group relative rounded-full border border-border-color-secondary 
                        p-[1px] text-accent-blue'
@@ -132,7 +130,7 @@ export function TweetOptions({
           className='bg-accent-blue px-4 py-1.5 font-bold text-white
                      transition duration-200 enabled:hover:bg-accent-blue/90
                      enabled:active:bg-accent-blue/75 disabled:brightness-50'
-          disabled={isCharLimitExceeded || !(isValidInput || isUploadingImages)}
+          disabled={!isValidTweet}
         >
           {reply ? 'Reply' : 'Tweet'}
         </Button>

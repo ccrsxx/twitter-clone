@@ -4,7 +4,7 @@ import { statusesCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { Error } from '@components/ui/error';
 import { Loading } from '@components/ui/loading';
-import { Article } from './article';
+import { Status } from './status';
 
 export function Statuses(): JSX.Element {
   const { data, loading } = useCollection(
@@ -23,7 +23,7 @@ export function Statuses(): JSX.Element {
     <section>
       <AnimatePresence mode='popLayout'>
         {data?.map((post) => (
-          <Article {...post} key={post.id} />
+          <Status {...post} key={post.id} />
         ))}
       </AnimatePresence>
     </section>

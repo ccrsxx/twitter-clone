@@ -26,7 +26,8 @@ module.exports = {
         'follow-button-background': '#EFF3F4',
         'follow-text-color': '#0F1419',
         'image-preview-hover-color': '#272C30',
-        'modal-backdrop-color': '#5B7083'
+        'modal-backdrop-color': '#5B7083',
+        'line-reply-color': '#333639'
       },
       animation: {},
       keyframes: {}

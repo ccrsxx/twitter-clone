@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
@@ -14,9 +15,11 @@ import type { Variants } from 'framer-motion';
 import type { Status } from '@lib/types/status';
 import type { User } from '@lib/types/user';
 
-type StatusProps = Status & {
+export type StatusProps = Status & {
   user: User;
   reply?: boolean;
+  modal?: boolean;
+  parentTweet?: boolean;
 };
 
 export const variants: Variants = {
@@ -25,118 +28,124 @@ export const variants: Variants = {
   exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-export function Status({
-  id: statusId,
-  text,
-  reply,
-  images,
-  parent,
-  userLikes,
-  createdBy,
-  createdAt,
-  userTweets,
-  userReplies,
-  user: { name, username, verified, photoURL }
-}: StatusProps): JSX.Element {
+export function Status(status: StatusProps): JSX.Element {
+  const {
+    id: statusId,
+    text,
+    reply,
+    modal,
+    images,
+    parent,
+    userLikes,
+    createdBy,
+    createdAt,
+    userTweets,
+    parentTweet,
+    userReplies,
+    user: { name, username, verified, photoURL }
+  } = status;
+
   const { user } = useAuth();
 
   const { open, openModal, closeModal } = useModal();
 
   const statusLink = `/status/${statusId}`;
 
-  const userId = user?.uid as string;
+  const userId = user?.uid ?? username;
   const userLink = `/user/${username}`;
 
-  const isAdmin = user?.username === 'ccrsxx' && user?.verified;
   const isOwner = userId === createdBy;
 
-  const { id: parentId, username: parentUsername } = parent ?? {};
+  const { id: parentId, username: parentUsername = username } = parent ?? {};
 
   return (
-    <motion.article layout='position' {...variants}>
+    <motion.article
+      layout='position'
+      {...(!modal ? variants : {})}
+      animate={{
+        ...variants.animate,
+        ...(parentTweet && { transition: { duration: 0.2 } })
+      }}
+    >
       <Modal
         className='flex items-start justify-center'
         modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
         open={open}
         closeModal={closeModal}
       >
-        <ReplyTweetModal
-          user={{ name, username, verified, photoURL }}
-          status={{ text, images, createdAt }}
-          statusId={statusId}
-          closeModal={closeModal}
-        />
+        <ReplyTweetModal status={status} closeModal={closeModal} />
       </Modal>
       <Link href={statusLink}>
         <a
-          className='smooth-tab relative flex flex-col gap-4 border-b
-                     border-border-color px-4 py-3 outline-none'
+          className={cn(
+            'smooth-tab relative flex flex-col gap-4 px-4 py-3 outline-none',
+            parentTweet ? 'pt-3 pb-0' : 'border-b border-border-color'
+          )}
         >
           <div className='grid grid-cols-[auto,1fr] gap-3'>
-            <Link href={userLink}>
-              <a className='blur-picture self-start'>
-                <NextImage
-                  imgClassName='rounded-full'
-                  width={48}
-                  height={48}
-                  src={photoURL}
-                  alt={name}
-                />
-              </a>
-            </Link>
-            <div className='flex min-w-0 flex-col gap-1'>
-              <div>
-                <div>
-                  <div className='text-secondary'>
-                    <div className='flex gap-1'>
-                      <div className='flex items-center gap-1 text-primary'>
-                        <Link href={userLink}>
-                          <a className='custom-underline font-bold'>{name}</a>
-                        </Link>
-                        {verified && (
-                          <i>
-                            <HeroIcon
-                              className='h-5 w-5'
-                              iconName='CheckBadgeIcon'
-                              solid
-                            />
-                          </i>
-                        )}
-                      </div>
-                      <Link href={userLink}>
-                        <a className='outline-none' tabIndex={-1}>
-                          @{username}
-                        </a>
-                      </Link>
-                      <StatusDate
-                        statusLink={statusLink}
-                        createdAt={createdAt}
-                      />
-                    </div>
-                    {reply && (
-                      <p>
-                        Replying to{' '}
-                        <Link href={`/user/${parentUsername as string}`}>
-                          <a className='custom-underline text-accent-blue'>
-                            @{parentUsername as string}
-                          </a>
-                        </Link>
-                      </p>
+            <div className='flex flex-col items-center gap-2'>
+              <Link href={userLink}>
+                <a className='blur-picture self-start'>
+                  <NextImage
+                    imgClassName='rounded-full'
+                    width={48}
+                    height={48}
+                    src={photoURL}
+                    alt={name}
+                  />
+                </a>
+              </Link>
+              {parentTweet && (
+                <i className='h-full w-0.5 bg-line-reply-color' />
+              )}
+            </div>
+            <div className='flex min-w-0 flex-col'>
+              <div className='text-secondary'>
+                <div className='flex gap-1'>
+                  <div className='flex items-center gap-1 text-primary'>
+                    <Link href={userLink}>
+                      <a className='custom-underline font-bold'>{name}</a>
+                    </Link>
+                    {verified && (
+                      <i>
+                        <HeroIcon
+                          className='h-5 w-5'
+                          iconName='CheckBadgeIcon'
+                          solid
+                        />
+                      </i>
                     )}
                   </div>
+                  <Link href={userLink}>
+                    <a className='outline-none' tabIndex={-1}>
+                      @{username}
+                    </a>
+                  </Link>
+                  <StatusDate statusLink={statusLink} createdAt={createdAt} />
+                </div>
+                {!modal && (
                   <StatusActions
-                    isAdmin={isAdmin}
                     isOwner={isOwner}
                     parentId={parentId}
                     statusId={statusId}
                     username={username}
                   />
-                </div>
-                {text && (
-                  <p className='whitespace-pre-line break-words'>{text}</p>
                 )}
               </div>
-              <div className='flex flex-col gap-2'>
+              {(reply || modal) && (
+                <p className={cn('text-secondary', modal && 'order-1 my-2')}>
+                  Replying to{' '}
+                  <Link href={`/user/${parentUsername}`}>
+                    <a className='custom-underline text-accent-blue'>
+                      @{parentUsername}
+                    </a>
+                  </Link>
+                </p>
+              )}
+              {text && (
+                <p className='whitespace-pre-line break-words'>{text}</p>
+              )}
+              <div className='mt-1 flex flex-col gap-2'>
                 {images && (
                   <ImagePreview
                     status
@@ -144,15 +153,17 @@ export function Status({
                     previewCount={images.length}
                   />
                 )}
-                <StatusStats
-                  userId={userId}
-                  isOwner={isOwner}
-                  statusId={statusId}
-                  userLikes={userLikes}
-                  userTweets={userTweets}
-                  userReplies={userReplies}
-                  openModal={!parent ? openModal : undefined}
-                />
+                {!modal && (
+                  <StatusStats
+                    userId={userId}
+                    isOwner={isOwner}
+                    statusId={statusId}
+                    userLikes={userLikes}
+                    userTweets={userTweets}
+                    userReplies={userReplies}
+                    openModal={!parent ? openModal : undefined}
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -13,5 +13,6 @@ type Config = typeof config;
 export function getFirebaseConfig(): Config {
   if (Object.values(config).some((value) => !value))
     throw new Error('Firebase config is not set or incomplete');
-  else return config;
+
+  return config;
 }

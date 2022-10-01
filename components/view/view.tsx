@@ -9,6 +9,7 @@ import { SEO } from '@components/common/seo';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import { ViewStatus } from './view-status';
+import { ViewParentTweet } from './view-parent-tweet';
 
 type ViewProps = {
   statusId: string;
@@ -19,7 +20,7 @@ export function View({ statusId }: ViewProps): JSX.Element {
 
   const { data: statusData, loading: postLoading } = useDocument(
     doc(statusesCollection, statusId),
-    { includeUser: true }
+    { includeUser: true, allowNull: true }
   );
 
   const { data: repliesData, loading: commentsLoading } = useCollection(
@@ -41,7 +42,9 @@ export function View({ statusId }: ViewProps): JSX.Element {
     );
 
   const { text, images } = statusData;
+
   const imagesLength = images?.length ?? 0;
+  const parentId = statusData?.parent?.id;
 
   const pageTitle = statusData
     ? `${user?.username as string} on Twitter: "${text ? `${text} ` : ''}${
@@ -52,7 +55,8 @@ export function View({ statusId }: ViewProps): JSX.Element {
   return (
     <section>
       {pageTitle && <SEO title={pageTitle} />}
-      <ViewStatus {...statusData} />
+      {parentId && <ViewParentTweet parentId={parentId} />}
+      <ViewStatus reply={!!statusData.parent} {...statusData} />
       {statusData &&
         (commentsLoading ? (
           <Loading className='mt-5' />

@@ -50,6 +50,7 @@ const options: Options = [
 
 type TweetOptionsProps = {
   reply?: boolean;
+  inputLimit: number;
   inputLength: number;
   isValidTweet: boolean;
   isCharLimitExceeded: boolean;
@@ -60,6 +61,7 @@ type TweetOptionsProps = {
 
 export function TweetOptions({
   reply,
+  inputLimit,
   inputLength,
   isValidTweet,
   isCharLimitExceeded,
@@ -108,6 +110,7 @@ export function TweetOptions({
           }
         >
           <ProgressBar
+            inputLimit={inputLimit}
             inputLength={inputLength}
             isCharLimitExceeded={isCharLimitExceeded}
           />

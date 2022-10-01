@@ -13,7 +13,10 @@ export default function Status(): JSX.Element {
   } = useRouter();
 
   return (
-    <main className='flex min-h-screen w-full max-w-xl flex-col border-x border-border-color'>
+    <main
+      className='flex min-h-screen w-full max-w-xl flex-col 
+                 border-x border-border-color pb-[420px]'
+    >
       <HomeHeader className='flex items-center gap-4'>
         <Button
           className='p-2 hover:bg-primary/10 active:bg-primary/20'

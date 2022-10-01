@@ -26,7 +26,7 @@ type TweetProps = {
   parent?: { id: string; username: string };
   disabled?: boolean;
   children?: ReactNode;
-  replyTweet?: boolean;
+  replyModal?: boolean;
   closeModal?: () => void;
 };
 
@@ -41,7 +41,7 @@ export function Tweet({
   parent,
   disabled,
   children,
-  replyTweet,
+  replyModal,
   closeModal
 }: TweetProps): JSX.Element {
   const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
@@ -50,7 +50,7 @@ export function Tweet({
   const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
 
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { name, username, photoURL } = user as User;
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
@@ -72,7 +72,7 @@ export function Tweet({
 
     setLoading(true);
 
-    const isReplying = reply ?? replyTweet;
+    const isReplying = reply ?? replyModal;
 
     const tweetData: WithFieldValue<Omit<Status, 'id'>> = {
       text: inputValue.trim(),
@@ -95,7 +95,7 @@ export function Tweet({
 
     const { id } = await getDoc(statusRef);
 
-    if (!modal && !replyTweet) {
+    if (!modal && !replyModal) {
       discardTweet();
       setLoading(false);
     }
@@ -171,9 +171,11 @@ export function Tweet({
 
   const formId = useId();
 
+  const inputLimit = isAdmin ? 1280 : 280;
+
   const inputLength = inputValue.length;
   const isValidInput = !!inputValue.trim().length;
-  const isCharLimitExceeded = inputLength > 280;
+  const isCharLimitExceeded = inputLength > inputLimit;
 
   const isValidTweet =
     !isCharLimitExceeded && (isValidInput || isUploadingImages);
@@ -183,7 +185,7 @@ export function Tweet({
       className={cn('flex flex-col', {
         'cursor-not-allowed': disabled,
         '-mx-4': reply,
-        'gap-2': replyTweet
+        'gap-2': replyModal
       })}
       onSubmit={handleSubmit}
     >
@@ -212,7 +214,7 @@ export function Tweet({
           'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
           reply
             ? 'pt-3 pb-1'
-            : replyTweet
+            : replyModal
             ? 'pt-0'
             : ' border-b border-border-color',
           (disabled || loading) && 'pointer-events-none brightness-75'
@@ -239,7 +241,7 @@ export function Tweet({
             visited={visited}
             loading={loading}
             inputRef={inputRef}
-            replyTweet={replyTweet}
+            replyModal={replyModal}
             inputValue={inputValue}
             isValidTweet={isValidTweet}
             isUploadingImages={isUploadingImages}
@@ -260,6 +262,7 @@ export function Tweet({
           {(reply ? reply && visited && !loading : !loading) && (
             <TweetOptions
               reply={reply}
+              inputLimit={inputLimit}
               inputLength={inputLength}
               isValidTweet={isValidTweet}
               isCharLimitExceeded={isCharLimitExceeded}

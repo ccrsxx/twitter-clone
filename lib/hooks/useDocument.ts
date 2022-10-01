@@ -15,17 +15,17 @@ type DataWithUser<T> = UseDocument<T & { user: User }>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options: { includeUser: true }
+  options: { includeUser: true; allowNull?: boolean }
 ): DataWithUser<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser: false }
+  options?: { includeUser: false; allowNull?: boolean }
 ): UseDocument<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser?: boolean }
+  options?: { includeUser?: boolean; allowNull?: boolean }
 ): UseDocument<T> | DataWithUser<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
@@ -48,14 +48,15 @@ export function useDocument<T>(
     const unsubscribe = onSnapshot(docRef, (snapshot) => {
       const data = snapshot.data({ serverTimestamps: 'estimate' });
 
-      if (!data) {
+      if (options?.allowNull && !data) {
+        setData(null);
         setLoading(false);
         return;
       }
 
       if (options?.includeUser) void populateUser(data as DataWithRef<T>);
       else {
-        setData(data);
+        setData(data as T);
         setLoading(false);
       }
     });

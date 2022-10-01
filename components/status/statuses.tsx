@@ -13,7 +13,7 @@ export function Statuses(): JSX.Element {
       where('parent', '==', null),
       orderBy('createdAt', 'desc')
     ),
-    { includeUser: true }
+    { includeUser: true, allowNull: true }
   );
 
   if (loading) return <Loading className='mt-5' />;

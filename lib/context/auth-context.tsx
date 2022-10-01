@@ -28,9 +28,10 @@ type AuthContext = {
   user: User | null;
   error: Error | null;
   loading: boolean;
+  isAdmin: boolean;
   userBookmarks: Bookmark[] | null;
-  signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContext | null>(null);
@@ -152,13 +153,16 @@ export function AuthContextProvider({
     }
   };
 
+  const isAdmin = user ? user.username === 'ccrsxx' : false;
+
   const value = {
     user,
     error,
     loading,
+    isAdmin,
     userBookmarks,
-    signInWithGoogle,
-    signOut
+    signOut,
+    signInWithGoogle
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

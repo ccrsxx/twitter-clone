@@ -23,7 +23,7 @@ type TweetFormProps = {
   children: ReactNode;
   inputRef: RefObject<HTMLTextAreaElement>;
   inputValue: string;
-  replyTweet?: boolean;
+  replyModal?: boolean;
   isValidTweet: boolean;
   isUploadingImages: boolean;
   sendTweet: () => Promise<void>;
@@ -58,7 +58,7 @@ export function TweetForm({
   visited,
   children,
   inputRef,
-  replyTweet,
+  replyModal,
   inputValue,
   isValidTweet,
   isUploadingImages,
@@ -84,7 +84,7 @@ export function TweetForm({
     closeModal();
   };
 
-  const isVisibilityShown = visited && !reply && !replyTweet && !loading;
+  const isVisibilityShown = visited && !reply && !replyModal && !loading;
 
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
@@ -120,7 +120,7 @@ export function TweetForm({
             className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
             value={inputValue}
             placeholder={
-              reply || replyTweet ? 'Tweet your reply' : "What's happening?"
+              reply || replyModal ? 'Tweet your reply' : "What's happening?"
             }
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}

@@ -11,13 +11,13 @@ export function HomeHeader({
   className
 }: HomeHeaderProps): JSX.Element {
   return (
-    <div
+    <header
       className={cn(
         'sticky top-0 z-10 bg-black/60 px-4 py-2 backdrop-blur-md',
         className ?? 'flex items-center justify-between'
       )}
     >
       {children}
-    </div>
+    </header>
   );
 }

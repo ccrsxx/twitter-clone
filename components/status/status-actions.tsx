@@ -2,6 +2,7 @@ import { Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { manageReply, removePost } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
@@ -24,7 +25,6 @@ export const variants: Variants = {
 };
 
 type StatusActionsProps = {
-  isAdmin: boolean;
   isOwner: boolean;
   parentId?: string;
   statusId: string;
@@ -36,12 +36,12 @@ type StatusActionsProps = {
 // ! by putting the modal component outside of this component, like in the status.tsx modal
 
 export function StatusActions({
-  isAdmin,
   isOwner,
   parentId,
   statusId,
   username
 }: StatusActionsProps): JSX.Element {
+  const { isAdmin } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
   const isInAdminControl = isAdmin && !isOwner;

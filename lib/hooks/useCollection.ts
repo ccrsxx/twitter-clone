@@ -53,7 +53,8 @@ export function useCollection<T>(
         doc.data({ serverTimestamps: 'estimate' })
       );
 
-      if (!options?.allowNull && !data.length) {
+      if (options?.allowNull && !data.length) {
+        setData(null);
         setLoading(false);
         return;
       }

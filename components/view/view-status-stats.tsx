@@ -37,7 +37,8 @@ export function ViewStatusStats({
             <Link href={`/status/${statusId}${path ? `/${path}` : ''}`}>
               <a
                 className='mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
-                           transition hover:border-b-primary hover:duration-200'
+                           outline-none transition duration-200 hover:border-b-primary
+                           focus-visible:border-b-primary'
                 key={title}
               >
                 <NumberStats move={move} stats={stats} />

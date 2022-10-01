@@ -9,7 +9,7 @@ type ViewParentTweetProps = {
 };
 
 // TODO: add an intersection observer so that when user is at the top
-// ! of the page, the the main tweet is not refocused
+// ! of the page, sot that the the main tweet is not refocused
 
 export function ViewParentTweet({
   parentId
@@ -36,7 +36,7 @@ export function ViewParentTweet({
   if (!data)
     return (
       <div className='px-4 pt-3 pb-2'>
-        <p className='rounded-2xl bg-sidebar-background py-3 px-1 pl-4 text-secondary '>
+        <p className='rounded-2xl bg-sidebar-background py-3 px-1 pl-4 text-secondary'>
           This Tweet was deleted by the Tweet author.{' '}
           <a
             className='custom-underline text-accent-blue'

@@ -15,17 +15,17 @@ type DataWithUser<T> = UseCollection<T & { user: User }>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options: { includeUser: true; allowNull?: boolean }
+  options: { includeUser: true; allowNull?: boolean; disabled?: boolean }
 ): DataWithUser<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser: false; allowNull?: boolean }
+  options?: { includeUser?: false; allowNull?: boolean; disabled?: boolean }
 ): UseCollection<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: boolean; allowNull?: boolean }
+  options?: { includeUser?: boolean; allowNull?: boolean; disabled?: boolean }
 ): UseCollection<T> | DataWithUser<T> {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,12 @@ export function useCollection<T>(
   const cachedQuery = useCacheQuery(query);
 
   useEffect(() => {
-    setLoading(true);
+    if (options?.disabled) {
+      setData(null);
+      return;
+    }
+
+    if (!data) setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(
@@ -68,7 +73,7 @@ export function useCollection<T>(
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cachedQuery]);
+  }, [cachedQuery, options?.disabled]);
 
   return { data, loading };
 }

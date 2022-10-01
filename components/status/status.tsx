@@ -51,7 +51,7 @@ export function Status(status: StatusProps): JSX.Element {
 
   const statusLink = `/status/${statusId}`;
 
-  const userId = user?.uid ?? username;
+  const userId = user?.uid as string;
   const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
@@ -69,7 +69,7 @@ export function Status(status: StatusProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full my-8'
         open={open}
         closeModal={closeModal}
       >
@@ -79,7 +79,7 @@ export function Status(status: StatusProps): JSX.Element {
         <a
           className={cn(
             'smooth-tab relative flex flex-col gap-4 px-4 py-3 outline-none',
-            parentTweet ? 'pt-3 pb-0' : 'border-b border-border-color'
+            parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'border-b border-border-color'
           )}
         >
           <div className='grid grid-cols-[auto,1fr] gap-3'>
@@ -155,6 +155,7 @@ export function Status(status: StatusProps): JSX.Element {
                 )}
                 {!modal && (
                   <StatusStats
+                    reply={reply}
                     userId={userId}
                     isOwner={isOwner}
                     statusId={statusId}

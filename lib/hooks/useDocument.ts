@@ -20,7 +20,7 @@ export function useDocument<T>(
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser: false; allowNull?: boolean }
+  options?: { includeUser?: false; allowNull?: boolean }
 ): UseDocument<T>;
 
 export function useDocument<T>(

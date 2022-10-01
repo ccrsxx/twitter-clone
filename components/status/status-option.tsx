@@ -10,6 +10,7 @@ type StatusOption = {
   move?: number;
   stats?: number;
   iconName: IconName;
+  disabled?: boolean;
   className: string;
   viewStatus?: boolean;
   iconClassName: string;
@@ -20,6 +21,7 @@ export function StatusOption({
   tip,
   move,
   stats,
+  disabled,
   iconName,
   className,
   viewStatus,
@@ -30,7 +32,8 @@ export function StatusOption({
     <button
       className={cn(
         `group flex items-center gap-1 p-0 transition-none
-         inner:transition inner:duration-200`,
+         disabled:cursor-not-allowed inner:transition inner:duration-200`,
+        disabled && 'cursor-not-allowed',
         className
       )}
       onClick={preventBubbling(onClick)}

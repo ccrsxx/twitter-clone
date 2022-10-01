@@ -117,15 +117,15 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
           </div>
         </div>
       </div>
+      {reply && (
+        <p className='text-secondary'>
+          Replying to{' '}
+          <Link href={`/user/${username}`}>
+            <a className='custom-underline text-accent-blue'>@{username}</a>
+          </Link>
+        </p>
+      )}
       <div>
-        {reply && (
-          <p className='mb-3 text-secondary'>
-            Replying to{' '}
-            <Link href={`/user/${username}`}>
-              <a className='custom-underline text-accent-blue'>@{username}</a>
-            </Link>
-          </p>
-        )}
         {text && (
           <p className='whitespace-pre-line break-words text-2xl'>{text}</p>
         )}
@@ -144,6 +144,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
           />
           <StatusStats
             viewStatus
+            reply={reply}
             userId={userId}
             isOwner={isOwner}
             statusId={statusId}

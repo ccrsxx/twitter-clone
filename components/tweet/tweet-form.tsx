@@ -70,7 +70,10 @@ export function TweetForm({
 }: TweetFormProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
-  const handleKeyboardShortcut = ({ ctrlKey, key }: KeyboardEvent): void => {
+  const handleKeyboardShortcut = ({
+    key,
+    ctrlKey
+  }: KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!modal && key === 'Escape')
       if (isValidTweet) {
         inputRef.current?.blur();

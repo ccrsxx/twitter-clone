@@ -119,7 +119,7 @@ export function TweetOptions({
               <i className='h-8 w-[1px] bg-[#3e4144]' />
               <Button
                 className='group relative rounded-full border border-border-color-secondary 
-                       p-[1px] text-accent-blue'
+                           p-[1px] text-accent-blue'
                 disabled
               >
                 <HeroIcon className='h-5 w-5' iconName='PlusIcon' />

@@ -12,6 +12,7 @@ type StatusStatsProps = Pick<
   Status,
   'userLikes' | 'userTweets' | 'userReplies'
 > & {
+  reply?: boolean;
   userId: string;
   isOwner: boolean;
   statusId: string;
@@ -20,6 +21,7 @@ type StatusStatsProps = Pick<
 };
 
 export function StatusStats({
+  reply,
   userId,
   isOwner,
   statusId,
@@ -74,10 +76,11 @@ export function StatusStats({
     <>
       {isStatsVisible && (
         <ViewStatusStats
-          statusId={statusId}
           likeMove={likeMove}
+          userLikes={userLikes}
           tweetMove={tweetMove}
           replyMove={replyMove}
+          userTweets={userTweets}
           currentLikes={currentLikes}
           currentTweets={currentTweets}
           currentReplies={currentReplies}
@@ -98,6 +101,7 @@ export function StatusStats({
           iconName='ChatBubbleOvalLeftIcon'
           viewStatus={viewStatus}
           onClick={openModal}
+          disabled={reply}
         />
         <StatusOption
           className={cn(
@@ -144,6 +148,7 @@ export function StatusStats({
             iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
             tip='Analytics'
             iconName='ChartPieIcon'
+            disabled
           />
         )}
       </div>

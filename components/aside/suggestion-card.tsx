@@ -54,7 +54,7 @@ export function SuggestionCard({
         </div>
         <Button
           className='bg-follow-button-background px-4 py-1 font-bold text-follow-text-color
-                       transition duration-200 hover:brightness-90'
+                     duration-200 hover:brightness-90 active:brightness-75'
           onClick={preventBubbling()}
         >
           Follow

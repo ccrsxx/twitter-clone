@@ -216,7 +216,7 @@ export function Tweet({
             ? 'pt-3 pb-1'
             : replyModal
             ? 'pt-0'
-            : ' border-b border-border-color',
+            : 'border-b border-border-color',
           (disabled || loading) && 'pointer-events-none brightness-75'
         )}
         htmlFor={formId}

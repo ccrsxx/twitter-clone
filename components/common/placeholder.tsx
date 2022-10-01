@@ -17,7 +17,7 @@ export function Placeholder(): JSX.Element {
         />
       </i>
       <div className='flex items-center gap-2'>
-        <Loading className='!p-0' />
+        <Loading />
         <p className='text-lg font-bold'>Verifying session...</p>
       </div>
     </main>

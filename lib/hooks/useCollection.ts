@@ -35,6 +35,7 @@ export function useCollection<T>(
   useEffect(() => {
     if (options?.disabled) {
       setData(null);
+      setLoading(false);
       return;
     }
 

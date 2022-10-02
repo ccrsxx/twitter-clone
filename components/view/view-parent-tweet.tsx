@@ -3,16 +3,19 @@ import { doc } from 'firebase/firestore';
 import { useDocument } from '@lib/hooks/useDocument';
 import { statusesCollection } from '@lib/firebase/collections';
 import { Status } from '@components/status/status';
+import type { RefObject } from 'react';
 
 type ViewParentTweetProps = {
   parentId: string;
+  viewStatusRef: RefObject<HTMLElement>;
 };
 
 // TODO: add an intersection observer so that when user is at the top
 // ! of the page, sot that the the main tweet is not refocused
 
 export function ViewParentTweet({
-  parentId
+  parentId,
+  viewStatusRef
 }: ViewParentTweetProps): JSX.Element | null {
   const { data, loading } = useDocument(doc(statusesCollection, parentId), {
     includeUser: true,
@@ -25,10 +28,7 @@ export function ViewParentTweet({
   // });
 
   useEffect(() => {
-    if (!loading) {
-      const tweetRef = document.getElementById('tweet');
-      tweetRef?.scrollIntoView();
-    }
+    if (!loading) viewStatusRef.current?.scrollIntoView();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.id, loading]);
 

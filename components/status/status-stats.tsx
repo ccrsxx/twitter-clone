@@ -67,14 +67,11 @@ export function StatusStats({
   const postIsLiked = userLikes.includes(userId);
   const postIsTweeted = userTweets.includes(userId);
 
-  const isStatsVisible = !!(
-    viewStatus &&
-    (totalReplies || totalTweets || totalLikes)
-  );
+  const isStatsVisible = !!(totalReplies || totalTweets || totalLikes);
 
   return (
     <>
-      {isStatsVisible && (
+      {viewStatus && (
         <ViewStatusStats
           likeMove={likeMove}
           userLikes={userLikes}
@@ -84,6 +81,7 @@ export function StatusStats({
           currentLikes={currentLikes}
           currentTweets={currentTweets}
           currentReplies={currentReplies}
+          isStatsVisible={isStatsVisible}
         />
       )}
       <div

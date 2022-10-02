@@ -73,7 +73,7 @@ export function TweetStatsModal({
                             <p className='custom-underline -mb-1 self-start'>
                               {name}
                             </p>
-                            <p className='text-secondary'>{username}</p>
+                            <p className='text-secondary'>@{username}</p>
                           </div>
                           {currentUsername !== username && (
                             <Button

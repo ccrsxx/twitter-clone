@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef, useId } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
@@ -259,16 +259,18 @@ export function Tweet({
               />
             )}
           </TweetForm>
-          {(reply ? reply && visited && !loading : !loading) && (
-            <TweetOptions
-              reply={reply}
-              inputLimit={inputLimit}
-              inputLength={inputLength}
-              isValidTweet={isValidTweet}
-              isCharLimitExceeded={isCharLimitExceeded}
-              handleImageUpload={handleImageUpload}
-            />
-          )}
+          <AnimatePresence initial={false}>
+            {(reply ? reply && visited && !loading : !loading) && (
+              <TweetOptions
+                reply={reply}
+                inputLimit={inputLimit}
+                inputLength={inputLength}
+                isValidTweet={isValidTweet}
+                isCharLimitExceeded={isCharLimitExceeded}
+                handleImageUpload={handleImageUpload}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </label>
     </form>

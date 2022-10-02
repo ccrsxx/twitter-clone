@@ -17,6 +17,7 @@ type ViewStatusStats = {
   currentLikes: number;
   currentTweets: number;
   currentReplies: number;
+  isStatsVisible: boolean;
 };
 
 export type StatsType = 'Retweeted' | 'Liked';
@@ -29,7 +30,8 @@ export function ViewStatusStats({
   userTweets,
   currentLikes,
   currentTweets,
-  currentReplies
+  currentReplies,
+  isStatsVisible
 }: ViewStatusStats): JSX.Element {
   const [statsType, setStatsType] = useState<StatsType | null>(null);
 
@@ -74,10 +76,7 @@ export function ViewStatusStats({
   ];
 
   return (
-    <div
-      className='flex gap-4 px-1 py-4 text-secondary
-                 [&>button>div]:font-bold [&>button>div]:text-white'
-    >
+    <>
       <Modal
         modalClassName='bg-black rounded-2xl max-w-xl w-full h-[576px]'
         open={open}
@@ -90,30 +89,37 @@ export function ViewStatusStats({
           handleClose={handleClose}
         />
       </Modal>
-      {allStats.map(
-        ([title, type, move, stats], index) =>
-          !!stats && (
-            <button
-              className={cn(
-                `mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
+      {isStatsVisible && (
+        <div
+          className='flex gap-4 px-1 py-4 text-secondary
+                     [&>button>div]:font-bold [&>button>div]:text-white'
+        >
+          {allStats.map(
+            ([title, type, move, stats], index) =>
+              !!stats && (
+                <button
+                  className={cn(
+                    `mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
                  outline-none transition duration-200 hover:border-b-primary 
                  focus-visible:border-b-primary`,
-                index === 0 && 'cursor-not-allowed'
-              )}
-              key={title}
-              onClick={type ? handleOpen(type) : undefined}
-            >
-              <NumberStats move={move} stats={stats} />
-              <p>{`${
-                stats === 1
-                  ? title
-                  : stats > 1 && index === 0
-                  ? `${title.slice(0, -1)}ies`
-                  : `${title}s`
-              }`}</p>
-            </button>
-          )
+                    index === 0 && 'cursor-not-allowed'
+                  )}
+                  key={title}
+                  onClick={type ? handleOpen(type) : undefined}
+                >
+                  <NumberStats move={move} stats={stats} />
+                  <p>{`${
+                    stats === 1
+                      ? title
+                      : stats > 1 && index === 0
+                      ? `${title.slice(0, -1)}ies`
+                      : `${title}s`
+                  }`}</p>
+                </button>
+              )
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 import { doc, query, where, orderBy } from 'firebase/firestore';
@@ -23,18 +24,21 @@ export default function StatusId(): JSX.Element {
 
   const { user } = useAuth();
 
-  const { data: statusData, loading: postLoading } = useDocument(
+  const { data: statusData, loading: statusLoading } = useDocument(
     doc(statusesCollection, id as string),
     { includeUser: true, allowNull: true }
   );
 
-  const { data: repliesData, loading: commentsLoading } = useCollection(
+  const viewStatusRef = useRef<HTMLElement>(null);
+  const viewStatusHasParent = !!statusData?.parent;
+
+  const { data: repliesData, loading: repliesLoading } = useCollection(
     query(
       statusesCollection,
       where('parent.id', '==', id),
       orderBy('createdAt', 'desc')
     ),
-    { includeUser: true, allowNull: true }
+    { includeUser: true, allowNull: true, disabled: viewStatusHasParent }
   );
 
   const { text, images } = statusData ?? {};
@@ -59,7 +63,7 @@ export default function StatusId(): JSX.Element {
         action={back}
       />
       <section>
-        {postLoading ? (
+        {statusLoading ? (
           <Loading className='mt-5' />
         ) : !statusData ? (
           <>
@@ -69,10 +73,19 @@ export default function StatusId(): JSX.Element {
         ) : (
           <>
             {pageTitle && <SEO title={pageTitle} />}
-            {parentId && <ViewParentTweet parentId={parentId} />}
-            <ViewStatus reply={!!statusData.parent} {...statusData} />
+            {parentId && (
+              <ViewParentTweet
+                parentId={parentId}
+                viewStatusRef={viewStatusRef}
+              />
+            )}
+            <ViewStatus
+              viewStatusRef={viewStatusRef}
+              reply={viewStatusHasParent}
+              {...statusData}
+            />
             {statusData &&
-              (commentsLoading ? (
+              (repliesLoading ? (
                 <Loading className='mt-5' />
               ) : (
                 <AnimatePresence mode='popLayout'>

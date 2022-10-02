@@ -13,12 +13,14 @@ import { StatusActions } from '@components/status/status-actions';
 import { StatusStats } from '@components/status/status-stats';
 import { StatusDate } from '@components/status/status-date';
 import { Tweet } from '@components/tweet/tweet';
+import type { RefObject } from 'react';
 import type { User } from '@lib/types/user';
 import type { Status } from '@lib/types/status';
 
 type ViewStatusProps = Status & {
-  reply?: boolean;
   user: User;
+  reply?: boolean;
+  viewStatusRef?: RefObject<HTMLElement>;
 };
 
 export function ViewStatus(status: ViewStatusProps): JSX.Element {
@@ -33,6 +35,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
     createdAt,
     userTweets,
     userReplies,
+    viewStatusRef,
     user: { name, username, verified, photoURL }
   } = status;
 
@@ -48,7 +51,6 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
 
   return (
     <motion.article
-      id='tweet'
       className={cn(
         `smooth-tab h- relative flex cursor-default flex-col 
          gap-3 border-b border-border-color px-4 py-3 outline-none`,
@@ -56,7 +58,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
       )}
       {...variants}
       animate={{ ...variants.animate, transition: { duration: 0.2 } }}
-      exit={undefined}
+      ref={viewStatusRef}
     >
       <Modal
         className='flex items-start justify-center'

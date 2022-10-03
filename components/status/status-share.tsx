@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import cn from 'clsx';
 import { Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { toast } from 'react-hot-toast';
@@ -60,8 +61,11 @@ export function StatusShare({
       {({ open, close }): JSX.Element => (
         <>
           <Popover.Button
-            className='group relative flex items-center gap-1 p-0 outline-none transition-none
-                       transition hover:text-accent-blue'
+            className={cn(
+              `group relative flex items-center gap-1 p-0 outline-none 
+               transition-none hover:text-accent-blue`,
+              open && 'text-accent-blue inner:bg-accent-blue/10'
+            )}
           >
             <i
               className='relative rounded-full p-2 not-italic duration-200

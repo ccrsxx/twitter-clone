@@ -33,6 +33,7 @@ export function useDocument<T>(
   const cachedDocRef = useCacheRef(docRef);
 
   useEffect(() => {
+    setData(null);
     setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {

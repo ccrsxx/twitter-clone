@@ -58,6 +58,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
       )}
       {...variants}
       animate={{ ...variants.animate, transition: { duration: 0.2 } }}
+      exit={undefined}
       ref={viewStatusRef}
     >
       <Modal

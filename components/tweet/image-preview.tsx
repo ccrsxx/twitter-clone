@@ -138,7 +138,7 @@ export function ImagePreview({
                 className='absolute top-0 left-0 translate-x-1 translate-y-1
                            bg-follow-text-color/75 p-1 backdrop-blur-sm 
                            hover:bg-image-preview-hover-color/75'
-                onClick={preventBubbling(removeImage(id), true)}
+                onClick={preventBubbling(removeImage(id))}
               >
                 <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
               </Button>

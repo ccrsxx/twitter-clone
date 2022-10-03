@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
+import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
 import { ImagePreview } from '@components/tweet/image-preview';
@@ -75,12 +76,13 @@ export function Status(status: StatusProps): JSX.Element {
       >
         <ReplyTweetModal status={status} closeModal={closeModal} />
       </Modal>
-      <Link href={statusLink}>
+      <Link href={statusLink} scroll={!reply}>
         <a
           className={cn(
             'smooth-tab relative flex flex-col gap-4 px-4 py-3 outline-none',
             parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'border-b border-border-color'
           )}
+          onClick={reply ? delayScroll(100) : undefined}
         >
           <div className='grid grid-cols-[auto,1fr] gap-3'>
             <div className='flex flex-col items-center gap-2'>

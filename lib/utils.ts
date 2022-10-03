@@ -3,14 +3,18 @@ import type { MotionProps } from 'framer-motion';
 
 export function preventBubbling(
   callback?: ((...args: never[]) => unknown) | null,
-  stopPropagation?: boolean
+  noPreventDefault?: boolean
 ) {
   return (e: SyntheticEvent): void => {
-    if (stopPropagation) e.stopPropagation();
-    else e.preventDefault();
+    e.stopPropagation();
 
+    if (!noPreventDefault) e.preventDefault();
     if (callback) callback();
   };
+}
+
+export function delayScroll(ms: number) {
+  return (): NodeJS.Timeout => setTimeout(() => window.scrollTo(0, 0), ms);
 }
 
 export function sleep(ms: number): Promise<void> {

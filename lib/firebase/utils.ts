@@ -16,7 +16,7 @@ import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { storage } from './app';
 import {
   usersCollection,
-  statusesCollection,
+  tweetsCollection,
   userBookmarksCollection
 } from './collections';
 import type { WithFieldValue } from 'firebase/firestore';
@@ -43,8 +43,40 @@ export async function updateUsername(
   });
 }
 
-export async function removePost(statusId: string): Promise<void> {
-  const docRef = doc(statusesCollection, statusId);
+export async function manageFollow(
+  type: 'follow' | 'unfollow',
+  userId: string,
+  targetUserId: string
+): Promise<void> {
+  const userDocRef = doc(usersCollection, userId);
+  const targetUserDocRef = doc(usersCollection, targetUserId);
+
+  if (type === 'follow')
+    await Promise.all([
+      updateDoc(userDocRef, {
+        following: arrayUnion(targetUserId),
+        updatedAt: serverTimestamp()
+      }),
+      updateDoc(targetUserDocRef, {
+        followers: arrayUnion(userId),
+        updatedAt: serverTimestamp()
+      })
+    ]);
+  else
+    await Promise.all([
+      updateDoc(userDocRef, {
+        following: arrayRemove(targetUserId),
+        updatedAt: serverTimestamp()
+      }),
+      updateDoc(targetUserDocRef, {
+        followers: arrayRemove(userId),
+        updatedAt: serverTimestamp()
+      })
+    ]);
+}
+
+export async function removeTweet(tweetId: string): Promise<void> {
+  const docRef = doc(tweetsCollection, tweetId);
   await deleteDoc(docRef);
 }
 
@@ -73,24 +105,25 @@ export async function uploadImages(
 
 export async function manageReply(
   type: 'increment' | 'decrement',
-  statusId: string
+  tweetId: string
 ): Promise<void> {
-  const postRef = doc(statusesCollection, statusId);
+  const postRef = doc(tweetsCollection, tweetId);
   await updateDoc(postRef, {
     userReplies: increment(type === 'increment' ? 1 : -1),
     updatedAt: serverTimestamp()
   });
 }
 
-export function manageTweet(
-  type: 'tweet' | 'untweet',
+export function manageRetweet(
+  type: 'retweet' | 'unretweet',
   userId: string,
-  statusId: string
+  tweetId: string
 ) {
   return async (): Promise<void> => {
-    const postRef = doc(statusesCollection, statusId);
+    const postRef = doc(tweetsCollection, tweetId);
     await updateDoc(postRef, {
-      userTweets: type === 'tweet' ? arrayUnion(userId) : arrayRemove(userId),
+      userRetweets:
+        type === 'retweet' ? arrayUnion(userId) : arrayRemove(userId),
       updatedAt: serverTimestamp()
     });
   };
@@ -99,10 +132,10 @@ export function manageTweet(
 export function manageLike(
   type: 'like' | 'unlike',
   userId: string,
-  statusId: string
+  tweetId: string
 ) {
   return async (): Promise<void> => {
-    const postRef = doc(statusesCollection, statusId);
+    const postRef = doc(tweetsCollection, tweetId);
     await updateDoc(postRef, {
       userLikes: type === 'like' ? arrayUnion(userId) : arrayRemove(userId),
       updatedAt: serverTimestamp()
@@ -113,14 +146,14 @@ export function manageLike(
 export async function manageBookmark(
   type: 'bookmark' | 'unbookmark',
   userId: string,
-  statusId: string
+  tweetId: string
 ): Promise<void> {
-  const bookmarkRef = doc(userBookmarksCollection(userId), statusId);
+  const bookmarkRef = doc(userBookmarksCollection(userId), tweetId);
 
   if (type === 'bookmark') {
     const bookmarkData: WithFieldValue<Bookmark> = {
-      id: statusId,
-      ref: doc(statusesCollection, statusId),
+      id: tweetId,
+      ref: doc(tweetsCollection, tweetId),
       createdAt: serverTimestamp()
     };
 

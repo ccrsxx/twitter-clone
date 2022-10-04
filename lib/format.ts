@@ -13,12 +13,12 @@ const units = {
 
 export function formatDate(
   targetDate: Timestamp,
-  mode: 'status' | 'message' | 'full'
+  mode: 'tweet' | 'message' | 'full'
 ): string {
   const date = targetDate.toDate();
 
   if (mode === 'full') return getFullTime(date);
-  if (mode === 'status') return getPostTime(date);
+  if (mode === 'tweet') return getPostTime(date);
 
   return getShortTime(date);
 }

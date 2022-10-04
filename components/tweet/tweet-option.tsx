@@ -5,29 +5,29 @@ import { ToolTip } from '@components/ui/tooltip';
 import { NumberStats } from './number-stats';
 import type { IconName } from '@components/ui/hero-icon';
 
-type StatusOption = {
+type TweetOption = {
   tip: string;
   move?: number;
   stats?: number;
   iconName: IconName;
   disabled?: boolean;
   className: string;
-  viewStatus?: boolean;
+  viewTweet?: boolean;
   iconClassName: string;
   onClick?: (...args: unknown[]) => unknown;
 };
 
-export function StatusOption({
+export function TweetOption({
   tip,
   move,
   stats,
   disabled,
   iconName,
   className,
-  viewStatus,
+  viewTweet,
   iconClassName,
   onClick
-}: StatusOption): JSX.Element {
+}: TweetOption): JSX.Element {
   return (
     <button
       className={cn(
@@ -47,12 +47,12 @@ export function StatusOption({
         )}
       >
         <HeroIcon
-          className={viewStatus ? 'h-6 w-6' : 'h-5 w-5'}
+          className={viewTweet ? 'h-6 w-6' : 'h-5 w-5'}
           iconName={iconName}
         />
         <ToolTip tip={tip} />
       </i>
-      {!viewStatus && (
+      {!viewTweet && (
         <NumberStats move={move as number} stats={stats as number} />
       )}
     </button>

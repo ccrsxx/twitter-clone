@@ -9,19 +9,19 @@ import { preventBubbling } from '@lib/utils';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { variants } from './status-actions';
+import { variants } from './tweet-actions';
 
-type StatusShareProps = {
+type TweetShareProps = {
   userId: string;
-  statusId: string;
-  viewStatus?: boolean;
+  tweetId: string;
+  viewTweet?: boolean;
 };
 
-export function StatusShare({
+export function TweetShare({
   userId,
-  statusId,
-  viewStatus
-}: StatusShareProps): JSX.Element {
+  tweetId,
+  viewTweet
+}: TweetShareProps): JSX.Element {
   const { userBookmarks } = useAuth();
 
   const handleBookmark =
@@ -49,12 +49,12 @@ export function StatusShare({
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
     await navigator.clipboard.writeText(
-      `https://twitter-clone-ccrsxx.vercel.app/status/${statusId}`
+      `https://twitter-clone-ccrsxx.vercel.app/tweet/${tweetId}`
     );
     toast.success('Copied to clipboard');
   };
 
-  const isBookmarked = !!userBookmarks?.some(({ id }) => id === statusId);
+  const isBookmarked = !!userBookmarks?.some(({ id }) => id === tweetId);
 
   return (
     <Popover className='relative'>
@@ -75,7 +75,7 @@ export function StatusShare({
                          group-active:bg-accent-blue/20'
             >
               <HeroIcon
-                className={viewStatus ? 'h-6 w-6' : 'h-5 w-5'}
+                className={viewTweet ? 'h-6 w-6' : 'h-5 w-5'}
                 iconName='ArrowUpTrayIcon'
               />
               {!open && <ToolTip tip='Share' />}
@@ -103,7 +103,7 @@ export function StatusShare({
                     className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'bookmark', userId, statusId)
+                      handleBookmark(close, 'bookmark', userId, tweetId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkIcon' />
@@ -114,7 +114,7 @@ export function StatusShare({
                     className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
-                      handleBookmark(close, 'unbookmark', userId, statusId)
+                      handleBookmark(close, 'unbookmark', userId, tweetId)
                     )}
                   >
                     <HeroIcon iconName='BookmarkSlashIcon' />

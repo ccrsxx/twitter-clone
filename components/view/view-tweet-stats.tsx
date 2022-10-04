@@ -6,14 +6,13 @@ import { useModal } from '@lib/hooks/useModal';
 import { useCollection } from '@lib/hooks/useCollection';
 import { Modal } from '@components/modal/modal';
 import { TweetStatsModal } from '@components/modal/tweet-stats-modal';
-import { NumberStats } from '@components/status/number-stats';
+import { NumberStats } from '@components/tweet/number-stats';
+import type { Tweet } from '@lib/types/tweet';
 
-type ViewStatusStats = {
+type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
   likeMove: number;
-  userLikes: string[];
   tweetMove: number;
   replyMove: number;
-  userTweets: string[];
   currentLikes: number;
   currentTweets: number;
   currentReplies: number;
@@ -22,20 +21,20 @@ type ViewStatusStats = {
 
 export type StatsType = 'Retweeted' | 'Liked';
 
-export function ViewStatusStats({
+export function ViewTweetStats({
   likeMove,
   userLikes,
   tweetMove,
   replyMove,
-  userTweets,
+  userRetweets,
   currentLikes,
   currentTweets,
   currentReplies,
   isStatsVisible
-}: ViewStatusStats): JSX.Element {
+}: viewTweetStats): JSX.Element {
   const [statsType, setStatsType] = useState<StatsType | null>(null);
 
-  const [normalizedTweets, normalizedLikes] = [userTweets, userLikes].map(
+  const [normalizedTweets, normalizedLikes] = [userRetweets, userLikes].map(
     (arr) => (arr.length ? arr : [null])
   );
 
@@ -100,8 +99,8 @@ export function ViewStatusStats({
                 <button
                   className={cn(
                     `mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
-                 outline-none transition duration-200 hover:border-b-primary 
-                 focus-visible:border-b-primary`,
+                     outline-none transition duration-200 hover:border-b-primary 
+                     focus-visible:border-b-primary`,
                     index === 0 && 'cursor-not-allowed'
                   )}
                   key={title}

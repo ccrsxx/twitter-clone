@@ -1,7 +1,7 @@
 import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 import type { ImagesPreview } from './file';
 
-export type Status = {
+export type Tweet = {
   id: string;
   text: string;
   images: ImagesPreview | null;
@@ -10,18 +10,18 @@ export type Status = {
   createdBy: string;
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
-  userTweets: string[];
   userReplies: number;
+  userRetweets: string[];
 };
 
-export const statusConverter: FirestoreDataConverter<Status> = {
-  toFirestore(status) {
-    return { ...status };
+export const tweetConverter: FirestoreDataConverter<Tweet> = {
+  toFirestore(tweet) {
+    return { ...tweet };
   },
   fromFirestore(snapshot, options) {
     const { id } = snapshot;
     const data = snapshot.data(options);
 
-    return { id, ...data } as Status;
+    return { id, ...data } as Tweet;
   }
 };

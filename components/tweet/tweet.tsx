@@ -1,278 +1,178 @@
 import Link from 'next/link';
-import { useState, useEffect, useRef, useId } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import cn from 'clsx';
-import { toast } from 'react-hot-toast';
-import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { statusesCollection } from '@lib/firebase/collections';
-import { manageReply, uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
-import { sleep } from '@lib/utils';
-import { getImagesData } from '@lib/file';
+import { useModal } from '@lib/hooks/useModal';
+import { delayScroll } from '@lib/utils';
+import { Modal } from '@components/modal/modal';
+import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
+import { ImagePreview } from '@components/input/image-preview';
+import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { TweetForm, top } from './tweet-form';
-import { ImagePreview } from './image-preview';
-import { TweetOptions } from './tweet-options';
-import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
-import type { WithFieldValue } from 'firebase/firestore';
+import { TweetActions } from './tweet-actions';
+import { TweetStats } from './tweet-stats';
+import { TweetDate } from './tweet-date';
 import type { Variants } from 'framer-motion';
+import type { Tweet } from '@lib/types/tweet';
 import type { User } from '@lib/types/user';
-import type { Status } from '@lib/types/status';
-import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
-type TweetProps = {
-  modal?: boolean;
+export type TweetProps = Tweet & {
+  user: User;
   reply?: boolean;
-  parent?: { id: string; username: string };
-  disabled?: boolean;
-  children?: ReactNode;
-  replyModal?: boolean;
-  closeModal?: () => void;
+  modal?: boolean;
+  parentTweet?: boolean;
 };
 
 export const variants: Variants = {
   initial: { opacity: 0 },
-  animate: { opacity: 1 }
+  animate: { opacity: 1, transition: { duration: 0.8 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-export function Tweet({
-  modal,
-  reply,
-  parent,
-  disabled,
-  children,
-  replyModal,
-  closeModal
-}: TweetProps): JSX.Element {
-  const [selectedImages, setSelectedImages] = useState<FilesWithId>([]);
-  const [imagesPreview, setImagesPreview] = useState<ImagesPreview>([]);
-  const [inputValue, setInputValue] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [visited, setVisited] = useState(false);
+export function Tweet(tweet: TweetProps): JSX.Element {
+  const {
+    id: tweetId,
+    text,
+    reply,
+    modal,
+    images,
+    parent,
+    userLikes,
+    createdBy,
+    createdAt,
+    parentTweet,
+    userReplies,
+    userRetweets,
+    user: { name, username, verified, photoURL }
+  } = tweet;
 
-  const { user, isAdmin } = useAuth();
-  const { name, username, photoURL } = user as User;
+  const { user } = useAuth();
 
-  const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { open, openModal, closeModal } = useModal();
 
-  const previewCount = imagesPreview.length;
-  const isUploadingImages = !!previewCount;
+  const tweetLink = `/tweet/${tweetId}`;
 
-  useEffect(
-    () => {
-      if (modal) inputRef.current?.focus();
-      return () => imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const userId = user?.uid as string;
+  const userLink = `/user/${username}`;
 
-  const sendTweet = async (): Promise<void> => {
-    inputRef.current?.blur();
+  const isOwner = userId === createdBy;
 
-    setLoading(true);
-
-    const isReplying = reply ?? replyModal;
-
-    const tweetData: WithFieldValue<Omit<Status, 'id'>> = {
-      text: inputValue.trim(),
-      parent: isReplying && parent ? parent : null,
-      images: await uploadImages(user?.uid as string, selectedImages),
-      userLikes: [],
-      createdBy: user?.uid as string,
-      createdAt: serverTimestamp(),
-      updatedAt: null,
-      userTweets: [],
-      userReplies: 0
-    };
-
-    await sleep(500);
-
-    const [statusRef] = await Promise.all([
-      addDoc(statusesCollection, tweetData),
-      isReplying && manageReply('increment', parent?.id as string)
-    ]);
-
-    const { id } = await getDoc(statusRef);
-
-    if (!modal && !replyModal) {
-      discardTweet();
-      setLoading(false);
-    }
-
-    if (closeModal) closeModal();
-
-    toast.success(
-      () => (
-        <span className='flex gap-2'>
-          Your Tweet was sent.
-          <Link href={`/status/${id}`}>
-            <a className='custom-underline font-bold'>View</a>
-          </Link>
-        </span>
-      ),
-      { duration: 6000 }
-    );
-  };
-
-  const handleImageUpload = (
-    e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
-  ): void => {
-    const files = 'clipboardData' in e ? e.clipboardData.files : e.target.files;
-
-    const imagesData = getImagesData(files, previewCount);
-
-    if (imagesData) {
-      const { imagesPreviewData, selectedImagesData } = imagesData;
-
-      setImagesPreview([...imagesPreview, ...imagesPreviewData]);
-      setSelectedImages([...selectedImages, ...selectedImagesData]);
-
-      inputRef.current?.focus();
-    }
-  };
-
-  const removeImage = (targetId: number) => (): void => {
-    setSelectedImages(selectedImages.filter(({ id }) => id !== targetId));
-    setImagesPreview(imagesPreview.filter(({ id }) => id !== targetId));
-
-    const { src } = imagesPreview.find(
-      ({ id }) => id === targetId
-    ) as ImageData;
-
-    URL.revokeObjectURL(src);
-  };
-
-  const cleanImage = (): void => {
-    imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src));
-
-    setSelectedImages([]);
-    setImagesPreview([]);
-  };
-
-  const discardTweet = (): void => {
-    setInputValue('');
-    setVisited(false);
-    cleanImage();
-
-    inputRef.current?.blur();
-  };
-
-  const handleChange = ({
-    target: { value }
-  }: ChangeEvent<HTMLTextAreaElement>): void => setInputValue(value);
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
-    e.preventDefault();
-    void sendTweet();
-  };
-
-  const handleFocus = (): void => setVisited(!loading);
-
-  const formId = useId();
-
-  const inputLimit = isAdmin ? 1280 : 280;
-
-  const inputLength = inputValue.length;
-  const isValidInput = !!inputValue.trim().length;
-  const isCharLimitExceeded = inputLength > inputLimit;
-
-  const isValidTweet =
-    !isCharLimitExceeded && (isValidInput || isUploadingImages);
+  const { id: parentId, username: parentUsername = username } = parent ?? {};
 
   return (
-    <form
-      className={cn('flex flex-col', {
-        'cursor-not-allowed': disabled,
-        '-mx-4': reply,
-        'gap-2': replyModal
-      })}
-      onSubmit={handleSubmit}
+    <motion.article
+      layout='position'
+      {...(!modal ? variants : {})}
+      animate={{
+        ...variants.animate,
+        ...(parentTweet && { transition: { duration: 0.2 } })
+      }}
     >
-      {loading && (
-        <motion.i
-          className={cn(
-            'h-1 animate-pulse bg-accent-blue',
-            modal && 'mx-auto w-[calc(100%-0.75rem)] rounded-t-2xl'
-          )}
-          {...variants}
-        />
-      )}
-      {children}
-      {reply && visited && (
-        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...top}>
-          Replying to{' '}
-          <Link href={`/user/${parent?.username as string}`}>
-            <a className='custom-underline text-accent-blue'>
-              {parent?.username as string}
-            </a>
-          </Link>
-        </motion.p>
-      )}
-      <label
-        className={cn(
-          'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
-          reply
-            ? 'pt-3 pb-1'
-            : replyModal
-            ? 'pt-0'
-            : 'border-b border-border-color',
-          (disabled || loading) && 'pointer-events-none brightness-75'
-        )}
-        htmlFor={formId}
+      <Modal
+        className='flex items-start justify-center'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full my-8'
+        open={open}
+        closeModal={closeModal}
       >
-        <Link href={`/user/${username}`}>
-          <a className='blur-picture self-start'>
-            <NextImage
-              imgClassName='rounded-full'
-              width={48}
-              height={48}
-              src={photoURL}
-              alt={name}
-              useSkeleton
-            />
-          </a>
-        </Link>
-        <div className='flex w-full flex-col gap-4'>
-          <TweetForm
-            modal={modal}
-            reply={reply}
-            formId={formId}
-            visited={visited}
-            loading={loading}
-            inputRef={inputRef}
-            replyModal={replyModal}
-            inputValue={inputValue}
-            isValidTweet={isValidTweet}
-            isUploadingImages={isUploadingImages}
-            sendTweet={sendTweet}
-            handleFocus={handleFocus}
-            discardTweet={discardTweet}
-            handleChange={handleChange}
-            handleImageUpload={handleImageUpload}
-          >
-            {isUploadingImages && (
-              <ImagePreview
-                previewCount={previewCount}
-                imagesPreview={imagesPreview}
-                removeImage={!loading ? removeImage : undefined}
-              />
-            )}
-          </TweetForm>
-          <AnimatePresence initial={false}>
-            {(reply ? reply && visited && !loading : !loading) && (
-              <TweetOptions
-                reply={reply}
-                inputLimit={inputLimit}
-                inputLength={inputLength}
-                isValidTweet={isValidTweet}
-                isCharLimitExceeded={isCharLimitExceeded}
-                handleImageUpload={handleImageUpload}
-              />
-            )}
-          </AnimatePresence>
-        </div>
-      </label>
-    </form>
+        <ReplyTweetModal tweet={tweet} closeModal={closeModal} />
+      </Modal>
+      <Link href={tweetLink} scroll={!reply}>
+        <a
+          className={cn(
+            'smooth-tab relative flex flex-col gap-4 px-4 py-3 outline-none',
+            parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'border-b border-border-color'
+          )}
+          onClick={reply ? delayScroll(100) : undefined}
+        >
+          <div className='grid grid-cols-[auto,1fr] gap-3'>
+            <div className='flex flex-col items-center gap-2'>
+              <Link href={userLink}>
+                <a className='blur-picture self-start'>
+                  <NextImage
+                    imgClassName='rounded-full'
+                    width={48}
+                    height={48}
+                    src={photoURL}
+                    alt={name}
+                  />
+                </a>
+              </Link>
+              {parentTweet && (
+                <i className='h-full w-0.5 bg-line-reply-color' />
+              )}
+            </div>
+            <div className='flex min-w-0 flex-col'>
+              <div className='text-secondary'>
+                <div className='flex gap-1'>
+                  <div className='flex items-center gap-1 text-primary'>
+                    <Link href={userLink}>
+                      <a className='custom-underline font-bold'>{name}</a>
+                    </Link>
+                    {verified && (
+                      <i>
+                        <HeroIcon
+                          className='h-5 w-5'
+                          iconName='CheckBadgeIcon'
+                          solid
+                        />
+                      </i>
+                    )}
+                  </div>
+                  <Link href={userLink}>
+                    <a className='outline-none' tabIndex={-1}>
+                      @{username}
+                    </a>
+                  </Link>
+                  <TweetDate tweetLink={tweetLink} createdAt={createdAt} />
+                </div>
+                {!modal && (
+                  <TweetActions
+                    isOwner={isOwner}
+                    tweetId={tweetId}
+                    parentId={parentId}
+                    username={username}
+                    createdBy={createdBy}
+                  />
+                )}
+              </div>
+              {(reply || modal) && (
+                <p className={cn('text-secondary', modal && 'order-1 my-2')}>
+                  Replying to{' '}
+                  <Link href={`/user/${parentUsername}`}>
+                    <a className='custom-underline text-accent-blue'>
+                      @{parentUsername}
+                    </a>
+                  </Link>
+                </p>
+              )}
+              {text && (
+                <p className='whitespace-pre-line break-words'>{text}</p>
+              )}
+              <div className='mt-1 flex flex-col gap-2'>
+                {images && (
+                  <ImagePreview
+                    tweet
+                    imagesPreview={images}
+                    previewCount={images.length}
+                  />
+                )}
+                {!modal && (
+                  <TweetStats
+                    reply={reply}
+                    userId={userId}
+                    isOwner={isOwner}
+                    tweetId={tweetId}
+                    userLikes={userLikes}
+                    userReplies={userReplies}
+                    userRetweets={userRetweets}
+                    openModal={!parent ? openModal : undefined}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </a>
+      </Link>
+    </motion.article>
   );
 }

@@ -8,7 +8,7 @@ import { Button } from '@components/ui/button';
 import { Loading } from '@components/ui/loading';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
-import type { StatsType } from '@components/view/view-status-stats';
+import type { StatsType } from '@components/view/view-tweet-stats';
 
 type TweetStatsModalProps = {
   data: User[] | null;

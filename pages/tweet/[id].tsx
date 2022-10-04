@@ -2,49 +2,49 @@ import { useRef } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatePresence } from 'framer-motion';
 import { doc, query, where, orderBy } from 'firebase/firestore';
-import { statusesCollection } from '@lib/firebase/collections';
+import { tweetsCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
 import { MainHeader } from '@components/home/main-header';
-import { Status } from '@components/status/status';
-import { ViewStatus } from '@components/view/view-status';
+import { Tweet } from '@components/tweet/tweet';
+import { ViewTweet } from '@components/view/view-tweet';
 import { SEO } from '@components/common/seo';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import { ViewParentTweet } from '@components/view/view-parent-tweet';
 import type { ReactElement, ReactNode } from 'react';
 
-export default function StatusId(): JSX.Element {
+export default function TweetId(): JSX.Element {
   const {
     query: { id },
     back
   } = useRouter();
 
-  const { data: statusData, loading: statusLoading } = useDocument(
-    doc(statusesCollection, id as string),
+  const { data: tweetData, loading: tweetLoading } = useDocument(
+    doc(tweetsCollection, id as string),
     { includeUser: true, allowNull: true }
   );
 
-  const viewStatusRef = useRef<HTMLElement>(null);
-  const viewStatusHasParent = !!statusData?.parent;
+  const viewTweetRef = useRef<HTMLElement>(null);
+  const viewTweetHasParent = !!tweetData?.parent;
 
   const { data: repliesData, loading: repliesLoading } = useCollection(
     query(
-      statusesCollection,
+      tweetsCollection,
       where('parent.id', '==', id),
       orderBy('createdAt', 'desc')
     ),
-    { includeUser: true, allowNull: true, disabled: viewStatusHasParent }
+    { includeUser: true, allowNull: true, disabled: viewTweetHasParent }
   );
 
-  const { text, images } = statusData ?? {};
+  const { text, images } = tweetData ?? {};
 
   const imagesLength = images?.length ?? 0;
-  const parentId = statusData?.parent?.id;
+  const parentId = tweetData?.parent?.id;
 
-  const pageTitle = statusData
-    ? `${statusData.user.username} on Twitter: "${text ? `${text} ` : ''}${
+  const pageTitle = tweetData
+    ? `${tweetData.user.username} on Twitter: "${text ? `${text} ` : ''}${
         images ? `(${imagesLength} image${imagesLength > 1 ? 's' : ''})` : ''
       }" / Twitter`
     : null;
@@ -60,9 +60,9 @@ export default function StatusId(): JSX.Element {
         action={back}
       />
       <section>
-        {statusLoading ? (
+        {tweetLoading ? (
           <Loading className='mt-5' />
-        ) : !statusData ? (
+        ) : !tweetData ? (
           <>
             <SEO title='Tweet not found / Twitter' />
             <Error message='Tweet not found' />
@@ -73,21 +73,21 @@ export default function StatusId(): JSX.Element {
             {parentId && (
               <ViewParentTweet
                 parentId={parentId}
-                viewStatusRef={viewStatusRef}
+                viewTweetRef={viewTweetRef}
               />
             )}
-            <ViewStatus
-              viewStatusRef={viewStatusRef}
-              reply={viewStatusHasParent}
-              {...statusData}
+            <ViewTweet
+              reply={viewTweetHasParent}
+              viewTweetRef={viewTweetRef}
+              {...tweetData}
             />
-            {statusData &&
+            {tweetData &&
               (repliesLoading ? (
                 <Loading className='mt-5' />
               ) : (
                 <AnimatePresence mode='popLayout'>
-                  {repliesData?.map((comment) => (
-                    <Status reply {...comment} key={comment.id} />
+                  {repliesData?.map((tweet) => (
+                    <Tweet reply {...tweet} key={tweet.id} />
                   ))}
                 </AnimatePresence>
               ))}
@@ -98,7 +98,7 @@ export default function StatusId(): JSX.Element {
   );
 }
 
-StatusId.getLayout = (page: ReactElement): ReactNode => (
+TweetId.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedRoute>
     <Layout>
       <HomeLayout>{page}</HomeLayout>

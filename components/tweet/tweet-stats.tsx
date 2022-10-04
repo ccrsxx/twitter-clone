@@ -2,37 +2,37 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import cn from 'clsx';
-import { manageTweet, manageLike } from '@lib/firebase/utils';
-import { ViewStatusStats } from '@components/view/view-status-stats';
-import { StatusOption } from './status-option';
-import { StatusShare } from './status-share';
-import type { Status } from '@lib/types/status';
+import { manageRetweet, manageLike } from '@lib/firebase/utils';
+import { ViewTweetStats } from '@components/view/view-tweet-stats';
+import { TweetOption } from './tweet-option';
+import { TweetShare } from './tweet-share';
+import type { Tweet } from '@lib/types/tweet';
 
-type StatusStatsProps = Pick<
-  Status,
-  'userLikes' | 'userTweets' | 'userReplies'
+type TweetStatsProps = Pick<
+  Tweet,
+  'userLikes' | 'userRetweets' | 'userReplies'
 > & {
   reply?: boolean;
   userId: string;
   isOwner: boolean;
-  statusId: string;
-  viewStatus?: boolean;
+  tweetId: string;
+  viewTweet?: boolean;
   openModal?: () => void;
 };
 
-export function StatusStats({
+export function TweetStats({
   reply,
   userId,
   isOwner,
-  statusId,
+  tweetId,
   userLikes,
-  viewStatus,
-  userTweets,
+  viewTweet,
+  userRetweets,
   userReplies: totalReplies,
   openModal
-}: StatusStatsProps): JSX.Element {
+}: TweetStatsProps): JSX.Element {
   const totalLikes = userLikes.length;
-  const totalTweets = userTweets.length;
+  const totalTweets = userRetweets.length;
 
   const [{ currentReplies, currentTweets, currentLikes }, setCurrentStats] =
     useState({
@@ -65,19 +65,19 @@ export function StatusStats({
   );
 
   const postIsLiked = userLikes.includes(userId);
-  const postIsTweeted = userTweets.includes(userId);
+  const postIsRetweeted = userRetweets.includes(userId);
 
   const isStatsVisible = !!(totalReplies || totalTweets || totalLikes);
 
   return (
     <>
-      {viewStatus && (
-        <ViewStatusStats
+      {viewTweet && (
+        <ViewTweetStats
           likeMove={likeMove}
           userLikes={userLikes}
           tweetMove={tweetMove}
           replyMove={replyMove}
-          userTweets={userTweets}
+          userRetweets={userRetweets}
           currentLikes={currentLikes}
           currentTweets={currentTweets}
           currentReplies={currentReplies}
@@ -87,38 +87,38 @@ export function StatusStats({
       <div
         className={cn(
           'flex text-secondary inner:outline-none',
-          viewStatus ? 'justify-around py-2' : 'max-w-md justify-between'
+          viewTweet ? 'justify-around py-2' : 'max-w-md justify-between'
         )}
       >
-        <StatusOption
+        <TweetOption
           className='hover:text-accent-blue'
           iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
           tip='Reply'
           move={replyMove}
           stats={currentReplies}
           iconName='ChatBubbleOvalLeftIcon'
-          viewStatus={viewStatus}
+          viewTweet={viewTweet}
           onClick={openModal}
           disabled={reply}
         />
-        <StatusOption
+        <TweetOption
           className={cn(
             'hover:text-accent-green',
-            postIsTweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
+            postIsRetweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
           )}
           iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20'
-          tip={postIsTweeted ? 'Undo Retweet' : 'Retweet'}
+          tip={postIsRetweeted ? 'Undo Retweet' : 'Retweet'}
           move={tweetMove}
           stats={currentTweets}
           iconName='ArrowPathRoundedSquareIcon'
-          viewStatus={viewStatus}
-          onClick={manageTweet(
-            postIsTweeted ? 'untweet' : 'tweet',
+          viewTweet={viewTweet}
+          onClick={manageRetweet(
+            postIsRetweeted ? 'unretweet' : 'retweet',
             userId,
-            statusId
+            tweetId
           )}
         />
-        <StatusOption
+        <TweetOption
           className={cn(
             'hover:text-accent-pink',
             postIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
@@ -128,20 +128,12 @@ export function StatusStats({
           move={likeMove}
           stats={currentLikes}
           iconName='HeartIcon'
-          viewStatus={viewStatus}
-          onClick={manageLike(
-            postIsLiked ? 'unlike' : 'like',
-            userId,
-            statusId
-          )}
+          viewTweet={viewTweet}
+          onClick={manageLike(postIsLiked ? 'unlike' : 'like', userId, tweetId)}
         />
-        <StatusShare
-          userId={userId}
-          statusId={statusId}
-          viewStatus={viewStatus}
-        />
+        <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
         {isOwner && (
-          <StatusOption
+          <TweetOption
             className='hover:text-accent-blue'
             iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
             tip='Analytics'

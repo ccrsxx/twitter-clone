@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { variants } from './tweet';
+import { variants } from './input';
 import { ProgressBar } from './progress-bar';
 import type { ChangeEvent, ClipboardEvent } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
@@ -48,7 +48,7 @@ const options: Options = [
   }
 ];
 
-type TweetOptionsProps = {
+type InputOptionsProps = {
   reply?: boolean;
   inputLimit: number;
   inputLength: number;
@@ -59,14 +59,14 @@ type TweetOptionsProps = {
   ) => void;
 };
 
-export function TweetOptions({
+export function InputOptions({
   reply,
   inputLimit,
   inputLength,
   isValidTweet,
   isCharLimitExceeded,
   handleImageUpload
-}: TweetOptionsProps): JSX.Element {
+}: InputOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const onClick = (): void => inputFileRef.current?.click();

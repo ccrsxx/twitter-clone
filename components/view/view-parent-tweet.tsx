@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { doc } from 'firebase/firestore';
 import { useDocument } from '@lib/hooks/useDocument';
-import { statusesCollection } from '@lib/firebase/collections';
-import { Status } from '@components/status/status';
+import { tweetsCollection } from '@lib/firebase/collections';
+import { Tweet } from '@components/tweet/tweet';
 import type { RefObject } from 'react';
 
 type ViewParentTweetProps = {
   parentId: string;
-  viewStatusRef: RefObject<HTMLElement>;
+  viewTweetRef: RefObject<HTMLElement>;
 };
 
 // TODO: add an intersection observer so that when user is at the top
@@ -15,9 +15,9 @@ type ViewParentTweetProps = {
 
 export function ViewParentTweet({
   parentId,
-  viewStatusRef
+  viewTweetRef
 }: ViewParentTweetProps): JSX.Element | null {
-  const { data, loading } = useDocument(doc(statusesCollection, parentId), {
+  const { data, loading } = useDocument(doc(tweetsCollection, parentId), {
     includeUser: true,
     allowNull: true
   });
@@ -28,7 +28,7 @@ export function ViewParentTweet({
   // });
 
   useEffect(() => {
-    if (!loading) viewStatusRef.current?.scrollIntoView();
+    if (!loading) viewTweetRef.current?.scrollIntoView();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data?.id, loading]);
 
@@ -50,5 +50,5 @@ export function ViewParentTweet({
       </div>
     );
 
-  return <Status parentTweet {...data} />;
+  return <Tweet parentTweet {...data} />;
 }

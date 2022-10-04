@@ -9,6 +9,8 @@ export type User = {
   username: string;
   photoURL: string;
   verified: boolean;
+  following: string[];
+  followers: string[];
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
 };

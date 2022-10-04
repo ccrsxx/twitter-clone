@@ -1,24 +1,24 @@
+import { Input } from '@components/input/input';
 import { Tweet } from '@components/tweet/tweet';
-import { Status } from '@components/status/status';
-import type { StatusProps } from '@components/status/status';
+import type { TweetProps } from '@components/tweet/tweet';
 
 type ReplyTweetModalProps = {
-  status: StatusProps;
+  tweet: TweetProps;
   closeModal: () => void;
 };
 
 export function ReplyTweetModal({
-  status,
+  tweet,
   closeModal
 }: ReplyTweetModalProps): JSX.Element {
   return (
-    <Tweet
+    <Input
       modal
       replyModal
-      parent={{ id: status.id, username: status.user.username }}
+      parent={{ id: tweet.id, username: tweet.user.username }}
       closeModal={closeModal}
     >
-      <Status modal parentTweet {...status} />
-    </Tweet>
+      <Tweet modal parentTweet {...tweet} />
+    </Input>
   );
 }

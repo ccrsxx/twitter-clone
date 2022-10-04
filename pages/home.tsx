@@ -1,16 +1,16 @@
 import { AnimatePresence } from 'framer-motion';
 import { query, where, orderBy } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
-import { statusesCollection } from '@lib/firebase/collections';
+import { tweetsCollection } from '@lib/firebase/collections';
 import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
 import { SEO } from '@components/common/seo';
-import { Tweet } from '@components/tweet/tweet';
+import { Input } from '@components/input/input';
 import { NewUsername } from '@components/home/new-username';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
 import { MainHeader } from '@components/home/main-header';
-import { Status } from '@components/status/status';
+import { Tweet } from '@components/tweet/tweet';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import type { ReactElement, ReactNode } from 'react';
@@ -18,7 +18,7 @@ import type { ReactElement, ReactNode } from 'react';
 export default function Home(): JSX.Element {
   const { data, loading } = useCollection(
     query(
-      statusesCollection,
+      tweetsCollection,
       where('parent', '==', null),
       orderBy('createdAt', 'desc')
     ),
@@ -35,7 +35,7 @@ export default function Home(): JSX.Element {
           <ToolTip tip='Top tweets' />
         </Button>
       </MainHeader>
-      <Tweet />
+      <Input />
       <section>
         {loading ? (
           <Loading className='mt-5' />
@@ -43,8 +43,8 @@ export default function Home(): JSX.Element {
           <Error message='Something went wrong' />
         ) : (
           <AnimatePresence mode='popLayout'>
-            {data?.map((post) => (
-              <Status {...post} key={post.id} />
+            {data?.map((tweet) => (
+              <Tweet {...tweet} key={tweet.id} />
             ))}
           </AnimatePresence>
         )}

@@ -5,27 +5,27 @@ import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
-import { ImagePreview } from '@components/tweet/image-preview';
+import { ImagePreview } from '@components/input/image-preview';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import { variants } from '@components/status/status';
-import { StatusActions } from '@components/status/status-actions';
-import { StatusStats } from '@components/status/status-stats';
-import { StatusDate } from '@components/status/status-date';
-import { Tweet } from '@components/tweet/tweet';
+import { variants } from '@components/tweet/tweet';
+import { TweetActions } from '@components/tweet/tweet-actions';
+import { TweetStats } from '@components/tweet/tweet-stats';
+import { TweetDate } from '@components/tweet/tweet-date';
+import { Input } from '@components/input/input';
 import type { RefObject } from 'react';
 import type { User } from '@lib/types/user';
-import type { Status } from '@lib/types/status';
+import type { Tweet } from '@lib/types/tweet';
 
-type ViewStatusProps = Status & {
+type ViewTweetProps = Tweet & {
   user: User;
   reply?: boolean;
-  viewStatusRef?: RefObject<HTMLElement>;
+  viewTweetRef?: RefObject<HTMLElement>;
 };
 
-export function ViewStatus(status: ViewStatusProps): JSX.Element {
+export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
   const {
-    id: statusId,
+    id: tweetId,
     text,
     reply,
     images,
@@ -33,16 +33,16 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
     userLikes,
     createdBy,
     createdAt,
-    userTweets,
+    userRetweets: userTweets,
     userReplies,
-    viewStatusRef,
+    viewTweetRef,
     user: { name, username, verified, photoURL }
-  } = status;
+  } = tweet;
 
   const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
-  const statusLink = `/status/${statusId}`;
+  const tweetLink = `/tweet/${tweetId}`;
 
   const userId = user?.uid as string;
   const userLink = `/user/${username}`;
@@ -59,7 +59,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
       {...variants}
       animate={{ ...variants.animate, transition: { duration: 0.2 } }}
       exit={undefined}
-      ref={viewStatusRef}
+      ref={viewTweetRef}
     >
       <Modal
         className='flex items-start justify-center'
@@ -67,7 +67,7 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <ReplyTweetModal status={status} closeModal={closeModal} />
+        <ReplyTweetModal tweet={tweet} closeModal={closeModal} />
       </Modal>
       <div className='flex flex-col gap-2'>
         {reply && (
@@ -112,10 +112,11 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
                 </a>
               </Link>
             </div>
-            <StatusActions
+            <TweetActions
               isOwner={isOwner}
-              statusId={statusId}
+              tweetId={tweetId}
               username={username}
+              createdBy={createdBy}
             />
           </div>
         </div>
@@ -134,32 +135,28 @@ export function ViewStatus(status: ViewStatusProps): JSX.Element {
         )}
         {images && (
           <ImagePreview
-            status
+            tweet
             imagesPreview={images}
             previewCount={images.length}
           />
         )}
         <div className='inner:border-b inner:border-border-color'>
-          <StatusDate
-            viewStatus
-            statusLink={statusLink}
-            createdAt={createdAt}
-          />
-          <StatusStats
-            viewStatus
+          <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
+          <TweetStats
+            viewTweet
             reply={reply}
             userId={userId}
             isOwner={isOwner}
-            statusId={statusId}
+            tweetId={tweetId}
             userLikes={userLikes}
-            userTweets={userTweets}
+            userRetweets={userTweets}
             userReplies={userReplies}
             openModal={!parent ? openModal : undefined}
           />
         </div>
-        <Tweet
+        <Input
           reply
-          parent={{ id: statusId, username: username }}
+          parent={{ id: tweetId, username: username }}
           disabled={!!parent}
         />
       </div>

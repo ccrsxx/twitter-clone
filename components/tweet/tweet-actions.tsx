@@ -4,7 +4,7 @@ import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
-import { manageReply, removePost } from '@lib/firebase/utils';
+import { manageFollow, manageReply, removeTweet } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
@@ -13,6 +13,8 @@ import { ToolTip } from '@components/ui/tooltip';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import type { Variants } from 'framer-motion';
+import type { Tweet } from '@lib/types/tweet';
+import type { User } from '@lib/types/user';
 
 export const variants: Variants = {
   initial: { opacity: 0, y: -25 },
@@ -24,31 +26,32 @@ export const variants: Variants = {
   exit: { opacity: 0, y: -25, transition: { duration: 0.2 } }
 };
 
-type StatusActionsProps = {
+type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   isOwner: boolean;
+  tweetId: string;
   parentId?: string;
-  statusId: string;
   username: string;
 };
 
 // TODO: fix bugs on hover, use popover for now instead of menu
 // ! There's a workaround for this bug, but it's not ideal, you can prevent bubbling
-// ! by putting the modal component outside of this component, like in the status.tsx modal
+// ! by putting the modal component outside of this component, like in the tweet.tsx modal
 
-export function StatusActions({
+export function TweetActions({
   isOwner,
+  tweetId,
   parentId,
-  statusId,
-  username
-}: StatusActionsProps): JSX.Element {
-  const { isAdmin } = useAuth();
+  username,
+  createdBy
+}: TweetActionsProps): JSX.Element {
+  const { user, isAdmin } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
   const isInAdminControl = isAdmin && !isOwner;
 
-  const handleClose = async (): Promise<void> => {
+  const handleRemove = async (): Promise<void> => {
     await Promise.all([
-      removePost(statusId),
+      removeTweet(tweetId),
       parentId && manageReply('decrement', parentId)
     ]);
     toast.success(
@@ -56,6 +59,23 @@ export function StatusActions({
     );
     closeModal();
   };
+
+  const handleFollow =
+    (closeMenu: () => void, ...args: Parameters<typeof manageFollow>) =>
+    async (): Promise<void> => {
+      const [type] = args;
+
+      closeMenu();
+      await manageFollow(...args);
+
+      toast.success(
+        `You ${type === 'follow' ? 'followed' : 'unfollowed'} @${username}`
+      );
+    };
+
+  const { uid: userId, following } = user as User;
+
+  const userIsFollowed = following.includes(createdBy);
 
   const isAuthorized = isAdmin || isOwner;
 
@@ -75,7 +95,7 @@ export function StatusActions({
           }, and from Twitter search results.`}
           mainBtnLabel='Delete'
           focusOnMainBtn
-          action={handleClose}
+          action={handleRemove}
           closeModal={closeModal}
         />
       </Modal>
@@ -132,10 +152,26 @@ export function StatusActions({
                     <Popover.Button
                       className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                       as={Button}
-                      onClick={preventBubbling(close)}
+                      onClick={preventBubbling(
+                        handleFollow(
+                          close,
+                          userIsFollowed ? 'unfollow' : 'follow',
+                          userId,
+                          createdBy
+                        )
+                      )}
                     >
-                      <HeroIcon iconName='UserPlusIcon' />
-                      Follow @{username}
+                      {userIsFollowed ? (
+                        <>
+                          <HeroIcon iconName='UserMinusIcon' />
+                          Unfollow @{username}
+                        </>
+                      ) : (
+                        <>
+                          <HeroIcon iconName='UserPlusIcon' />
+                          Follow @{username}
+                        </>
+                      )}
                     </Popover.Button>
                   )}
                 </Popover.Panel>

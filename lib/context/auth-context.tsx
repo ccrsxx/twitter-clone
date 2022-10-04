@@ -80,6 +80,8 @@ export function AuthContextProvider({
           photoURL: photoURL as string,
           username: randomUsername,
           verified: false,
+          following: [],
+          followers: [],
           createdAt: serverTimestamp(),
           updatedAt: null
         };

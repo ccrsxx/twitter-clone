@@ -3,15 +3,15 @@ import type {
   DocumentReference,
   FirestoreDataConverter
 } from 'firebase/firestore';
-import type { Status } from './status';
+import type { Tweet } from './tweet';
 
 export type Bookmark = {
   id: string;
-  ref: DocumentReference<Status>;
+  ref: DocumentReference<Tweet>;
   createdAt: Timestamp;
 };
 
-export const BookmarkConverter: FirestoreDataConverter<Bookmark> = {
+export const bookmarkConverter: FirestoreDataConverter<Bookmark> = {
   toFirestore(bookmark) {
     return { ...bookmark };
   },

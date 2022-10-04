@@ -12,7 +12,7 @@ import type { MotionProps } from 'framer-motion';
 import type { ImagesPreview, ImageData } from '@lib/types/file';
 
 type ImagePreviewProps = {
-  status?: boolean;
+  tweet?: boolean;
   previewCount: number;
   imagesPreview: ImagesPreview;
   removeImage?: (targetId: number) => () => void;
@@ -41,7 +41,7 @@ const postImageBorderRadius: PostImageBorderRadius = {
 };
 
 export function ImagePreview({
-  status,
+  tweet,
   previewCount,
   imagesPreview,
   removeImage
@@ -79,20 +79,20 @@ export function ImagePreview({
     <div
       className={cn(
         'grid h-72 grid-cols-2 grid-rows-2',
-        status ? 'mt-2 gap-0.5' : 'gap-3'
+        tweet ? 'mt-2 gap-0.5' : 'gap-3'
       )}
     >
       <Modal
         modalClassName={cn(
           'flex justify-between w-full items-center',
-          status && 'h-full'
+          tweet && 'h-full'
         )}
         open={open}
         closeModal={closeModal}
         closePanelOnClick
       >
         <ImageModal
-          status={status}
+          tweet={tweet}
           imageData={selectedImage as ImageData}
           previewCount={previewCount}
           selectedIndex={selectedIndex}
@@ -105,7 +105,7 @@ export function ImagePreview({
             type='button'
             className={cn(
               'smooth-tab relative transition-none transition-[box-shadow]',
-              status
+              tweet
                 ? postImageBorderRadius[previewCount][index]
                 : 'rounded-2xl',
               {
@@ -116,14 +116,14 @@ export function ImagePreview({
             )}
             {...variants}
             onClick={preventBubbling(handleSelectedImage(index))}
-            layout={!status ? true : false}
+            layout={!tweet ? true : false}
             key={id}
           >
             <NextImage
               className='relative h-full w-full cursor-pointer transition 
                          hover:brightness-75 hover:duration-200'
               imgClassName={cn(
-                status
+                tweet
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl'
               )}
@@ -131,7 +131,7 @@ export function ImagePreview({
               layout='fill'
               src={src}
               alt={alt}
-              useSkeleton={status}
+              useSkeleton={tweet}
             />
             {removeImage && (
               <Button

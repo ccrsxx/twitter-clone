@@ -2,30 +2,30 @@ import Link from 'next/link';
 import cn from 'clsx';
 import { formatDate } from '@lib/format';
 import { ToolTip } from '@components/ui/tooltip';
-import type { Status } from '@lib/types/status';
+import type { Tweet } from '@lib/types/tweet';
 
-type StatusDateProps = Pick<Status, 'createdAt'> & {
-  statusLink: string;
-  viewStatus?: boolean;
+type TweetDateProps = Pick<Tweet, 'createdAt'> & {
+  tweetLink: string;
+  viewTweet?: boolean;
 };
 
-export function StatusDate({
+export function TweetDate({
   createdAt,
-  statusLink,
-  viewStatus
-}: StatusDateProps): JSX.Element {
+  tweetLink,
+  viewTweet
+}: TweetDateProps): JSX.Element {
   return (
-    <div className={cn('flex gap-1', viewStatus && 'py-4')}>
-      {!viewStatus && <i>·</i>}
+    <div className={cn('flex gap-1', viewTweet && 'py-4')}>
+      {!viewTweet && <i>·</i>}
       <div className='group relative'>
-        <Link href={statusLink}>
+        <Link href={tweetLink}>
           <a
             className={cn(
               'custom-underline peer',
-              viewStatus && 'text-secondary'
+              viewTweet && 'text-secondary'
             )}
           >
-            {formatDate(createdAt, viewStatus ? 'full' : 'status')}
+            {formatDate(createdAt, viewTweet ? 'full' : 'tweet')}
           </a>
         </Link>
         <ToolTip

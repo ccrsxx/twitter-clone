@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
-import { Tweet } from '@components/tweet/tweet';
+import { Input } from '@components/input/input';
 import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
@@ -63,7 +63,7 @@ export function Sidebar(): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <Tweet modal closeModal={closeModal} />
+        <Input modal closeModal={closeModal} />
       </Modal>
       <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
         <div className='flex flex-col gap-2'>

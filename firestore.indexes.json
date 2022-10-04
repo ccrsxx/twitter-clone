@@ -1,7 +1,7 @@
 {
   "indexes": [
     {
-      "collectionGroup": "statuses",
+      "collectionGroup": "tweets",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -15,7 +15,7 @@
       ]
     },
     {
-      "collectionGroup": "statuses",
+      "collectionGroup": "tweets",
       "queryScope": "COLLECTION",
       "fields": [
         {

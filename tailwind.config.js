@@ -27,10 +27,9 @@ module.exports = {
         'follow-text-color': '#0F1419',
         'image-preview-hover-color': '#272C30',
         'modal-backdrop-color': '#5B7083',
-        'line-reply-color': '#333639'
-      },
-      animation: {},
-      keyframes: {}
+        'line-reply-color': '#333639',
+        'cover-placeholder-background': '#183B4B'
+      }
     }
   },
   plugins: [

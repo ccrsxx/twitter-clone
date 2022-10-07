@@ -1,10 +1,16 @@
+import { useMemo } from 'react';
 import { Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
-import { manageFollow, manageReply, removeTweet } from '@lib/firebase/utils';
+import {
+  removeTweet,
+  manageReply,
+  manageFollow,
+  managePinnedTweet
+} from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
@@ -45,9 +51,23 @@ export function TweetActions({
   createdBy
 }: TweetActionsProps): JSX.Element {
   const { user, isAdmin } = useAuth();
-  const { open, openModal, closeModal } = useModal();
+
+  const {
+    open: removeOpen,
+    openModal: removeOpenModal,
+    closeModal: removeCloseModal
+  } = useModal();
+
+  const {
+    open: pinOpen,
+    openModal: pinOpenModal,
+    closeModal: pinCloseModal
+  } = useModal();
+
+  const { id: userId, following, pinnedTweets } = user as User;
 
   const isInAdminControl = isAdmin && !isOwner;
+  const tweetIsPinned = pinnedTweets.includes(tweetId);
 
   const handleRemove = async (): Promise<void> => {
     await Promise.all([
@@ -57,7 +77,15 @@ export function TweetActions({
     toast.success(
       `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
     );
-    closeModal();
+    removeCloseModal();
+  };
+
+  const handlePin = async (): Promise<void> => {
+    await managePinnedTweet(tweetIsPinned ? 'unpin' : 'pin', userId, tweetId);
+    toast.success(
+      `Your tweet was ${tweetIsPinned ? 'unpinned' : 'pinned'} to your profile`
+    );
+    pinCloseModal();
   };
 
   const handleFollow =
@@ -73,18 +101,33 @@ export function TweetActions({
       );
     };
 
-  const { uid: userId, following } = user as User;
-
   const userIsFollowed = following.includes(createdBy);
 
-  const isAuthorized = isAdmin || isOwner;
+  const pinModalData = useMemo(
+    () =>
+      tweetIsPinned
+        ? {
+            title: 'Unpin Tweet from profile?',
+            description:
+              'This will no longer appear automatically at the top of your profile.',
+            mainBtnLabel: 'Unpin'
+          }
+        : {
+            title: 'Pin Tweet to from profile?',
+            description:
+              'This will appear at the top of your profile and replace any previously pinned Tweet.',
+            mainBtnLabel: 'Pin'
+          },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [pinOpen]
+  );
 
   return (
     <>
       <Modal
         modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
-        open={open}
-        closeModal={closeModal}
+        open={removeOpen}
+        closeModal={removeCloseModal}
       >
         <ActionModal
           title='Delete Tweet?'
@@ -96,7 +139,22 @@ export function TweetActions({
           mainBtnLabel='Delete'
           focusOnMainBtn
           action={handleRemove}
-          closeModal={closeModal}
+          closeModal={removeCloseModal}
+        />
+      </Modal>
+      <Modal
+        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        open={pinOpen}
+        closeModal={pinCloseModal}
+      >
+        <ActionModal
+          {...pinModalData}
+          mainBtnClassName='bg-follow-button-background text-follow-text-color
+                            hover:bg-follow-button-background/90 
+                            active:bg-follow-button-background/75'
+          focusOnMainBtn
+          action={handlePin}
+          closeModal={pinCloseModal}
         />
       </Modal>
       <Popover>
@@ -128,12 +186,12 @@ export function TweetActions({
                   {...variants}
                   static
                 >
-                  {isAuthorized && (
+                  {(isAdmin || isOwner) && (
                     <Popover.Button
                       className='flex w-full gap-3 rounded-md rounded-b-none p-4 text-accent-red
                                  hover:bg-sidebar-background'
                       as={Button}
-                      onClick={preventBubbling(openModal)}
+                      onClick={preventBubbling(removeOpenModal)}
                     >
                       <HeroIcon iconName='TrashIcon' />
                       Delete
@@ -143,35 +201,41 @@ export function TweetActions({
                     <Popover.Button
                       className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                       as={Button}
-                      onClick={preventBubbling(close)}
+                      onClick={preventBubbling(pinOpenModal)}
                     >
-                      <CustomIcon iconName='PinIcon' />
-                      Pin to your profile
+                      {tweetIsPinned ? (
+                        <>
+                          <CustomIcon iconName='PinOffIcon' />
+                          Unpin from profile
+                        </>
+                      ) : (
+                        <>
+                          <CustomIcon iconName='PinIcon' />
+                          Pin to your profile
+                        </>
+                      )}
+                    </Popover.Button>
+                  ) : userIsFollowed ? (
+                    <Popover.Button
+                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                      as={Button}
+                      onClick={preventBubbling(
+                        handleFollow(close, 'unfollow', userId, createdBy)
+                      )}
+                    >
+                      <HeroIcon iconName='UserMinusIcon' />
+                      Unfollow @{username}
                     </Popover.Button>
                   ) : (
                     <Popover.Button
                       className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(
-                        handleFollow(
-                          close,
-                          userIsFollowed ? 'unfollow' : 'follow',
-                          userId,
-                          createdBy
-                        )
+                        handleFollow(close, 'follow', userId, createdBy)
                       )}
                     >
-                      {userIsFollowed ? (
-                        <>
-                          <HeroIcon iconName='UserMinusIcon' />
-                          Unfollow @{username}
-                        </>
-                      ) : (
-                        <>
-                          <HeroIcon iconName='UserPlusIcon' />
-                          Follow @{username}
-                        </>
-                      )}
+                      <HeroIcon iconName='UserPlusIcon' />
+                      Follow @{username}
                     </Popover.Button>
                   )}
                 </Popover.Panel>

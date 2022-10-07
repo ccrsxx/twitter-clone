@@ -54,7 +54,7 @@ export function TweetShare({
     toast.success('Copied to clipboard');
   };
 
-  const isBookmarked = !!userBookmarks?.some(({ id }) => id === tweetId);
+  const tweetIsBookmarked = !!userBookmarks?.some(({ id }) => id === tweetId);
 
   return (
     <Popover className='relative'>
@@ -98,7 +98,7 @@ export function TweetShare({
                   <HeroIcon iconName='LinkIcon' />
                   Copy link to Tweet
                 </Popover.Button>
-                {!isBookmarked ? (
+                {!tweetIsBookmarked ? (
                   <Popover.Button
                     className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
                     as={Button}

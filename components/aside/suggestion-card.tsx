@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { preventBubbling } from '@lib/utils';
-import { NextImage } from '@components/ui/next-image';
+import { ProfilePicture } from '@components/ui/profile-picture';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { User } from '@lib/types/user';
@@ -22,18 +22,7 @@ export function SuggestionCard({
     <Link href={userLink} key={username}>
       <a className='smooth-tab hover-animation flex items-center justify-between hover:bg-white/[0.03]'>
         <div className='flex items-center gap-3'>
-          <Link href={userLink}>
-            <a className='blur-picture'>
-              <NextImage
-                imgClassName='rounded-full object-cover'
-                width={48}
-                height={48}
-                src={photoURL}
-                alt={name}
-                useSkeleton
-              />
-            </a>
-          </Link>
+          <ProfilePicture src={photoURL} alt={name} username={username} />
           <div className='leading-5'>
             <div className='flex items-center gap-1'>
               <Link href={userLink}>

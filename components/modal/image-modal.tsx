@@ -16,8 +16,8 @@ type ImageModalProps = {
   tweet?: boolean;
   imageData: ImageData;
   previewCount: number;
-  selectedIndex: number;
-  handleNextIndex: (type: 'prev' | 'next') => () => void;
+  selectedIndex?: number;
+  handleNextIndex?: (type: 'prev' | 'next') => () => void;
 };
 
 const arrowButtons: ['prev' | 'next', string | null, IconName][] = [
@@ -37,10 +37,14 @@ export function ImageModal({
 
   const { src, alt } = imageData;
 
-  const requireArrows = previewCount > 1;
+  const requireArrows = handleNextIndex && previewCount > 1;
 
   useEffect(() => {
-    if (tweet && !indexes.includes(selectedIndex)) {
+    if (
+      tweet &&
+      selectedIndex !== undefined &&
+      !indexes.includes(selectedIndex)
+    ) {
       setLoading(true);
       setIndexes([...indexes, selectedIndex]);
     }

@@ -6,8 +6,8 @@ import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
 import { ImagePreview } from '@components/input/image-preview';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { NextImage } from '@components/ui/next-image';
+import { ProfilePicture } from '@components/ui/profile-picture';
+import { VerifiedName } from '@components/ui/verified-name';
 import { variants } from '@components/tweet/tweet';
 import { TweetActions } from '@components/tweet/tweet-actions';
 import { TweetStats } from '@components/tweet/tweet-stats';
@@ -44,10 +44,12 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
 
   const tweetLink = `/tweet/${tweetId}`;
 
-  const userId = user?.uid as string;
+  const userId = user?.id as string;
   const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
+
+  const { username: parentUsername = username } = parent ?? {};
 
   return (
     <motion.article
@@ -76,32 +78,15 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <Link href={userLink}>
-            <a className='blur-picture self-start'>
-              <NextImage
-                imgClassName='rounded-full'
-                width={48}
-                height={48}
-                src={photoURL}
-                alt={name}
-              />
-            </a>
-          </Link>
+          <ProfilePicture src={photoURL} alt={name} username={username} />
           <div className='flex min-w-0 flex-col gap-1'>
             <div className='flex flex-col'>
               <div className='-mb-1 flex items-center gap-1'>
-                <Link href={userLink}>
-                  <a className='custom-underline font-bold'>{name}</a>
-                </Link>
-                {verified && (
-                  <i>
-                    <HeroIcon
-                      className='h-5 w-5'
-                      iconName='CheckBadgeIcon'
-                      solid
-                    />
-                  </i>
-                )}
+                <VerifiedName verified={verified}>
+                  <Link href={userLink}>
+                    <a className='custom-underline font-bold'>{name}</a>
+                  </Link>
+                </VerifiedName>
               </div>
               <Link href={userLink}>
                 <a
@@ -124,8 +109,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       {reply && (
         <p className='text-secondary'>
           Replying to{' '}
-          <Link href={`/user/${username}`}>
-            <a className='custom-underline text-accent-blue'>@{username}</a>
+          <Link href={`/user/${parentUsername}`}>
+            <a className='custom-underline text-accent-blue'>
+              @{parentUsername}
+            </a>
           </Link>
         </p>
       )}

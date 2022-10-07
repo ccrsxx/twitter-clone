@@ -6,6 +6,7 @@ import { tweetsCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
+import { MainContainer } from '@components/home/main-container';
 import { MainHeader } from '@components/home/main-header';
 import { Tweet } from '@components/tweet/tweet';
 import { ViewTweet } from '@components/view/view-tweet';
@@ -50,10 +51,7 @@ export default function TweetId(): JSX.Element {
     : null;
 
   return (
-    <main
-      className='flex min-h-screen w-full max-w-xl flex-col
-                 border-x border-border-color pb-[448px]'
-    >
+    <MainContainer>
       <MainHeader
         useActionButton
         title={parentId ? 'Thread' : 'Tweet'}
@@ -94,7 +92,7 @@ export default function TweetId(): JSX.Element {
           </>
         )}
       </section>
-    </main>
+    </MainContainer>
   );
 }
 

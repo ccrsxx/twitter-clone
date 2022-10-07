@@ -43,6 +43,18 @@ export async function updateUsername(
   });
 }
 
+export async function managePinnedTweet(
+  type: 'pin' | 'unpin',
+  userId: string,
+  tweetId: string
+): Promise<void> {
+  const docRef = doc(usersCollection, userId);
+  await updateDoc(docRef, {
+    updatedAt: serverTimestamp(),
+    pinnedTweets: type === 'pin' ? arrayUnion(tweetId) : arrayRemove(tweetId)
+  });
+}
+
 export async function manageFollow(
   type: 'follow' | 'unfollow',
   userId: string,
@@ -88,13 +100,18 @@ export async function uploadImages(
 
   const imagesPreview = await Promise.all(
     files.map(async (file) => {
+      let src: string;
+
       const { id, name: alt } = file;
 
       const storageRef = ref(storage, `images/${userId}/${alt}`);
 
-      await uploadBytesResumable(storageRef, file);
-
-      const src = await getDownloadURL(storageRef);
+      try {
+        src = await getDownloadURL(storageRef);
+      } catch {
+        await uploadBytesResumable(storageRef, file);
+        src = await getDownloadURL(storageRef);
+      }
 
       return { id, src, alt };
     })
@@ -151,12 +168,10 @@ export async function manageBookmark(
   const bookmarkRef = doc(userBookmarksCollection(userId), tweetId);
 
   if (type === 'bookmark') {
-    const bookmarkData: WithFieldValue<Bookmark> = {
-      id: tweetId,
+    const bookmarkData: WithFieldValue<Omit<Bookmark, 'id'>> = {
       ref: doc(tweetsCollection, tweetId),
       createdAt: serverTimestamp()
     };
-
     await setDoc(bookmarkRef, bookmarkData);
   } else await deleteDoc(bookmarkRef);
 }

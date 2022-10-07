@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { Input } from '@components/input/input';
-import { SidebarLink } from '@components/sidebar/sidebar-link';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
+import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
@@ -42,18 +43,15 @@ const navLinks: NavLinks = [
     href: '/lists',
     linkName: 'Lists',
     iconName: 'Bars3BottomLeftIcon'
-  },
-  {
-    href: '/profile',
-    linkName: 'Profile',
-    iconName: 'UserIcon'
   }
 ];
 
 export function Sidebar(): JSX.Element {
+  const { user } = useAuth();
+
   const { open, openModal, closeModal } = useModal();
 
-  const { pathname } = useRouter();
+  const { asPath } = useRouter();
 
   return (
     <header className='-mr-4 flex w-full max-w-xs justify-end'>
@@ -80,11 +78,17 @@ export function Sidebar(): JSX.Element {
           <nav>
             {navLinks.map(({ ...linkData }) => (
               <SidebarLink
-                pathname={pathname}
+                pathname={asPath}
                 {...linkData}
                 key={linkData.href}
               />
             ))}
+            <SidebarLink
+              href={`/user/${user?.username as string}`}
+              pathname={asPath}
+              linkName='Profile'
+              iconName='UserIcon'
+            />
             <MoreSettings />
           </nav>
           <Button

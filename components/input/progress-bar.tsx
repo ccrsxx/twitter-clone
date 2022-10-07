@@ -41,7 +41,7 @@ export function ProgressBar({
   const { container, viewBox, stroke, r } = circleStyles[+isCloseToLimit];
 
   return (
-    <div className='group relative'>
+    <div className='group relative cursor-pointer'>
       <i
         className={cn(
           'flex h-5 w-5 -rotate-90 items-center justify-center transition',

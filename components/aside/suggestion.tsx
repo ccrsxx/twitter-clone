@@ -16,13 +16,13 @@ const placeholderProfiles = [
     name: 'Nanami Touko',
     username: 'nanamitouko',
     verified: false,
-    photoURL: '/placeholder/nanami_touko.jpg'
+    photoURL: '/placeholder/nanami-touko.jpg'
   },
   {
     name: 'Koito Yuu',
     username: 'koitoyuu',
     verified: false,
-    photoURL: '/placeholder/koito_yuu.jpg'
+    photoURL: '/placeholder/koito-yuu.jpg'
   }
 ];
 

@@ -13,12 +13,13 @@ const units = {
 
 export function formatDate(
   targetDate: Timestamp,
-  mode: 'tweet' | 'message' | 'full'
+  mode: 'tweet' | 'message' | 'full' | 'joined'
 ): string {
   const date = targetDate.toDate();
 
   if (mode === 'full') return getFullTime(date);
   if (mode === 'tweet') return getPostTime(date);
+  if (mode === 'joined') return getJoinedTime(date);
 
   return getShortTime(date);
 }
@@ -63,6 +64,13 @@ function getPostTime(date: Date): string {
     day: 'numeric',
     month: 'short',
     year: isCurrentYear(date) ? undefined : 'numeric'
+  }).format(date);
+}
+
+function getJoinedTime(date: Date): string {
+  return new Intl.DateTimeFormat('en-gb', {
+    month: 'long',
+    year: 'numeric'
   }).format(date);
 }
 

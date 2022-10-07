@@ -59,8 +59,8 @@ export function ActionModal({
             'custom-button smooth-tab',
             mainBtnClassName ??
               `bg-accent-red text-primary
-             hover:bg-accent-red/90
-             active:bg-accent-red/75`
+               hover:bg-accent-red/90
+               active:bg-accent-red/75`
           )}
           ref={mainBtn}
           onClick={action}

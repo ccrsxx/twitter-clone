@@ -72,7 +72,7 @@ export function AuthContextProvider({
         }
 
         const userData: WithFieldValue<User> = {
-          uid,
+          id: uid,
           bio: null,
           name: displayName as string,
           website: null,
@@ -83,7 +83,10 @@ export function AuthContextProvider({
           following: [],
           followers: [],
           createdAt: serverTimestamp(),
-          updatedAt: null
+          updatedAt: null,
+          totalTweets: 0,
+          pinnedTweets: [],
+          coverPhotoURL: null
         };
 
         try {
@@ -117,14 +120,14 @@ export function AuthContextProvider({
   useEffect(() => {
     if (!user) return;
 
-    const { uid } = user;
+    const { id } = user;
 
-    const unsubscribeUser = onSnapshot(doc(usersCollection, uid), (doc) => {
+    const unsubscribeUser = onSnapshot(doc(usersCollection, id), (doc) => {
       setUser(doc.data() as User);
     });
 
     const unsubscribeBookmarks = onSnapshot(
-      userBookmarksCollection(uid),
+      userBookmarksCollection(id),
       (snapshot) => {
         const bookmarks = snapshot.docs.map((doc) => doc.data());
         setUserBookmarks(bookmarks);
@@ -136,7 +139,7 @@ export function AuthContextProvider({
       unsubscribeBookmarks();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.uid]);
+  }, [user?.id]);
 
   const signInWithGoogle = async (): Promise<void> => {
     try {

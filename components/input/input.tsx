@@ -9,7 +9,7 @@ import { manageReply, uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/file';
-import { NextImage } from '@components/ui/next-image';
+import { ProfilePicture } from '@components/ui/profile-picture';
 import { InputForm, top } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
@@ -74,12 +74,14 @@ export function Input({
 
     const isReplying = reply ?? replyModal;
 
+    const userId = user?.id as string;
+
     const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
       text: inputValue.trim(),
       parent: isReplying && parent ? parent : null,
-      images: await uploadImages(user?.uid as string, selectedImages),
+      images: await uploadImages(userId, selectedImages),
       userLikes: [],
-      createdBy: user?.uid as string,
+      createdBy: userId,
       createdAt: serverTimestamp(),
       updatedAt: null,
       userReplies: 0,
@@ -105,7 +107,7 @@ export function Input({
     toast.success(
       () => (
         <span className='flex gap-2'>
-          Your Tweet was sent.
+          Your Tweet was sent
           <Link href={`/tweet/${tweetId}`}>
             <a className='custom-underline font-bold'>View</a>
           </Link>
@@ -221,18 +223,7 @@ export function Input({
         )}
         htmlFor={formId}
       >
-        <Link href={`/user/${username}`}>
-          <a className='blur-picture self-start'>
-            <NextImage
-              imgClassName='rounded-full'
-              width={48}
-              height={48}
-              src={photoURL}
-              alt={name}
-              useSkeleton
-            />
-          </a>
-        </Link>
+        <ProfilePicture src={photoURL} alt={name} username={username} />
         <div className='flex w-full flex-col gap-4'>
           <InputForm
             modal={modal}

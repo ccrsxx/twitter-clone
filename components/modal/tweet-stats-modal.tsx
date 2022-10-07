@@ -49,8 +49,8 @@ export function TweetStatsModal({
         ) : (
           <AnimatePresence mode='popLayout'>
             {data?.length ? (
-              data.map(({ uid, bio, name, username, photoURL }) => (
-                <motion.div layout='position' key={uid} {...variants}>
+              data.map(({ id, bio, name, username, photoURL }) => (
+                <motion.div layout='position' key={id} {...variants}>
                   <Link href={`user/${username}`}>
                     <a
                       className='hover-animation grid grid-cols-[auto,1fr] gap-3

@@ -44,7 +44,7 @@ export function ViewTweetStats({
     query(
       usersCollection,
       where(
-        'uid',
+        'id',
         'in',
         !statsType
           ? [null]

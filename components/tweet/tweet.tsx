@@ -7,8 +7,8 @@ import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
 import { ImagePreview } from '@components/input/image-preview';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { NextImage } from '@components/ui/next-image';
+import { ProfilePicture } from '@components/ui/profile-picture';
+import { VerifiedName } from '@components/ui/verified-name';
 import { TweetActions } from './tweet-actions';
 import { TweetStats } from './tweet-stats';
 import { TweetDate } from './tweet-date';
@@ -52,7 +52,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
 
   const tweetLink = `/tweet/${tweetId}`;
 
-  const userId = user?.uid as string;
+  const userId = user?.id as string;
   const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
@@ -86,17 +86,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         >
           <div className='grid grid-cols-[auto,1fr] gap-3'>
             <div className='flex flex-col items-center gap-2'>
-              <Link href={userLink}>
-                <a className='blur-picture self-start'>
-                  <NextImage
-                    imgClassName='rounded-full'
-                    width={48}
-                    height={48}
-                    src={photoURL}
-                    alt={name}
-                  />
-                </a>
-              </Link>
+              <ProfilePicture src={photoURL} alt={name} username={username} />
               {parentTweet && (
                 <i className='h-full w-0.5 bg-line-reply-color' />
               )}
@@ -105,18 +95,11 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               <div className='text-secondary'>
                 <div className='flex gap-1'>
                   <div className='flex items-center gap-1 text-primary'>
-                    <Link href={userLink}>
-                      <a className='custom-underline font-bold'>{name}</a>
-                    </Link>
-                    {verified && (
-                      <i>
-                        <HeroIcon
-                          className='h-5 w-5'
-                          iconName='CheckBadgeIcon'
-                          solid
-                        />
-                      </i>
-                    )}
+                    <VerifiedName verified={verified}>
+                      <Link href={userLink}>
+                        <a className='custom-underline font-bold'>{name}</a>
+                      </Link>
+                    </VerifiedName>
                   </div>
                   <Link href={userLink}>
                     <a className='outline-none' tabIndex={-1}>

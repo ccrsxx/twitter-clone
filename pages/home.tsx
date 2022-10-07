@@ -4,6 +4,7 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
 import { SEO } from '@components/common/seo';
+import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';
 import { NewUsername } from '@components/home/new-username';
 import { Button } from '@components/ui/button';
@@ -26,7 +27,7 @@ export default function Home(): JSX.Element {
   );
 
   return (
-    <main className='flex min-h-screen w-full max-w-xl flex-col border-x border-border-color'>
+    <MainContainer>
       <SEO title='Home / Twitter' />
       <MainHeader className='flex items-center justify-between'>
         <h2 className='text-xl font-bold'>Home</h2>
@@ -50,7 +51,7 @@ export default function Home(): JSX.Element {
         )}
       </section>
       <NewUsername />
-    </main>
+    </MainContainer>
   );
 }
 

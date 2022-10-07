@@ -8,7 +8,8 @@ import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
-import { NextImage } from '@components/ui/next-image';
+import { ProfilePicture } from '@components/ui/profile-picture';
+import { VerifiedName } from '@components/ui/verified-name';
 import { variants } from './more-settings';
 import type { User } from '@lib/types/user';
 
@@ -50,26 +51,18 @@ export function SidebarProfile(): JSX.Element {
               )}
             >
               <div className='flex gap-3'>
-                <NextImage
-                  imgClassName='rounded-full'
-                  width={40}
-                  height={40}
+                <ProfilePicture
                   src={photoURL}
                   alt={name}
-                  useSkeleton
+                  size={40}
+                  username={username}
+                  disableLink
                 />
                 <div className='text-start leading-5'>
                   <div className='flex items-center gap-1'>
-                    <p className='text-start font-bold'>{name}</p>
-                    {verified && (
-                      <i>
-                        <HeroIcon
-                          className='h-5 w-5'
-                          iconName='CheckBadgeIcon'
-                          solid
-                        />
-                      </i>
-                    )}
+                    <VerifiedName verified={verified}>
+                      <p className='text-start font-bold'>{name}</p>
+                    </VerifiedName>
                   </div>
                   <p className='text-secondary'>@{username}</p>
                 </div>
@@ -92,15 +85,16 @@ export function SidebarProfile(): JSX.Element {
                     disabled
                   >
                     <div className='flex items-center gap-3'>
-                      <NextImage
-                        imgClassName='rounded-full'
-                        width={48}
-                        height={48}
+                      <ProfilePicture
                         src={photoURL}
                         alt={name}
+                        username={username}
+                        disableLink
                       />
-                      <div className='leading-5'>
-                        <p className='font-bold'>{name}</p>
+                      <div>
+                        <VerifiedName verified={verified}>
+                          <p className='font-bold'>{name}</p>
+                        </VerifiedName>
                         <p className='text-secondary'>@{username}</p>
                       </div>
                     </div>

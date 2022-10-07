@@ -1,7 +1,7 @@
 import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 
 export type User = {
-  uid: string;
+  id: string;
   bio: string | null;
   name: string;
   website: string | null;
@@ -13,6 +13,9 @@ export type User = {
   followers: string[];
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
+  totalTweets: number;
+  pinnedTweets: string[];
+  coverPhotoURL: string | null;
 };
 
 export const userConverter: FirestoreDataConverter<User> = {

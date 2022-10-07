@@ -64,8 +64,8 @@ export function TweetStats({
     [totalTweets]
   );
 
-  const postIsLiked = userLikes.includes(userId);
-  const postIsRetweeted = userRetweets.includes(userId);
+  const tweetIsLiked = userLikes.includes(userId);
+  const tweetIsRetweeted = userRetweets.includes(userId);
 
   const isStatsVisible = !!(totalReplies || totalTweets || totalLikes);
 
@@ -104,16 +104,16 @@ export function TweetStats({
         <TweetOption
           className={cn(
             'hover:text-accent-green',
-            postIsRetweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
+            tweetIsRetweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
           )}
           iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20'
-          tip={postIsRetweeted ? 'Undo Retweet' : 'Retweet'}
+          tip={tweetIsRetweeted ? 'Undo Retweet' : 'Retweet'}
           move={tweetMove}
           stats={currentTweets}
           iconName='ArrowPathRoundedSquareIcon'
           viewTweet={viewTweet}
           onClick={manageRetweet(
-            postIsRetweeted ? 'unretweet' : 'retweet',
+            tweetIsRetweeted ? 'unretweet' : 'retweet',
             userId,
             tweetId
           )}
@@ -121,15 +121,19 @@ export function TweetStats({
         <TweetOption
           className={cn(
             'hover:text-accent-pink',
-            postIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
+            tweetIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
           )}
           iconClassName='group-hover:bg-accent-pink/10 group-active:bg-accent-pink/20'
-          tip={postIsLiked ? 'Unlike' : 'Like'}
+          tip={tweetIsLiked ? 'Unlike' : 'Like'}
           move={likeMove}
           stats={currentLikes}
           iconName='HeartIcon'
           viewTweet={viewTweet}
-          onClick={manageLike(postIsLiked ? 'unlike' : 'like', userId, tweetId)}
+          onClick={manageLike(
+            tweetIsLiked ? 'unlike' : 'like',
+            userId,
+            tweetId
+          )}
         />
         <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
         {isOwner && (

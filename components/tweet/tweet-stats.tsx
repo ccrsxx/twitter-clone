@@ -12,19 +12,19 @@ type TweetStatsProps = Pick<
   Tweet,
   'userLikes' | 'userRetweets' | 'userReplies'
 > & {
-  reply?: boolean;
   userId: string;
   isOwner: boolean;
   tweetId: string;
+  hasParent?: boolean;
   viewTweet?: boolean;
   openModal?: () => void;
 };
 
 export function TweetStats({
-  reply,
   userId,
   isOwner,
   tweetId,
+  hasParent,
   userLikes,
   viewTweet,
   userRetweets,
@@ -99,7 +99,7 @@ export function TweetStats({
           iconName='ChatBubbleOvalLeftIcon'
           viewTweet={viewTweet}
           onClick={openModal}
-          disabled={reply}
+          disabled={hasParent}
         />
         <TweetOption
           className={cn(

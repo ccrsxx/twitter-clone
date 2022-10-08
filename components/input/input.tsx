@@ -5,7 +5,7 @@ import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { tweetsCollection } from '@lib/firebase/collections';
-import { manageReply, uploadImages } from '@lib/firebase/utils';
+import { manageReply, manageTweet, uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/file';
@@ -92,6 +92,7 @@ export function Input({
 
     const [tweetRef] = await Promise.all([
       addDoc(tweetsCollection, tweetData),
+      manageTweet('increment', userId),
       isReplying && manageReply('increment', parent?.id as string)
     ]);
 

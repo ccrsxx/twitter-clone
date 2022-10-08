@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
@@ -9,6 +9,8 @@ import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { ProfilePicture } from '@components/ui/profile-picture';
 import { VerifiedName } from '@components/ui/verified-name';
+import { HeroIcon } from '@components/ui/hero-icon';
+import { top } from '@components/input/input-form';
 import { TweetActions } from './tweet-actions';
 import { TweetStats } from './tweet-stats';
 import { TweetDate } from './tweet-date';
@@ -20,6 +22,7 @@ export type TweetProps = Tweet & {
   user: User;
   reply?: boolean;
   modal?: boolean;
+  profile?: Partial<User>;
   parentTweet?: boolean;
 };
 
@@ -37,6 +40,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     modal,
     images,
     parent,
+    profile,
     userLikes,
     createdBy,
     createdAt,
@@ -58,6 +62,14 @@ export function Tweet(tweet: TweetProps): JSX.Element {
   const isOwner = userId === createdBy;
 
   const { id: parentId, username: parentUsername = username } = parent ?? {};
+
+  const {
+    id: profileId,
+    name: profileName,
+    username: profileUsername
+  } = profile ?? {};
+
+  const tweetIsRetweeted = userRetweets.includes(profileId ?? '');
 
   return (
     <motion.article
@@ -85,6 +97,26 @@ export function Tweet(tweet: TweetProps): JSX.Element {
           onClick={reply ? delayScroll(100) : undefined}
         >
           <div className='grid grid-cols-[auto,1fr] gap-3'>
+            <AnimatePresence initial={false}>
+              {!modal && tweetIsRetweeted && (
+                <motion.div
+                  className='col-span-2 grid grid-cols-[48px,1fr] gap-3'
+                  {...top}
+                >
+                  <i className='justify-self-end text-secondary'>
+                    <HeroIcon
+                      className='h-5 w-5'
+                      iconName='ArrowPathRoundedSquareIcon'
+                    />
+                  </i>
+                  <Link href={profileUsername as string}>
+                    <a className='custom-underline text-sm font-bold text-secondary'>
+                      {userId === profileId ? 'You' : profileName} Retweeted
+                    </a>
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>
               <ProfilePicture src={photoURL} alt={name} username={username} />
               {parentTweet && (
@@ -141,10 +173,10 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 )}
                 {!modal && (
                   <TweetStats
-                    reply={reply}
                     userId={userId}
                     isOwner={isOwner}
                     tweetId={tweetId}
+                    hasParent={!!parent}
                     userLikes={userLikes}
                     userReplies={userReplies}
                     userRetweets={userRetweets}

@@ -1,5 +1,6 @@
 import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 import type { ImagesPreview } from './file';
+import type { User } from './user';
 
 export type Tweet = {
   id: string;
@@ -13,6 +14,8 @@ export type Tweet = {
   userReplies: number;
   userRetweets: string[];
 };
+
+export type TweetWithUser = Tweet & { user: User };
 
 export const tweetConverter: FirestoreDataConverter<Tweet> = {
   toFirestore(tweet) {

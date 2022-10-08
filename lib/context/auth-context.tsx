@@ -160,7 +160,7 @@ export function AuthContextProvider({
 
   const isAdmin = user ? user.username === 'ccrsxx' : false;
 
-  const value = {
+  const value: AuthContext = {
     user,
     error,
     loading,
@@ -176,7 +176,8 @@ export function AuthContextProvider({
 export function useAuth(): AuthContext {
   const context = useContext(AuthContext);
 
-  if (!context) throw new Error('useAuth must be used within an AuthProvider');
+  if (!context)
+    throw new Error('useAuth must be used within an AuthContextProvider');
 
   return context;
 }

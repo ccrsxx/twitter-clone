@@ -33,13 +33,14 @@ export function useCollection<T>(
   const cachedQuery = useCacheQuery(query);
 
   useEffect(() => {
+    setData(null);
+
     if (options?.disabled) {
-      setData(null);
       setLoading(false);
       return;
     }
 
-    if (!data) setLoading(true);
+    setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(

@@ -66,13 +66,13 @@ export function UserDetails({
                       {detail}
                     </a>
                   ) : index === 2 ? (
-                    <div className='custom-underline group relative cursor-pointer'>
+                    <button className='custom-underline group relative'>
                       {detail}
                       <ToolTip
                         className='translate-y-1'
                         tip={formatDate(createdAt, 'full')}
                       />
-                    </div>
+                    </button>
                   ) : (
                     <p>{detail}</p>
                   )}

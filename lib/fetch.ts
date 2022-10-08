@@ -1,5 +1,5 @@
 export async function fetchJson(
-  resource: RequestInfo | URL,
+  resource: RequestInfo,
   init?: RequestInit | undefined
 ): Promise<unknown> {
   const response = await fetch(resource, init);

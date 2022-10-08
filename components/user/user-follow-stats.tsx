@@ -37,11 +37,15 @@ export function UserFollowStats({
     [totalFollowers]
   );
 
-  const { asPath } = useRouter();
+  const {
+    query: { id }
+  } = useRouter();
+
+  const userPath = `/user/${id as string}`;
 
   const allStats: [string, string, number, number][] = [
-    ['Following', `${asPath}/following`, followingMove, currentFollowing],
-    ['Follower', `${asPath}/followers`, followersMove, currentFollowers]
+    ['Following', `${userPath}/following`, followingMove, currentFollowing],
+    ['Follower', `${userPath}/followers`, followersMove, currentFollowers]
   ];
 
   return (

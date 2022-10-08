@@ -36,8 +36,8 @@ export async function updateUsername(
   userId: string,
   username?: string
 ): Promise<void> {
-  const docRef = doc(usersCollection, userId);
-  await updateDoc(docRef, {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
     updatedAt: serverTimestamp(),
     ...(username && { username })
   });
@@ -48,8 +48,8 @@ export async function managePinnedTweet(
   userId: string,
   tweetId: string
 ): Promise<void> {
-  const docRef = doc(usersCollection, userId);
-  await updateDoc(docRef, {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
     updatedAt: serverTimestamp(),
     pinnedTweets: type === 'pin' ? arrayUnion(tweetId) : arrayRemove(tweetId)
   });
@@ -87,9 +87,20 @@ export async function manageFollow(
     ]);
 }
 
+export async function manageTweet(
+  type: 'increment' | 'decrement',
+  userId: string
+): Promise<void> {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
+    totalTweets: type === 'increment' ? increment(1) : increment(-1),
+    updatedAt: serverTimestamp()
+  });
+}
+
 export async function removeTweet(tweetId: string): Promise<void> {
-  const docRef = doc(tweetsCollection, tweetId);
-  await deleteDoc(docRef);
+  const userRef = doc(tweetsCollection, tweetId);
+  await deleteDoc(userRef);
 }
 
 export async function uploadImages(
@@ -124,8 +135,8 @@ export async function manageReply(
   type: 'increment' | 'decrement',
   tweetId: string
 ): Promise<void> {
-  const postRef = doc(tweetsCollection, tweetId);
-  await updateDoc(postRef, {
+  const tweetRef = doc(tweetsCollection, tweetId);
+  await updateDoc(tweetRef, {
     userReplies: increment(type === 'increment' ? 1 : -1),
     updatedAt: serverTimestamp()
   });
@@ -137,12 +148,24 @@ export function manageRetweet(
   tweetId: string
 ) {
   return async (): Promise<void> => {
-    const postRef = doc(tweetsCollection, tweetId);
-    await updateDoc(postRef, {
-      userRetweets:
-        type === 'retweet' ? arrayUnion(userId) : arrayRemove(userId),
-      updatedAt: serverTimestamp()
-    });
+    const tweetRef = doc(tweetsCollection, tweetId);
+
+    if (type === 'retweet')
+      await Promise.all([
+        updateDoc(tweetRef, {
+          userRetweets: arrayUnion(userId),
+          updatedAt: serverTimestamp()
+        }),
+        manageTweet('increment', userId)
+      ]);
+    else
+      await Promise.all([
+        updateDoc(tweetRef, {
+          userRetweets: arrayRemove(userId),
+          updatedAt: serverTimestamp()
+        }),
+        manageTweet('decrement', userId)
+      ]);
   };
 }
 
@@ -152,8 +175,8 @@ export function manageLike(
   tweetId: string
 ) {
   return async (): Promise<void> => {
-    const postRef = doc(tweetsCollection, tweetId);
-    await updateDoc(postRef, {
+    const tweetRef = doc(tweetsCollection, tweetId);
+    await updateDoc(tweetRef, {
       userLikes: type === 'like' ? arrayUnion(userId) : arrayRemove(userId),
       updatedAt: serverTimestamp()
     });

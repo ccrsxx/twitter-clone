@@ -9,7 +9,8 @@ import {
   removeTweet,
   manageReply,
   manageFollow,
-  managePinnedTweet
+  managePinnedTweet,
+  manageTweet
 } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
@@ -72,6 +73,7 @@ export function TweetActions({
   const handleRemove = async (): Promise<void> => {
     await Promise.all([
       removeTweet(tweetId),
+      manageTweet('decrement', createdBy),
       parentId && manageReply('decrement', parentId)
     ]);
     toast.success(

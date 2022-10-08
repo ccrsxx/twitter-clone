@@ -53,9 +53,7 @@ export function ViewTweetStats({
           : normalizedLikes
       )
     ),
-    {
-      disabled: !statsType
-    }
+    { disabled: !statsType }
   );
 
   const handleOpen = (type: StatsType) => (): void => {

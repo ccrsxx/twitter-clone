@@ -1,27 +1,25 @@
-import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
-import { UserFollowLayout } from '@components/user/user-follow-layout';
-import { HeroIcon } from '@components/ui/hero-icon';
+import {
+  MainLayout,
+  HomeLayout,
+  ProtectedLayout
+} from '@components/layout/common-layout';
+import { UserLayout } from '@components/layout/user-layout';
+import { UserFollowLayout } from '@components/layout/user-follow-layout';
+import { UserFollow } from '@components/user/user-follow';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserFollowing(): JSX.Element {
-  return (
-    <section>
-      <div className='flex flex-col items-center justify-center gap-2 py-5 px-3 text-secondary'>
-        <i>
-          <HeroIcon className='h-10 w-10' iconName='FaceFrownIcon' />
-        </i>
-        <p>Not yet implemented.</p>
-      </div>
-    </section>
-  );
+  return <UserFollow type='following' />;
 }
 
 UserFollowing.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>
-        <UserFollowLayout>{page}</UserFollowLayout>
+        <UserLayout>
+          <UserFollowLayout>{page}</UserFollowLayout>
+        </UserLayout>
       </HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

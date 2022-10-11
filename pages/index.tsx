@@ -1,4 +1,4 @@
-import { AuthRoute } from '@components/common/layout';
+import { AuthLayout } from '@components/layout/auth-layout';
 import { SEO } from '@components/common/seo';
 import { LoginMain } from '@components/login/login-main';
 import { LoginControls } from '@components/login/login-controls';
@@ -21,5 +21,5 @@ export default function Login(): JSX.Element {
 }
 
 Login.getLayout = (page: ReactElement): ReactNode => (
-  <AuthRoute>{page}</AuthRoute>
+  <AuthLayout>{page}</AuthLayout>
 );

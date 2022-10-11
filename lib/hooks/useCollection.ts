@@ -15,32 +15,50 @@ type DataWithUser<T> = UseCollection<T & { user: User }>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options: { includeUser: true; allowNull?: boolean; disabled?: boolean }
+  options: {
+    includeUser: true;
+    allowNull?: boolean;
+    persistData?: boolean;
+    disabled?: boolean;
+  }
 ): DataWithUser<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: false; allowNull?: boolean; disabled?: boolean }
+  options?: {
+    includeUser?: false;
+    allowNull?: boolean;
+    persistData?: boolean;
+    disabled?: boolean;
+  }
 ): UseCollection<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: boolean; allowNull?: boolean; disabled?: boolean }
+  options?: {
+    includeUser?: boolean;
+    allowNull?: boolean;
+    persistData?: boolean;
+    disabled?: boolean;
+  }
 ): UseCollection<T> | DataWithUser<T> {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const cachedQuery = useCacheQuery(query);
 
-  useEffect(() => {
-    setData(null);
+  const { includeUser, allowNull, persistData, disabled } = options ?? {};
 
-    if (options?.disabled) {
+  useEffect(() => {
+    if (!persistData) {
+      setData(null);
+      if (!disabled) setLoading(true);
+    }
+
+    if (disabled) {
       setLoading(false);
       return;
     }
-
-    setLoading(true);
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(
@@ -60,13 +78,13 @@ export function useCollection<T>(
         doc.data({ serverTimestamps: 'estimate' })
       );
 
-      if (options?.allowNull && !data.length) {
+      if (allowNull && !data.length) {
         setData(null);
         setLoading(false);
         return;
       }
 
-      if (options?.includeUser) void populateUser(data as DataWithRef<T>);
+      if (includeUser) void populateUser(data as DataWithRef<T>);
       else {
         setData(data);
         setLoading(false);
@@ -75,7 +93,7 @@ export function useCollection<T>(
 
     return unsubscribe;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cachedQuery, options?.disabled]);
+  }, [cachedQuery, disabled]);
 
   return { data, loading };
 }

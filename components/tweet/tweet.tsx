@@ -20,9 +20,8 @@ import type { User } from '@lib/types/user';
 
 export type TweetProps = Tweet & {
   user: User;
-  reply?: boolean;
   modal?: boolean;
-  profile?: Partial<User>;
+  profile?: User | null;
   parentTweet?: boolean;
 };
 
@@ -36,7 +35,6 @@ export function Tweet(tweet: TweetProps): JSX.Element {
   const {
     id: tweetId,
     text,
-    reply,
     modal,
     images,
     parent,
@@ -69,6 +67,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     username: profileUsername
   } = profile ?? {};
 
+  const reply = !!parent;
   const tweetIsRetweeted = userRetweets.includes(profileId ?? '');
 
   return (
@@ -91,12 +90,12 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       <Link href={tweetLink} scroll={!reply}>
         <a
           className={cn(
-            'smooth-tab relative flex flex-col gap-4 px-4 py-3 outline-none',
+            'smooth-tab relative flex flex-col gap-y-4 px-4 py-3 outline-none',
             parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'border-b border-border-color'
           )}
           onClick={reply ? delayScroll(100) : undefined}
         >
-          <div className='grid grid-cols-[auto,1fr] gap-3'>
+          <div className='grid grid-cols-[auto,1fr] gap-x-3 gap-y-1'>
             <AnimatePresence initial={false}>
               {!modal && tweetIsRetweeted && (
                 <motion.div
@@ -173,10 +172,10 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 )}
                 {!modal && (
                   <TweetStats
+                    reply={reply}
                     userId={userId}
                     isOwner={isOwner}
                     tweetId={tweetId}
-                    hasParent={!!parent}
                     userLikes={userLikes}
                     userReplies={userReplies}
                     userRetweets={userRetweets}

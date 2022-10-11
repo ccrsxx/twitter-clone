@@ -64,7 +64,7 @@ export function Sidebar(): JSX.Element {
         <Input modal closeModal={closeModal} />
       </Modal>
       <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
-        <div className='flex flex-col gap-2'>
+        <section className='flex flex-col gap-2'>
           <h1 className='flex'>
             <Link href='/home'>
               <a
@@ -92,13 +92,13 @@ export function Sidebar(): JSX.Element {
             <MoreSettings />
           </nav>
           <Button
-            className='w-11/12 bg-accent-blue font-bold text-white outline-none
-                       hover:bg-accent-blue/90 active:bg-accent-blue/75'
+            className='w-11/12 bg-accent-blue text-lg font-bold text-white
+                       outline-none hover:bg-accent-blue/90 active:bg-accent-blue/75'
             onClick={openModal}
           >
             Tweet
           </Button>
-        </div>
+        </section>
         <SidebarProfile />
       </div>
     </header>

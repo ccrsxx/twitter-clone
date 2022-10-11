@@ -4,17 +4,22 @@ import { useUser } from '@lib/context/user-context';
 import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { mergeTweets } from '@lib/merge';
-import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
-import { UserLayout } from '@components/user/user-layout';
+import {
+  HomeLayout,
+  MainLayout,
+  ProtectedLayout
+} from '@components/layout/common-layout';
+import { UserLayout } from '@components/layout/user-layout';
+import { UserMainLayout } from '@components/layout/user-main-layout';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
 import { Tweet } from '@components/tweet/tweet';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserTweets(): JSX.Element {
-  const profile = useUser();
+  const { user: profile } = useUser();
 
-  const { id } = profile;
+  const { id } = profile ?? {};
 
   const { data: ownerTweets, loading: ownerLoading } = useCollection(
     query(
@@ -55,11 +60,13 @@ export default function UserTweets(): JSX.Element {
 }
 
 UserTweets.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>
-        <UserLayout>{page}</UserLayout>
+        <UserLayout>
+          <UserMainLayout>{page}</UserMainLayout>
+        </UserLayout>
       </HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

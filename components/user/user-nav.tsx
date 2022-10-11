@@ -1,26 +1,37 @@
-import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import cn from 'clsx';
+import { variants } from '@components/home/main-header';
 import { UserNavLink } from './user-nav-link';
 
-export function UserNav(): JSX.Element {
-  const {
-    asPath,
-    query: { id }
-  } = useRouter();
+type UserNavProps = {
+  follow?: boolean;
+};
 
-  const formattedPath = `/user/${id as string}`;
+const allNavs = [
+  [
+    { name: 'Tweets', path: '' },
+    { name: 'Tweets & replies', path: 'with_replies' },
+    { name: 'Media', path: 'media' },
+    { name: 'Likes', path: 'likes' }
+  ],
+  [
+    { name: 'Following', path: 'following' },
+    { name: 'Followers', path: 'followers' }
+  ]
+];
 
-  const userNav = [
-    { name: 'Tweets', path: formattedPath },
-    { name: 'Tweets & replies', path: `${formattedPath}/with_replies` },
-    { name: 'Media', path: `${formattedPath}/media` },
-    { name: 'Likes', path: `${formattedPath}/likes` }
-  ];
+export function UserNav({ follow }: UserNavProps): JSX.Element {
+  const userNav = allNavs[+!!follow];
 
   return (
-    <nav className='mt-1 mb-0.5 flex justify-between'>
+    <motion.nav
+      className={cn('flex justify-between', follow && 'mt-1 mb-0.5')}
+      {...variants}
+      exit={undefined}
+    >
       {userNav.map(({ name, path }) => (
-        <UserNavLink name={name} path={path} asPath={asPath} key={name} />
+        <UserNavLink name={name} path={path} key={name} />
       ))}
-    </nav>
+    </motion.nav>
   );
 }

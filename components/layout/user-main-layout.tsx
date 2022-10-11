@@ -1,14 +1,8 @@
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { query, where, limit } from 'firebase/firestore';
-import { UserContextProvider } from '@lib/context/user-context';
 import { useAuth } from '@lib/context/auth-context';
-import { useCollection } from '@lib/hooks/useCollection';
-import { usersCollection } from '@lib/firebase/collections';
+import { useUser } from '@lib/context/user-context';
 import { SEO } from '@components/common/seo';
-import { MainContainer } from '@components/home/main-container';
-import { MainHeader } from '@components/home/main-header';
-import { UserHeader } from '@components/user/user-header';
 import { UserCover } from '@components/user/user-cover';
 import { UserProfile } from '@components/user/user-profile';
 import { UserDetails } from '@components/user/user-details';
@@ -17,34 +11,17 @@ import { Button } from '@components/ui/button';
 import { Loading } from '@components/ui/loading';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { UserFollowButton } from './user-follow-button';
-import type { ReactNode } from 'react';
-import type { Variants } from 'framer-motion';
+import { variants } from '@components/home/main-header';
+import { UserFollowButton } from '@components/user/user-follow-button';
+import type { LayoutProps } from './common-layout';
 
-type UserLayoutProps = {
-  children: ReactNode;
-};
-
-export const variants: Variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.2 } },
-  exit: { opacity: 0, transition: { duration: 0.2 } }
-};
-
-export function UserLayout({ children }: UserLayoutProps): JSX.Element {
+export function UserMainLayout({ children }: LayoutProps): JSX.Element {
   const { user } = useAuth();
+  const { user: userData, loading } = useUser();
 
   const {
-    query: { id },
-    back
+    query: { id }
   } = useRouter();
-
-  const { data, loading } = useCollection(
-    query(usersCollection, where('username', '==', id), limit(1)),
-    { allowNull: true }
-  );
-
-  const userData = data ? data[0] : null;
 
   const coverData = userData?.coverPhotoURL
     ? { src: userData.coverPhotoURL, alt: userData.name }
@@ -54,25 +31,17 @@ export function UserLayout({ children }: UserLayoutProps): JSX.Element {
     ? { src: userData.photoURL, alt: userData.name }
     : null;
 
-  const { id: userId, following } = user ?? {};
+  const { id: userId } = user ?? {};
 
-  const userIsFollowed = !!following?.includes(userData?.id ?? '');
   const isOwner = userData?.id === userId;
 
   return (
-    <MainContainer>
-      {!loading && (
+    <>
+      {userData && (
         <SEO
-          title={`${
-            userData
-              ? `${userData.name} (@${userData.username})`
-              : 'User not found'
-          } / Twitter`}
+          title={`${`${userData.name} (@${userData.username})`} / Twitter`}
         />
       )}
-      <MainHeader useActionButton action={back}>
-        <UserHeader loading={loading} userData={userData} />
-      </MainHeader>
       <motion.section {...variants} exit={undefined}>
         {loading ? (
           <Loading className='mt-5' />
@@ -125,9 +94,7 @@ export function UserLayout({ children }: UserLayoutProps): JSX.Element {
                       <ToolTip tip='Message' />
                     </Button>
                     <UserFollowButton
-                      userId={userId as string}
                       userTargetId={userData.id}
-                      userIsFollowed={userIsFollowed}
                       userTargetUsername={userData.username}
                     />
                   </div>
@@ -141,17 +108,9 @@ export function UserLayout({ children }: UserLayoutProps): JSX.Element {
       {userData && (
         <>
           <UserNav />
-          <UserContextProvider
-            value={{
-              id: userData.id,
-              name: userData.name,
-              username: userData.username
-            }}
-          >
-            {children}
-          </UserContextProvider>
+          {children}
         </>
       )}
-    </MainContainer>
+    </>
   );
 }

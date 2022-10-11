@@ -5,7 +5,11 @@ import { doc, query, where, orderBy } from 'firebase/firestore';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
-import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
+import {
+  HomeLayout,
+  MainLayout,
+  ProtectedLayout
+} from '@components/layout/common-layout';
 import { MainContainer } from '@components/home/main-container';
 import { MainHeader } from '@components/home/main-header';
 import { Tweet } from '@components/tweet/tweet';
@@ -74,18 +78,14 @@ export default function TweetId(): JSX.Element {
                 viewTweetRef={viewTweetRef}
               />
             )}
-            <ViewTweet
-              reply={viewTweetHasParent}
-              viewTweetRef={viewTweetRef}
-              {...tweetData}
-            />
+            <ViewTweet viewTweetRef={viewTweetRef} {...tweetData} />
             {tweetData &&
               (repliesLoading ? (
                 <Loading className='mt-5' />
               ) : (
                 <AnimatePresence mode='popLayout'>
                   {repliesData?.map((tweet) => (
-                    <Tweet reply {...tweet} key={tweet.id} />
+                    <Tweet {...tweet} key={tweet.id} />
                   ))}
                 </AnimatePresence>
               ))}
@@ -97,9 +97,9 @@ export default function TweetId(): JSX.Element {
 }
 
 TweetId.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>{page}</HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

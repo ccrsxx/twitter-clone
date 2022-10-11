@@ -1,8 +1,12 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { query, where, orderBy } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
-import { ProtectedRoute, HomeLayout, Layout } from '@components/common/layout';
+import {
+  HomeLayout,
+  MainLayout,
+  ProtectedLayout
+} from '@components/layout/common-layout';
 import { SEO } from '@components/common/seo';
 import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';
@@ -10,7 +14,7 @@ import { NewUsername } from '@components/home/new-username';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { MainHeader } from '@components/home/main-header';
+import { MainHeader, variants } from '@components/home/main-header';
 import { Tweet } from '@components/tweet/tweet';
 import { Loading } from '@components/ui/loading';
 import { Error } from '@components/ui/error';
@@ -29,12 +33,14 @@ export default function Home(): JSX.Element {
   return (
     <MainContainer>
       <SEO title='Home / Twitter' />
-      <MainHeader className='flex items-center justify-between'>
-        <h2 className='text-xl font-bold'>Home</h2>
-        <Button className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'>
-          <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
-          <ToolTip tip='Top tweets' />
-        </Button>
+      <MainHeader className='w-full'>
+        <motion.div className='flex items-center justify-between' {...variants}>
+          <h2 className='text-xl font-bold'>Home</h2>
+          <Button className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'>
+            <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
+            <ToolTip tip='Top tweets' />
+          </Button>
+        </motion.div>
       </MainHeader>
       <Input />
       <section>
@@ -56,9 +62,9 @@ export default function Home(): JSX.Element {
 }
 
 Home.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>{page}</HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

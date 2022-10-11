@@ -39,7 +39,7 @@ export function SidebarProfile(): JSX.Element {
           closeModal={closeModal}
         />
       </Modal>
-      <Menu className='relative' as='div'>
+      <Menu className='relative' as='section'>
         {({ open }): JSX.Element => (
           <>
             <Menu.Button

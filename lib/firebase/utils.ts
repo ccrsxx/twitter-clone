@@ -51,7 +51,7 @@ export async function managePinnedTweet(
   const userRef = doc(usersCollection, userId);
   await updateDoc(userRef, {
     updatedAt: serverTimestamp(),
-    pinnedTweets: type === 'pin' ? arrayUnion(tweetId) : arrayRemove(tweetId)
+    pinnedTweet: type === 'pin' ? tweetId : null
   });
 }
 

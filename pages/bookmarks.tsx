@@ -1,4 +1,8 @@
-import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
+import {
+  ProtectedLayout,
+  MainLayout,
+  HomeLayout
+} from '@components/layout/common-layout';
 import Home from './home';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -7,9 +11,9 @@ export default function NotDoneYet(): JSX.Element {
 }
 
 NotDoneYet.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>{page}</HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

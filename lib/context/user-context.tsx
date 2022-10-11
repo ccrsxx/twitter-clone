@@ -2,7 +2,10 @@ import { createContext, useContext } from 'react';
 import type { ReactNode } from 'react';
 import type { User } from '@lib/types/user';
 
-type UserContext = Partial<User>;
+type UserContext = {
+  user: User | null;
+  loading: boolean;
+};
 
 export const UserContext = createContext<UserContext | null>(null);
 

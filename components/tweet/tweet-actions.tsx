@@ -65,10 +65,10 @@ export function TweetActions({
     closeModal: pinCloseModal
   } = useModal();
 
-  const { id: userId, following, pinnedTweets } = user as User;
+  const { id: userId, following, pinnedTweet } = user as User;
 
   const isInAdminControl = isAdmin && !isOwner;
-  const tweetIsPinned = pinnedTweets.includes(tweetId);
+  const tweetIsPinned = pinnedTweet === tweetId;
 
   const handleRemove = async (): Promise<void> => {
     await Promise.all([

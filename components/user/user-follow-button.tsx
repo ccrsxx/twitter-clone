@@ -1,31 +1,34 @@
+import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { manageFollow } from '@lib/firebase/utils';
+import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
 
 type UserFollowButtonProps = {
-  userId: string;
   userTargetId: string;
-  userIsFollowed: boolean;
   userTargetUsername: string;
 };
 
 export function UserFollowButton({
-  userId,
   userTargetId,
-  userIsFollowed,
   userTargetUsername
 }: UserFollowButtonProps): JSX.Element {
+  const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
+  const { id: userId, following } = user ?? {};
+
   const handleFollow = (): Promise<void> =>
-    manageFollow('follow', userId, userTargetId);
+    manageFollow('follow', userId as string, userTargetId);
 
   const handleUnfollow = async (): Promise<void> => {
-    await manageFollow('unfollow', userId, userTargetId);
+    await manageFollow('unfollow', userId as string, userTargetId);
     closeModal();
   };
+
+  const userIsFollowed = !!following?.includes(userTargetId ?? '');
 
   return (
     <>
@@ -44,10 +47,10 @@ export function UserFollowButton({
       </Modal>
       {userIsFollowed ? (
         <Button
-          className='hover:bg-accent-red/15 min-w-[106px] self-start border
-                     border-border-color-secondary px-4 py-1.5 font-bold hover:border-accent-red
+          className='min-w-[106px] self-start border border-border-color-secondary
+                     px-4 py-1.5 font-bold hover:border-accent-red hover:bg-accent-red/10
                      hover:text-accent-red hover:before:content-["Unfollow"] [&>span]:hover:hidden'
-          onClick={openModal}
+          onClick={preventBubbling(openModal)}
         >
           <span>Following</span>
         </Button>
@@ -56,7 +59,7 @@ export function UserFollowButton({
           className='self-start border border-border-color-secondary bg-follow-button-background
                      px-4 py-1.5 font-bold text-follow-text-color hover:bg-follow-button-background/90 
                      active:bg-follow-button-background/75'
-          onClick={handleFollow}
+          onClick={preventBubbling(handleFollow)}
         >
           Follow
         </Button>

@@ -32,6 +32,8 @@ export function useDocument<T>(
 
   const cachedDocRef = useCacheRef(docRef);
 
+  const { includeUser, allowNull } = options ?? {};
+
   useEffect(() => {
     setData(null);
     setLoading(true);
@@ -49,13 +51,13 @@ export function useDocument<T>(
     const unsubscribe = onSnapshot(docRef, (snapshot) => {
       const data = snapshot.data({ serverTimestamps: 'estimate' });
 
-      if (options?.allowNull && !data) {
+      if (allowNull && !data) {
         setData(null);
         setLoading(false);
         return;
       }
 
-      if (options?.includeUser) void populateUser(data as DataWithRef<T>);
+      if (includeUser) void populateUser(data as DataWithRef<T>);
       else {
         setData(data as T);
         setLoading(false);

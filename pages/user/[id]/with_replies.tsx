@@ -1,5 +1,10 @@
-import { ProtectedRoute, Layout, HomeLayout } from '@components/common/layout';
-import { UserLayout } from '@components/user/user-layout';
+import {
+  HomeLayout,
+  MainLayout,
+  ProtectedLayout
+} from '@components/layout/common-layout';
+import { UserLayout } from '@components/layout/user-layout';
+import { UserMainLayout } from '@components/layout/user-main-layout';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -17,11 +22,13 @@ export default function UserWithReplies(): JSX.Element {
 }
 
 UserWithReplies.getLayout = (page: ReactElement): ReactNode => (
-  <ProtectedRoute>
-    <Layout>
+  <ProtectedLayout>
+    <MainLayout>
       <HomeLayout>
-        <UserLayout>{page}</UserLayout>
+        <UserLayout>
+          <UserMainLayout>{page}</UserMainLayout>
+        </UserLayout>
       </HomeLayout>
-    </Layout>
-  </ProtectedRoute>
+    </MainLayout>
+  </ProtectedLayout>
 );

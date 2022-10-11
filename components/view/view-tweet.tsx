@@ -19,7 +19,6 @@ import type { Tweet } from '@lib/types/tweet';
 
 type ViewTweetProps = Tweet & {
   user: User;
-  reply?: boolean;
   viewTweetRef?: RefObject<HTMLElement>;
 };
 
@@ -27,7 +26,6 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
   const {
     id: tweetId,
     text,
-    reply,
     images,
     parent,
     userLikes,
@@ -48,6 +46,8 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
   const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
+
+  const reply = !!parent;
 
   const { username: parentUsername = username } = parent ?? {};
 
@@ -131,10 +131,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
           <TweetStats
             viewTweet
+            reply={reply}
             userId={userId}
             isOwner={isOwner}
             tweetId={tweetId}
-            hasParent={!!parent}
             userLikes={userLikes}
             userRetweets={userTweets}
             userReplies={userReplies}

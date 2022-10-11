@@ -7,6 +7,7 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { Modal } from '@components/modal/modal';
 import { TweetStatsModal } from '@components/modal/tweet-stats-modal';
 import { NumberStats } from '@components/tweet/number-stats';
+import { UserCards } from '@components/user/user-cards';
 import type { Tweet } from '@lib/types/tweet';
 
 type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
@@ -19,7 +20,7 @@ type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
   isStatsVisible: boolean;
 };
 
-export type StatsType = 'Retweeted' | 'Liked';
+export type StatsType = 'retweets' | 'likes';
 
 export function ViewTweetStats({
   likeMove,
@@ -48,7 +49,7 @@ export function ViewTweetStats({
         'in',
         !statsType
           ? [null]
-          : statsType === 'Retweeted'
+          : statsType === 'retweets'
           ? normalizedTweets
           : normalizedLikes
       )
@@ -68,23 +69,24 @@ export function ViewTweetStats({
 
   const allStats: [string, StatsType | null, number, number][] = [
     ['Reply', null, replyMove, currentReplies],
-    ['Retweet', 'Retweeted', tweetMove, currentTweets],
-    ['Like', 'Liked', likeMove, currentLikes]
+    ['Retweet', 'retweets', tweetMove, currentTweets],
+    ['Like', 'likes', likeMove, currentLikes]
   ];
 
   return (
     <>
       <Modal
-        modalClassName='bg-black rounded-2xl max-w-xl w-full h-[576px]'
+        modalClassName='relative bg-black rounded-2xl max-w-xl w-full h-[672px]'
         open={open}
         closeModal={handleClose}
       >
-        <TweetStatsModal
-          data={data}
-          loading={loading}
-          statsType={statsType}
-          handleClose={handleClose}
-        />
+        <TweetStatsModal statsType={statsType} handleClose={handleClose}>
+          <UserCards
+            type={statsType as StatsType}
+            data={data}
+            loading={loading}
+          />
+        </TweetStatsModal>
       </Modal>
       {isStatsVisible && (
         <div

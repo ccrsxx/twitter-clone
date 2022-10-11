@@ -85,7 +85,7 @@ export function AuthContextProvider({
           createdAt: serverTimestamp(),
           updatedAt: null,
           totalTweets: 0,
-          pinnedTweets: [],
+          pinnedTweet: null,
           coverPhotoURL: null
         };
 

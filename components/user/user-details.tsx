@@ -49,7 +49,7 @@ export function UserDetails({
         <p className='text-secondary'>@{username}</p>
       </div>
       <div className='flex flex-col gap-2'>
-        {bio && <p>{bio}</p>}
+        {bio && <p className='whitespace-pre-line break-words'>{bio}</p>}
         <div className='flex gap-3 text-secondary'>
           {detailIcons.map(
             ([detail, icon], index) =>
@@ -61,7 +61,9 @@ export function UserDetails({
                   {index === 1 ? (
                     <a
                       className='custom-underline text-accent-blue'
-                      href={detail}
+                      href={`https://${detail}`}
+                      target='_blank'
+                      rel='noreferrer'
                     >
                       {detail}
                     </a>

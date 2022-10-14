@@ -1,23 +1,18 @@
 import { Dialog } from '@headlessui/react';
-import cn from 'clsx';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
-import type { FormEvent, ChangeEvent } from 'react';
+import type { ReactNode, FormEvent } from 'react';
 
 type UsernameModalProps = {
+  children: ReactNode;
   available: boolean;
-  inputValue: string;
-  errorMessage: string;
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   changeUsername: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   cancelUpdateUsername: () => void;
 };
 
 export function UsernameModal({
+  children,
   available,
-  inputValue,
-  errorMessage,
-  handleChange,
   changeUsername,
   cancelUpdateUsername
 }: UsernameModalProps): JSX.Element {
@@ -40,43 +35,7 @@ export function UsernameModal({
             </Dialog.Description>
           </div>
         </div>
-        <div className='flex flex-col gap-3'>
-          <div className='relative flex flex-col gap-1'>
-            <input
-              className={cn(
-                `peer w-full rounded border border-border-color bg-inherit
-                 px-3 pb-2 pt-5 placeholder-transparent outline-none transition`,
-                errorMessage
-                  ? 'border-accent-red focus:ring-1 focus:ring-accent-red'
-                  : 'focus:border-accent-blue'
-              )}
-              id='username'
-              type='text'
-              placeholder='Username'
-              onChange={handleChange}
-              value={inputValue}
-            />
-            <label
-              className={cn(
-                `absolute left-3 translate-y-1 text-sm
-                 text-secondary transition-all
-                 peer-placeholder-shown:translate-y-3
-                 peer-placeholder-shown:text-lg
-                 peer-focus:translate-y-1
-                 peer-focus:text-sm`,
-                errorMessage
-                  ? 'text-accent-red peer-focus:text-accent-red'
-                  : 'peer-focus:text-accent-blue'
-              )}
-              htmlFor='username'
-            >
-              Username
-            </label>
-            {errorMessage && (
-              <p className='text-sm text-accent-red'>{errorMessage}</p>
-            )}
-          </div>
-        </div>
+        {children}
       </div>
       <div className='flex flex-col gap-3 inner:py-2 inner:font-bold'>
         <Button

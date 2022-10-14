@@ -8,7 +8,7 @@ import { tweetsCollection } from '@lib/firebase/collections';
 import { manageReply, manageTweet, uploadImages } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
-import { getImagesData } from '@lib/file';
+import { getImagesData } from '@lib/validation';
 import { ProfilePicture } from '@components/ui/profile-picture';
 import { InputForm, top } from './input-form';
 import { ImagePreview } from './image-preview';

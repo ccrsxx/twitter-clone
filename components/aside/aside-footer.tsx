@@ -11,7 +11,7 @@ const footerLinks = [
 
 export function AsideFooter(): JSX.Element {
   return (
-    <footer className='flex flex-col gap-3 text-center text-sm text-secondary'>
+    <footer className='sticky top-16 flex flex-col gap-3 text-center text-sm text-secondary'>
       <nav className='flex flex-wrap justify-center gap-2'>
         {footerLinks.map(([linkName, href]) => (
           <a

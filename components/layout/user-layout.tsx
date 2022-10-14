@@ -11,7 +11,7 @@ import type { LayoutProps } from './common-layout';
 
 export function UserLayout({ children }: LayoutProps): JSX.Element {
   const {
-    asPath,
+    pathname,
     query: { id },
     back
   } = useRouter();
@@ -23,7 +23,7 @@ export function UserLayout({ children }: LayoutProps): JSX.Element {
 
   const user = data ? data[0] : null;
 
-  const isInFollowPage = asPath.includes('/follow');
+  const isInFollowPage = pathname.includes('[id]/follow');
 
   return (
     <UserContextProvider value={{ user, loading }}>

@@ -22,6 +22,20 @@ export function isValidImage(name: string, bytes: number): boolean {
   );
 }
 
+export function isValidUsername(
+  username: string,
+  value: string
+): string | null {
+  if (value.length < 4) return 'Username must be at least 4 characters';
+  if (value.length > 15) return 'Username must be less than 15 characters';
+  if (!/^\w+$/i.test(value))
+    return 'Username can only contain letters, numbers and _';
+  if (!/[a-z]/i.test(value)) return 'Username must include at least one letter';
+  if (value === username) return 'This is your current username';
+
+  return null;
+}
+
 type ImagesData = {
   imagesPreviewData: ImagesPreview;
   selectedImagesData: FilesWithId;

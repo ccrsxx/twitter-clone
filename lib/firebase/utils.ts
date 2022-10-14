@@ -20,6 +20,7 @@ import {
   userBookmarksCollection
 } from './collections';
 import type { WithFieldValue } from 'firebase/firestore';
+import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
 
@@ -30,6 +31,17 @@ export async function checkUsernameAvailability(
     query(usersCollection, where('username', '==', username), limit(1))
   );
   return empty;
+}
+
+export async function updateUserData(
+  userId: string,
+  userData: EditableUserData
+): Promise<void> {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
+    ...userData,
+    updatedAt: serverTimestamp()
+  });
 }
 
 export async function updateUsername(

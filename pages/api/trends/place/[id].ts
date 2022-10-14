@@ -14,7 +14,7 @@ type PlaceIdEndpointQuery = {
 
 export default async function placeIdEndpoint(
   req: NextApiRequest,
-  res: NextApiResponse<TrendsResponse>
+  res: NextApiResponse<TrendsResponse | ErrorResponse>
 ): Promise<void> {
   const { id, limit } = req.query as PlaceIdEndpointQuery;
 

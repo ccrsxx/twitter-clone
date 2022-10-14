@@ -13,21 +13,21 @@ export function UserCover({ coverData }: UserCoverProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
   return (
-    <div className='mt-0.5 h-[200px]'>
+    <div className='mt-0.5 h-[208px]'>
       <Modal open={open} closeModal={closeModal}>
         <ImageModal imageData={coverData as ImageData} previewCount={1} />
       </Modal>
       {coverData ? (
         <Button
-          className='relative h-full w-full rounded-none p-0 hover:brightness-75'
+          className='w relative h-full w-full rounded-none p-0 hover:brightness-75'
           onClick={openModal}
         >
           <NextImage
+            useSkeleton
             imgClassName='object-cover'
             src={coverData.src}
             alt={coverData.alt}
             layout='fill'
-            useSkeleton
           />
         </Button>
       ) : (

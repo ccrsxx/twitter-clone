@@ -76,7 +76,8 @@ export function ViewTweetStats({
   return (
     <>
       <Modal
-        modalClassName='relative bg-black rounded-2xl max-w-xl w-full h-[672px]'
+        modalClassName='relative bg-black rounded-2xl max-w-xl w-full 
+                        h-[672px] overflow-hidden rounded-2xl'
         open={open}
         closeModal={handleClose}
       >

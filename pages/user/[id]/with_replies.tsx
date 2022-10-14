@@ -4,7 +4,7 @@ import {
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { UserLayout } from '@components/layout/user-layout';
-import { UserMainLayout } from '@components/layout/user-main-layout';
+import { UserHomeLayout } from '@components/layout/user-home-layout';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { ReactElement, ReactNode } from 'react';
 
@@ -26,7 +26,7 @@ UserWithReplies.getLayout = (page: ReactElement): ReactNode => (
     <MainLayout>
       <HomeLayout>
         <UserLayout>
-          <UserMainLayout>{page}</UserMainLayout>
+          <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
       </HomeLayout>
     </MainLayout>

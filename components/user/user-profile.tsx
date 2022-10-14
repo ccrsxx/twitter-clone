@@ -23,24 +23,26 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
         />
       </Modal>
       <Button
-        className='absolute -mt-3 -translate-y-1/2 p-0 enabled:hover:brightness-75 
-                   disabled:cursor-auto disabled:brightness-100'
+        className='absolute -mt-3 aspect-square w-[144px] -translate-y-1/2 p-0 
+                   enabled:hover:brightness-75 disabled:cursor-auto 
+                   disabled:brightness-100'
         onClick={openModal}
         disabled={!profileData}
       >
         {profileData ? (
-          <>
-            <NextImage
-              className='rounded-full bg-black p-1'
-              imgClassName='rounded-full'
-              src={profileData.src}
-              alt={profileData.alt}
-              width={150}
-              height={150}
-            />
-          </>
+          <NextImage
+            useSkeleton
+            className='rounded-full bg-black p-1'
+            imgClassName='rounded-full'
+            src={profileData.src}
+            alt={profileData.alt}
+            width={144}
+            height={144}
+          />
         ) : (
-          <div className='aspect-square w-[150px] rounded-full bg-sidebar-background' />
+          <div className='h-full rounded-full bg-black p-1 inner:h-full inner:rounded-full'>
+            <div className='bg-sidebar-background' />
+          </div>
         )}
       </Button>
     </div>

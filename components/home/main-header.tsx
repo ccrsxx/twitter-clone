@@ -1,10 +1,8 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
 import type { ReactNode } from 'react';
-import type { Variants } from 'framer-motion';
 import type { IconName } from '@components/ui/hero-icon';
 
 type HomeHeaderProps = {
@@ -16,12 +14,6 @@ type HomeHeaderProps = {
   disableSticky?: boolean;
   useActionButton?: boolean;
   action?: () => void;
-};
-
-export const variants: Variants = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1, transition: { duration: 0.4 } },
-  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 export function MainHeader({
@@ -54,14 +46,12 @@ export function MainHeader({
           <ToolTip tip={tip ?? 'Back'} />
         </Button>
       )}
-      <AnimatePresence mode='popLayout'>
-        {title && (
-          <motion.h2 className='text-xl font-bold' {...variants} key={title}>
-            {title}
-          </motion.h2>
-        )}
-        {children}
-      </AnimatePresence>
+      {title && (
+        <h2 className='text-xl font-bold' key={title}>
+          {title}
+        </h2>
+      )}
+      {children}
     </header>
   );
 }

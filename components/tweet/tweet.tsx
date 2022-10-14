@@ -5,7 +5,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
-import { ReplyTweetModal } from '@components/modal/reply-tweet-modal';
+import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { ProfilePicture } from '@components/ui/profile-picture';
 import { VerifiedName } from '@components/ui/verified-name';
@@ -85,7 +85,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         open={open}
         closeModal={closeModal}
       >
-        <ReplyTweetModal tweet={tweet} closeModal={closeModal} />
+        <TweetReplyModal tweet={tweet} closeModal={closeModal} />
       </Modal>
       <Link href={tweetLink} scroll={!reply}>
         <a

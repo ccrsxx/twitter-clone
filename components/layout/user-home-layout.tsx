@@ -11,11 +11,12 @@ import { Button } from '@components/ui/button';
 import { Loading } from '@components/ui/loading';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { variants } from '@components/home/main-header';
+import { variants } from '@components/user/user-header';
 import { UserFollowButton } from '@components/user/user-follow-button';
+import { UserEditProfile } from '@components/user/user-edit-profile';
 import type { LayoutProps } from './common-layout';
 
-export function UserMainLayout({ children }: LayoutProps): JSX.Element {
+export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
   const { user } = useAuth();
   const { user: userData, loading } = useUser();
 
@@ -66,18 +67,12 @@ export function UserMainLayout({ children }: LayoutProps): JSX.Element {
               <div className='flex justify-between'>
                 <UserProfile profileData={profileData} />
                 {isOwner ? (
-                  <Button
-                    className='self-start border border-border-color-secondary px-4 py-1
-                               font-bold hover:bg-follow-button-background/10'
-                  >
-                    Edit profile
-                  </Button>
+                  <UserEditProfile />
                 ) : (
                   <div className='flex gap-2 self-start'>
                     <Button
                       className='group relative border border-border-color-secondary p-2
                                  hover:bg-primary/10 active:bg-primary/20 disabled:brightness-100'
-                      disabled
                     >
                       <HeroIcon
                         className='h-5 w-5'

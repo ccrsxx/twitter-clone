@@ -36,7 +36,7 @@ export function UserFollow({ type }: UserFollowProps): JSX.Element {
           name as string
         } (@${username as string}) / Twitter`}
       />
-      <UserCards data={data} type={type} loading={loading} />;
+      <UserCards data={data} type={type} loading={loading} />
     </>
   );
 }

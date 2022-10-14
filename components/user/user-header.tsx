@@ -1,13 +1,19 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { VerifiedName } from '@components/ui/verified-name';
-import { variants } from '@components/home/main-header';
 import type { User } from '@lib/types/user';
+import type { Variants } from 'framer-motion';
 
 type UserHeaderProps = {
   user: User | null;
   userId?: string;
   follow?: boolean;
   loading: boolean;
+};
+
+export const variants: Variants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1, transition: { duration: 0.4 } },
+  exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
 export function UserHeader({
@@ -17,7 +23,7 @@ export function UserHeader({
   loading
 }: UserHeaderProps): JSX.Element {
   return (
-    <>
+    <AnimatePresence mode='popLayout'>
       {loading ? (
         <motion.div
           className='-mb-1 inner:animate-pulse inner:rounded-lg inner:bg-white'
@@ -51,6 +57,6 @@ export function UserHeader({
           </p>
         </motion.div>
       )}
-    </>
+    </AnimatePresence>
   );
 }

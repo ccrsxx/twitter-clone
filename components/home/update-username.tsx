@@ -4,11 +4,13 @@ import { useState, useEffect } from 'react';
 import { checkUsernameAvailability, updateUsername } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
+import { isValidUsername } from '@lib/validation';
 import { Modal } from '@components/modal/modal';
 import { UsernameModal } from '@components/modal/username-modal';
+import { InputField } from '@components/input/input-field';
 import type { FormEvent, ChangeEvent } from 'react';
 
-export function NewUsername(): null | JSX.Element {
+export function UpdateUsername(): JSX.Element {
   const [available, setAvailable] = useState(false);
   const [visited, setVisited] = useState(false);
   const [inputValue, setInputValue] = useState('');
@@ -18,18 +20,6 @@ export function NewUsername(): null | JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
   useEffect(() => {
-    const checkValidity = (value: string): string | null => {
-      if (value.length < 4) return 'Username must be at least 4 characters';
-      if (value.length > 15) return 'Username must be less than 15 characters';
-      if (!/^\w+$/i.test(value))
-        return 'Username can only contain letters, numbers and _';
-      if (!/[a-z]/i.test(value))
-        return 'Username must include at least one letter';
-      if (value === user?.username) return 'This is your current username';
-
-      return null;
-    };
-
     const checkAvailability = async (value: string): Promise<void> => {
       const empty = await checkUsernameAvailability(value);
 
@@ -45,7 +35,7 @@ export function NewUsername(): null | JSX.Element {
     if (visited) {
       if (errorMessage) setErrorMessage('');
 
-      const error = checkValidity(inputValue);
+      const error = isValidUsername(user?.username as string, inputValue);
 
       if (error) {
         setAvailable(false);
@@ -74,7 +64,8 @@ export function NewUsername(): null | JSX.Element {
 
   const handleChange = ({
     target: { value }
-  }: ChangeEvent<HTMLInputElement>): void => setInputValue(value);
+  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
+    setInputValue(value);
 
   return (
     <Modal
@@ -84,12 +75,17 @@ export function NewUsername(): null | JSX.Element {
     >
       <UsernameModal
         available={available}
-        inputValue={inputValue}
-        errorMessage={errorMessage}
-        handleChange={handleChange}
         changeUsername={changeUsername}
         cancelUpdateUsername={cancelUpdateUsername}
-      />
+      >
+        <InputField
+          label='Username'
+          inputId='username'
+          inputValue={inputValue}
+          errorMessage={errorMessage}
+          handleChange={handleChange}
+        />
+      </UsernameModal>
     </Modal>
   );
 }

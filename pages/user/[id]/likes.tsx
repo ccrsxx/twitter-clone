@@ -1,11 +1,11 @@
 import {
-  ProtectedLayout,
+  HomeLayout,
   MainLayout,
-  HomeLayout
+  ProtectedLayout
 } from '@components/layout/common-layout';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { UserLayout } from '@components/layout/user-layout';
-import { UserMainLayout } from '@components/layout/user-main-layout';
+import { UserHomeLayout } from '@components/layout/user-home-layout';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserLikes(): JSX.Element {
@@ -26,7 +26,7 @@ UserLikes.getLayout = (page: ReactElement): ReactNode => (
     <MainLayout>
       <HomeLayout>
         <UserLayout>
-          <UserMainLayout>{page}</UserMainLayout>
+          <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
       </HomeLayout>
     </MainLayout>

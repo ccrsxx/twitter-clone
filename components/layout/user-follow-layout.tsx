@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useUser } from '@lib/context/user-context';
 import { Loading } from '@components/ui/loading';
 import { UserNav } from '@components/user/user-nav';
-import { variants } from '@components/home/main-header';
+import { variants } from '@components/user/user-header';
 import type { LayoutProps } from './common-layout';
 
 export function UserFollowLayout({ children }: LayoutProps): JSX.Element {

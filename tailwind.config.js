@@ -30,11 +30,26 @@ module.exports = {
         'line-reply-color': '#333639',
         'cover-placeholder-background': '#183B4B'
       }
-    }
+    },
+    groups: ['inner'],
+    groupVariants: ['hover', 'focus-visible']
   },
   plugins: [
     ({ addVariant }) => {
       addVariant('inner', '& > *');
+    },
+    ({ addVariant, theme }) => {
+      const groups = theme('groups') ?? [];
+      const groupVariants = theme('groupVariants') ?? [];
+
+      groups.forEach((group) =>
+        groupVariants.forEach((variant) =>
+          addVariant(
+            `group-${group}-${variant}`,
+            () => `:merge(.group-${group}):${variant} &`
+          )
+        )
+      );
     }
   ]
 };

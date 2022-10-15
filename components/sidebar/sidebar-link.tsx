@@ -5,6 +5,7 @@ import type { IconName } from '../ui/hero-icon';
 
 type SidebarLinkProps = {
   href: string;
+  username?: string;
   iconName: IconName;
   linkName: string;
   pathname: string;
@@ -12,11 +13,12 @@ type SidebarLinkProps = {
 
 export function SidebarLink({
   href,
+  username,
   iconName,
   linkName,
   pathname
 }: SidebarLinkProps): JSX.Element {
-  const isActive = pathname === href;
+  const isActive = username ? pathname.includes(username) : pathname === href;
 
   return (
     <Link href={href}>

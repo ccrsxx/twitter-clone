@@ -73,6 +73,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                     <Button
                       className='group relative border border-border-color-secondary p-2
                                  hover:bg-primary/10 active:bg-primary/20 disabled:brightness-100'
+                      disabled
                     >
                       <HeroIcon
                         className='h-5 w-5'

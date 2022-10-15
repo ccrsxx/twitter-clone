@@ -18,7 +18,11 @@ export type User = {
   coverPhotoURL: string | null;
 };
 
-export type EditableData = 'name' | 'bio' | 'location' | 'website';
+export type EditableData = Extract<
+  keyof User,
+  'bio' | 'name' | 'website' | 'photoURL' | 'location' | 'coverPhotoURL'
+>;
+
 export type EditableUserData = Pick<User, EditableData>;
 
 export const userConverter: FirestoreDataConverter<User> = {

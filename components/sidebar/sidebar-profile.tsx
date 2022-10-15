@@ -120,7 +120,7 @@ export function SidebarProfile(): JSX.Element {
                     )}
                   </Menu.Item>
                   <i
-                    className='absolute -bottom-[10px] left-1/2 rotate-180
+                    className='absolute -bottom-[10px] left-1/2 -translate-x-1/2 rotate-180
                                [filter:drop-shadow(rgb(51,54,57)1px_-1px_1px)]'
                   >
                     <CustomIcon className='h-4 w-6' iconName='TriangleIcon' />

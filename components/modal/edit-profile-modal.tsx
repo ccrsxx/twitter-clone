@@ -1,8 +1,10 @@
+import { useRef } from 'react';
 import { MainHeader } from '@components/home/main-header';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { NextImage } from '@components/ui/next-image';
-import type { ReactNode } from 'react';
+import { ToolTip } from '@components/ui/tooltip';
+import type { ReactNode, ChangeEvent } from 'react';
 import type { User } from '@lib/types/user';
 
 type EditProfileModalProps = Pick<
@@ -10,8 +12,13 @@ type EditProfileModalProps = Pick<
   'name' | 'photoURL' | 'coverPhotoURL'
 > & {
   children: ReactNode;
+  inputNameError: string;
+  editImage: (
+    type: 'cover' | 'profile'
+  ) => ({ target: { files } }: ChangeEvent<HTMLInputElement>) => void;
   closeModal: () => void;
   updateData: () => Promise<void>;
+  removeCoverImage: () => void;
 };
 
 export function EditProfileModal({
@@ -19,9 +26,20 @@ export function EditProfileModal({
   photoURL,
   children,
   coverPhotoURL,
+  inputNameError,
+  editImage,
   closeModal,
-  updateData
+  updateData,
+  removeCoverImage
 }: EditProfileModalProps): JSX.Element {
+  const coverInputFileRef = useRef<HTMLInputElement>(null);
+  const profileInputFileRef = useRef<HTMLInputElement>(null);
+
+  const handleClick = (type: 'cover' | 'profile') => (): void => {
+    if (type === 'cover') coverInputFileRef.current?.click();
+    else profileInputFileRef.current?.click();
+  };
+
   return (
     <>
       <MainHeader
@@ -37,17 +55,25 @@ export function EditProfileModal({
           className='ml-auto bg-primary py-1 px-4 font-bold text-follow-text-color 
                      hover:brightness-90 active:brightness-75'
           onClick={updateData}
+          disabled={!!inputNameError}
         >
           Save
         </Button>
       </MainHeader>
-      <div className='h-full overflow-y-auto'>
-        <div className='mt-[52px] h-[192px] rounded-t-2xl'>
+      <section className='h-full overflow-y-auto'>
+        <div className='group relative mt-[52px] h-[192px]'>
+          <input
+            className='hidden'
+            type='file'
+            accept='image/*'
+            ref={coverInputFileRef}
+            onChange={editImage('cover')}
+          />
           {coverPhotoURL ? (
             <NextImage
               useSkeleton
               className='relative h-full'
-              imgClassName='object-cover'
+              imgClassName='object-cover transition group-hover:brightness-75 group-hover:duration-200'
               src={coverPhotoURL}
               alt={name}
               layout='fill'
@@ -55,18 +81,62 @@ export function EditProfileModal({
           ) : (
             <div className='h-full bg-line-reply-color' />
           )}
+          <div className='absolute left-1/2 top-1/2 flex -translate-y-1/2 -translate-x-1/2 gap-4'>
+            <Button
+              className='group-inner relative bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+              onClick={handleClick('cover')}
+            >
+              <HeroIcon
+                className='hover-animation h-6 w-6 group-hover:text-white'
+                iconName='CameraIcon'
+              />
+              <ToolTip groupInner tip='Add photo' />
+            </Button>
+            {coverPhotoURL && (
+              <Button
+                className='group-inner relative bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+                onClick={removeCoverImage}
+              >
+                <HeroIcon
+                  className='hover-animation h-6 w-6 group-hover:text-white'
+                  iconName='XMarkIcon'
+                />
+                <ToolTip groupInner tip='Remove photo' />
+              </Button>
+            )}
+          </div>
         </div>
         <div className='relative flex flex-col gap-6 px-4 py-3'>
           <div className='mb-14'>
-            <NextImage
-              useSkeleton
-              className='absolute -translate-y-1/2 rounded-full bg-black p-1'
-              imgClassName='rounded-full'
-              src={photoURL}
-              alt={name}
-              width={128}
-              height={128}
+            <input
+              className='hidden'
+              type='file'
+              accept='image/*'
+              ref={profileInputFileRef}
+              onChange={editImage('profile')}
             />
+            <div className='group absolute -translate-y-1/2'>
+              <NextImage
+                useSkeleton
+                className='rounded-full bg-black p-1'
+                imgClassName='rounded-full transition group-hover:brightness-75 group-hover:duration-200'
+                src={photoURL}
+                alt={name}
+                width={128}
+                height={128}
+              />
+              <Button
+                className='group-inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                           bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+                onClick={handleClick('profile')}
+              >
+                <HeroIcon
+                  className='hover-animation h-6 w-6 group-hover:text-white'
+                  iconName='CameraIcon'
+                />
+                <ToolTip groupInner tip='Add photo' />
+              </Button>
+            </div>
           </div>
           {children}
           <Button
@@ -83,7 +153,7 @@ export function EditProfileModal({
             </i>
           </Button>
         </div>
-      </div>
+      </section>
     </>
   );
 }

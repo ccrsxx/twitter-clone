@@ -1,14 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import { useModal } from '@lib/hooks/useModal';
 import { useUser } from '@lib/context/user-context';
-import { updateUserData } from '@lib/firebase/utils';
+import { updateUserData, uploadImages } from '@lib/firebase/utils';
+import { getImagesData } from '@lib/validation';
 import { Modal } from '@components/modal/modal';
 import { EditProfileModal } from '@components/modal/edit-profile-modal';
 import { Button } from '@components/ui/button';
 import { InputField } from '@components/input/input-field';
 import type { ChangeEvent } from 'react';
+import type { FilesWithId } from '@lib/types/file';
 import type { User, EditableData, EditableUserData } from '@lib/types/user';
+import type { InputFieldProps } from '@components/input/input-field';
+
+type UserImages = {
+  photoURL: FilesWithId;
+  coverPhotoURL: FilesWithId;
+};
 
 export function UserEditProfile(): JSX.Element {
   const { user } = useUser();
@@ -21,20 +29,97 @@ export function UserEditProfile(): JSX.Element {
     bio,
     name,
     website,
-    location
+    photoURL,
+    location,
+    coverPhotoURL
   });
 
+  const [userImages, setUserImages] = useState<UserImages>({
+    photoURL: [],
+    coverPhotoURL: []
+  });
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => cleanImage, []);
+
   const updateData = async (): Promise<void> => {
+    const userId = user?.id as string;
+
+    const { photoURL, coverPhotoURL: coverURL } = userImages;
+
+    const [newPhotoURL, newCoverPhotoURL] = await Promise.all(
+      [photoURL, coverURL].map((image) => uploadImages(userId, image))
+    );
+
+    const newImages = {
+      coverPhotoURL:
+        coverPhotoURL === editUserData.coverPhotoURL
+          ? coverPhotoURL
+          : newCoverPhotoURL?.[0].src ?? null,
+      ...(newPhotoURL && { photoURL: newPhotoURL[0].src })
+    };
+
     const newUserData = {
       ...editUserData,
+      ...newImages,
       bio: editUserData.bio?.trim() ?? null
     };
 
-    await updateUserData(user?.id as string, newUserData);
+    await updateUserData(userId, newUserData);
     closeModal();
 
     setEditUserData(newUserData);
+    cleanImage();
+
     toast.success('Profile updated successfully');
+  };
+
+  const editImage =
+    (type: 'cover' | 'profile') =>
+    ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
+      const imagesData = getImagesData(files);
+
+      if (imagesData) {
+        const { imagesPreviewData, selectedImagesData } = imagesData;
+
+        const targetKey = type === 'cover' ? 'coverPhotoURL' : 'photoURL';
+        const newImage = imagesPreviewData[0].src;
+
+        setEditUserData({
+          ...editUserData,
+          [targetKey]: newImage
+        });
+
+        setUserImages({
+          ...userImages,
+          [targetKey]: selectedImagesData
+        });
+      }
+    };
+
+  const removeCoverImage = (): void => {
+    setEditUserData({
+      ...editUserData,
+      coverPhotoURL: null
+    });
+
+    setUserImages({
+      ...userImages,
+      coverPhotoURL: []
+    });
+
+    URL.revokeObjectURL(editUserData.coverPhotoURL ?? '');
+  };
+
+  const cleanImage = (): void => {
+    ['photoURL', 'coverPhotoURL'].forEach((image) =>
+      URL.revokeObjectURL(editUserData[image as keyof EditableUserData] ?? '')
+    );
+
+    setUserImages({
+      photoURL: [],
+      coverPhotoURL: []
+    });
   };
 
   const handleChange =
@@ -42,39 +127,65 @@ export function UserEditProfile(): JSX.Element {
     ({
       target: { value }
     }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setEditUserData((prev) => ({ ...prev, [key]: value }));
+      setEditUserData({ ...editUserData, [key]: value });
 
-  const inputFields: [string, EditableData, string | null][] = [
-    ['Name', 'name', editUserData.name],
-    ['Bio', 'bio', editUserData.bio],
-    ['Location', 'location', editUserData.location],
-    ['Website', 'website', editUserData.website]
+  const inputNameError = !editUserData.name?.trim()
+    ? "Name can't be blank"
+    : '';
+
+  const inputFields: InputFieldProps[] = [
+    {
+      label: 'Name',
+      inputId: 'name',
+      inputValue: editUserData.name,
+      inputLimit: 50,
+      errorMessage: inputNameError,
+      handleChange: handleChange('name')
+    },
+    {
+      label: 'Bio',
+      inputId: 'bio',
+      inputValue: editUserData.bio ?? '',
+      inputLimit: 160,
+      useTextArea: true,
+      handleChange: handleChange('bio')
+    },
+    {
+      label: 'Location',
+      inputId: 'location',
+      inputValue: editUserData.location ?? '',
+      inputLimit: 30,
+      handleChange: handleChange('location')
+    },
+    {
+      label: 'Website',
+      inputId: 'website',
+      inputValue: editUserData.website ?? '',
+      inputLimit: 100,
+      handleChange: handleChange('website')
+    }
   ];
 
   return (
     <>
       <Modal
         modalClassName='relative bg-black rounded-2xl max-w-xl w-full 
-                        h-[672px] overflow-hidden rounded-t-2xl'
+                        h-[672px] overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
         <EditProfileModal
           name={name}
-          photoURL={photoURL}
-          coverPhotoURL={coverPhotoURL}
+          photoURL={editUserData.photoURL}
+          coverPhotoURL={editUserData.coverPhotoURL}
+          inputNameError={inputNameError}
+          editImage={editImage}
           closeModal={closeModal}
           updateData={updateData}
+          removeCoverImage={removeCoverImage}
         >
-          {inputFields.map(([label, inputId, inputValue], index) => (
-            <InputField
-              {...(index === 1 ? { useTextArea: true } : {})}
-              key={inputId}
-              label={label}
-              inputId={inputId}
-              inputValue={inputValue ?? ''}
-              handleChange={handleChange(inputId)}
-            />
+          {inputFields.map((inputData) => (
+            <InputField {...inputData} key={inputData.inputId} />
           ))}
         </EditProfileModal>
       </Modal>

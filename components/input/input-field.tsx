@@ -1,9 +1,10 @@
 import cn from 'clsx';
+import type { User, EditableData } from '@lib/types/user';
 import type { ChangeEvent } from 'react';
 
-type InputFieldProps = {
+export type InputFieldProps = {
   label: string;
-  inputId: string;
+  inputId: EditableData | Extract<keyof User, 'username'>;
   inputValue: string;
   inputLimit?: number;
   useTextArea?: boolean;
@@ -22,14 +23,19 @@ export function InputField({
   errorMessage,
   handleChange
 }: InputFieldProps): JSX.Element {
+  const slicedInputValue = inputValue.slice(0, inputLimit);
+
+  const inputLength = slicedInputValue.length;
+  const isHittingInputLimit = inputLimit && inputLength > inputLimit;
+
   return (
     <div className='flex flex-col gap-1'>
       <div
         className={cn(
-          'relative rounded ring-1 ring-border-color transition duration-200',
+          'relative rounded ring-1 transition duration-200',
           errorMessage
-            ? 'ring-1 ring-accent-red'
-            : 'focus-within:ring-2 focus-within:ring-accent-blue'
+            ? 'ring-accent-red'
+            : 'ring-border-color focus-within:ring-2 focus-within:ring-accent-blue'
         )}
       >
         {useTextArea ? (
@@ -38,8 +44,8 @@ export function InputField({
                        placeholder-transparent outline-none transition'
             id={inputId}
             placeholder={inputId}
-            onChange={handleChange}
-            value={inputValue}
+            onChange={!isHittingInputLimit ? handleChange : undefined}
+            value={slicedInputValue}
             rows={3}
           />
         ) : (
@@ -49,8 +55,8 @@ export function InputField({
             id={inputId}
             type='text'
             placeholder={inputId}
-            onChange={handleChange}
-            value={inputValue}
+            onChange={!isHittingInputLimit ? handleChange : undefined}
+            value={slicedInputValue}
           />
         )}
         <label
@@ -69,6 +75,17 @@ export function InputField({
         >
           {label}
         </label>
+        {inputLimit && (
+          <span
+            className={cn(
+              `absolute right-3 top-0 translate-y-1 text-sm text-secondary transition-opacity 
+               duration-200 peer-focus:visible peer-focus:opacity-100`,
+              errorMessage ? 'visible opacity-100' : 'invisible opacity-0'
+            )}
+          >
+            {inputLength} / {inputLimit}
+          </span>
+        )}
       </div>
       {errorMessage && (
         <p className='text-sm text-accent-red'>{errorMessage}</p>

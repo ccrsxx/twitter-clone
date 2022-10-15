@@ -61,7 +61,7 @@ export function Input({
   useEffect(
     () => {
       if (modal) inputRef.current?.focus();
-      return () => imagesPreview.forEach(({ src }) => URL.revokeObjectURL(src));
+      return cleanImage;
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []

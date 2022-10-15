@@ -53,6 +53,8 @@ export function Sidebar(): JSX.Element {
 
   const { asPath } = useRouter();
 
+  const username = user?.username as string;
+
   return (
     <header className='-mr-4 flex w-full max-w-xs justify-end'>
       <Modal
@@ -84,7 +86,8 @@ export function Sidebar(): JSX.Element {
               />
             ))}
             <SidebarLink
-              href={`/user/${user?.username as string}`}
+              href={`/user/${username}`}
+              username={username}
               pathname={asPath}
               linkName='Profile'
               iconName='UserIcon'

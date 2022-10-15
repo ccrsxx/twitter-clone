@@ -43,16 +43,24 @@ type ImagesData = {
 
 export function getImagesData(
   files: FileList | null,
-  currentFiles: number
+  currentFiles?: number
 ): ImagesData | null {
   if (!files || !files.length) return null;
 
-  const rawImages = !(currentFiles === 4 || files.length > 4 - currentFiles)
-    ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
-    : null;
+  const singleEditingMode = currentFiles === undefined;
 
-  if (!rawImages) {
-    toast.error('Please choose a GIF or photo up to 4');
+  const rawImages =
+    singleEditingMode ||
+    !(currentFiles === 4 || files.length > 4 - currentFiles)
+      ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
+      : null;
+
+  if (!rawImages || !rawImages.length) {
+    toast.error(
+      singleEditingMode
+        ? 'Please choose a valid GIF or Photo'
+        : 'Please choose a GIF or photo up to 4'
+    );
     return null;
   }
 

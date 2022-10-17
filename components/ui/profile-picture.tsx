@@ -34,6 +34,7 @@ export function ProfilePicture({
           height={pictureSize}
           src={src}
           alt={alt}
+          key={src}
         />
       </a>
     </Link>

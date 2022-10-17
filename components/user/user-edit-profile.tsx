@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast';
 import { useModal } from '@lib/hooks/useModal';
 import { useUser } from '@lib/context/user-context';
 import { updateUserData, uploadImages } from '@lib/firebase/utils';
+import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';
 import { Modal } from '@components/modal/modal';
 import { EditProfileModal } from '@components/modal/edit-profile-modal';
@@ -21,6 +22,8 @@ type UserImages = {
 export function UserEditProfile(): JSX.Element {
   const { user } = useUser();
   const { open, openModal, closeModal } = useModal();
+
+  const [loading, setLoading] = useState(false);
 
   const { bio, name, website, location, photoURL, coverPhotoURL } =
     user as User;
@@ -43,6 +46,8 @@ export function UserEditProfile(): JSX.Element {
   useEffect(() => cleanImage, []);
 
   const updateData = async (): Promise<void> => {
+    setLoading(true);
+
     const userId = user?.id as string;
 
     const { photoURL, coverPhotoURL: coverURL } = userImages;
@@ -59,17 +64,34 @@ export function UserEditProfile(): JSX.Element {
       ...(newPhotoURL && { photoURL: newPhotoURL[0].src })
     };
 
-    const newUserData = {
+    type TrimmedText = Pick<
+      EditableUserData,
+      Exclude<EditableData, 'photoURL' | 'coverPhotoURL'>
+    >;
+
+    const trimmedKeys: EditableData[] = ['name', 'bio', 'location', 'website'];
+
+    const trimmedTexts = trimmedKeys.reduce(
+      (acc, curr) => ({ ...acc, [curr]: editUserData[curr]?.trim() ?? null }),
+      {} as TrimmedText
+    );
+
+    const newUserData: EditableUserData = {
       ...editUserData,
-      ...newImages,
-      bio: editUserData.bio?.trim() ?? null
+      ...trimmedTexts,
+      ...newImages
     };
 
+    await sleep(500);
+
     await updateUserData(userId, newUserData);
+
     closeModal();
 
-    setEditUserData(newUserData);
     cleanImage();
+
+    setLoading(false);
+    setEditUserData(newUserData);
 
     toast.success('Profile updated successfully');
   };
@@ -112,8 +134,10 @@ export function UserEditProfile(): JSX.Element {
   };
 
   const cleanImage = (): void => {
-    ['photoURL', 'coverPhotoURL'].forEach((image) =>
-      URL.revokeObjectURL(editUserData[image as keyof EditableUserData] ?? '')
+    const imagesKey: EditableData[] = ['photoURL', 'coverPhotoURL'];
+
+    imagesKey.forEach((image) =>
+      URL.revokeObjectURL(editUserData[image] ?? '')
     );
 
     setUserImages({
@@ -145,7 +169,7 @@ export function UserEditProfile(): JSX.Element {
     {
       label: 'Bio',
       inputId: 'bio',
-      inputValue: editUserData.bio ?? '',
+      inputValue: editUserData.bio,
       inputLimit: 160,
       useTextArea: true,
       handleChange: handleChange('bio')
@@ -153,14 +177,14 @@ export function UserEditProfile(): JSX.Element {
     {
       label: 'Location',
       inputId: 'location',
-      inputValue: editUserData.location ?? '',
+      inputValue: editUserData.location,
       inputLimit: 30,
       handleChange: handleChange('location')
     },
     {
       label: 'Website',
       inputId: 'website',
-      inputValue: editUserData.website ?? '',
+      inputValue: editUserData.website,
       inputLimit: 100,
       handleChange: handleChange('website')
     }
@@ -176,6 +200,7 @@ export function UserEditProfile(): JSX.Element {
       >
         <EditProfileModal
           name={name}
+          loading={loading}
           photoURL={editUserData.photoURL}
           coverPhotoURL={editUserData.coverPhotoURL}
           inputNameError={inputNameError}

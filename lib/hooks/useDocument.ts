@@ -15,26 +15,32 @@ type DataWithUser<T> = UseDocument<T & { user: User }>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options: { includeUser: true; allowNull?: boolean }
+  options: { includeUser: true; allowNull?: boolean; disabled?: boolean }
 ): DataWithUser<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser?: false; allowNull?: boolean }
+  options?: { includeUser?: false; allowNull?: boolean; disabled?: boolean }
 ): UseDocument<T>;
 
 export function useDocument<T>(
   docRef: DocumentReference<T>,
-  options?: { includeUser?: boolean; allowNull?: boolean }
+  options?: { includeUser?: boolean; allowNull?: boolean; disabled?: boolean }
 ): UseDocument<T> | DataWithUser<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
 
   const cachedDocRef = useCacheRef(docRef);
 
-  const { includeUser, allowNull } = options ?? {};
+  const { includeUser, allowNull, disabled } = options ?? {};
 
   useEffect(() => {
+    if (disabled) {
+      setData(null);
+      setLoading(false);
+      return;
+    }
+
     setData(null);
     setLoading(true);
 

@@ -24,10 +24,11 @@ export function UserCover({ coverData }: UserCoverProps): JSX.Element {
         >
           <NextImage
             useSkeleton
+            layout='fill'
             imgClassName='object-cover'
             src={coverData.src}
             alt={coverData.alt}
-            layout='fill'
+            key={coverData.src}
           />
         </Button>
       ) : (

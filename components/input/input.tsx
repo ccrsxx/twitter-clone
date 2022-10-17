@@ -10,7 +10,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';
 import { ProfilePicture } from '@components/ui/profile-picture';
-import { InputForm, top } from './input-form';
+import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
 import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
@@ -203,7 +203,7 @@ export function Input({
       )}
       {children}
       {reply && visited && (
-        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...top}>
+        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...fromTop}>
           Replying to{' '}
           <Link href={`/user/${parent?.username as string}`}>
             <a className='custom-underline text-accent-blue'>

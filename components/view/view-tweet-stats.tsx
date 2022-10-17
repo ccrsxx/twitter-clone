@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import cn from 'clsx';
-import { query, where } from 'firebase/firestore';
-import { usersCollection } from '@lib/firebase/collections';
+import { useArrayDocument } from '@lib/hooks/useArrayDocument';
 import { useModal } from '@lib/hooks/useModal';
-import { useCollection } from '@lib/hooks/useCollection';
+import { usersCollection } from '@lib/firebase/collections';
 import { Modal } from '@components/modal/modal';
 import { TweetStatsModal } from '@components/modal/tweet-stats-modal';
 import { NumberStats } from '@components/tweet/number-stats';
@@ -35,26 +34,11 @@ export function ViewTweetStats({
 }: viewTweetStats): JSX.Element {
   const [statsType, setStatsType] = useState<StatsType | null>(null);
 
-  const [normalizedTweets, normalizedLikes] = [userRetweets, userLikes].map(
-    (arr) => (arr.length ? arr : [null])
-  );
-
   const { open, openModal, closeModal } = useModal();
 
-  const { data, loading } = useCollection(
-    query(
-      usersCollection,
-      where(
-        'id',
-        'in',
-        !statsType
-          ? [null]
-          : statsType === 'retweets'
-          ? normalizedTweets
-          : normalizedLikes
-      )
-    ),
-    { disabled: !statsType }
+  const { data, loading } = useArrayDocument(
+    statsType ? (statsType === 'likes' ? userLikes : userRetweets) : null,
+    usersCollection
   );
 
   const handleOpen = (type: StatsType) => (): void => {

@@ -1,7 +1,8 @@
-import { query, where } from 'firebase/firestore';
+import { doc, query, where } from 'firebase/firestore';
 import { AnimatePresence } from 'framer-motion';
 import { useUser } from '@lib/context/user-context';
 import { useCollection } from '@lib/hooks/useCollection';
+import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { mergeTweets } from '@lib/merge';
 import {
@@ -17,9 +18,18 @@ import { Tweet } from '@components/tweet/tweet';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserTweets(): JSX.Element {
-  const { user: profile } = useUser();
+  const { user } = useUser();
 
-  const { id } = profile ?? {};
+  const { id, pinnedTweet } = user ?? {};
+
+  const { data: pinnedData } = useDocument(
+    doc(tweetsCollection, pinnedTweet ?? 'null'),
+    {
+      disabled: !pinnedTweet,
+      allowNull: true,
+      includeUser: true
+    }
+  );
 
   const { data: ownerTweets, loading: ownerLoading } = useCollection(
     query(
@@ -50,8 +60,11 @@ export default function UserTweets(): JSX.Element {
         <Error message='This user currently has no Tweet.' />
       ) : (
         <AnimatePresence mode='popLayout'>
+          {pinnedData && (
+            <Tweet pinned {...pinnedData} key={`pinned-${pinnedData.id}`} />
+          )}
           {mergedTweets.map((tweet) => (
-            <Tweet {...tweet} profile={profile} key={tweet.id} />
+            <Tweet {...tweet} profile={user} key={tweet.id} />
           ))}
         </AnimatePresence>
       )}

@@ -5,7 +5,7 @@ import type { ChangeEvent } from 'react';
 export type InputFieldProps = {
   label: string;
   inputId: EditableData | Extract<keyof User, 'username'>;
-  inputValue: string;
+  inputValue: string | null;
   inputLimit?: number;
   useTextArea?: boolean;
   errorMessage?: string;
@@ -23,7 +23,7 @@ export function InputField({
   errorMessage,
   handleChange
 }: InputFieldProps): JSX.Element {
-  const slicedInputValue = inputValue.slice(0, inputLimit);
+  const slicedInputValue = inputValue?.slice(0, inputLimit) ?? '';
 
   const inputLength = slicedInputValue.length;
   const isHittingInputLimit = inputLimit && inputLength > inputLimit;

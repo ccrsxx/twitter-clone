@@ -48,7 +48,7 @@ const variants: Variants[] = [
   }
 ];
 
-export const [top, bottom] = variants;
+export const [fromTop, fromBottom] = variants;
 
 export function InputForm({
   modal,
@@ -110,7 +110,7 @@ export function InputForm({
             className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
                        py-0 px-3 text-accent-blue hover:bg-accent-blue/10 
                        active:bg-accent-blue/20 disabled:brightness-100'
-            {...top}
+            {...fromTop}
             disabled
           >
             <p className='font-bold'>Everyone</p>
@@ -148,7 +148,7 @@ export function InputForm({
       {isVisibilityShown && (
         <motion.div
           className='flex border-b border-border-color pb-2'
-          {...bottom}
+          {...fromBottom}
         >
           <button
             className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue 

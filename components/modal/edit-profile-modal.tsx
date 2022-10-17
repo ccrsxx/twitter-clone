@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import cn from 'clsx';
 import { MainHeader } from '@components/home/main-header';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
@@ -11,6 +12,7 @@ type EditProfileModalProps = Pick<
   User,
   'name' | 'photoURL' | 'coverPhotoURL'
 > & {
+  loading: boolean;
   children: ReactNode;
   inputNameError: string;
   editImage: (
@@ -23,6 +25,7 @@ type EditProfileModalProps = Pick<
 
 export function EditProfileModal({
   name,
+  loading,
   photoURL,
   children,
   coverPhotoURL,
@@ -52,15 +55,22 @@ export function EditProfileModal({
         action={closeModal}
       >
         <Button
-          className='ml-auto bg-primary py-1 px-4 font-bold text-follow-text-color 
-                     hover:brightness-90 active:brightness-75'
+          className='ml-auto bg-primary py-1 px-4 font-bold 
+                     text-follow-text-color enabled:hover:brightness-90 
+                     enabled:active:brightness-75 disabled:brightness-75'
           onClick={updateData}
           disabled={!!inputNameError}
+          loading={loading}
         >
           Save
         </Button>
       </MainHeader>
-      <section className='h-full overflow-y-auto'>
+      <section
+        className={cn(
+          'h-full overflow-y-auto',
+          loading && 'pointer-events-none brightness-75'
+        )}
+      >
         <div className='group relative mt-[52px] h-[192px]'>
           <input
             className='hidden'

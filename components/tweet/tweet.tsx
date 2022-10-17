@@ -9,9 +9,8 @@ import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { ProfilePicture } from '@components/ui/profile-picture';
 import { VerifiedName } from '@components/ui/verified-name';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { top } from '@components/input/input-form';
 import { TweetActions } from './tweet-actions';
+import { TweetStatus } from './tweet-status';
 import { TweetStats } from './tweet-stats';
 import { TweetDate } from './tweet-date';
 import type { Variants } from 'framer-motion';
@@ -21,6 +20,7 @@ import type { User } from '@lib/types/user';
 export type TweetProps = Tweet & {
   user: User;
   modal?: boolean;
+  pinned?: boolean;
   profile?: User | null;
   parentTweet?: boolean;
 };
@@ -38,6 +38,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     modal,
     images,
     parent,
+    pinned,
     profile,
     userLikes,
     createdBy,
@@ -97,23 +98,20 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         >
           <div className='grid grid-cols-[auto,1fr] gap-x-3 gap-y-1'>
             <AnimatePresence initial={false}>
-              {!modal && tweetIsRetweeted && (
-                <motion.div
-                  className='col-span-2 grid grid-cols-[48px,1fr] gap-3'
-                  {...top}
-                >
-                  <i className='justify-self-end text-secondary'>
-                    <HeroIcon
-                      className='h-5 w-5'
-                      iconName='ArrowPathRoundedSquareIcon'
-                    />
-                  </i>
-                  <Link href={profileUsername as string}>
-                    <a className='custom-underline text-sm font-bold text-secondary'>
-                      {userId === profileId ? 'You' : profileName} Retweeted
-                    </a>
-                  </Link>
-                </motion.div>
+              {modal ? null : pinned ? (
+                <TweetStatus type='pin'>
+                  <p className='text-sm font-bold'>Pinned Tweet</p>
+                </TweetStatus>
+              ) : (
+                tweetIsRetweeted && (
+                  <TweetStatus type='tweet'>
+                    <Link href={profileUsername as string}>
+                      <a className='custom-underline text-sm font-bold'>
+                        {userId === profileId ? 'You' : profileName} Retweeted
+                      </a>
+                    </Link>
+                  </TweetStatus>
+                )
               )}
             </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>

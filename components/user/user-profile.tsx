@@ -38,6 +38,7 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
             alt={profileData.alt}
             width={144}
             height={144}
+            key={profileData.src}
           />
         ) : (
           <div className='h-full rounded-full bg-black p-1 inner:h-full inner:rounded-full'>

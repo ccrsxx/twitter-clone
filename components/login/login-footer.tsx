@@ -18,7 +18,7 @@ const footerLinks = [
   ['Developers', 'https://developer.twitter.com'],
   ['Directory', 'https://twitter.com/i/directory/profiles'],
   ['Settings', 'https://twitter.com/settings']
-];
+] as const;
 
 export function LoginFooter(): JSX.Element {
   return (

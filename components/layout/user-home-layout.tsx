@@ -17,7 +17,7 @@ import { UserEditProfile } from '@components/user/user-edit-profile';
 import type { LayoutProps } from './common-layout';
 
 export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { user: userData, loading } = useUser();
 
   const {
@@ -93,6 +93,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                       userTargetId={userData.id}
                       userTargetUsername={userData.username}
                     />
+                    {isAdmin && <UserEditProfile />}
                   </div>
                 )}
               </div>

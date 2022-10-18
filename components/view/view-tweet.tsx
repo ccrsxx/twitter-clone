@@ -31,13 +31,14 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     userLikes,
     createdBy,
     createdAt,
-    userRetweets: userTweets,
+    userRetweets,
     userReplies,
     viewTweetRef,
     user: { name, username, verified, photoURL }
   } = tweet;
 
   const { user } = useAuth();
+
   const { open, openModal, closeModal } = useModal();
 
   const tweetLink = `/tweet/${tweetId}`;
@@ -136,7 +137,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             isOwner={isOwner}
             tweetId={tweetId}
             userLikes={userLikes}
-            userRetweets={userTweets}
+            userRetweets={userRetweets}
             userReplies={userReplies}
             openModal={!parent ? openModal : undefined}
           />

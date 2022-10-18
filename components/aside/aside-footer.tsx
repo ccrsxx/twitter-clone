@@ -7,7 +7,7 @@ const footerLinks = [
     'Ads Info',
     'https://business.twitter.com/en/help/troubleshooting/how-twitter-ads-work.html'
   ]
-];
+] as const;
 
 export function AsideFooter(): JSX.Element {
   return (

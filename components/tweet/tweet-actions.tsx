@@ -108,18 +108,18 @@ export function TweetActions({
   const pinModalData = useMemo(
     () =>
       tweetIsPinned
-        ? {
+        ? ({
             title: 'Unpin Tweet from profile?',
             description:
               'This will no longer appear automatically at the top of your profile.',
             mainBtnLabel: 'Unpin'
-          }
-        : {
+          } as const)
+        : ({
             title: 'Pin Tweet to from profile?',
             description:
               'This will appear at the top of your profile and replace any previously pinned Tweet.',
             mainBtnLabel: 'Pin'
-          },
+          } as const),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pinOpen]
   );

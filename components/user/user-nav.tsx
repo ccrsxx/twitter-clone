@@ -18,7 +18,7 @@ const allNavs = [
     { name: 'Following', path: 'following' },
     { name: 'Followers', path: 'followers' }
   ]
-];
+] as const;
 
 export function UserNav({ follow }: UserNavProps): JSX.Element {
   const userNav = allNavs[+!!follow];

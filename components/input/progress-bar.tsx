@@ -7,7 +7,7 @@ type ProgressBarProps = {
   isCharLimitExceeded: boolean;
 };
 
-const baseOffset = [56.5487, 87.9646];
+const baseOffset = [56.5487, 87.9646] as const;
 
 const circleStyles = [
   {
@@ -22,7 +22,7 @@ const circleStyles = [
     stroke: '#FFD400',
     r: 14
   }
-];
+] as const;
 
 export function ProgressBar({
   inputLimit,

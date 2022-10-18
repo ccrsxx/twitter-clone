@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import cn from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@lib/context/auth-context';
 import { StatsEmpty } from '@components/tweet/stats-empty';
@@ -20,7 +21,7 @@ type UserCardsProps = {
   loading: boolean;
 };
 
-const allNoStatsData: { [key in CombinedTypes]: StatsEmptyProps } = {
+const allNoStatsData: Readonly<Record<CombinedTypes, StatsEmptyProps>> = {
   retweets: {
     title: 'Amplify Tweets you like',
     imageData: { src: '/assets/no-retweets.png', alt: 'No retweets' },
@@ -54,17 +55,17 @@ export function UserCards({
   const { user } = useAuth();
 
   const noStatsData = allNoStatsData[type];
+  const modal = ['retweets', 'likes'].includes(type);
 
   return (
     <section
-      className={
-        ['retweets', 'likes'].includes(type)
-          ? 'h-full overflow-y-auto [&>div:first-child>a]:mt-[52px]'
-          : undefined
-      }
+      className={cn(
+        modal && 'h-full overflow-y-auto [&>div:first-child>a]:mt-[52px]',
+        loading && 'flex items-center justify-center'
+      )}
     >
       {loading ? (
-        <Loading className='mt-5' />
+        <Loading className={modal ? 'mt-[52px]' : 'mt-5'} />
       ) : (
         <AnimatePresence mode='popLayout'>
           {data?.length ? (
@@ -108,7 +109,7 @@ export function UserCards({
               </motion.div>
             ))
           ) : (
-            <StatsEmpty {...noStatsData} />
+            <StatsEmpty {...noStatsData} modal={modal} />
           )}
         </AnimatePresence>
       )}

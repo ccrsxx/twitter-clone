@@ -48,7 +48,7 @@ export default function Home(): JSX.Element {
           <Error message='Something went wrong' />
         ) : (
           <AnimatePresence mode='popLayout'>
-            {data?.map((tweet) => (
+            {data.map((tweet) => (
               <Tweet {...tweet} key={tweet.id} />
             ))}
           </AnimatePresence>

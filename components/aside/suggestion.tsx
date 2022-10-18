@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { Loading } from '@components/ui/loading';
 import { variants } from './aside-trends';
 import { SuggestionCard } from './suggestion-card';
+import type { SuggestionCardProps } from './suggestion-card';
 
-const placeholderProfiles = [
+const placeholderProfiles: Readonly<SuggestionCardProps[]> = [
   {
     name: 'Emilia',
     username: 'emilia',

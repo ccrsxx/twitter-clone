@@ -15,7 +15,7 @@ type Options = {
   onClick?: () => void;
 }[];
 
-const options: Options = [
+const options: Readonly<Options> = [
   {
     name: 'Media',
     iconName: 'PhotoIcon',

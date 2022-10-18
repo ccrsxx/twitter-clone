@@ -5,7 +5,7 @@ import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import type { User } from '@lib/types/user';
 
-type SuggestionCardProps = Pick<
+export type SuggestionCardProps = Pick<
   User,
   'name' | 'username' | 'verified' | 'photoURL'
 >;

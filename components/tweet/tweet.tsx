@@ -73,8 +73,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
 
   return (
     <motion.article
-      layout='position'
-      {...(!modal ? variants : {})}
+      {...(!modal ? { ...variants, layout: 'position' } : {})}
       animate={{
         ...variants.animate,
         ...(parentTweet && { transition: { duration: 0.2 } })

@@ -14,10 +14,10 @@ import type { FilesWithId } from '@lib/types/file';
 import type { User, EditableData, EditableUserData } from '@lib/types/user';
 import type { InputFieldProps } from '@components/input/input-field';
 
-type UserImages = {
-  photoURL: FilesWithId;
-  coverPhotoURL: FilesWithId;
-};
+type UserImages = Record<
+  Extract<EditableData, 'photoURL' | 'coverPhotoURL'>,
+  FilesWithId
+>;
 
 export function UserEditProfile(): JSX.Element {
   const { user } = useUser();
@@ -64,16 +64,21 @@ export function UserEditProfile(): JSX.Element {
       ...(newPhotoURL && { photoURL: newPhotoURL[0].src })
     };
 
-    type TrimmedText = Pick<
+    type TrimmedTexts = Pick<
       EditableUserData,
       Exclude<EditableData, 'photoURL' | 'coverPhotoURL'>
     >;
 
-    const trimmedKeys: EditableData[] = ['name', 'bio', 'location', 'website'];
+    const trimmedKeys: Readonly<EditableData[]> = [
+      'name',
+      'bio',
+      'location',
+      'website'
+    ];
 
     const trimmedTexts = trimmedKeys.reduce(
       (acc, curr) => ({ ...acc, [curr]: editUserData[curr]?.trim() ?? null }),
-      {} as TrimmedText
+      {} as TrimmedTexts
     );
 
     const newUserData: EditableUserData = {
@@ -134,7 +139,10 @@ export function UserEditProfile(): JSX.Element {
   };
 
   const cleanImage = (): void => {
-    const imagesKey: EditableData[] = ['photoURL', 'coverPhotoURL'];
+    const imagesKey: Readonly<Partial<EditableData>[]> = [
+      'photoURL',
+      'coverPhotoURL'
+    ];
 
     imagesKey.forEach((image) =>
       URL.revokeObjectURL(editUserData[image] ?? '')
@@ -145,6 +153,16 @@ export function UserEditProfile(): JSX.Element {
       coverPhotoURL: []
     });
   };
+
+  const resetUserEditData = (): void =>
+    setEditUserData({
+      bio,
+      name,
+      website,
+      photoURL,
+      location,
+      coverPhotoURL
+    });
 
   const handleChange =
     (key: EditableData) =>
@@ -157,7 +175,7 @@ export function UserEditProfile(): JSX.Element {
     ? "Name can't be blank"
     : '';
 
-  const inputFields: InputFieldProps[] = [
+  const inputFields: Readonly<InputFieldProps[]> = [
     {
       label: 'Name',
       inputId: 'name',
@@ -208,6 +226,7 @@ export function UserEditProfile(): JSX.Element {
           closeModal={closeModal}
           updateData={updateData}
           removeCoverImage={removeCoverImage}
+          resetUserEditData={resetUserEditData}
         >
           {inputFields.map((inputData) => (
             <InputField {...inputData} key={inputData.inputId} />
@@ -215,7 +234,7 @@ export function UserEditProfile(): JSX.Element {
         </EditProfileModal>
       </Modal>
       <Button
-        className='self-start border border-border-color-secondary px-4 py-1
+        className='self-start border border-border-color-secondary px-4 py-1.5
                    font-bold hover:bg-follow-button-background/10'
         onClick={openModal}
       >

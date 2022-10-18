@@ -105,7 +105,7 @@ export async function manageTweet(
 ): Promise<void> {
   const userRef = doc(usersCollection, userId);
   await updateDoc(userRef, {
-    totalTweets: type === 'increment' ? increment(1) : increment(-1),
+    totalTweets: increment(type === 'increment' ? 1 : -1),
     updatedAt: serverTimestamp()
   });
 }

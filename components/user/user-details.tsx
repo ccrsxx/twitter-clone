@@ -30,7 +30,7 @@ export function UserDetails({
   following,
   followers
 }: UserDetailsProps): JSX.Element {
-  const detailIcons: [string | null, IconName][] = [
+  const detailIcons: Readonly<[string | null, IconName][]> = [
     [location, 'MapPinIcon'],
     [website, 'LinkIcon'],
     [`Joined ${formatDate(createdAt, 'joined')}`, 'CalendarDaysIcon']

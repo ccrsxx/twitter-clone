@@ -13,13 +13,20 @@ const IMAGE_EXTENSIONS = [
   'png',
   'svg',
   'webp'
-];
+] as const;
+
+type ImageExtensions = typeof IMAGE_EXTENSIONS[number];
+
+function isValidImageExtension(
+  extension: string
+): extension is ImageExtensions {
+  return IMAGE_EXTENSIONS.includes(
+    extension.split('.').pop()?.toLowerCase() as ImageExtensions
+  );
+}
 
 export function isValidImage(name: string, bytes: number): boolean {
-  return (
-    IMAGE_EXTENSIONS.includes(name.split('.').pop() ?? '') &&
-    bytes < 20 * Math.pow(1024, 2)
-  );
+  return isValidImageExtension(name) && bytes < 20 * Math.pow(1024, 2);
 }
 
 export function isValidUsername(

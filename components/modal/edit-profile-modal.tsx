@@ -21,6 +21,7 @@ type EditProfileModalProps = Pick<
   closeModal: () => void;
   updateData: () => Promise<void>;
   removeCoverImage: () => void;
+  resetUserEditData: () => void;
 };
 
 export function EditProfileModal({
@@ -33,7 +34,8 @@ export function EditProfileModal({
   editImage,
   closeModal,
   updateData,
-  removeCoverImage
+  removeCoverImage,
+  resetUserEditData
 }: EditProfileModalProps): JSX.Element {
   const coverInputFileRef = useRef<HTMLInputElement>(null);
   const profileInputFileRef = useRef<HTMLInputElement>(null);
@@ -54,16 +56,26 @@ export function EditProfileModal({
         title='Edit profile'
         action={closeModal}
       >
-        <Button
-          className='ml-auto bg-primary py-1 px-4 font-bold 
-                     text-follow-text-color enabled:hover:brightness-90 
-                     enabled:active:brightness-75 disabled:brightness-75'
-          onClick={updateData}
-          disabled={!!inputNameError}
-          loading={loading}
-        >
-          Save
-        </Button>
+        <div className='ml-auto flex items-center gap-3'>
+          <Button
+            className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'
+            onClick={resetUserEditData}
+            disabled={loading}
+          >
+            <HeroIcon className='h-5 w-5' iconName={'ArrowPathIcon'} />
+            <ToolTip tip='Reset' />
+          </Button>
+          <Button
+            className='bg-primary py-1 px-4 font-bold text-follow-text-color 
+                       enabled:hover:brightness-90 enabled:active:brightness-75 
+                       disabled:brightness-75'
+            onClick={updateData}
+            disabled={!!inputNameError}
+            loading={loading}
+          >
+            Save
+          </Button>
+        </div>
       </MainHeader>
       <section
         className={cn(

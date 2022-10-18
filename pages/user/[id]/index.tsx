@@ -34,8 +34,8 @@ export default function UserTweets(): JSX.Element {
   const { data: ownerTweets, loading: ownerLoading } = useCollection(
     query(
       tweetsCollection,
-      where('parent', '==', null),
-      where('createdBy', '==', id)
+      where('createdBy', '==', id),
+      where('parent', '==', null)
     ),
     { includeUser: true, allowNull: true }
   );
@@ -49,8 +49,7 @@ export default function UserTweets(): JSX.Element {
     { includeUser: true, allowNull: true }
   );
 
-  const mergedTweets =
-    ownerTweets || peopleTweets ? mergeTweets(ownerTweets, peopleTweets) : null;
+  const mergedTweets = mergeTweets(ownerTweets, peopleTweets);
 
   return (
     <section>

@@ -51,7 +51,7 @@ export function ViewTweetStats({
     closeModal();
   };
 
-  const allStats: [string, StatsType | null, number, number][] = [
+  const allStats: Readonly<[string, StatsType | null, number, number][]> = [
     ['Reply', null, replyMove, currentReplies],
     ['Retweet', 'retweets', tweetMove, currentTweets],
     ['Like', 'likes', likeMove, currentLikes]
@@ -67,9 +67,9 @@ export function ViewTweetStats({
       >
         <TweetStatsModal statsType={statsType} handleClose={handleClose}>
           <UserCards
+            loading={loading}
             type={statsType as StatsType}
             data={data}
-            loading={loading}
           />
         </TweetStatsModal>
       </Modal>

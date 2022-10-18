@@ -13,7 +13,7 @@ import type { IconName } from '@components/ui/hero-icon';
 
 type NavLinks = { href: string; linkName: string; iconName: IconName }[];
 
-const navLinks: NavLinks = [
+const navLinks: Readonly<NavLinks> = [
   {
     href: '/home',
     linkName: 'Home',

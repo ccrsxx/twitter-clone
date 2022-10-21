@@ -6,21 +6,21 @@ import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { mergeTweets } from '@lib/merge';
 import {
-  HomeLayout,
   MainLayout,
+  ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { UserLayout } from '@components/layout/user-layout';
 import { UserHomeLayout } from '@components/layout/user-home-layout';
+import { StatsEmpty } from '@components/tweet/stats-empty';
 import { Loading } from '@components/ui/loading';
-import { Error } from '@components/ui/error';
 import { Tweet } from '@components/tweet/tweet';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function UserTweets(): JSX.Element {
   const { user } = useUser();
 
-  const { id, pinnedTweet } = user ?? {};
+  const { id, username, pinnedTweet } = user ?? {};
 
   const { data: pinnedData } = useDocument(
     doc(tweetsCollection, pinnedTweet ?? 'null'),
@@ -56,7 +56,10 @@ export default function UserTweets(): JSX.Element {
       {ownerLoading || peopleLoading ? (
         <Loading className='mt-5' />
       ) : !mergedTweets ? (
-        <Error message='This user currently has no Tweet.' />
+        <StatsEmpty
+          title={`@${username as string} hasn't tweeted`}
+          description='When they do, their Tweets will show up here.'
+        />
       ) : (
         <AnimatePresence mode='popLayout'>
           {pinnedData && (
@@ -74,11 +77,11 @@ export default function UserTweets(): JSX.Element {
 UserTweets.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <HomeLayout>
+      <ProfileLayout>
         <UserLayout>
           <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
-      </HomeLayout>
+      </ProfileLayout>
     </MainLayout>
   </ProtectedLayout>
 );

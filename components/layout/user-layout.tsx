@@ -11,7 +11,6 @@ import type { LayoutProps } from './common-layout';
 
 export function UserLayout({ children }: LayoutProps): JSX.Element {
   const {
-    pathname,
     query: { id },
     back
   } = useRouter();
@@ -23,19 +22,12 @@ export function UserLayout({ children }: LayoutProps): JSX.Element {
 
   const user = data ? data[0] : null;
 
-  const isInFollowPage = pathname.includes('[id]/follow');
-
   return (
     <UserContextProvider value={{ user, loading }}>
       {!user && !loading && <SEO title='User not found / Twitter' />}
       <MainContainer>
         <MainHeader useActionButton action={back}>
-          <UserHeader
-            user={user}
-            follow={isInFollowPage}
-            userId={id as string}
-            loading={loading}
-          />
+          <UserHeader />
         </MainHeader>
         {children}
       </MainContainer>

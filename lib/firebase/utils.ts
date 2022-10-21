@@ -17,6 +17,7 @@ import { storage } from './app';
 import {
   usersCollection,
   tweetsCollection,
+  userStatsCollection,
   userBookmarksCollection
 } from './collections';
 import type { WithFieldValue } from 'firebase/firestore';
@@ -99,17 +100,6 @@ export async function manageFollow(
     ]);
 }
 
-export async function manageTweet(
-  type: 'increment' | 'decrement',
-  userId: string
-): Promise<void> {
-  const userRef = doc(usersCollection, userId);
-  await updateDoc(userRef, {
-    totalTweets: increment(type === 'increment' ? 1 : -1),
-    updatedAt: serverTimestamp()
-  });
-}
-
 export async function removeTweet(tweetId: string): Promise<void> {
   const userRef = doc(tweetsCollection, tweetId);
   await deleteDoc(userRef);
@@ -148,8 +138,47 @@ export async function manageReply(
   tweetId: string
 ): Promise<void> {
   const tweetRef = doc(tweetsCollection, tweetId);
-  await updateDoc(tweetRef, {
-    userReplies: increment(type === 'increment' ? 1 : -1),
+
+  try {
+    await updateDoc(tweetRef, {
+      userReplies: increment(type === 'increment' ? 1 : -1),
+      updatedAt: serverTimestamp()
+    });
+  } catch {
+    // do nothing, because parent tweet was deleted
+  }
+}
+
+export async function manageTotalTweets(
+  type: 'increment' | 'decrement',
+  userId: string
+): Promise<void> {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
+    totalTweets: increment(type === 'increment' ? 1 : -1),
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function manageTotalPhotos(
+  type: 'increment' | 'decrement',
+  userId: string
+): Promise<void> {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, {
+    totalPhotos: increment(type === 'increment' ? 1 : -1),
+    updatedAt: serverTimestamp()
+  });
+}
+
+export async function manageUserTweet(
+  type: 'tweet' | 'untweet',
+  userId: string,
+  tweetId: string
+): Promise<void> {
+  const userStatsRef = doc(userStatsCollection(userId), 'stats');
+  await updateDoc(userStatsRef, {
+    tweets: type === 'tweet' ? arrayUnion(tweetId) : arrayRemove(tweetId),
     updatedAt: serverTimestamp()
   });
 }
@@ -168,7 +197,7 @@ export function manageRetweet(
           userRetweets: arrayUnion(userId),
           updatedAt: serverTimestamp()
         }),
-        manageTweet('increment', userId)
+        manageUserTweet('tweet', userId, tweetId)
       ]);
     else
       await Promise.all([
@@ -176,9 +205,21 @@ export function manageRetweet(
           userRetweets: arrayRemove(userId),
           updatedAt: serverTimestamp()
         }),
-        manageTweet('decrement', userId)
+        manageUserTweet('untweet', userId, tweetId)
       ]);
   };
+}
+
+export async function manageUserLike(
+  type: 'like' | 'unlike',
+  userId: string,
+  tweetId: string
+): Promise<void> {
+  const userStatsRef = doc(userStatsCollection(userId), 'stats');
+  await updateDoc(userStatsRef, {
+    likes: type === 'like' ? arrayUnion(tweetId) : arrayRemove(tweetId),
+    updatedAt: serverTimestamp()
+  });
 }
 
 export function manageLike(
@@ -188,10 +229,23 @@ export function manageLike(
 ) {
   return async (): Promise<void> => {
     const tweetRef = doc(tweetsCollection, tweetId);
-    await updateDoc(tweetRef, {
-      userLikes: type === 'like' ? arrayUnion(userId) : arrayRemove(userId),
-      updatedAt: serverTimestamp()
-    });
+
+    if (type === 'like')
+      await Promise.all([
+        updateDoc(tweetRef, {
+          userLikes: arrayUnion(userId),
+          updatedAt: serverTimestamp()
+        }),
+        manageUserLike('like', userId, tweetId)
+      ]);
+    else
+      await Promise.all([
+        updateDoc(tweetRef, {
+          userLikes: arrayRemove(userId),
+          updatedAt: serverTimestamp()
+        }),
+        manageUserLike('unlike', userId, tweetId)
+      ]);
   };
 }
 

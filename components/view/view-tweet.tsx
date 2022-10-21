@@ -66,7 +66,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
@@ -102,6 +102,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
               isOwner={isOwner}
               tweetId={tweetId}
               username={username}
+              hasImages={!!images}
               createdBy={createdBy}
             />
           </div>

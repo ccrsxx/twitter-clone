@@ -12,15 +12,13 @@ export function TweetReplyModal({
   closeModal
 }: TweetReplyModalProps): JSX.Element {
   return (
-    <>
-      <Input
-        modal
-        replyModal
-        parent={{ id: tweet.id, username: tweet.user.username }}
-        closeModal={closeModal}
-      >
-        <Tweet modal parentTweet {...tweet} />
-      </Input>
-    </>
+    <Input
+      modal
+      replyModal
+      parent={{ id: tweet.id, username: tweet.user.username }}
+      closeModal={closeModal}
+    >
+      <Tweet modal parentTweet {...tweet} />
+    </Input>
   );
 }

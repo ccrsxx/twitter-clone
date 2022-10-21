@@ -7,19 +7,20 @@ type TweetWithParentProps = {
   data: TweetWithUser[];
 };
 
-export type LoadedParents = Record<'parentId' | 'componentId', string>[];
+export type LoadedParents = Record<'parentId' | 'childId', string>[];
 
 export function TweetWithParent({ data }: TweetWithParentProps): JSX.Element {
-  const [loadedParents, setParentIds] = useState<LoadedParents>([]);
+  const [loadedParents, setLoadedParents] = useState<LoadedParents>([]);
 
-  const addParentId = (parentId: string, componentId: string): void =>
-    setParentIds((prev) => {
-      if (prev.some((item) => item.parentId === parentId)) return prev;
-      return [...prev, { parentId, componentId }];
-    });
+  const addParentId = (parentId: string, targetChildId: string): void =>
+    setLoadedParents((prevLoadedParents) =>
+      prevLoadedParents.some((item) => item.parentId === parentId)
+        ? prevLoadedParents
+        : [...prevLoadedParents, { parentId, childId: targetChildId }]
+    );
 
   const filteredData = data.filter(
-    (item) => !loadedParents.some((parent) => parent.parentId === item.id)
+    (child) => !loadedParents.some((parent) => parent.parentId === child.id)
   );
 
   return (

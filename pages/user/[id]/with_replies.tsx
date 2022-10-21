@@ -5,8 +5,8 @@ import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
 import {
-  HomeLayout,
   MainLayout,
+  ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { SEO } from '@components/common/seo';
@@ -52,9 +52,8 @@ export default function UserWithReplies(): JSX.Element {
         <Loading className='mt-5' />
       ) : !data ? (
         <StatsEmpty
-          title={`@${name as string} hasn't liked any Tweets`}
-          description='When they do, those Tweets will show up here.'
-          imageData={{ src: '/assets/no-media.png', alt: 'No media' }}
+          title={`@${username as string} hasn't tweeted`}
+          description='When they do, their Tweets will show up here.'
         />
       ) : (
         <AnimatePresence mode='popLayout'>
@@ -71,11 +70,11 @@ export default function UserWithReplies(): JSX.Element {
 UserWithReplies.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <HomeLayout>
+      <ProfileLayout>
         <UserLayout>
           <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
-      </HomeLayout>
+      </ProfileLayout>
     </MainLayout>
   </ProtectedLayout>
 );

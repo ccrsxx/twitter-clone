@@ -81,7 +81,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full my-8'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full my-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
@@ -142,6 +142,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                     tweetId={tweetId}
                     parentId={parentId}
                     username={username}
+                    hasImages={!!images}
                     createdBy={createdBy}
                   />
                 )}

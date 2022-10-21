@@ -5,7 +5,12 @@ import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { tweetsCollection } from '@lib/firebase/collections';
-import { manageReply, manageTweet, uploadImages } from '@lib/firebase/utils';
+import {
+  manageReply,
+  uploadImages,
+  manageTotalPhotos,
+  manageTotalTweets
+} from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';
@@ -92,7 +97,8 @@ export function Input({
 
     const [tweetRef] = await Promise.all([
       addDoc(tweetsCollection, tweetData),
-      manageTweet('increment', userId),
+      manageTotalTweets('increment', userId),
+      tweetData.images && manageTotalPhotos('increment', userId),
       isReplying && manageReply('increment', parent?.id as string)
     ]);
 
@@ -193,13 +199,7 @@ export function Input({
       onSubmit={handleSubmit}
     >
       {loading && (
-        <motion.i
-          className={cn(
-            'h-1 animate-pulse bg-accent-blue',
-            modal && 'mx-auto w-[calc(100%-0.75rem)] rounded-t-2xl'
-          )}
-          {...variants}
-        />
+        <motion.i className='h-1 animate-pulse bg-accent-blue' {...variants} />
       )}
       {children}
       {reply && visited && (

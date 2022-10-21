@@ -59,7 +59,7 @@ export function Sidebar(): JSX.Element {
     <header className='-mr-4 flex w-full max-w-xs justify-end'>
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8'
+        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >

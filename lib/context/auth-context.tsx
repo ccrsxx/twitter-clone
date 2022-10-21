@@ -15,6 +15,7 @@ import {
 import { auth } from '@lib/firebase/app';
 import {
   usersCollection,
+  userStatsCollection,
   userBookmarksCollection
 } from '@lib/firebase/collections';
 import { getRandomInt } from '@lib/utils';
@@ -23,6 +24,7 @@ import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { User } from '@lib/types/user';
 import type { Bookmark } from '@lib/types/bookmark';
+import type { Stats } from '@lib/types/stats';
 
 type AuthContext = {
   user: User | null;
@@ -85,12 +87,23 @@ export function AuthContextProvider({
           createdAt: serverTimestamp(),
           updatedAt: null,
           totalTweets: 0,
+          totalPhotos: 0,
           pinnedTweet: null,
           coverPhotoURL: null
         };
 
+        const userStatsData: WithFieldValue<Stats> = {
+          likes: [],
+          tweets: [],
+          updatedAt: null
+        };
+
         try {
-          await setDoc(doc(usersCollection, uid), userData);
+          await Promise.all([
+            setDoc(doc(usersCollection, uid), userData),
+            setDoc(doc(userStatsCollection(uid), 'stats'), userStatsData)
+          ]);
+
           const newUser = (await getDoc(doc(usersCollection, uid))).data();
           setUser(newUser as User);
         } catch (error) {

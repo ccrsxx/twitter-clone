@@ -1,6 +1,6 @@
 import {
   MainLayout,
-  HomeLayout,
+  ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { UserLayout } from '@components/layout/user-layout';
@@ -15,11 +15,11 @@ export default function UserFollowers(): JSX.Element {
 UserFollowers.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <HomeLayout>
+      <ProfileLayout>
         <UserLayout>
           <UserFollowLayout>{page}</UserFollowLayout>
         </UserLayout>
-      </HomeLayout>
+      </ProfileLayout>
     </MainLayout>
   </ProtectedLayout>
 );

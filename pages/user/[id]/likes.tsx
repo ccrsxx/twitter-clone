@@ -4,8 +4,8 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
 import {
-  HomeLayout,
   MainLayout,
+  ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { SEO } from '@components/common/seo';
@@ -43,7 +43,6 @@ export default function UserLikes(): JSX.Element {
         <StatsEmpty
           title={`@${username as string} hasn't liked any Tweets`}
           description='When they do, those Tweets will show up here.'
-          imageData={{ src: '/assets/no-media.png', alt: 'No media' }}
         />
       ) : (
         <AnimatePresence mode='popLayout'>
@@ -59,11 +58,11 @@ export default function UserLikes(): JSX.Element {
 UserLikes.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <HomeLayout>
+      <ProfileLayout>
         <UserLayout>
           <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
-      </HomeLayout>
+      </ProfileLayout>
     </MainLayout>
   </ProtectedLayout>
 );

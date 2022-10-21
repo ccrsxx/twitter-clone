@@ -10,7 +10,8 @@ import {
   manageReply,
   manageFollow,
   managePinnedTweet,
-  manageTweet
+  manageTotalTweets,
+  manageTotalPhotos
 } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
@@ -36,8 +37,9 @@ export const variants: Variants = {
 type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   isOwner: boolean;
   tweetId: string;
-  parentId?: string;
   username: string;
+  hasImages: boolean;
+  parentId?: string;
 };
 
 // TODO: fix bugs on hover, use popover for now instead of menu
@@ -49,6 +51,7 @@ export function TweetActions({
   tweetId,
   parentId,
   username,
+  hasImages,
   createdBy
 }: TweetActionsProps): JSX.Element {
   const { user, isAdmin } = useAuth();
@@ -73,7 +76,8 @@ export function TweetActions({
   const handleRemove = async (): Promise<void> => {
     await Promise.all([
       removeTweet(tweetId),
-      manageTweet('decrement', createdBy),
+      manageTotalTweets('decrement', userId),
+      hasImages && manageTotalPhotos('decrement', createdBy),
       parentId && manageReply('decrement', parentId)
     ]);
     toast.success(

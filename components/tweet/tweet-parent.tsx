@@ -24,7 +24,7 @@ export function TweetParent({
   );
 
   const isParentAlreadyLoaded = loadedParents.some(
-    (item) => item.componentId === componentId
+    (child) => child.childId === componentId
   );
 
   const { data, loading } = useDocument(doc(tweetsCollection, parentId), {

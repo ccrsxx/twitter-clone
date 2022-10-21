@@ -27,7 +27,7 @@ const placeholderProfiles: Readonly<SuggestionCardProps[]> = [
   }
 ];
 
-export function Suggestion(): JSX.Element {
+export function Suggestions(): JSX.Element {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

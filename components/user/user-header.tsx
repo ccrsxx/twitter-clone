@@ -1,14 +1,12 @@
+import { useRouter } from 'next/router';
+import { doc } from 'firebase/firestore';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useDocument } from '@lib/hooks/useDocument';
+import { useUser } from '@lib/context/user-context';
+import { isPlural } from '@lib/utils';
+import { userStatsCollection } from '@lib/firebase/collections';
 import { VerifiedName } from '@components/ui/verified-name';
-import type { User } from '@lib/types/user';
 import type { Variants } from 'framer-motion';
-
-type UserHeaderProps = {
-  user: User | null;
-  userId?: string;
-  follow?: boolean;
-  loading: boolean;
-};
 
 export const variants: Variants = {
   initial: { opacity: 0 },
@@ -16,15 +14,39 @@ export const variants: Variants = {
   exit: { opacity: 0, transition: { duration: 0.2 } }
 };
 
-export function UserHeader({
-  user,
-  userId,
-  follow,
-  loading
-}: UserHeaderProps): JSX.Element {
+export function UserHeader(): JSX.Element {
+  const {
+    pathname,
+    query: { id }
+  } = useRouter();
+
+  const { user, loading } = useUser();
+
+  const userId = user ? user.id : null;
+
+  const { data: statsData, loading: statsLoading } = useDocument(
+    doc(userStatsCollection(userId ?? 'null'), 'stats'),
+    {
+      allowNull: true,
+      disabled: !userId
+    }
+  );
+
+  const { tweets, likes } = statsData ?? {};
+
+  const [totalTweets, totalPhotos, totalLikes] = [
+    (user?.totalTweets ?? 0) + (tweets?.length ?? 0),
+    user?.totalPhotos,
+    likes?.length
+  ];
+  const currentPage = pathname.split('/').pop() ?? '';
+
+  const isInFollowPage = ['following', 'followers'].includes(currentPage);
+  const isInTweetPage = ['[id]', 'with_replies'].includes(currentPage);
+
   return (
     <AnimatePresence mode='popLayout'>
-      {loading ? (
+      {loading || statsLoading ? (
         <motion.div
           className='-mb-1 inner:animate-pulse inner:rounded-lg inner:bg-white'
           {...variants}
@@ -35,7 +57,7 @@ export function UserHeader({
         </motion.div>
       ) : !user ? (
         <motion.h2 className='text-xl font-bold' {...variants} key='not-found'>
-          {follow ? `@${userId as string}` : 'Profile'}
+          {isInFollowPage ? `@${id as string}` : 'Profile'}
         </motion.h2>
       ) : (
         <motion.div className='-mb-1' {...variants} key='found'>
@@ -47,13 +69,21 @@ export function UserHeader({
             <h2 className='text-xl font-bold'>{user.name}</h2>
           </VerifiedName>
           <p className='text-xs text-secondary'>
-            {follow
+            {isInFollowPage
               ? `@${user.username}`
-              : user.totalTweets
-              ? `${user.totalTweets} ${`Tweet${
-                  user.totalTweets > 1 ? 's' : ''
-                }`}`
-              : 'No Tweet'}
+              : isInTweetPage
+              ? totalTweets
+                ? `${totalTweets} ${`Tweet${isPlural(totalTweets)}`}`
+                : 'No Tweet'
+              : currentPage === 'media'
+              ? totalPhotos
+                ? `${totalPhotos} Photo${isPlural(totalPhotos)} & GIF${isPlural(
+                    totalPhotos
+                  )}`
+                : 'No Photo & GIF'
+              : totalLikes
+              ? `${totalLikes} Like${isPlural(totalLikes)}`
+              : 'No Like'}
           </p>
         </motion.div>
       )}

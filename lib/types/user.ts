@@ -14,6 +14,7 @@ export type User = {
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
   totalTweets: number;
+  totalPhotos: number;
   pinnedTweet: string | null;
   coverPhotoURL: string | null;
 };

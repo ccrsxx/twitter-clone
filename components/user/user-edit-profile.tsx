@@ -19,6 +19,11 @@ type UserImages = Record<
   FilesWithId
 >;
 
+type TrimmedTexts = Pick<
+  EditableUserData,
+  Exclude<EditableData, 'photoURL' | 'coverPhotoURL'>
+>;
+
 export function UserEditProfile(): JSX.Element {
   const { user } = useUser();
   const { open, openModal, closeModal } = useModal();
@@ -56,18 +61,13 @@ export function UserEditProfile(): JSX.Element {
       [photoURL, coverURL].map((image) => uploadImages(userId, image))
     );
 
-    const newImages = {
+    const newImages: Partial<Pick<User, 'photoURL' | 'coverPhotoURL'>> = {
       coverPhotoURL:
         coverPhotoURL === editUserData.coverPhotoURL
           ? coverPhotoURL
           : newCoverPhotoURL?.[0].src ?? null,
       ...(newPhotoURL && { photoURL: newPhotoURL[0].src })
     };
-
-    type TrimmedTexts = Pick<
-      EditableUserData,
-      Exclude<EditableData, 'photoURL' | 'coverPhotoURL'>
-    >;
 
     const trimmedKeys: Readonly<EditableData[]> = [
       'name',

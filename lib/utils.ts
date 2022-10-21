@@ -45,3 +45,7 @@ export function getStatsMove(movePixels: number): MotionProps {
     }
   };
 }
+
+export function isPlural(count: number): string {
+  return count > 1 ? 's' : '';
+}

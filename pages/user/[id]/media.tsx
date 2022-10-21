@@ -5,8 +5,8 @@ import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
 import { mergeTweets } from '@lib/merge';
 import {
-  HomeLayout,
   MainLayout,
+  ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { SEO } from '@components/common/seo';
@@ -62,11 +62,11 @@ export default function UserMedia(): JSX.Element {
 UserMedia.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <HomeLayout>
+      <ProfileLayout>
         <UserLayout>
           <UserHomeLayout>{page}</UserHomeLayout>
         </UserLayout>
-      </HomeLayout>
+      </ProfileLayout>
     </MainLayout>
   </ProtectedLayout>
 );

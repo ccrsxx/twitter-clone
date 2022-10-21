@@ -6,6 +6,8 @@
 /.vercel/
 /out/
 
-
 # production
 /build
+
+# compiled js functions
+/functions/lib/

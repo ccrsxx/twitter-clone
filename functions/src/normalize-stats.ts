@@ -8,33 +8,42 @@ export const normalizeStats = regionalFunctions.firestore
     const tweetId = snapshot.id;
     const tweetData = snapshot.data() as Tweet;
 
-    functions.logger.info('normalizeStats from', { tweetId, tweetData });
+    functions.logger.info(`Normalizing stats from tweet ${tweetId}`);
 
     const { userRetweets, userLikes } = tweetData;
 
-    const usersStatsToDelete = [...new Set([...userRetweets, ...userLikes])];
+    const usersStatsToDelete = new Set([...userRetweets, ...userLikes]);
 
-    const statsToDelete = usersStatsToDelete.flatMap((userId: string) => {
-      functions.logger.info('deleting user stats with', { userId });
+    const batch = firestore().batch();
+
+    usersStatsToDelete.forEach((userId) => {
+      functions.logger.info(`Deleting stats from ${userId}`);
 
       const userStatsRef = firestore()
         .doc(`users/${userId}/stats/stats`)
         .withConverter(tweetConverter);
 
-      const userBookmarkTweetRef = firestore()
-        .doc(`users/${userId}/bookmarks/${tweetId}`)
-        .withConverter(bookmarkConverter);
-
-      return [
-        userStatsRef.update({
-          tweets: firestore.FieldValue.arrayRemove(tweetId),
-          likes: firestore.FieldValue.arrayRemove(tweetId)
-        }),
-        userBookmarkTweetRef.delete()
-      ];
+      batch.update(userStatsRef, {
+        tweets: firestore.FieldValue.arrayRemove(tweetId),
+        likes: firestore.FieldValue.arrayRemove(tweetId)
+      });
     });
 
-    await Promise.all(statsToDelete);
+    const bookmarksQuery = firestore()
+      .collectionGroup('bookmarks')
+      .where('id', '==', tweetId)
+      .withConverter(bookmarkConverter);
 
-    functions.logger.info(`normalizeStats from ${tweetId} is done`);
+    const docsSnap = await bookmarksQuery.get();
+
+    functions.logger.info(`Deleting ${docsSnap.size} bookmarks`);
+
+    docsSnap.docs.forEach(({ id, ref }) => {
+      functions.logger.info(`Deleting bookmark ${id}`);
+      batch.delete(ref);
+    });
+
+    await batch.commit();
+
+    functions.logger.info(`Normalizing stats for tweet ${tweetId} is done`);
   });

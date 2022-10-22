@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import cn from 'clsx';
-import { formatDate } from '@lib/format';
+import { formatDate } from '@lib/date';
 import { ToolTip } from '@components/ui/tooltip';
 import type { Tweet } from '@lib/types/tweet';
 

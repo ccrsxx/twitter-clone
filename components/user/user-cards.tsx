@@ -5,6 +5,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { StatsEmpty } from '@components/tweet/stats-empty';
 import { NextImage } from '@components/ui/next-image';
 import { Loading } from '@components/ui/loading';
+import { VerifiedName } from '@components/ui/verified-name';
 import { UserFollowButton } from '@components/user/user-follow-button';
 import { variants } from '@components/user/user-header';
 import type { User } from '@lib/types/user';
@@ -18,6 +19,7 @@ type CombinedTypes = StatsType | FollowType;
 type UserCardsProps = {
   data: User[] | null;
   type: CombinedTypes;
+  follow?: boolean;
   loading: boolean;
 };
 
@@ -35,7 +37,6 @@ const allNoStatsData: Readonly<Record<CombinedTypes, StatsEmptyProps>> = {
   },
   following: {
     title: 'Be in the know',
-    imageData: null,
     description:
       'Following accounts is an easy way to curate your timeline and know what’s happening with the topics and people you’re interested in.'
   },
@@ -50,6 +51,7 @@ const allNoStatsData: Readonly<Record<CombinedTypes, StatsEmptyProps>> = {
 export function UserCards({
   data,
   type,
+  follow,
   loading
 }: UserCardsProps): JSX.Element {
   const { user } = useAuth();
@@ -69,7 +71,7 @@ export function UserCards({
       ) : (
         <AnimatePresence mode='popLayout'>
           {data?.length ? (
-            data.map(({ id, bio, name, username, photoURL }) => (
+            data.map(({ id, bio, name, verified, username, photoURL }) => (
               <motion.div layout='position' key={id} {...variants}>
                 <Link href={`/user/${username}`}>
                   <a
@@ -89,11 +91,22 @@ export function UserCards({
                     </Link>
                     <div className='flex flex-col gap-1'>
                       <div className='flex items-center justify-between'>
-                        <div className='flex flex-col'>
-                          <p className='custom-underline -mb-1 self-start'>
-                            {name}
-                          </p>
-                          <p className='text-secondary'>@{username}</p>
+                        <div className='flex flex-col justify-center'>
+                          <VerifiedName verified={verified}>
+                            <p className='custom-underline -mb-1 self-start font-bold'>
+                              {name}
+                            </p>
+                          </VerifiedName>
+                          <div className='flex items-center gap-1 text-secondary'>
+                            <p>@{username}</p>
+                            {follow &&
+                              user?.id !== id &&
+                              user?.followers.includes(id) && (
+                                <p className='rounded bg-search-background px-1 text-xs'>
+                                  Follows you
+                                </p>
+                              )}
+                          </div>
                         </div>
                         {user?.id !== id && (
                           <UserFollowButton

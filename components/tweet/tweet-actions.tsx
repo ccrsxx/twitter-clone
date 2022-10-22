@@ -38,8 +38,8 @@ type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   isOwner: boolean;
   tweetId: string;
   username: string;
-  hasImages: boolean;
   parentId?: string;
+  hasImages: boolean;
 };
 
 // TODO: fix bugs on hover, use popover for now instead of menu

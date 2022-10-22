@@ -1,13 +1,7 @@
-import type {
-  Timestamp,
-  DocumentReference,
-  FirestoreDataConverter
-} from 'firebase/firestore';
-import type { Tweet } from './tweet';
+import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 
 export type Bookmark = {
   id: string;
-  ref: DocumentReference<Tweet>;
   createdAt: Timestamp;
 };
 
@@ -16,9 +10,8 @@ export const bookmarkConverter: FirestoreDataConverter<Bookmark> = {
     return { ...bookmark };
   },
   fromFirestore(snapshot, options) {
-    const { id } = snapshot;
     const data = snapshot.data(options);
 
-    return { id, ...data } as Bookmark;
+    return { ...data } as Bookmark;
   }
 };

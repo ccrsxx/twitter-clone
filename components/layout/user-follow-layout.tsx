@@ -10,17 +10,18 @@ export function UserFollowLayout({ children }: LayoutProps): JSX.Element {
 
   return (
     <>
-      <motion.section {...variants}>
-        {loading ? (
-          <Loading className='mt-5 w-full' />
-        ) : !userData ? (
-          <div className='w-full p-8 text-center'>
-            <p className='text-3xl font-bold'>This account doesn’t exist</p>
-            <p className='text-secondary'>Try searching for another.</p>
-          </div>
-        ) : null}
-      </motion.section>
-      {userData && (
+      {!userData ? (
+        <motion.section {...variants}>
+          {loading ? (
+            <Loading className='mt-5 w-full' />
+          ) : (
+            <div className='w-full p-8 text-center'>
+              <p className='text-3xl font-bold'>This account doesn’t exist</p>
+              <p className='text-secondary'>Try searching for another.</p>
+            </div>
+          )}
+        </motion.section>
+      ) : (
         <>
           <UserNav follow />
           {children}

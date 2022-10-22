@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { formatNumber } from '@lib/format';
+import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
 import { useTrends } from '@lib/api/trends';
 import { Error } from '@components/ui/error';

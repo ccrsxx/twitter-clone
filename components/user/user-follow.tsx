@@ -25,7 +25,7 @@ export function UserFollow({ type }: UserFollowProps): JSX.Element {
           type === 'following' ? 'followed by' : 'following'
         } ${name} (@${username}) / Twitter`}
       />
-      <UserCards data={data} type={type} loading={loading} />
+      <UserCards follow data={data} type={type} loading={loading} />
     </>
   );
 }

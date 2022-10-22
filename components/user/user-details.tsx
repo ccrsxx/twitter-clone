@@ -1,4 +1,5 @@
-import { formatDate } from '@lib/format';
+import { useAuth } from '@lib/context/auth-context';
+import { formatDate } from '@lib/date';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { VerifiedName } from '@components/ui/verified-name';
 import { ToolTip } from '@components/ui/tooltip';
@@ -8,6 +9,7 @@ import type { User } from '@lib/types/user';
 
 type UserDetailsProps = Pick<
   User,
+  | 'id'
   | 'bio'
   | 'name'
   | 'website'
@@ -20,6 +22,7 @@ type UserDetailsProps = Pick<
 >;
 
 export function UserDetails({
+  id,
   bio,
   name,
   website,
@@ -30,6 +33,8 @@ export function UserDetails({
   following,
   followers
 }: UserDetailsProps): JSX.Element {
+  const { user } = useAuth();
+
   const detailIcons: Readonly<[string | null, IconName][]> = [
     [location, 'MapPinIcon'],
     [website, 'LinkIcon'],
@@ -46,7 +51,14 @@ export function UserDetails({
         >
           <p className='text-xl font-bold'>{name}</p>
         </VerifiedName>
-        <p className='text-secondary'>@{username}</p>
+        <div className='flex items-center gap-1 text-secondary'>
+          <p>@{username}</p>
+          {user?.id !== id && user?.followers.includes(id) && (
+            <p className='rounded bg-search-background px-1 text-xs'>
+              Follows you
+            </p>
+          )}
+        </div>
       </div>
       <div className='flex flex-col gap-2'>
         {bio && <p className='whitespace-pre-line break-words'>{bio}</p>}

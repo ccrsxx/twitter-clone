@@ -5,7 +5,7 @@ import type { ImageData } from '@lib/types/file';
 export type StatsEmptyProps = {
   title: string;
   modal?: boolean;
-  imageData?: ImageData | null;
+  imageData?: ImageData;
   description: string;
 };
 

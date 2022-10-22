@@ -50,7 +50,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
 
   const reply = !!parent;
 
-  const { username: parentUsername = username } = parent ?? {};
+  const { id: parentId, username: parentUsername = username } = parent ?? {};
 
   return (
     <motion.article
@@ -101,6 +101,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             <TweetActions
               isOwner={isOwner}
               tweetId={tweetId}
+              parentId={parentId}
               username={username}
               hasImages={!!images}
               createdBy={createdBy}

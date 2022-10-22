@@ -37,8 +37,9 @@ export function ViewTweetStats({
   const { open, openModal, closeModal } = useModal();
 
   const { data, loading } = useArrayDocument(
-    statsType ? (statsType === 'likes' ? userLikes : userRetweets) : null,
-    usersCollection
+    statsType ? (statsType === 'likes' ? userLikes : userRetweets) : [],
+    usersCollection,
+    { disabled: !statsType }
   );
 
   const handleOpen = (type: StatsType) => (): void => {

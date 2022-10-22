@@ -39,10 +39,11 @@ export function UserHeader(): JSX.Element {
     user?.totalPhotos,
     likes?.length
   ];
+
   const currentPage = pathname.split('/').pop() ?? '';
 
-  const isInFollowPage = ['following', 'followers'].includes(currentPage);
   const isInTweetPage = ['[id]', 'with_replies'].includes(currentPage);
+  const isInFollowPage = ['following', 'followers'].includes(currentPage);
 
   return (
     <AnimatePresence mode='popLayout'>

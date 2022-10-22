@@ -8,12 +8,13 @@ import {
   updateDoc,
   deleteDoc,
   increment,
+  writeBatch,
   arrayUnion,
   arrayRemove,
   serverTimestamp
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { storage } from './app';
+import { db, storage } from './app';
 import {
   usersCollection,
   tweetsCollection,
@@ -257,10 +258,21 @@ export async function manageBookmark(
   const bookmarkRef = doc(userBookmarksCollection(userId), tweetId);
 
   if (type === 'bookmark') {
-    const bookmarkData: WithFieldValue<Omit<Bookmark, 'id'>> = {
-      ref: doc(tweetsCollection, tweetId),
+    const bookmarkData: WithFieldValue<Bookmark> = {
+      id: tweetId,
       createdAt: serverTimestamp()
     };
     await setDoc(bookmarkRef, bookmarkData);
   } else await deleteDoc(bookmarkRef);
+}
+
+export async function clearAllBookmarks(userId: string): Promise<void> {
+  const bookmarksRef = userBookmarksCollection(userId);
+  const bookmarksSnapshot = await getDocs(bookmarksRef);
+
+  const batch = writeBatch(db);
+
+  bookmarksSnapshot.forEach((doc) => batch.delete(doc.ref));
+
+  await batch.commit();
 }

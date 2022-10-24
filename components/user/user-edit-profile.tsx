@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
-import { useModal } from '@lib/hooks/useModal';
 import { useUser } from '@lib/context/user-context';
+import { useModal } from '@lib/hooks/useModal';
 import { updateUserData, uploadImages } from '@lib/firebase/utils';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';

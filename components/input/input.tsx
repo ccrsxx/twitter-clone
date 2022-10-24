@@ -180,7 +180,7 @@ export function Input({
 
   const formId = useId();
 
-  const inputLimit = isAdmin ? 1280 : 280;
+  const inputLimit = isAdmin ? 560 : 280;
 
   const inputLength = inputValue.length;
   const isValidInput = !!inputValue.trim().length;

@@ -92,7 +92,7 @@ export function InputForm({
   return (
     <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >

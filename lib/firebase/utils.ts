@@ -272,7 +272,7 @@ export async function clearAllBookmarks(userId: string): Promise<void> {
 
   const batch = writeBatch(db);
 
-  bookmarksSnapshot.forEach((doc) => batch.delete(doc.ref));
+  bookmarksSnapshot.forEach(({ ref }) => batch.delete(ref));
 
   await batch.commit();
 }

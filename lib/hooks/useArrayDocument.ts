@@ -39,6 +39,8 @@ export function useArrayDocument<T>(
   useEffect(() => {
     if (disabled) return;
 
+    if (includeUser && !data) setLoading(true);
+
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(
         currentData.map(async (currentData) => {

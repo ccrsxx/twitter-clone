@@ -35,7 +35,11 @@ export default function Home(): JSX.Element {
       <SEO title='Home / Twitter' />
       <MainHeader className='flex items-center justify-between'>
         <h2 className='text-xl font-bold'>Home</h2>
-        <Button className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'>
+        <Button
+          className='group relative p-2 hover:bg-primary/10 active:bg-primary/20
+                     disabled:brightness-100'
+          disabled
+        >
           <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
           <ToolTip tip='Top tweets' />
         </Button>

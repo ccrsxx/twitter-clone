@@ -11,9 +11,14 @@ import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
 
-type NavLinks = { href: string; linkName: string; iconName: IconName }[];
+export type NavLink = {
+  href: string;
+  linkName: string;
+  iconName: IconName;
+  disabled?: boolean;
+};
 
-const navLinks: Readonly<NavLinks> = [
+const navLinks: Readonly<NavLink[]> = [
   {
     href: '/home',
     linkName: 'Home',
@@ -22,17 +27,20 @@ const navLinks: Readonly<NavLinks> = [
   {
     href: '/explore',
     linkName: 'Explore',
-    iconName: 'HashtagIcon'
+    iconName: 'HashtagIcon',
+    disabled: true
   },
   {
     href: '/notifications',
     linkName: 'Notifications',
-    iconName: 'BellIcon'
+    iconName: 'BellIcon',
+    disabled: true
   },
   {
     href: '/messages',
     linkName: 'Messages',
-    iconName: 'EnvelopeIcon'
+    iconName: 'EnvelopeIcon',
+    disabled: true
   },
   {
     href: '/bookmarks',
@@ -42,7 +50,8 @@ const navLinks: Readonly<NavLinks> = [
   {
     href: '/lists',
     linkName: 'Lists',
-    iconName: 'Bars3BottomLeftIcon'
+    iconName: 'Bars3BottomLeftIcon',
+    disabled: true
   }
 ];
 

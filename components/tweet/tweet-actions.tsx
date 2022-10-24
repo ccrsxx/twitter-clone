@@ -131,7 +131,7 @@ export function TweetActions({
   return (
     <>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
         open={removeOpen}
         closeModal={removeCloseModal}
       >
@@ -149,7 +149,7 @@ export function TweetActions({
         />
       </Modal>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
         open={pinOpen}
         closeModal={pinCloseModal}
       >

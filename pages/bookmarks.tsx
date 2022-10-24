@@ -62,7 +62,7 @@ export default function Bookmarks(): JSX.Element {
     <MainContainer>
       <SEO title='Bookmarks / Twitter' />
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >

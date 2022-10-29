@@ -1,6 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
 module.exports = {
+  darkMode: 'class',
   content: ['./pages/**/*.tsx', './components/**/*.tsx'],
   theme: {
     extend: {
@@ -8,30 +9,32 @@ module.exports = {
         'twitter-chirp': ['TwitterChirp', 'sans-serif'],
         'twitter-chirp-extended': ['TwitterChirpExtendedHeavy', 'sans-serif']
       },
+      // prettier-ignore
       colors: {
-        primary: '#E7E9EA',
-        secondary: '#71767B',
-        'icon-color': '#1DA1F2',
-        'icon-background': '#D6D9DB',
-        'accent-blue': '#1D9BF0',
-        'accent-blue-focus': '#8ECDF8',
+        'main-primary': 'rgb(var(--main-primary) / <alpha-value>)',
+        'main-secondary': 'rgb(var(--main-secondary) / <alpha-value>)',
+        'main-background': 'rgb(var(--main-background) / <alpha-value>)',
+        'main-search-background': 'rgb(var(--main-search-background) / <alpha-value>)',
+        'main-sidebar-background': 'rgb(var(--main-sidebar-background) / <alpha-value>)',
+        'main-accent': 'rgb(var(--main-accent) / <alpha-value>)',
+        'accent-yellow': 'rgb(var(--accent-yellow) / <alpha-value>)',
+        'accent-blue': 'rgb(var(--accent-blue) / <alpha-value>)',
+        'accent-pink': 'rgb(var(--accent-pink) / <alpha-value>)',
+        'accent-purple': 'rgb(var(--accent-purple) / <alpha-value>)',
+        'accent-orange': 'rgb(var(--accent-orange) / <alpha-value>)',
+        'accent-green': 'rgb(var(--accent-green) / <alpha-value>)',
         'accent-red': '#F4212E',
-        'accent-yellow': '#FFD400',
-        'accent-purple': '#7856FF',
-        'accent-orange': '#FF7A00',
-        'accent-green': '#00BA7C',
-        'accent-pink': '#F91880',
-        'border-color': '#2F3336',
-        'border-color-secondary': '#536471',
-        'search-background': '#202327',
-        'sidebar-background': '#16181C',
-        'tooltips-background': '#4B5C6B',
-        'follow-button-background': '#EFF3F4',
-        'follow-text-color': '#0F1419',
-        'image-preview-hover-color': '#272C30',
-        'modal-backdrop-color': '#5B7083',
-        'line-reply-color': '#333639',
-        'cover-placeholder-background': '#183B4B'
+        'dark-primary': '#E7E9EA',
+        'dark-secondary': '#71767B',
+        'light-primary': '#0F1419',
+        'light-secondary': '#536471',
+        'dark-border': '#2F3336',
+        'light-border': '#EFF3F4',
+        'dark-line-reply': '#333639',
+        'light-line-reply': '#CFD9DE',
+        'accent-blue-focus': '#8ECDF8',
+        'twitter-icon': '#D6D9DB',
+        'image-preview-hover': '#272C30',
       }
     },
     groups: ['inner'],

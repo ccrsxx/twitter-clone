@@ -11,3 +11,7 @@
 
 # compiled js functions
 /functions/lib/
+
+# python
+*.py
+.mypy_cache/

@@ -7,8 +7,8 @@ type MainContainerProps = {
 export function MainContainer({ children }: MainContainerProps): JSX.Element {
   return (
     <main
-      className='flex min-h-screen w-full max-w-xl flex-col
-                 border-x border-border-color pb-[448px]'
+      className='hover-animation flex min-h-screen w-full max-w-xl flex-col border-x
+                 border-light-border pb-[448px] dark:border-dark-border'
     >
       {children}
     </main>

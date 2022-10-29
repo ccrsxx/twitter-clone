@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast';
 import { useAuth } from '@lib/context/auth-context';
 import { manageBookmark } from '@lib/firebase/utils';
 import { preventBubbling } from '@lib/utils';
+import { siteURL } from '@lib/env';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
@@ -48,9 +49,7 @@ export function TweetShare({
 
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
-    await navigator.clipboard.writeText(
-      `https://twitter-clone-ccrsxx.vercel.app/tweet/${tweetId}`
-    );
+    await navigator.clipboard.writeText(`${siteURL}/tweet/${tweetId}`);
     toast.success('Copied to clipboard');
   };
 
@@ -84,14 +83,13 @@ export function TweetShare({
           <AnimatePresence>
             {open && (
               <Popover.Panel
-                className='group absolute right-0 top-11 z-40 w-max rounded-md bg-black text-primary
-                           outline-none [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
+                className='menu-container group absolute right-0 top-11 w-max text-light-primary dark:text-dark-primary'
                 as={motion.div}
                 {...variants}
                 static
               >
                 <Popover.Button
-                  className='flex w-full gap-3 rounded-md rounded-b-none p-4 hover:bg-sidebar-background'
+                  className='flex w-full gap-3 rounded-md rounded-b-none p-4 hover:bg-main-sidebar-background'
                   as={Button}
                   onClick={preventBubbling(handleCopy(close))}
                 >
@@ -100,7 +98,7 @@ export function TweetShare({
                 </Popover.Button>
                 {!tweetIsBookmarked ? (
                   <Popover.Button
-                    className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                    className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
                       handleBookmark(close, 'bookmark', userId, tweetId)
@@ -111,7 +109,7 @@ export function TweetShare({
                   </Popover.Button>
                 ) : (
                   <Popover.Button
-                    className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                    className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                     as={Button}
                     onClick={preventBubbling(
                       handleBookmark(close, 'unbookmark', userId, tweetId)

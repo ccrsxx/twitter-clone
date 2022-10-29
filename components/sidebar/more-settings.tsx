@@ -25,7 +25,7 @@ export function MoreSettings(): JSX.Element {
   return (
     <>
       <Modal
-        modalClassName='max-w-xl bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xl bg-main-background w-full p-8 rounded-2xl hover-animation'
         open={open}
         closeModal={closeModal}
       >
@@ -37,9 +37,9 @@ export function MoreSettings(): JSX.Element {
             <Menu.Button className='group relative flex w-full py-1 outline-none'>
               <div
                 className={cn(
-                  `custom-button flex gap-4 pr-5 text-xl transition group-hover:bg-primary/10
-                   group-focus-visible:ring-2 group-focus-visible:ring-white`,
-                  open && 'bg-primary/10'
+                  `custom-button flex gap-4 pr-5 text-xl transition group-hover:bg-light-primary/10
+                   group-focus-visible:ring-2 group-focus-visible:ring-white dark:group-hover:bg-dark-primary/10`,
+                  open && 'bg-light-primary/10 dark:bg-dark-primary/10'
                 )}
               >
                 <HeroIcon
@@ -52,8 +52,7 @@ export function MoreSettings(): JSX.Element {
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='absolute -top-44 z-10 w-11/12 rounded-md bg-black outline-none
-                            [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
+                  className='menu-container absolute -top-44 w-11/12 font-medium'
                   as={motion.div}
                   {...variants}
                   static
@@ -63,7 +62,7 @@ export function MoreSettings(): JSX.Element {
                       <MenuLink
                         className={cn(
                           'flex w-full gap-3 rounded-t-md p-4 duration-200',
-                          active && 'bg-sidebar-background'
+                          active && 'bg-main-sidebar-background'
                         )}
                         href='/settings'
                       >
@@ -77,7 +76,7 @@ export function MoreSettings(): JSX.Element {
                       <a
                         className={cn(
                           'flex w-full gap-3 rounded-none p-4 duration-200',
-                          active && 'bg-sidebar-background'
+                          active && 'bg-main-sidebar-background'
                         )}
                         href='https://support.twitter.com'
                         target='_blank'
@@ -93,7 +92,7 @@ export function MoreSettings(): JSX.Element {
                       <Button
                         className={cn(
                           'flex w-full gap-3 rounded-none rounded-b-md p-4 duration-200',
-                          active && 'bg-sidebar-background'
+                          active && 'bg-main-sidebar-background'
                         )}
                         onClick={openModal}
                       >

@@ -61,7 +61,7 @@ export function ViewTweetStats({
   return (
     <>
       <Modal
-        modalClassName='relative bg-black rounded-2xl max-w-xl w-full 
+        modalClassName='relative bg-main-background rounded-2xl max-w-xl w-full 
                         h-[672px] overflow-hidden rounded-2xl'
         open={open}
         closeModal={handleClose}
@@ -77,8 +77,9 @@ export function ViewTweetStats({
       </Modal>
       {isStatsVisible && (
         <div
-          className='flex gap-4 px-1 py-4 text-secondary
-                     [&>button>div]:font-bold [&>button>div]:text-white'
+          className='flex gap-4 px-1 py-4 text-light-secondary dark:text-dark-secondary
+                     [&>button>div]:font-bold [&>button>div]:text-light-primary 
+                     dark:[&>button>div]:text-dark-primary'
         >
           {allStats.map(
             ([title, type, move, stats], index) =>
@@ -86,8 +87,9 @@ export function ViewTweetStats({
                 <button
                   className={cn(
                     `mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
-                     outline-none transition duration-200 hover:border-b-primary 
-                     focus-visible:border-b-primary`,
+                     outline-none transition duration-200 hover:border-b-light-primary 
+                     focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
+                     dark:focus-visible:border-b-dark-primary`,
                     index === 0 && 'cursor-not-allowed'
                   )}
                   key={title}

@@ -32,7 +32,7 @@ export function UserCover({ coverData }: UserCoverProps): JSX.Element {
           />
         </Button>
       ) : (
-        <div className='h-full bg-line-reply-color' />
+        <div className='h-full bg-dark-line-reply' />
       )}
     </div>
   );

@@ -90,9 +90,9 @@ export function InputForm({
   const isVisibilityShown = visited && !reply && !replyModal && !loading;
 
   return (
-    <div className='flex h-full min-h-[48px] w-full flex-col justify-center gap-4'>
+    <div className='flex min-h-[48px] w-full flex-col justify-center gap-4'>
       <Modal
-        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
@@ -107,11 +107,11 @@ export function InputForm({
       <div className='flex flex-col gap-6'>
         {isVisibilityShown && (
           <motion.button
-            className='custom-button flex items-center gap-1 self-start border border-border-color-secondary
-                       py-0 px-3 text-accent-blue hover:bg-accent-blue/10 
-                       active:bg-accent-blue/20 disabled:brightness-100'
+            type='button'
+            className='custom-button flex cursor-not-allowed items-center gap-1 self-start
+                       border border-light-line-reply py-0 px-3 text-main-accent 
+                       hover:bg-main-accent/10 active:bg-main-accent/20 dark:border-light-secondary'
             {...fromTop}
-            disabled
           >
             <p className='font-bold'>Everyone</p>
             <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
@@ -120,7 +120,8 @@ export function InputForm({
         <div className='flex items-center gap-3'>
           <TextArea
             id={formId}
-            className='w-full resize-none bg-transparent text-xl outline-none placeholder:text-secondary'
+            className='w-full resize-none bg-transparent text-xl outline-none
+                       placeholder:text-light-secondary dark:placeholder:text-dark-secondary'
             value={inputValue}
             placeholder={
               reply || replyModal ? 'Tweet your reply' : "What's happening?"
@@ -135,8 +136,8 @@ export function InputForm({
           />
           {reply && !visited && (
             <Button
-              className='bg-accent-blue px-4 py-1.5 font-bold text-white
-                         brightness-50 transition duration-200'
+              className='cursor-pointer bg-main-accent px-4 py-1.5 font-bold text-white
+                         opacity-50 dark:brightness-50'
               onClick={handleFocus}
             >
               Reply
@@ -147,14 +148,13 @@ export function InputForm({
       {children}
       {isVisibilityShown && (
         <motion.div
-          className='flex border-b border-border-color pb-2'
+          className='flex border-b border-light-border pb-2 dark:border-dark-border'
           {...fromBottom}
         >
           <button
-            className='custom-button flex items-center gap-1 py-0 px-3 text-accent-blue 
-                       hover:bg-accent-blue/10 active:bg-accent-blue/20
-                       disabled:brightness-100'
-            disabled
+            type='button'
+            className='custom-button flex cursor-not-allowed items-center gap-1 py-0 px-3 text-main-accent
+                       hover:bg-main-accent/10 active:bg-main-accent/20'
           >
             <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' />
             <p className='font-bold'>Everyone can reply</p>

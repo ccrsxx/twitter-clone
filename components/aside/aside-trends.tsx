@@ -25,7 +25,7 @@ export function AsideTrends(): JSX.Element {
   const { trends, location } = data ?? {};
 
   return (
-    <section className='rounded-2xl bg-sidebar-background'>
+    <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
       {loading ? (
         <Loading />
       ) : trends && location ? (
@@ -34,8 +34,8 @@ export function AsideTrends(): JSX.Element {
           {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
               <a
-                className='hover-animation smooth-tab relative flex flex-col 
-                           gap-0.5 hover:bg-white/[0.03]'
+                className='hover-animation smooth-tab hover-card relative 
+                           flex flex-col gap-0.5'
               >
                 <div className='absolute right-2 top-2'>
                   <Button
@@ -44,18 +44,19 @@ export function AsideTrends(): JSX.Element {
                     onClick={preventBubbling()}
                   >
                     <HeroIcon
-                      className='h-5 w-5 text-secondary group-hover:text-accent-blue'
+                      className='h-5 w-5 text-light-secondary group-hover:text-accent-blue 
+                                 dark:text-dark-secondary'
                       iconName='EllipsisHorizontalIcon'
                     />
                     <ToolTip tip='More' />
                   </Button>
                 </div>
-                <p className='text-sm text-secondary'>
+                <p className='text-sm text-light-secondary dark:text-dark-secondary'>
                   Trending{' '}
                   {location === 'Worldwide' ? 'Worldwide' : `in ${location}`}
                 </p>
                 <p className='font-bold'>{name}</p>
-                <p className='text-sm text-secondary'>
+                <p className='text-sm text-light-secondary dark:text-dark-secondary'>
                   {formatNumber(tweet_volume)} tweets
                 </p>
               </a>
@@ -63,8 +64,8 @@ export function AsideTrends(): JSX.Element {
           ))}
           <Link href='/trends'>
             <a
-              className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
-                         text-center text-accent-blue hover:bg-white/[0.03]'
+              className='custom-button smooth-tab hover-card block w-full rounded-2xl
+                         rounded-t-none text-center text-main-accent'
             >
               Show more
             </a>

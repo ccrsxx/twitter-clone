@@ -13,13 +13,13 @@ const circleStyles = [
   {
     container: null,
     viewBox: '0 0 20 20',
-    stroke: '#1D9BF0',
+    stroke: 'stroke-main-accent',
     r: 9
   },
   {
     container: 'scale-150',
     viewBox: '0 0 30 30',
-    stroke: '#FFD400',
+    stroke: 'stroke-accent-yellow',
     r: 14
   }
 ] as const;
@@ -41,7 +41,7 @@ export function ProgressBar({
   const { container, viewBox, stroke, r } = circleStyles[+isCloseToLimit];
 
   return (
-    <button className='group relative cursor-pointer outline-none'>
+    <button className='group relative cursor-pointer outline-none' disabled>
       <i
         className={cn(
           'flex h-5 w-5 -rotate-90 items-center justify-center transition',
@@ -56,21 +56,23 @@ export function ProgressBar({
           viewBox={viewBox}
         >
           <circle
+            className='stroke-light-border dark:stroke-dark-border'
             cx='50%'
             cy='50%'
             fill='none'
             strokeWidth='2'
             r={r}
-            stroke='#2F3336'
           />
           <circle
-            className='transition-colors'
+            className={cn(
+              'transition-colors',
+              isHittingCharLimit ? 'stroke-accent-red' : stroke
+            )}
             cx='50%'
             cy='50%'
             fill='none'
             strokeWidth='2'
             r={r}
-            stroke={isHittingCharLimit ? '#F4212E' : stroke}
             strokeLinecap='round'
             style={{
               strokeDashoffset: !isCharLimitExceeded ? circleLength : 0,

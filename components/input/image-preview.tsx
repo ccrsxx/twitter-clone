@@ -78,7 +78,7 @@ export function ImagePreview({
   return (
     <div
       className={cn(
-        'grid h-72 grid-cols-2 grid-rows-2',
+        'grid h-72 grid-cols-2 grid-rows-2 rounded-2xl',
         tweet ? 'mt-2 gap-0.5' : 'gap-3'
       )}
     >
@@ -123,6 +123,7 @@ export function ImagePreview({
               className='relative h-full w-full cursor-pointer transition 
                          hover:brightness-75 hover:duration-200'
               imgClassName={cn(
+                // '![border-style:solid] !border !border-light-line-reply dark:!border-dark-border',
                 tweet
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl'
@@ -136,8 +137,8 @@ export function ImagePreview({
             {removeImage && (
               <Button
                 className='absolute top-0 left-0 translate-x-1 translate-y-1
-                           bg-follow-text-color/75 p-1 backdrop-blur-sm 
-                           hover:bg-image-preview-hover-color/75'
+                           bg-light-primary/75 p-1 backdrop-blur-sm 
+                           hover:bg-image-preview-hover/75'
                 onClick={preventBubbling(removeImage(id))}
               >
                 <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />

@@ -22,7 +22,7 @@ export function TweetDate({
           <a
             className={cn(
               'custom-underline peer',
-              viewTweet && 'text-secondary'
+              viewTweet && 'text-light-secondary dark:text-dark-secondary'
             )}
           >
             {formatDate(createdAt, viewTweet ? 'full' : 'tweet')}

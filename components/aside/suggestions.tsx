@@ -36,7 +36,7 @@ export function Suggestions(): JSX.Element {
   }, []);
 
   return (
-    <section className='rounded-2xl bg-sidebar-background'>
+    <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
       {loading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : (
@@ -47,8 +47,8 @@ export function Suggestions(): JSX.Element {
           ))}
           <Link href='/people'>
             <a
-              className='custom-button smooth-tab block w-full rounded-2xl rounded-t-none
-                         text-center text-accent-blue hover:bg-white/[0.03]'
+              className='custom-button smooth-tab hover-card block w-full rounded-2xl
+                         rounded-t-none text-center text-main-accent'
             >
               Show more
             </a>

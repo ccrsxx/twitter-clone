@@ -58,7 +58,8 @@ export function EditProfileModal({
       >
         <div className='ml-auto flex items-center gap-3'>
           <Button
-            className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'
+            className='group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20
+                       dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/10'
             onClick={resetUserEditData}
             disabled={loading}
           >
@@ -66,9 +67,9 @@ export function EditProfileModal({
             <ToolTip tip='Reset' />
           </Button>
           <Button
-            className='bg-primary py-1 px-4 font-bold text-follow-text-color 
-                       enabled:hover:brightness-90 enabled:active:brightness-75 
-                       disabled:brightness-75'
+            className='bg-light-primary py-1 px-4 font-bold text-white enabled:hover:bg-light-primary/90 
+                       enabled:active:bg-light-primary/80 disabled:brightness-75 dark:bg-light-border
+                       dark:text-light-primary dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
             onClick={updateData}
             disabled={!!inputNameError}
             loading={loading}
@@ -79,8 +80,8 @@ export function EditProfileModal({
       </MainHeader>
       <section
         className={cn(
-          'h-full overflow-y-auto',
-          loading && 'pointer-events-none brightness-75'
+          'h-full overflow-y-auto transition-opacity',
+          loading && 'pointer-events-none opacity-50'
         )}
       >
         <div className='group relative mt-[52px] h-[192px]'>
@@ -101,26 +102,26 @@ export function EditProfileModal({
               layout='fill'
             />
           ) : (
-            <div className='h-full bg-line-reply-color' />
+            <div className='h-full bg-dark-line-reply' />
           )}
           <div className='absolute left-1/2 top-1/2 flex -translate-y-1/2 -translate-x-1/2 gap-4'>
             <Button
-              className='group-inner relative bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+              className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
               onClick={handleClick('cover')}
             >
               <HeroIcon
-                className='hover-animation h-6 w-6 group-hover:text-white'
+                className='hover-animation h-6 w-6 text-dark-primary group-hover:text-white'
                 iconName='CameraIcon'
               />
               <ToolTip groupInner tip='Add photo' />
             </Button>
             {coverPhotoURL && (
               <Button
-                className='group-inner relative bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+                className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
                 onClick={removeCoverImage}
               >
                 <HeroIcon
-                  className='hover-animation h-6 w-6 group-hover:text-white'
+                  className='hover-animation h-6 w-6 text-dark-primary group-hover:text-white'
                   iconName='XMarkIcon'
                 />
                 <ToolTip groupInner tip='Remove photo' />
@@ -140,7 +141,7 @@ export function EditProfileModal({
             <div className='group absolute -translate-y-1/2'>
               <NextImage
                 useSkeleton
-                className='rounded-full bg-black p-1'
+                className='rounded-full bg-main-background p-1'
                 imgClassName='rounded-full transition group-hover:brightness-75 group-hover:duration-200'
                 src={photoURL}
                 alt={name}
@@ -149,11 +150,11 @@ export function EditProfileModal({
               />
               <Button
                 className='group-inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                           bg-follow-text-color/60 p-2 hover:bg-image-preview-hover-color/50'
+                           bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
                 onClick={handleClick('profile')}
               >
                 <HeroIcon
-                  className='hover-animation h-6 w-6 group-hover:text-white'
+                  className='hover-animation h-6 w-6 text-dark-primary group-hover:text-white'
                   iconName='CameraIcon'
                 />
                 <ToolTip groupInner tip='Add photo' />
@@ -162,14 +163,14 @@ export function EditProfileModal({
           </div>
           {children}
           <Button
-            className='-mx-4 mb-4 flex items-center justify-between rounded-none
-                       py-2 hover:bg-primary/10 active:bg-primary/20 disabled:brightness-100'
-            disabled
+            className='-mx-4 mb-4 flex cursor-not-allowed items-center justify-between rounded-none
+                       py-2 hover:bg-light-primary/10 active:bg-light-primary/20 disabled:brightness-100
+                       dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
           >
             <span className='mx-2 text-xl'>Switch to professional</span>
             <i>
               <HeroIcon
-                className='h-6 w-6 text-secondary'
+                className='h-6 w-6 text-light-secondary dark:text-dark-secondary'
                 iconName='ChevronRightIcon'
               />
             </i>

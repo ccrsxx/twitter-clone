@@ -42,7 +42,8 @@ export function NextImage({
         className={cn(
           imgClassName,
           loading
-            ? blurClassName ?? 'animate-pulse bg-white'
+            ? blurClassName ??
+                'animate-pulse bg-light-secondary dark:bg-dark-secondary'
             : previewCount === 1
             ? '!h-auto !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
             : 'object-cover'

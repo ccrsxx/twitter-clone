@@ -49,7 +49,8 @@ export function UserHeader(): JSX.Element {
     <AnimatePresence mode='popLayout'>
       {loading || statsLoading ? (
         <motion.div
-          className='-mb-1 inner:animate-pulse inner:rounded-lg inner:bg-white'
+          className='-mb-1 inner:animate-pulse inner:rounded-lg 
+                     inner:bg-light-secondary dark:inner:bg-dark-secondary'
           {...variants}
           key='loading'
         >
@@ -69,7 +70,7 @@ export function UserHeader(): JSX.Element {
           >
             <h2 className='text-xl font-bold'>{user.name}</h2>
           </VerifiedName>
-          <p className='text-xs text-secondary'>
+          <p className='text-xs text-light-secondary dark:text-dark-secondary'>
             {isInFollowPage
               ? `@${user.username}`
               : isInTweetPage

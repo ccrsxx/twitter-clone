@@ -51,10 +51,10 @@ export function UserDetails({
         >
           <p className='text-xl font-bold'>{name}</p>
         </VerifiedName>
-        <div className='flex items-center gap-1 text-secondary'>
+        <div className='flex items-center gap-1 text-light-secondary dark:text-dark-secondary'>
           <p>@{username}</p>
           {user?.id !== id && user?.followers.includes(id) && (
-            <p className='rounded bg-search-background px-1 text-xs'>
+            <p className='rounded bg-main-search-background px-1 text-xs'>
               Follows you
             </p>
           )}
@@ -62,7 +62,7 @@ export function UserDetails({
       </div>
       <div className='flex flex-col gap-2'>
         {bio && <p className='whitespace-pre-line break-words'>{bio}</p>}
-        <div className='flex gap-3 text-secondary'>
+        <div className='flex gap-3 text-light-secondary dark:text-dark-secondary'>
           {detailIcons.map(
             ([detail, icon], index) =>
               detail && (
@@ -72,7 +72,7 @@ export function UserDetails({
                   </i>
                   {index === 1 ? (
                     <a
-                      className='custom-underline text-accent-blue'
+                      className='custom-underline text-main-accent'
                       href={`https://${detail}`}
                       target='_blank'
                       rel='noreferrer'

@@ -36,9 +36,9 @@ export default function Home(): JSX.Element {
       <MainHeader className='flex items-center justify-between'>
         <h2 className='text-xl font-bold'>Home</h2>
         <Button
-          className='group relative p-2 hover:bg-primary/10 active:bg-primary/20
-                     disabled:brightness-100'
-          disabled
+          className='group relative cursor-not-allowed p-2 hover:bg-light-primary/10
+                     active:bg-light-primary/20 dark:hover:bg-dark-primary/10 
+                     dark:active:bg-dark-primary/20'
         >
           <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
           <ToolTip tip='Top tweets' />

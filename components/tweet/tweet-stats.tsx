@@ -86,7 +86,7 @@ export function TweetStats({
       )}
       <div
         className={cn(
-          'flex text-secondary inner:outline-none',
+          'flex text-light-secondary inner:outline-none dark:text-dark-secondary',
           viewTweet ? 'justify-around py-2' : 'max-w-md justify-between'
         )}
       >

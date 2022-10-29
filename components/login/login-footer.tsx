@@ -22,7 +22,7 @@ const footerLinks = [
 
 export function LoginFooter(): JSX.Element {
   return (
-    <footer className='flex justify-center p-4 text-sm text-secondary'>
+    <footer className='flex justify-center p-4 text-sm text-light-secondary dark:text-dark-secondary'>
       <nav className='flex flex-wrap justify-center gap-4'>
         {footerLinks.map(([linkName, href]) => (
           <a

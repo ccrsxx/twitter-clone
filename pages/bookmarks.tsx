@@ -62,7 +62,7 @@ export default function Bookmarks(): JSX.Element {
     <MainContainer>
       <SEO title='Bookmarks / Twitter' />
       <Modal
-        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
@@ -77,10 +77,13 @@ export default function Bookmarks(): JSX.Element {
       <MainHeader className='flex items-center justify-between'>
         <div className='-mb-1 flex flex-col'>
           <h2 className='-mt-1 text-xl font-bold'>Bookmarks</h2>
-          <p className='text-xs text-secondary'>@{user?.username}</p>
+          <p className='text-xs text-light-secondary dark:text-dark-secondary'>
+            @{user?.username}
+          </p>
         </div>
         <Button
-          className='group relative p-2 hover:bg-primary/10 active:bg-primary/20'
+          className='group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20
+                     dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
           onClick={openModal}
         >
           <HeroIcon className='h-5 w-5' iconName='ArchiveBoxXMarkIcon' />

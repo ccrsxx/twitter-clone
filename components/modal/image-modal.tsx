@@ -78,7 +78,8 @@ export function ImageModal({
         arrowButtons.map(([name, className, iconName]) => (
           <Button
             className={cn(
-              'hover:bg-primary/10 active:bg-primary/20',
+              `hover:bg-light-primary/10 active:bg-light-primary/20
+               dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
               className
             )}
             onClick={preventBubbling(handleNextIndex(name))}
@@ -109,10 +110,10 @@ export function ImageModal({
               />
               <a
                 className='trim-alt smooth-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
-                           rounded-md bg-black/40 px-2 py-1 text-sm text-primary/80 opacity-0
-                           transition hover:bg-accent-blue hover:text-primary focus-visible:translate-y-0
-                           focus-visible:bg-accent-blue focus-visible:text-primary focus-visible:opacity-100
-                           group-hover:translate-y-0 group-hover:opacity-100'
+                           rounded-md bg-main-background/40 px-2 py-1 text-sm text-light-primary/80 opacity-0
+                           transition hover:bg-main-accent hover:text-white focus-visible:translate-y-0
+                           focus-visible:bg-main-accent focus-visible:text-white focus-visible:opacity-100
+                           group-hover:translate-y-0 group-hover:opacity-100 dark:text-dark-primary/80'
                 href={src}
                 target='_blank'
                 rel='noreferrer'
@@ -122,9 +123,10 @@ export function ImageModal({
               </a>
             </picture>
             <a
-              className='custom-underline absolute left-0 -bottom-7 text-primary/80
-                         decoration-transparent underline-offset-2 transition hover:text-primary
-                         hover:underline hover:decoration-primary'
+              className='custom-underline absolute left-0 -bottom-7 font-medium text-light-primary/80
+                         decoration-transparent underline-offset-2 transition hover:text-light-primary hover:underline
+                         hover:decoration-light-primary focus-visible:text-light-primary dark:text-dark-primary/80 
+                         dark:hover:text-dark-primary dark:hover:decoration-dark-primary dark:focus-visible:text-dark-primary'
               href={src}
               target='_blank'
               rel='noreferrer'

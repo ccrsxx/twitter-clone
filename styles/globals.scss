@@ -5,8 +5,34 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --main-background: var(--dark-background);
+    --main-search-background: var(--dark-search-background);
+    --main-sidebar-background: var(--dark-sidebar-background);
+    --main-accent: var(--accent-blue);
+
+    --dark-background: 0 0 0;
+    --dim-background: 22 33 44;
+    --light-background: 255 255 255;
+
+    --dark-search-background: 32 35 39;
+    --dim-search-background: 39 51 64;
+    --light-search-background: 239 243 244;
+
+    --dark-sidebar-background: 22 24 28;
+    --dim-sidebar-background: 30 39 50;
+    --light-sidebar-background: 247 249 249;
+
+    --accent-yellow: 255 213 0;
+    --accent-blue: 29 155 240;
+    --accent-pink: 249 26 130;
+    --accent-purple: 120 87 255;
+    --accent-orange: 255 122 0;
+    --accent-green: 0 184 122;
+  }
+
   body {
-    @apply bg-black font-twitter-chirp text-primary;
+    @apply hover-animation bg-main-background font-twitter-chirp text-light-primary dark:text-dark-primary;
   }
 }
 
@@ -16,11 +42,15 @@
   }
 
   .custom-button {
-    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:brightness-50;
+    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .hover-animation {
-    @apply transition-colors hover:duration-200;
+    @apply transition-colors duration-200;
+  }
+
+  .hover-card {
+    @apply hover:bg-black/[0.03] dark:hover:bg-white/[0.03];
   }
 
   .custom-underline {
@@ -34,5 +64,11 @@
 
   .blur-picture {
     @apply hover-animation smooth-tab rounded-full transition hover:brightness-75 active:brightness-100;
+  }
+
+  .menu-container {
+    @apply z-10 rounded-md bg-main-background outline-none 
+           [box-shadow:#65778633_0px_0px_15px,_#65778626_0px_0px_3px_1px] 
+           dark:[box-shadow:#ffffff33_0px_0px_15px,_#ffffff26_0px_0px_3px_1px];
   }
 }

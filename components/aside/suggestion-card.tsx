@@ -20,7 +20,7 @@ export function SuggestionCard({
 
   return (
     <Link href={userLink} key={username}>
-      <a className='smooth-tab hover-animation flex items-center justify-between hover:bg-white/[0.03]'>
+      <a className='smooth-tab hover-animation hover-card flex items-center justify-between'>
         <div className='flex items-center gap-3'>
           <ProfilePicture src={photoURL} alt={name} username={username} />
           <div className='leading-5'>
@@ -38,11 +38,13 @@ export function SuggestionCard({
                 </i>
               )}
             </div>
-            <p className='text-secondary'>@{username}</p>
+            <p className='text-light-secondary dark:text-dark-secondary'>
+              @{username}
+            </p>
           </div>
         </div>
         <Button
-          className='bg-follow-button-background px-4 py-1 font-bold text-follow-text-color
+          className='bg-light-border px-4 py-1 font-bold text-light-primary
                      duration-200 hover:brightness-90 active:brightness-75'
           onClick={preventBubbling()}
         >

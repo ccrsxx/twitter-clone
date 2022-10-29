@@ -9,10 +9,14 @@ import { Modal } from '@components/modal/modal';
 import { EditProfileModal } from '@components/modal/edit-profile-modal';
 import { Button } from '@components/ui/button';
 import { InputField } from '@components/input/input-field';
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, KeyboardEvent } from 'react';
 import type { FilesWithId } from '@lib/types/file';
 import type { User, EditableData, EditableUserData } from '@lib/types/user';
 import type { InputFieldProps } from '@components/input/input-field';
+
+type RequiredInputFieldProps = Omit<InputFieldProps, 'handleChange'> & {
+  inputId: EditableData;
+};
 
 type UserImages = Record<
   Extract<EditableData, 'photoURL' | 'coverPhotoURL'>,
@@ -49,6 +53,10 @@ export function UserEditProfile(): JSX.Element {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => cleanImage, []);
+
+  const inputNameError = !editUserData.name?.trim()
+    ? "Name can't be blank"
+    : '';
 
   const updateData = async (): Promise<void> => {
     setLoading(true);
@@ -171,47 +179,50 @@ export function UserEditProfile(): JSX.Element {
     }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setEditUserData({ ...editUserData, [key]: value });
 
-  const inputNameError = !editUserData.name?.trim()
-    ? "Name can't be blank"
-    : '';
+  const handleKeyboardShortcut = ({
+    key,
+    target,
+    ctrlKey
+  }: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    if (ctrlKey && key === 'Enter' && !inputNameError) {
+      target.blur();
+      void updateData();
+    }
+  };
 
-  const inputFields: Readonly<InputFieldProps[]> = [
+  const inputFields: Readonly<RequiredInputFieldProps[]> = [
     {
       label: 'Name',
       inputId: 'name',
       inputValue: editUserData.name,
       inputLimit: 50,
-      errorMessage: inputNameError,
-      handleChange: handleChange('name')
+      errorMessage: inputNameError
     },
     {
       label: 'Bio',
       inputId: 'bio',
       inputValue: editUserData.bio,
       inputLimit: 160,
-      useTextArea: true,
-      handleChange: handleChange('bio')
+      useTextArea: true
     },
     {
       label: 'Location',
       inputId: 'location',
       inputValue: editUserData.location,
-      inputLimit: 30,
-      handleChange: handleChange('location')
+      inputLimit: 30
     },
     {
       label: 'Website',
       inputId: 'website',
       inputValue: editUserData.website,
-      inputLimit: 100,
-      handleChange: handleChange('website')
+      inputLimit: 100
     }
   ];
 
   return (
-    <>
+    <form>
       <Modal
-        modalClassName='relative bg-black rounded-2xl max-w-xl w-full 
+        modalClassName='relative bg-main-background rounded-2xl max-w-xl w-full 
                         h-[672px] overflow-hidden'
         open={open}
         closeModal={closeModal}
@@ -229,17 +240,23 @@ export function UserEditProfile(): JSX.Element {
           resetUserEditData={resetUserEditData}
         >
           {inputFields.map((inputData) => (
-            <InputField {...inputData} key={inputData.inputId} />
+            <InputField
+              {...inputData}
+              handleChange={handleChange(inputData.inputId)}
+              handleKeyboardShortcut={handleKeyboardShortcut}
+              key={inputData.inputId}
+            />
           ))}
         </EditProfileModal>
       </Modal>
       <Button
-        className='self-start border border-border-color-secondary px-4 py-1.5
-                   font-bold hover:bg-follow-button-background/10'
+        className='self-start border border-light-line-reply px-4 py-1.5 font-bold
+                   hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary
+                   dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
         onClick={openModal}
       >
         Edit profile
       </Button>
-    </>
+    </form>
   );
 }

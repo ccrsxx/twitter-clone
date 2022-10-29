@@ -14,6 +14,7 @@ import { ToolTip } from '@components/ui/tooltip';
 import { variants } from '@components/user/user-header';
 import { UserFollowButton } from '@components/user/user-follow-button';
 import { UserEditProfile } from '@components/user/user-edit-profile';
+import { UserShare } from '@components/user/user-share';
 import type { LayoutProps } from './common-layout';
 
 export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
@@ -56,7 +57,9 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
               </div>
               <div className='p-8 text-center'>
                 <p className='text-3xl font-bold'>This account doesn’t exist</p>
-                <p className='text-secondary'>Try searching for another.</p>
+                <p className='text-light-secondary dark:text-dark-secondary'>
+                  Try searching for another.
+                </p>
               </div>
             </div>
           </>
@@ -70,21 +73,11 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                   <UserEditProfile />
                 ) : (
                   <div className='flex gap-2 self-start'>
+                    <UserShare username={userData.username} />
                     <Button
-                      className='group relative border border-border-color-secondary p-2
-                                 hover:bg-primary/10 active:bg-primary/20 disabled:brightness-100'
-                      disabled
-                    >
-                      <HeroIcon
-                        className='h-5 w-5'
-                        iconName='EllipsisHorizontalIcon'
-                      />
-                      <ToolTip tip='More' />
-                    </Button>
-                    <Button
-                      className='group relative border border-border-color-secondary p-2
-                                 hover:bg-primary/10 active:bg-primary/20 disabled:brightness-100'
-                      disabled
+                      className='group relative cursor-not-allowed border border-light-line-reply p-2
+                                 hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary 
+                                 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
                     >
                       <HeroIcon className='h-5 w-5' iconName='EnvelopeIcon' />
                       <ToolTip tip='Message' />

@@ -56,7 +56,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     <motion.article
       className={cn(
         `smooth-tab h- relative flex cursor-default flex-col 
-         gap-3 border-b border-border-color px-4 py-3 outline-none`,
+         gap-3 border-b border-light-border px-4 py-3 outline-none dark:border-dark-border`,
         reply && 'pt-0 [scroll-margin-top:3.25rem]'
       )}
       {...variants}
@@ -66,7 +66,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
+        modalClassName='bg-main-background rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
@@ -75,7 +75,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       <div className='flex flex-col gap-2'>
         {reply && (
           <div className='flex w-12 items-center justify-center'>
-            <i className='h-2 w-0.5 bg-line-reply-color' />
+            <i className='h-2 w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
@@ -91,7 +91,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
               </div>
               <Link href={userLink}>
                 <a
-                  className='self-start text-secondary outline-none'
+                  className='self-start text-light-secondary outline-none dark:text-dark-secondary'
                   tabIndex={-1}
                 >
                   @{username}
@@ -110,10 +110,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
         </div>
       </div>
       {reply && (
-        <p className='text-secondary'>
+        <p className='text-light-secondary dark:text-dark-secondary'>
           Replying to{' '}
           <Link href={`/user/${parentUsername}`}>
-            <a className='custom-underline text-accent-blue'>
+            <a className='custom-underline text-main-accent'>
               @{parentUsername}
             </a>
           </Link>
@@ -130,7 +130,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             previewCount={images.length}
           />
         )}
-        <div className='inner:border-b inner:border-border-color'>
+        <div className='inner:border-b inner:border-light-border dark:inner:border-dark-border'>
           <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
           <TweetStats
             viewTweet

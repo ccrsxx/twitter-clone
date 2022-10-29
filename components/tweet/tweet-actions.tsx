@@ -131,7 +131,7 @@ export function TweetActions({
   return (
     <>
       <Modal
-        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={removeOpen}
         closeModal={removeCloseModal}
       >
@@ -149,15 +149,14 @@ export function TweetActions({
         />
       </Modal>
       <Modal
-        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={pinOpen}
         closeModal={pinCloseModal}
       >
         <ActionModal
           {...pinModalData}
-          mainBtnClassName='bg-follow-button-background text-follow-text-color
-                            hover:bg-follow-button-background/90 
-                            active:bg-follow-button-background/75'
+          mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80
+                            dark:bg-light-border dark:hover:bg-light-border/90 dark:active:bg-light-border/75'
           focusOnMainBtn
           action={handlePin}
           closeModal={pinCloseModal}
@@ -177,7 +176,7 @@ export function TweetActions({
             >
               <div className='group relative'>
                 <HeroIcon
-                  className='h-5 w-5 text-secondary group-hover:text-accent-blue'
+                  className='h-5 w-5 text-light-secondary group-hover:text-accent-blue dark:text-dark-secondary'
                   iconName='EllipsisHorizontalIcon'
                 />
                 {!open && <ToolTip tip='More' />}
@@ -186,8 +185,8 @@ export function TweetActions({
             <AnimatePresence>
               {open && (
                 <Popover.Panel
-                  className='group absolute top-[50px] right-2 z-40 w-full max-w-xs rounded-md bg-black text-primary 
-                             outline-none [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
+                  className='menu-container group absolute top-[50px] right-2 w-full max-w-xs
+                             text-light-primary dark:text-dark-primary'
                   as={motion.div}
                   {...variants}
                   static
@@ -195,7 +194,7 @@ export function TweetActions({
                   {(isAdmin || isOwner) && (
                     <Popover.Button
                       className='flex w-full gap-3 rounded-md rounded-b-none p-4 text-accent-red
-                                 hover:bg-sidebar-background'
+                                 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(removeOpenModal)}
                     >
@@ -205,7 +204,7 @@ export function TweetActions({
                   )}
                   {isOwner ? (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(pinOpenModal)}
                     >
@@ -223,7 +222,7 @@ export function TweetActions({
                     </Popover.Button>
                   ) : userIsFollowed ? (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(
                         handleFollow(close, 'unfollow', userId, createdBy)
@@ -234,7 +233,7 @@ export function TweetActions({
                     </Popover.Button>
                   ) : (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-sidebar-background'
+                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(
                         handleFollow(close, 'follow', userId, createdBy)

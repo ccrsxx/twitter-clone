@@ -199,14 +199,17 @@ export function Input({
       onSubmit={handleSubmit}
     >
       {loading && (
-        <motion.i className='h-1 animate-pulse bg-accent-blue' {...variants} />
+        <motion.i className='h-1 animate-pulse bg-main-accent' {...variants} />
       )}
       {children}
       {reply && visited && (
-        <motion.p className='ml-[75px] -mb-2 mt-2 text-secondary' {...fromTop}>
+        <motion.p
+          className='ml-[75px] -mb-2 mt-2 text-light-secondary dark:text-dark-secondary'
+          {...fromTop}
+        >
           Replying to{' '}
           <Link href={`/user/${parent?.username as string}`}>
-            <a className='custom-underline text-accent-blue'>
+            <a className='custom-underline text-main-accent'>
               {parent?.username as string}
             </a>
           </Link>
@@ -219,8 +222,9 @@ export function Input({
             ? 'pt-3 pb-1'
             : replyModal
             ? 'pt-0'
-            : 'border-b border-border-color',
-          (disabled || loading) && 'pointer-events-none brightness-75'
+            : `border-b-2 border-light-border transition-[border]
+               duration-200 dark:border-dark-border`,
+          (disabled || loading) && 'pointer-events-none opacity-50'
         )}
         htmlFor={formId}
       >

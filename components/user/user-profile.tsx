@@ -32,7 +32,7 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
         {profileData ? (
           <NextImage
             useSkeleton
-            className='rounded-full bg-black p-1'
+            className='rounded-full bg-main-background p-1'
             imgClassName='rounded-full'
             src={profileData.src}
             alt={profileData.alt}
@@ -41,7 +41,7 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
             key={profileData.src}
           />
         ) : (
-          <div className='h-full rounded-full bg-black p-1 inner:h-full inner:rounded-full'>
+          <div className='h-full rounded-full bg-main-background p-1 inner:h-full inner:rounded-full'>
             <div className='bg-sidebar-background' />
           </div>
         )}

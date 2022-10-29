@@ -81,7 +81,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     >
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full my-8 overflow-hidden'
+        modalClassName='bg-main-background rounded-2xl max-w-xl w-full my-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
@@ -90,8 +90,10 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       <Link href={tweetLink} scroll={!reply}>
         <a
           className={cn(
-            'smooth-tab relative flex flex-col gap-y-4 px-4 py-3 outline-none',
-            parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'border-b border-border-color'
+            'smooth-tab hover-card relative flex flex-col gap-y-4 px-4 py-3 outline-none duration-200',
+            parentTweet
+              ? 'mt-0.5 pt-2.5 pb-0'
+              : 'border-b border-light-border dark:border-dark-border'
           )}
           onClick={reply ? delayScroll(100) : undefined}
         >
@@ -116,13 +118,13 @@ export function Tweet(tweet: TweetProps): JSX.Element {
             <div className='flex flex-col items-center gap-2'>
               <ProfilePicture src={photoURL} alt={name} username={username} />
               {parentTweet && (
-                <i className='h-full w-0.5 bg-line-reply-color' />
+                <i className='h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
               )}
             </div>
             <div className='flex min-w-0 flex-col'>
-              <div className='text-secondary'>
+              <div className='text-light-secondary dark:text-dark-secondary'>
                 <div className='flex gap-1'>
-                  <div className='flex items-center gap-1 text-primary'>
+                  <div className='flex items-center gap-1 text-light-primary dark:text-dark-primary'>
                     <VerifiedName verified={verified}>
                       <Link href={userLink}>
                         <a className='custom-underline font-bold'>{name}</a>
@@ -148,10 +150,15 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 )}
               </div>
               {(reply || modal) && (
-                <p className={cn('text-secondary', modal && 'order-1 my-2')}>
+                <p
+                  className={cn(
+                    'text-light-secondary dark:text-dark-secondary',
+                    modal && 'order-1 my-2'
+                  )}
+                >
                   Replying to{' '}
                   <Link href={`/user/${parentUsername}`}>
-                    <a className='custom-underline text-accent-blue'>
+                    <a className='custom-underline text-main-accent'>
                       @{parentUsername}
                     </a>
                   </Link>

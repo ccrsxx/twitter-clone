@@ -21,7 +21,10 @@ export function VerifiedName({
       {verified && (
         <i>
           <HeroIcon
-            className={iconClassName ?? 'h-5 w-5'}
+            className={cn(
+              'fill-accent-blue dark:fill-current',
+              iconClassName ?? 'h-5 w-5'
+            )}
             iconName='CheckBadgeIcon'
             solid
           />

@@ -68,7 +68,7 @@ export function Sidebar(): JSX.Element {
     <header className='-mr-4 flex w-full max-w-xs justify-end'>
       <Modal
         className='flex items-start justify-center'
-        modalClassName='bg-black rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
+        modalClassName='bg-main-background rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
       >
@@ -79,8 +79,8 @@ export function Sidebar(): JSX.Element {
           <h1 className='flex'>
             <Link href='/home'>
               <a
-                className='custom-button smooth-tab relative text-icon-background transition
-                           hover:bg-primary/10 focus-visible:ring-accent-blue-focus'
+                className='custom-button smooth-tab focus-visible:ring-main-accent-focus relative text-accent-blue
+                           transition hover:bg-light-primary/10 dark:text-twitter-icon dark:hover:bg-dark-primary/10'
               >
                 <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
               </a>
@@ -104,8 +104,8 @@ export function Sidebar(): JSX.Element {
             <MoreSettings />
           </nav>
           <Button
-            className='w-11/12 bg-accent-blue text-lg font-bold text-white
-                       outline-none hover:bg-accent-blue/90 active:bg-accent-blue/75'
+            className='w-11/12 bg-main-accent text-lg font-bold text-white
+                       outline-none hover:bg-main-accent/90 active:bg-main-accent/75'
             onClick={openModal}
           >
             Tweet

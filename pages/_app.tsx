@@ -4,6 +4,7 @@ import { SWRConfig } from 'swr';
 import { Toaster } from 'react-hot-toast';
 import { fetchJson } from '@lib/fetch';
 import { AuthContextProvider } from '@lib/context/auth-context';
+import { ThemeContextProvider } from '@lib/context/theme-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
@@ -21,7 +22,7 @@ type AppPropsWithLayout = AppProps & {
 
 const toastOptions: DefaultToastOptions = {
   style: {
-    backgroundColor: '#1D9BF0',
+    backgroundColor: 'rgb(var(--main-accent))',
     borderRadius: '4px',
     color: 'white'
   },
@@ -36,11 +37,13 @@ export default function App({
 
   return (
     <AuthContextProvider>
-      <AppHead />
-      <SWRConfig value={{ fetcher: fetchJson }}>
-        {getLayout(<Component {...pageProps} />)}
-      </SWRConfig>
-      <Toaster position='bottom-center' toastOptions={toastOptions} />
+      <ThemeContextProvider>
+        <AppHead />
+        <SWRConfig value={{ fetcher: fetchJson }}>
+          {getLayout(<Component {...pageProps} />)}
+        </SWRConfig>
+        <Toaster position='bottom-center' toastOptions={toastOptions} />
+      </ThemeContextProvider>
     </AuthContextProvider>
   );
 }

@@ -14,8 +14,8 @@ export function ToolTip({
   return (
     <div
       className={cn(
-        `invisible absolute left-1/2 w-max -translate-x-1/2 rounded bg-tooltips-background px-1 py-0.5 text-xs 
-         text-white opacity-0 [transition:visibility_0ms_ease_200ms,opacity_200ms_ease]`,
+        `invisible absolute left-1/2 w-max -translate-x-1/2 rounded bg-[#666666] px-1 py-0.5 text-xs text-white 
+         opacity-0 [transition:visibility_0ms_ease_200ms,opacity_200ms_ease] dark:bg-[#495A69]`,
         groupInner
           ? `group-inner-hover:visible group-inner-hover:opacity-100 group-inner-hover:delay-500 
              group-inner-focus-visible:visible group-inner-focus-visible:opacity-100 group-inner-focus-visible:delay-200`

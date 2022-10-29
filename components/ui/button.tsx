@@ -17,7 +17,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         className={cn(
           'custom-button smooth-tab',
-          loading && 'relative text-transparent disabled:cursor-wait',
+          loading && 'relative !text-transparent disabled:cursor-wait',
           className
         )}
         type='button'

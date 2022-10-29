@@ -50,7 +50,7 @@ export function Modal({
           static
         >
           <motion.div
-            className='fixed inset-0 bg-modal-backdrop-color/40'
+            className='hover-animation fixed inset-0 bg-black/40 dark:bg-[#5B7083]/40'
             aria-hidden='true'
             {...backdrop}
           />

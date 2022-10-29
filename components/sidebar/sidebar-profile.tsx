@@ -22,7 +22,7 @@ export function SidebarProfile(): JSX.Element {
   return (
     <>
       <Modal
-        modalClassName='max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
@@ -32,9 +32,9 @@ export function SidebarProfile(): JSX.Element {
           title='Log out of Twitter?'
           description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
           mainBtnLabel='Log out'
-          mainBtnClassName='bg-follow-button-background text-follow-text-color
-                            hover:bg-follow-button-background/90 
-                            active:bg-follow-button-background/75'
+          mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80 
+                            dark:text-light-primary dark:bg-light-border dark:hover:bg-light-border/90 
+                            dark:active:bg-light-border/75'
           action={signOut}
           closeModal={closeModal}
         />
@@ -44,10 +44,10 @@ export function SidebarProfile(): JSX.Element {
           <>
             <Menu.Button
               className={cn(
-                `custom-button smooth-tab flex w-full
-                 items-center justify-between hover:bg-primary/10
-                 focus-visible:bg-primary/10 active:bg-primary/20`,
-                open && 'bg-primary/10'
+                `custom-button smooth-tab flex w-full items-center justify-between hover:bg-light-primary/10
+                 focus-visible:bg-light-primary/10 active:bg-light-primary/20 dark:hover:bg-dark-primary/10
+                 dark:focus-visible:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
+                open && 'bg-light-primary/10 dark:bg-dark-primary/10'
               )}
             >
               <div className='flex gap-3'>
@@ -64,7 +64,9 @@ export function SidebarProfile(): JSX.Element {
                       <p className='text-start font-bold'>{name}</p>
                     </VerifiedName>
                   </div>
-                  <p className='text-secondary'>@{username}</p>
+                  <p className='text-light-secondary dark:text-dark-secondary'>
+                    @{username}
+                  </p>
                 </div>
               </div>
               <HeroIcon iconName='EllipsisHorizontalIcon' />
@@ -72,15 +74,14 @@ export function SidebarProfile(): JSX.Element {
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='absolute left-0 right-0 -top-36 z-10 w-full rounded-md bg-black
-                             outline-none [box-shadow:#ffffff33_0px_0px_15px,#ffffff26_0px_0px_3px_1px]'
+                  className='menu-container absolute left-0 right-0 -top-36 w-full font-medium'
                   as={motion.div}
                   {...variants}
                   static
                 >
                   <Menu.Item
-                    className='flex items-center justify-between gap-2 
-                               border-b border-border-color px-4 py-3'
+                    className='flex items-center justify-between gap-2 border-b 
+                               border-light-border px-4 py-3 dark:border-dark-border'
                     as='div'
                     disabled
                   >
@@ -95,12 +96,14 @@ export function SidebarProfile(): JSX.Element {
                         <VerifiedName verified={verified}>
                           <p className='font-bold'>{name}</p>
                         </VerifiedName>
-                        <p className='text-secondary'>@{username}</p>
+                        <p className='text-light-secondary dark:text-dark-secondary'>
+                          @{username}
+                        </p>
                       </div>
                     </div>
                     <i>
                       <HeroIcon
-                        className='h-5 w-5 text-accent-blue'
+                        className='h-5 w-5 text-main-accent'
                         iconName='CheckIcon'
                       />
                     </i>
@@ -110,7 +113,7 @@ export function SidebarProfile(): JSX.Element {
                       <Button
                         className={cn(
                           'flex w-full gap-3 rounded-md rounded-t-none p-4',
-                          active && 'bg-sidebar-background'
+                          active && 'bg-main-sidebar-background'
                         )}
                         onClick={openModal}
                       >
@@ -121,9 +124,13 @@ export function SidebarProfile(): JSX.Element {
                   </Menu.Item>
                   <i
                     className='absolute -bottom-[10px] left-1/2 -translate-x-1/2 rotate-180
-                               [filter:drop-shadow(rgb(51,54,57)1px_-1px_1px)]'
+                               [filter:drop-shadow(#cfd9de_1px_-1px_1px)] 
+                               dark:[filter:drop-shadow(#333639_1px_-1px_1px)]'
                   >
-                    <CustomIcon className='h-4 w-6' iconName='TriangleIcon' />
+                    <CustomIcon
+                      className='h-4 w-6 fill-main-background'
+                      iconName='TriangleIcon'
+                    />
                   </i>
                 </Menu.Items>
               )}

@@ -33,7 +33,7 @@ export function UserFollowButton({
   return (
     <>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xs bg-black w-full p-8 rounded-2xl'
+        modalClassName='flex flex-col gap-6 max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
@@ -47,18 +47,18 @@ export function UserFollowButton({
       </Modal>
       {userIsFollowed ? (
         <Button
-          className='min-w-[106px] self-start border border-border-color-secondary
-                     px-4 py-1.5 font-bold hover:border-accent-red hover:bg-accent-red/10
-                     hover:text-accent-red hover:before:content-["Unfollow"] [&>span]:hover:hidden'
+          className='min-w-[106px] self-start border border-light-line-reply px-4 py-1.5 font-bold 
+                     hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red
+                     hover:before:content-["Unfollow"] dark:border-light-secondary [&>span]:hover:hidden'
           onClick={preventBubbling(openModal)}
         >
           <span>Following</span>
         </Button>
       ) : (
         <Button
-          className='self-start border border-border-color-secondary bg-follow-button-background
-                     px-4 py-1.5 font-bold text-follow-text-color hover:bg-follow-button-background/90 
-                     active:bg-follow-button-background/75'
+          className='self-start border bg-light-primary px-4 py-1.5 font-bold text-white 
+                       hover:bg-light-primary/90 active:bg-light-border/75 dark:bg-light-border 
+                       dark:text-light-primary dark:hover:bg-light-border/90 dark:active:bg-light-border/75'
           onClick={preventBubbling(handleFollow)}
         >
           Follow

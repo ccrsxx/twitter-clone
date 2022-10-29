@@ -36,10 +36,13 @@ export function ViewParentTweet({
   if (!data)
     return (
       <div className='px-4 pt-3 pb-2'>
-        <p className='rounded-2xl bg-sidebar-background py-3 px-1 pl-4 text-secondary'>
+        <p
+          className='bg-sidebar-background rounded-2xl py-3 px-1 pl-4 
+                     text-light-secondary dark:text-dark-secondary'
+        >
           This Tweet was deleted by the Tweet author.{' '}
           <a
-            className='custom-underline text-accent-blue'
+            className='custom-underline text-main-accent'
             href='https://help.twitter.com/rules-and-policies/notices-on-twitter'
             target='_blank'
             rel='noreferrer'

@@ -50,15 +50,17 @@ export function UserFollowStats({
 
   return (
     <div
-      className='flex gap-4 text-secondary
-                 [&>a>div]:font-bold [&>a>div]:text-white'
+      className='flex gap-4 text-light-secondary dark:text-dark-secondary
+                 [&>a>div]:font-bold [&>a>div]:text-light-primary 
+                 dark:[&>a>div]:text-dark-primary'
     >
       {allStats.map(([title, link, move, stats], index) => (
         <Link href={link} key={title}>
           <a
             className='mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b border-b-transparent 
-                       outline-none transition duration-200 hover:border-b-primary 
-                       focus-visible:border-b-primary'
+                       outline-none transition duration-200 hover:border-b-light-primary 
+                       focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
+                       dark:focus-visible:border-b-light-primary'
           >
             <NumberStats move={move} stats={stats} alwaysShowStats />
             <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>

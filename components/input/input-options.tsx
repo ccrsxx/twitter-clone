@@ -80,7 +80,7 @@ export function InputOptions({
 
   return (
     <motion.div className='flex justify-between' {...variants}>
-      <div className='flex text-accent-blue'>
+      <div className='flex text-main-accent'>
         <input
           className='hidden'
           type='file'
@@ -91,8 +91,8 @@ export function InputOptions({
         />
         {filteredOptions.map(({ name, iconName, disabled }, index) => (
           <Button
-            className='group relative rounded-full p-2 hover:bg-accent-blue/10 
-                       focus-visible:ring-accent-blue-focus active:bg-accent-blue/20'
+            className='focus-visible:ring-main-accent-focus group relative rounded-full p-2 
+                       hover:bg-main-accent/10 active:bg-main-accent/20'
             onClick={index === 0 ? onClick : undefined}
             disabled={disabled}
             key={name}
@@ -116,10 +116,10 @@ export function InputOptions({
           />
           {!reply && (
             <>
-              <i className='h-8 w-[1px] bg-[#3e4144]' />
+              <i className='h-8 w-[1px] bg-[#B9CAD3] dark:bg-[#3E4144]' />
               <Button
-                className='group relative rounded-full border border-border-color-secondary 
-                           p-[1px] text-accent-blue'
+                className='group relative rounded-full border border-light-line-reply
+                           p-[1px] text-main-accent dark:border-light-secondary'
                 disabled
               >
                 <HeroIcon className='h-5 w-5' iconName='PlusIcon' />
@@ -130,9 +130,9 @@ export function InputOptions({
         </motion.div>
         <Button
           type='submit'
-          className='bg-accent-blue px-4 py-1.5 font-bold text-white
-                     transition duration-200 enabled:hover:bg-accent-blue/90
-                     enabled:active:bg-accent-blue/75 disabled:brightness-50'
+          className='bg-main-accent px-4 py-1.5 font-bold text-white
+                     enabled:hover:bg-main-accent/90
+                     enabled:active:bg-main-accent/75'
           disabled={!isValidTweet}
         >
           {reply ? 'Reply' : 'Tweet'}

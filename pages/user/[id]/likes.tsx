@@ -4,10 +4,10 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
 import {
-  MainLayout,
   ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { UserLayout } from '@components/layout/user-layout';
 import { UserHomeLayout } from '@components/layout/user-home-layout';

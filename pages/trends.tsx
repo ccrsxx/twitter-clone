@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import {
-  MainLayout,
   TrendsLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainHeader } from '@components/home/main-header';
 import { MainContainer } from '@components/home/main-container';

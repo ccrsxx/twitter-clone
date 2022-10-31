@@ -1,8 +1,8 @@
 import {
-  MainLayout,
   ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { UserLayout } from '@components/layout/user-layout';
 import { UserFollowLayout } from '@components/layout/user-follow-layout';
 import { UserFollow } from '@components/user/user-follow';

@@ -2,11 +2,8 @@ import { AnimatePresence } from 'framer-motion';
 import { query, where, orderBy } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
-import {
-  MainLayout,
-  HomeLayout,
-  ProtectedLayout
-} from '@components/layout/common-layout';
+import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';

@@ -6,10 +6,10 @@ import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { mergeData } from '@lib/merge';
 import {
-  MainLayout,
   ProfileLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { UserLayout } from '@components/layout/user-layout';
 import { UserHomeLayout } from '@components/layout/user-home-layout';
 import { StatsEmpty } from '@components/tweet/stats-empty';

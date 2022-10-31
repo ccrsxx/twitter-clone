@@ -6,11 +6,8 @@ import { tweetsCollection } from '@lib/firebase/collections';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { isPlural } from '@lib/utils';
-import {
-  MainLayout,
-  HomeLayout,
-  ProtectedLayout
-} from '@components/layout/common-layout';
+import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { MainContainer } from '@components/home/main-container';
 import { MainHeader } from '@components/home/main-header';
 import { Tweet } from '@components/tweet/tweet';

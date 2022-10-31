@@ -11,11 +11,8 @@ import {
   tweetsCollection,
   userBookmarksCollection
 } from '@lib/firebase/collections';
-import {
-  MainLayout,
-  HomeLayout,
-  ProtectedLayout
-} from '@components/layout/common-layout';
+import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
+import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainHeader } from '@components/home/main-header';
 import { MainContainer } from '@components/home/main-container';

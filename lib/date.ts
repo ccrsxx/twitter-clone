@@ -7,7 +7,7 @@ const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('en-gb', {
 
 type Units = Readonly<Partial<Record<Intl.RelativeTimeFormatUnit, number>>>;
 
-const units: Units = {
+const UNITS: Units = {
   day: 24 * 60 * 60 * 1000,
   hour: 60 * 60 * 1000,
   minute: 60 * 1000
@@ -105,7 +105,7 @@ function calculateRelativeTime(date: Date): string {
 
   if (elapsed > 0) return 'now';
 
-  const unitsItems = Object.entries(units) as [keyof Units, number][];
+  const unitsItems = Object.entries(UNITS) as [keyof Units, number][];
 
   for (const [unit, millis] of unitsItems)
     if (Math.abs(elapsed) > millis)

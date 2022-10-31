@@ -12,8 +12,8 @@ import {
   userBookmarksCollection
 } from '@lib/firebase/collections';
 import {
-  HomeLayout,
   MainLayout,
+  HomeLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { SEO } from '@components/common/seo';

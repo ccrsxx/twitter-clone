@@ -4,7 +4,7 @@ import type { FilteredTrends, SuccessResponse } from '@lib/types/place';
 
 type SwrHooksReturn = {
   loading: boolean;
-  isError: Error | undefined;
+  error: Error | undefined;
 };
 
 type UseTrendsReturn = SwrHooksReturn & {
@@ -21,7 +21,7 @@ type FilteredUseTrendsReturn = SwrHooksReturn & {
 
 export function useTrends(
   id: number,
-  limit: undefined,
+  limit?: undefined,
   config?: SWRConfiguration
 ): UseTrendsReturn;
 
@@ -45,12 +45,12 @@ export function useTrends(
     return {
       data: undefined,
       loading: false,
-      isError: new Error('Sorry we could not find any trends for this place')
+      error: new Error('Sorry we could not find any trends for this place')
     };
 
   return {
     data,
-    loading: !error && !data,
-    isError: error
+    error: error,
+    loading: !error && !data
   };
 }

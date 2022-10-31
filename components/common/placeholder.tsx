@@ -1,10 +1,9 @@
 import { CustomIcon } from '@components/ui/custom-icon';
-import { Loading } from '@components/ui/loading';
 import { SEO } from './seo';
 
 export function Placeholder(): JSX.Element {
   return (
-    <main className='flex min-h-screen flex-col items-center justify-center gap-8'>
+    <main className='flex min-h-screen items-center justify-center'>
       <SEO
         title='Twitter'
         description='From breaking news and entertainment to sports and politics, get the full story with all the live commentary.'
@@ -16,10 +15,6 @@ export function Placeholder(): JSX.Element {
           iconName='TwitterIcon'
         />
       </i>
-      <div className='flex items-center gap-2'>
-        <Loading />
-        <p className='text-lg font-bold'>Verifying session...</p>
-      </div>
     </main>
   );
 }

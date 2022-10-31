@@ -3,7 +3,7 @@ import { query, where } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
-import { mergeTweets } from '@lib/merge';
+import { mergeData } from '@lib/merge';
 import {
   MainLayout,
   ProfileLayout,
@@ -31,7 +31,7 @@ export default function UserMedia(): JSX.Element {
     { includeUser: true, allowNull: true }
   );
 
-  const sortedTweets = mergeTweets(data);
+  const sortedTweets = mergeData(true, data);
 
   return (
     <section>

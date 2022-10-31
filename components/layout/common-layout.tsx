@@ -50,3 +50,25 @@ export function ProfileLayout({ children }: LayoutProps): JSX.Element {
     </>
   );
 }
+
+export function TrendsLayout({ children }: LayoutProps): JSX.Element {
+  return (
+    <>
+      {children}
+      <Aside>
+        <Suggestions />
+      </Aside>
+    </>
+  );
+}
+
+export function PeopleLayout({ children }: LayoutProps): JSX.Element {
+  return (
+    <>
+      {children}
+      <Aside>
+        <AsideTrends />
+      </Aside>
+    </>
+  );
+}

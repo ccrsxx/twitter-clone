@@ -7,6 +7,7 @@ import { NumberStats } from '@components/tweet/number-stats';
 import type { User } from '@lib/types/user';
 
 type UserFollowStatsProps = Pick<User, 'following' | 'followers'>;
+type Stats = [string, string, number, number];
 
 export function UserFollowStats({
   following,
@@ -43,7 +44,7 @@ export function UserFollowStats({
 
   const userPath = `/user/${id as string}`;
 
-  const allStats: Readonly<[string, string, number, number][]> = [
+  const allStats: Readonly<Stats[]> = [
     ['Following', `${userPath}/following`, followingMove, currentFollowing],
     ['Follower', `${userPath}/followers`, followersMove, currentFollowers]
   ];

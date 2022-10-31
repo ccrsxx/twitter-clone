@@ -89,7 +89,7 @@ export function UserEditProfile(): JSX.Element {
       {} as TrimmedTexts
     );
 
-    const newUserData: EditableUserData = {
+    const newUserData: Readonly<EditableUserData> = {
       ...editUserData,
       ...trimmedTexts,
       ...newImages

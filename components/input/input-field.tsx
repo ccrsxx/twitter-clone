@@ -71,12 +71,10 @@ export function InputField({
           className={cn(
             `group-peer absolute left-3 translate-y-1 bg-main-background text-sm
              text-light-secondary transition-all peer-placeholder-shown:translate-y-3
-             peer-placeholder-shown:text-lg
-             peer-focus:translate-y-1
-             peer-focus:text-sm
+             peer-placeholder-shown:text-lg peer-focus:translate-y-1 peer-focus:text-sm
              dark:text-dark-secondary`,
             errorMessage
-              ? 'text-accent-red peer-focus:text-accent-red'
+              ? '!text-accent-red peer-focus:text-accent-red'
               : 'peer-focus:text-main-accent'
           )}
           htmlFor={inputId}

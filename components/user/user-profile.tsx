@@ -23,16 +23,16 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
         />
       </Modal>
       <Button
-        className='absolute -mt-3 aspect-square w-[144px] -translate-y-1/2 p-0 
-                   enabled:hover:brightness-75 disabled:cursor-auto 
-                   disabled:brightness-100'
+        className='absolute -mt-3 aspect-square w-[144px] -translate-y-1/2 overflow-hidden
+                   p-0 disabled:cursor-auto disabled:opacity-100 [&:hover>figure>span]:brightness-75'
         onClick={openModal}
         disabled={!profileData}
       >
         {profileData ? (
           <NextImage
             useSkeleton
-            className='rounded-full bg-main-background p-1'
+            className='hover-animation bg-main-background p-1 [&>span]:rounded-full 
+                       [&>span]:transition [&>span]:duration-200'
             imgClassName='rounded-full'
             src={profileData.src}
             alt={profileData.alt}
@@ -41,8 +41,8 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
             key={profileData.src}
           />
         ) : (
-          <div className='h-full rounded-full bg-main-background p-1 inner:h-full inner:rounded-full'>
-            <div className='bg-sidebar-background' />
+          <div className='h-full rounded-full bg-main-background p-1'>
+            <div className='h-full rounded-full bg-main-sidebar-background' />
           </div>
         )}
       </Button>

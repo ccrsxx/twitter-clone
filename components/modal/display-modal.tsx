@@ -3,7 +3,7 @@ import { VerifiedName } from '@components/ui/verified-name';
 import { InputThemeRadio } from '@components/input/input-theme-radio';
 import { Button } from '@components/ui/button';
 import { InputAccentRadio } from '@components/input/input-accent-radio';
-import type { Theme, Accent } from '@lib/context/theme-context';
+import type { Theme, Accent } from '@lib/types/theme';
 
 type DisplayModalProps = {
   closeModal: () => void;

@@ -21,6 +21,8 @@ type UserDetailsProps = Pick<
   | 'followers'
 >;
 
+type DetailIcon = [string | null, IconName];
+
 export function UserDetails({
   id,
   bio,
@@ -35,7 +37,7 @@ export function UserDetails({
 }: UserDetailsProps): JSX.Element {
   const { user } = useAuth();
 
-  const detailIcons: Readonly<[string | null, IconName][]> = [
+  const detailIcons: Readonly<DetailIcon[]> = [
     [location, 'MapPinIcon'],
     [website, 'LinkIcon'],
     [`Joined ${formatDate(createdAt, 'joined')}`, 'CalendarDaysIcon']

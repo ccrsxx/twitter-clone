@@ -1,7 +1,7 @@
 import cn from 'clsx';
 import { useTheme } from '@lib/context/theme-context';
 import { HeroIcon } from '@components/ui/hero-icon';
-import type { Theme } from '@lib/context/theme-context';
+import type { Theme } from '@lib/types/theme';
 
 type InputThemeRadioProps = {
   type: Theme;
@@ -18,7 +18,7 @@ type InputThemeData = Record<
   }
 >;
 
-const inputThemeData: InputThemeData = {
+const inputThemeData: Readonly<InputThemeData> = {
   light: {
     textColor: 'text-black',
     backgroundColor: 'bg-white',

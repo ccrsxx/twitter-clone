@@ -7,8 +7,8 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { isPlural } from '@lib/utils';
 import {
-  HomeLayout,
   MainLayout,
+  HomeLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
 import { MainContainer } from '@components/home/main-container';
@@ -56,7 +56,7 @@ export default function TweetId(): JSX.Element {
     : null;
 
   return (
-    <MainContainer>
+    <MainContainer className='pb-[448px]'>
       <MainHeader
         useActionButton
         title={parentId ? 'Thread' : 'Tweet'}

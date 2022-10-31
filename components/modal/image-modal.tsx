@@ -20,7 +20,9 @@ type ImageModalProps = {
   handleNextIndex?: (type: 'prev' | 'next') => () => void;
 };
 
-const arrowButtons: Readonly<['prev' | 'next', string | null, IconName][]> = [
+type ArrowButton = ['prev' | 'next', string | null, IconName];
+
+const arrowButtons: Readonly<ArrowButton[]> = [
   ['prev', null, 'ArrowLeftIcon'],
   ['next', 'order-1', 'ArrowRightIcon']
 ];

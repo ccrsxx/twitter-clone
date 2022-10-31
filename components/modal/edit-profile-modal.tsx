@@ -138,10 +138,10 @@ export function EditProfileModal({
               ref={profileInputFileRef}
               onChange={editImage('profile')}
             />
-            <div className='group absolute -translate-y-1/2'>
+            <div className='group absolute -translate-y-1/2 overflow-hidden rounded-full'>
               <NextImage
                 useSkeleton
-                className='rounded-full bg-main-background p-1'
+                className='bg-main-background p-1 [&>span]:rounded-full'
                 imgClassName='rounded-full transition group-hover:brightness-75 group-hover:duration-200'
                 src={photoURL}
                 alt={name}

@@ -4,7 +4,7 @@ import { useUser } from '@lib/context/user-context';
 import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
-import { mergeTweets } from '@lib/merge';
+import { mergeData } from '@lib/merge';
 import {
   MainLayout,
   ProfileLayout,
@@ -49,7 +49,7 @@ export default function UserTweets(): JSX.Element {
     { includeUser: true, allowNull: true }
   );
 
-  const mergedTweets = mergeTweets(ownerTweets, peopleTweets);
+  const mergedTweets = mergeData(true, ownerTweets, peopleTweets);
 
   return (
     <section>

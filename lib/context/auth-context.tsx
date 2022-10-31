@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, createContext } from 'react';
+import { useState, useEffect, useContext, createContext, useMemo } from 'react';
 import {
   signInWithPopup,
   GoogleAuthProvider,
@@ -18,7 +18,7 @@ import {
   userStatsCollection,
   userBookmarksCollection
 } from '@lib/firebase/collections';
-import { getRandomInt } from '@lib/utils';
+import { getRandomId, getRandomInt } from '@lib/random';
 import type { ReactNode } from 'react';
 import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';
@@ -31,6 +31,7 @@ type AuthContext = {
   error: Error | null;
   loading: boolean;
   isAdmin: boolean;
+  randomSeed: string;
   userBookmarks: Bookmark[] | null;
   signOut: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
@@ -77,6 +78,8 @@ export function AuthContextProvider({
           id: uid,
           bio: null,
           name: displayName as string,
+          theme: null,
+          accent: null,
           website: null,
           location: null,
           photoURL: photoURL as string,
@@ -172,12 +175,14 @@ export function AuthContextProvider({
   };
 
   const isAdmin = user ? user.username === 'ccrsxx' : false;
+  const randomSeed = useMemo(getRandomId, [user]);
 
   const value: AuthContext = {
     user,
     error,
     loading,
     isAdmin,
+    randomSeed,
     userBookmarks,
     signOut,
     signInWithGoogle

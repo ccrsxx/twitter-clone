@@ -1,9 +1,12 @@
+import type { Theme, Accent } from './theme';
 import type { Timestamp, FirestoreDataConverter } from 'firebase/firestore';
 
 export type User = {
   id: string;
   bio: string | null;
   name: string;
+  theme: Theme | null;
+  accent: Accent | null;
   website: string | null;
   location: string | null;
   username: string;

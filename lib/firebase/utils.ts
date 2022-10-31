@@ -11,7 +11,8 @@ import {
   writeBatch,
   arrayUnion,
   arrayRemove,
-  serverTimestamp
+  serverTimestamp,
+  getCountFromServer
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './app';
@@ -25,6 +26,7 @@ import type { WithFieldValue } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
+import type { Theme, Accent } from '@lib/types/theme';
 
 export async function checkUsernameAvailability(
   username: string
@@ -33,6 +35,11 @@ export async function checkUsernameAvailability(
     query(usersCollection, where('username', '==', username), limit(1))
   );
   return empty;
+}
+
+export async function getTweetsCount(): Promise<number> {
+  const snapshot = await getCountFromServer(tweetsCollection);
+  return snapshot.data().count;
 }
 
 export async function updateUserData(
@@ -46,14 +53,22 @@ export async function updateUserData(
   });
 }
 
+export async function updateUserTheme(
+  userId: string,
+  themeData: { theme?: Theme; accent?: Accent }
+): Promise<void> {
+  const userRef = doc(usersCollection, userId);
+  await updateDoc(userRef, { ...themeData });
+}
+
 export async function updateUsername(
   userId: string,
   username?: string
 ): Promise<void> {
   const userRef = doc(usersCollection, userId);
   await updateDoc(userRef, {
-    updatedAt: serverTimestamp(),
-    ...(username && { username })
+    ...(username && { username }),
+    updatedAt: serverTimestamp()
   });
 }
 
@@ -146,7 +161,7 @@ export async function manageReply(
       updatedAt: serverTimestamp()
     });
   } catch {
-    // do nothing, because parent tweet was deleted
+    // do nothing, because parent tweet was already deleted
   }
 }
 

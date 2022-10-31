@@ -118,7 +118,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
             <div className='flex flex-col items-center gap-2'>
               <ProfilePicture src={photoURL} alt={name} username={username} />
               {parentTweet && (
-                <i className='h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
+                <i className='hover-animation h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
               )}
             </div>
             <div className='flex min-w-0 flex-col'>

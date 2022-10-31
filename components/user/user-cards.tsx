@@ -1,13 +1,9 @@
-import Link from 'next/link';
 import cn from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useAuth } from '@lib/context/auth-context';
 import { StatsEmpty } from '@components/tweet/stats-empty';
-import { NextImage } from '@components/ui/next-image';
 import { Loading } from '@components/ui/loading';
-import { VerifiedName } from '@components/ui/verified-name';
-import { UserFollowButton } from '@components/user/user-follow-button';
 import { variants } from '@components/user/user-header';
+import { UserCard } from './user-card';
 import type { User } from '@lib/types/user';
 import type { StatsType } from '@components/view/view-tweet-stats';
 import type { StatsEmptyProps } from '@components/tweet/stats-empty';
@@ -23,7 +19,9 @@ type UserCardsProps = {
   loading: boolean;
 };
 
-const allNoStatsData: Readonly<Record<CombinedTypes, StatsEmptyProps>> = {
+type NoStatsData = Record<CombinedTypes, StatsEmptyProps>;
+
+const allNoStatsData: Readonly<NoStatsData> = {
   retweets: {
     title: 'Amplify Tweets you like',
     imageData: { src: '/assets/no-retweets.png', alt: 'No retweets' },
@@ -54,8 +52,6 @@ export function UserCards({
   follow,
   loading
 }: UserCardsProps): JSX.Element {
-  const { user } = useAuth();
-
   const noStatsData = allNoStatsData[type];
   const modal = ['retweets', 'likes'].includes(type);
 
@@ -71,55 +67,9 @@ export function UserCards({
       ) : (
         <AnimatePresence mode='popLayout'>
           {data?.length ? (
-            data.map(({ id, bio, name, verified, username, photoURL }) => (
-              <motion.div layout='position' key={id} {...variants}>
-                <Link href={`/user/${username}`}>
-                  <a
-                    className='hover-animation grid grid-cols-[auto,1fr] gap-3 px-4 py-3
-                               hover:bg-light-primary/5
-                               dark:hover:bg-dark-primary/5'
-                  >
-                    <Link href={`/user/${username}`}>
-                      <a className='blur-picture'>
-                        <NextImage
-                          imgClassName='rounded-full'
-                          width={48}
-                          height={48}
-                          src={photoURL}
-                          alt={name}
-                        />
-                      </a>
-                    </Link>
-                    <div className='flex flex-col gap-1'>
-                      <div className='flex items-center justify-between'>
-                        <div className='flex flex-col justify-center'>
-                          <VerifiedName verified={verified}>
-                            <p className='custom-underline -mb-1 self-start font-bold'>
-                              {name}
-                            </p>
-                          </VerifiedName>
-                          <div className='flex items-center gap-1 text-light-secondary dark:text-dark-secondary'>
-                            <p>@{username}</p>
-                            {follow &&
-                              user?.id !== id &&
-                              user?.followers.includes(id) && (
-                                <p className='rounded bg-main-search-background px-1 text-xs'>
-                                  Follows you
-                                </p>
-                              )}
-                          </div>
-                        </div>
-                        {user?.id !== id && (
-                          <UserFollowButton
-                            userTargetId={id}
-                            userTargetUsername={username}
-                          />
-                        )}
-                      </div>
-                      {bio && <p>{bio}</p>}
-                    </div>
-                  </a>
-                </Link>
+            data.map((userData) => (
+              <motion.div layout='position' key={userData.id} {...variants}>
+                <UserCard {...userData} follow={follow} />
               </motion.div>
             ))
           ) : (

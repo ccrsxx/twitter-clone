@@ -2,7 +2,7 @@ import '@styles/globals.scss';
 
 import { SWRConfig } from 'swr';
 import { Toaster } from 'react-hot-toast';
-import { fetchJson } from '@lib/fetch';
+import { fetchJSON } from '@lib/fetch';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
 import { AppHead } from '@components/common/app-head';
@@ -39,7 +39,7 @@ export default function App({
     <AuthContextProvider>
       <ThemeContextProvider>
         <AppHead />
-        <SWRConfig value={{ fetcher: fetchJson }}>
+        <SWRConfig value={{ fetcher: fetchJSON }}>
           {getLayout(<Component {...pageProps} />)}
         </SWRConfig>
         <Toaster position='bottom-center' toastOptions={toastOptions} />

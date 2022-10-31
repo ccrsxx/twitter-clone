@@ -1,9 +1,10 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-// import { useAuth } from './auth-context';
-import type { ReactNode, ChangeEvent } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
 
-export type Theme = 'light' | 'dim' | 'dark';
-export type Accent = 'blue' | 'yellow' | 'pink' | 'purple' | 'orange' | 'green';
+import { useState, useEffect, createContext, useContext } from 'react';
+import { updateUserTheme } from '@lib/firebase/utils';
+import { useAuth } from './auth-context';
+import type { ReactNode, ChangeEvent } from 'react';
+import type { Theme, Accent } from '@lib/types/theme';
 
 type ThemeContext = {
   theme: Theme;
@@ -18,47 +19,81 @@ type ThemeContextProviderProps = {
   children: ReactNode;
 };
 
-const flipTheme = (theme: Theme): void => {
-  const root = document.documentElement;
-  const targetTheme = theme === 'dim' ? 'dark' : theme;
+function setInitialTheme(): Theme {
+  if (typeof window === 'undefined') return 'dark';
 
-  if (targetTheme === 'dark') root.classList.add('dark');
-  else root.classList.remove('dark');
+  const savedTheme = localStorage.getItem('theme') as Theme | null;
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-  root.style.setProperty('--main-background', `var(--${theme}-background)`);
+  return savedTheme ?? (prefersDark ? 'dark' : 'light');
+}
 
-  root.style.setProperty(
-    '--main-search-background',
-    `var(--${theme}-search-background)`
-  );
-  root.style.setProperty(
-    '--main-sidebar-background',
-    `var(--${theme}-sidebar-background)`
-  );
-};
+function setInitialAccent(): Accent {
+  if (typeof window === 'undefined') return 'blue';
 
-// TODO: Save theme and accent to localStorage and to the backend
+  const savedAccent = localStorage.getItem('accent') as Accent | null;
 
-const flipAccent = (accent: Accent): void => {
-  const root = document.documentElement;
-  root.style.setProperty('--main-accent', `var(--accent-${accent})`);
-};
+  return savedAccent ?? 'blue';
+}
 
 export function ThemeContextProvider({
   children
 }: ThemeContextProviderProps): JSX.Element {
-  // const { user } = useAuth();
+  const [theme, setTheme] = useState<Theme>(setInitialTheme);
+  const [accent, setAccent] = useState<Accent>(setInitialAccent);
 
-  const [theme, setTheme] = useState<Theme>('dark');
-  const [accent, setAccent] = useState<Accent>('blue');
+  const { user } = useAuth();
+  const { id: userId, theme: userTheme, accent: userAccent } = user ?? {};
 
   useEffect(() => {
+    if (user) {
+      setTheme(userTheme ?? theme);
+      setAccent(userAccent ?? accent);
+    }
+  }, [userId, userTheme, userAccent]);
+
+  useEffect(() => {
+    const flipTheme = (theme: Theme): void => {
+      const root = document.documentElement;
+      const targetTheme = theme === 'dim' ? 'dark' : theme;
+
+      if (targetTheme === 'dark') root.classList.add('dark');
+      else root.classList.remove('dark');
+
+      root.style.setProperty('--main-background', `var(--${theme}-background)`);
+
+      root.style.setProperty(
+        '--main-search-background',
+        `var(--${theme}-search-background)`
+      );
+      root.style.setProperty(
+        '--main-sidebar-background',
+        `var(--${theme}-sidebar-background)`
+      );
+
+      if (user) {
+        localStorage.setItem('theme', theme);
+        void updateUserTheme(user.id, { theme });
+      }
+    };
+
     flipTheme(theme);
-  }, [theme]);
+  }, [userId, theme]);
 
   useEffect(() => {
+    const flipAccent = (accent: Accent): void => {
+      const root = document.documentElement;
+
+      root.style.setProperty('--main-accent', `var(--accent-${accent})`);
+
+      if (user) {
+        localStorage.setItem('accent', accent);
+        void updateUserTheme(user.id, { accent });
+      }
+    };
+
     flipAccent(accent);
-  }, [accent]);
+  }, [userId, accent]);
 
   const changeTheme = ({
     target: { value }

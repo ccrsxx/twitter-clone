@@ -21,6 +21,8 @@ type viewTweetStats = Pick<Tweet, 'userRetweets' | 'userLikes'> & {
 
 export type StatsType = 'retweets' | 'likes';
 
+type Stats = [string, StatsType | null, number, number];
+
 export function ViewTweetStats({
   likeMove,
   userLikes,
@@ -52,7 +54,7 @@ export function ViewTweetStats({
     closeModal();
   };
 
-  const allStats: Readonly<[string, StatsType | null, number, number][]> = [
+  const allStats: Readonly<Stats[]> = [
     ['Reply', null, replyMove, currentReplies],
     ['Retweet', 'retweets', tweetMove, currentTweets],
     ['Like', 'likes', likeMove, currentLikes]

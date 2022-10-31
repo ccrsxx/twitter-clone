@@ -75,7 +75,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       <div className='flex flex-col gap-2'>
         {reply && (
           <div className='flex w-12 items-center justify-center'>
-            <i className='h-2 w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
+            <i className='hover-animation h-2 w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
@@ -130,7 +130,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             previewCount={images.length}
           />
         )}
-        <div className='inner:border-b inner:border-light-border dark:inner:border-dark-border'>
+        <div
+          className='inner:hover-animation inner:border-b inner:border-light-border
+                     dark:inner:border-dark-border'
+        >
           <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
           <TweetStats
             viewTweet

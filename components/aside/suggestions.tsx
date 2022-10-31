@@ -1,49 +1,48 @@
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { limit, orderBy, query, where, documentId } from 'firebase/firestore';
+import { useAuth } from '@lib/context/auth-context';
+import { useCollection } from '@lib/hooks/useCollection';
+import { usersCollection } from '@lib/firebase/collections';
+import { mergeData } from '@lib/merge';
+import { UserCard } from '@components/user/user-card';
 import { Loading } from '@components/ui/loading';
+import { Error } from '@components/ui/error';
 import { variants } from './aside-trends';
-import { SuggestionCard } from './suggestion-card';
-import type { SuggestionCardProps } from './suggestion-card';
-
-const placeholderProfiles: Readonly<SuggestionCardProps[]> = [
-  {
-    name: 'Emilia',
-    username: 'emilia',
-    verified: true,
-    photoURL: '/placeholder/emilia.jpg'
-  },
-  {
-    name: 'Nanami Touko',
-    username: 'nanamitouko',
-    verified: false,
-    photoURL: '/placeholder/nanami-touko.jpg'
-  },
-  {
-    name: 'Koito Yuu',
-    username: 'koitoyuu',
-    verified: false,
-    photoURL: '/placeholder/koito-yuu.jpg'
-  }
-];
 
 export function Suggestions(): JSX.Element {
-  const [loading, setLoading] = useState(true);
+  const { user, randomSeed } = useAuth();
 
-  useEffect(() => {
-    const timeoutId = setTimeout(() => setLoading(false), 500);
-    return () => clearTimeout(timeoutId);
-  }, []);
+  const { data, loading } = useCollection(
+    query(
+      usersCollection,
+      where(documentId(), '>=', randomSeed),
+      orderBy(documentId()),
+      limit(4)
+    ),
+    { allowNull: true }
+  );
+
+  const filteredUser = data?.filter(({ id }) => id !== user?.id) ?? null;
+
+  const isSuggestionFull = filteredUser ? filteredUser.length === 3 : loading;
+
+  const { data: adminData } = useCollection(
+    query(usersCollection, where('username', '==', 'ccrsxx'), limit(1)),
+    { allowNull: true, disabled: isSuggestionFull }
+  );
+
+  const mergedUser = mergeData(false, adminData, filteredUser);
 
   return (
     <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
       {loading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
-      ) : (
+      ) : mergedUser ? (
         <motion.div className='inner:px-4 inner:py-3' {...variants}>
           <h2 className='text-xl font-bold'>Who to follow</h2>
-          {placeholderProfiles.map((profile) => (
-            <SuggestionCard {...profile} key={profile.username} />
+          {mergedUser?.map((userData) => (
+            <UserCard {...userData} key={userData.id} />
           ))}
           <Link href='/people'>
             <a
@@ -54,6 +53,8 @@ export function Suggestions(): JSX.Element {
             </a>
           </Link>
         </motion.div>
+      ) : (
+        <Error />
       )}
     </section>
   );

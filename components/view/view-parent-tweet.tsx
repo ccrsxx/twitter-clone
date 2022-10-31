@@ -10,9 +10,6 @@ type ViewParentTweetProps = {
   viewTweetRef: RefObject<HTMLElement>;
 };
 
-// TODO: add an intersection observer so that when user is at the top
-// ! of the page, sot that the the main tweet is not refocused
-
 export function ViewParentTweet({
   parentId,
   viewTweetRef
@@ -21,11 +18,6 @@ export function ViewParentTweet({
     includeUser: true,
     allowNull: true
   });
-
-  // const tweetRef = useRef<HTMLDivElement>(null);
-  // const isAtTop = useIntersection(tweetRef, {
-  //   rootMargin: '-80px 0px 0px 0px'
-  // });
 
   useEffect(() => {
     if (!loading) viewTweetRef.current?.scrollIntoView();

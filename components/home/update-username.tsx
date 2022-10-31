@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import { useState, useEffect } from 'react';
+import { toast } from 'react-hot-toast';
 import { checkUsernameAvailability, updateUsername } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
@@ -52,9 +53,14 @@ export function UpdateUsername(): JSX.Element {
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+
     if (!available) return;
+
     await updateUsername(user?.id as string, inputValue);
+
     closeModal();
+
+    toast.success('Username updated successfully');
   };
 
   const cancelUpdateUsername = (): void => {

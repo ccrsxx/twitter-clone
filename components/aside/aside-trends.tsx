@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import cn from 'clsx';
 import { motion } from 'framer-motion';
 import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
@@ -16,31 +17,42 @@ export const variants: MotionProps = {
   transition: { duration: 0.8 }
 };
 
-export function AsideTrends(): JSX.Element {
-  // error can be used
-  const { data, loading } = useTrends(23424846, 10, {
+type AsideTrendsProps = {
+  inTrendsPage?: boolean;
+};
+
+export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
+  const { data, loading } = useTrends(1, inTrendsPage ? 100 : 10, {
     refreshInterval: 30000
   });
 
   const { trends, location } = data ?? {};
 
   return (
-    <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
+    <section
+      className={cn(
+        !inTrendsPage &&
+          'hover-animation rounded-2xl bg-main-sidebar-background'
+      )}
+    >
       {loading ? (
         <Loading />
-      ) : trends && location ? (
+      ) : trends ? (
         <motion.div className='inner:px-4 inner:py-3' {...variants}>
-          <h2 className='text-xl font-extrabold'>Trends for you</h2>
+          {!inTrendsPage && (
+            <h2 className='text-xl font-extrabold'>Trends for you</h2>
+          )}
           {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
               <a
                 className='hover-animation smooth-tab hover-card relative 
-                           flex flex-col gap-0.5'
+                           flex cursor-not-allowed flex-col gap-0.5'
+                onClick={preventBubbling()}
               >
                 <div className='absolute right-2 top-2'>
                   <Button
-                    className='hover-animation group relative p-2 hover:bg-accent-blue/10
-                               active:bg-accent-blue/20'
+                    className='hover-animation group relative cursor-not-allowed p-2
+                               hover:bg-accent-blue/10 active:bg-accent-blue/20'
                     onClick={preventBubbling()}
                   >
                     <HeroIcon
@@ -53,7 +65,9 @@ export function AsideTrends(): JSX.Element {
                 </div>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
                   Trending{' '}
-                  {location === 'Worldwide' ? 'Worldwide' : `in ${location}`}
+                  {location === 'Worldwide'
+                    ? 'Worldwide'
+                    : `in ${location as string}`}
                 </p>
                 <p className='font-bold'>{name}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
@@ -62,14 +76,16 @@ export function AsideTrends(): JSX.Element {
               </a>
             </Link>
           ))}
-          <Link href='/trends'>
-            <a
-              className='custom-button smooth-tab hover-card block w-full rounded-2xl
+          {!inTrendsPage && (
+            <Link href='/trends'>
+              <a
+                className='custom-button smooth-tab hover-card block w-full rounded-2xl
                          rounded-t-none text-center text-main-accent'
-            >
-              Show more
-            </a>
-          </Link>
+              >
+                Show more
+              </a>
+            </Link>
+          )}
         </motion.div>
       ) : (
         <Error />

@@ -42,10 +42,6 @@ type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   hasImages: boolean;
 };
 
-// TODO: fix bugs on hover, use popover for now instead of menu
-// ! There's a workaround for this bug, but it's not ideal, you can prevent bubbling
-// ! by putting the modal component outside of this component, like in the tweet.tsx modal
-
 export function TweetActions({
   isOwner,
   tweetId,

@@ -1,15 +1,17 @@
-import type { TweetWithUser } from '@lib/types/tweet';
+import type { Timestamp } from 'firebase/firestore';
 
-export function mergeTweets(
-  ...tweets: (TweetWithUser[] | null)[]
-): TweetWithUser[] | null {
-  const validTweets = tweets.filter((tweet) => tweet) as TweetWithUser[][];
-  const mergedTweets = validTweets.reduce(
-    (acc, tweet) => [...acc, ...tweet],
-    []
-  );
+type DataWithDate<T> = T & { createdAt: Timestamp };
 
-  return mergedTweets.length
-    ? mergedTweets.sort((a, b) => +b.createdAt.toDate() - +a.createdAt.toDate())
+export function mergeData<T>(
+  sortData: boolean,
+  ...tweets: (DataWithDate<T>[] | null)[]
+): DataWithDate<T>[] | null {
+  const validData = tweets.filter((tweet) => tweet) as DataWithDate<T>[][];
+  const mergeData = validData.reduce((acc, tweet) => [...acc, ...tweet], []);
+
+  return mergeData.length
+    ? sortData
+      ? mergeData.sort((a, b) => +b.createdAt.toDate() - +a.createdAt.toDate())
+      : mergeData
     : null;
 }

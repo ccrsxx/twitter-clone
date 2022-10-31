@@ -1,13 +1,15 @@
 import cn from 'clsx';
 import { useTheme } from '@lib/context/theme-context';
 import { HeroIcon } from '@components/ui/hero-icon';
-import type { Accent } from '@lib/context/theme-context';
+import type { Accent } from '@lib/types/theme';
 
 type InputAccentRadioProps = {
   type: Accent;
 };
 
-const InputColors: Record<Accent, string> = {
+type InputAccentData = Record<Accent, string>;
+
+const InputColors: Readonly<InputAccentData> = {
   yellow:
     'bg-accent-yellow hover:ring-accent-yellow/10 active:ring-accent-yellow/20',
   blue: 'bg-accent-blue hover:ring-accent-blue/10 active:ring-accent-blue/20',

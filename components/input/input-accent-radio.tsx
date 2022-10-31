@@ -46,7 +46,7 @@ export function InputAccentRadio({ type }: InputAccentRadioProps): JSX.Element {
         checked={isChecked}
         onChange={changeAccent}
       />
-      <i className='peer-checked:text-white peer-checked:inner:opacity-100'>
+      <i className='text-white peer-checked:inner:opacity-100'>
         <HeroIcon
           className='h-6 w-6 opacity-0 transition-opacity duration-200'
           iconName='CheckIcon'

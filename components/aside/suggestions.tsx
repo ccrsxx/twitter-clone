@@ -18,25 +18,25 @@ export function Suggestions(): JSX.Element {
       usersCollection,
       where(documentId(), '>=', randomSeed),
       orderBy(documentId()),
-      limit(4)
+      limit(3)
     ),
     { allowNull: true }
   );
 
-  const filteredUser = data?.filter(({ id }) => id !== user?.id) ?? null;
+  const filteredData = data?.filter(({ id }) => id !== user?.id) ?? null;
 
-  const isSuggestionFull = filteredUser ? filteredUser.length === 3 : loading;
+  const isUsersEmpty = !(!filteredData && !loading);
 
-  const { data: adminData } = useCollection(
+  const { data: adminData, loading: adminLoading } = useCollection(
     query(usersCollection, where('username', '==', 'ccrsxx'), limit(1)),
-    { allowNull: true, disabled: isSuggestionFull }
+    { allowNull: true, disabled: isUsersEmpty }
   );
 
-  const mergedUser = mergeData(false, adminData, filteredUser);
+  const mergedUser = mergeData(false, adminData, filteredData) ?? [];
 
   return (
     <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
-      {loading ? (
+      {loading || adminLoading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : mergedUser ? (
         <motion.div className='inner:px-4 inner:py-3' {...variants}>

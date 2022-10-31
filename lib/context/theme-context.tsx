@@ -47,13 +47,13 @@ export function ThemeContextProvider({
 
   useEffect(() => {
     if (user) {
-      setTheme(userTheme ?? theme);
-      setAccent(userAccent ?? accent);
+      if (userTheme) setTheme(userTheme);
+      if (userAccent) setAccent(userAccent);
     }
   }, [userId, userTheme, userAccent]);
 
   useEffect(() => {
-    const flipTheme = (theme: Theme): void => {
+    const flipTheme = (theme: Theme): NodeJS.Timeout | undefined => {
       const root = document.documentElement;
       const targetTheme = theme === 'dim' ? 'dark' : theme;
 
@@ -73,26 +73,32 @@ export function ThemeContextProvider({
 
       if (user) {
         localStorage.setItem('theme', theme);
-        void updateUserTheme(user.id, { theme });
+        return setTimeout(() => void updateUserTheme(user.id, { theme }), 500);
       }
+
+      return undefined;
     };
 
-    flipTheme(theme);
+    const timeoutId = flipTheme(theme);
+    return () => clearTimeout(timeoutId);
   }, [userId, theme]);
 
   useEffect(() => {
-    const flipAccent = (accent: Accent): void => {
+    const flipAccent = (accent: Accent): NodeJS.Timeout | undefined => {
       const root = document.documentElement;
 
       root.style.setProperty('--main-accent', `var(--accent-${accent})`);
 
       if (user) {
         localStorage.setItem('accent', accent);
-        void updateUserTheme(user.id, { accent });
+        return setTimeout(() => void updateUserTheme(user.id, { accent }), 500);
       }
+
+      return undefined;
     };
 
-    flipAccent(accent);
+    const timeoutId = flipAccent(accent);
+    return () => clearTimeout(timeoutId);
   }, [userId, accent]);
 
   const changeTheme = ({

@@ -4,18 +4,38 @@ import { Button } from '@components/ui/button';
 import type { ReactNode, FormEvent } from 'react';
 
 type UsernameModalProps = {
+  loading: boolean;
   children: ReactNode;
   available: boolean;
+  alreadySet: boolean;
   changeUsername: (e: FormEvent<HTMLFormElement>) => Promise<void>;
   cancelUpdateUsername: () => void;
 };
 
+const usernameModalData = [
+  {
+    title: 'What should we call you?',
+    description: 'Your @username is unique. You can always change it later.',
+    cancelLabel: 'Skip'
+  },
+  {
+    title: 'Change your username?',
+    description:
+      'Your @username is unique. You can always change it here again.',
+    cancelLabel: 'Cancel'
+  }
+] as const;
+
 export function UsernameModal({
+  loading,
   children,
   available,
+  alreadySet,
   changeUsername,
   cancelUpdateUsername
 }: UsernameModalProps): JSX.Element {
+  const { title, description, cancelLabel } = usernameModalData[+alreadySet];
+
   return (
     <form
       className='flex h-full flex-col justify-between'
@@ -27,11 +47,9 @@ export function UsernameModal({
             <CustomIcon className='h-10 w-10' iconName='TwitterIcon' />
           </i>
           <div className='flex flex-col gap-2'>
-            <Dialog.Title className='text-4xl font-bold'>
-              What should we call you?
-            </Dialog.Title>
+            <Dialog.Title className='text-4xl font-bold'>{title}</Dialog.Title>
             <Dialog.Description className='text-light-secondary dark:text-dark-secondary'>
-              Your @username is unique. You can always change it later.
+              {description}
             </Dialog.Description>
           </div>
         </div>
@@ -39,19 +57,23 @@ export function UsernameModal({
       </div>
       <div className='flex flex-col gap-3 inner:py-2 inner:font-bold'>
         <Button
-          className='bg-light-border text-light-primary transition hover:bg-light-border/90 
-                     active:bg-light-border/75 disabled:brightness-50'
+          className='bg-light-primary text-white enabled:hover:bg-light-primary/90 
+                     enabled:active:bg-light-primary/80 dark:bg-light-border 
+                     dark:text-light-primary dark:enabled:hover:bg-light-border/90 
+                     dark:enabled:active:bg-light-border/75'
           type='submit'
+          loading={loading}
           disabled={!available}
         >
           Set username
         </Button>
         <Button
-          className='border border-dark-border hover:bg-light-primary/10  active:bg-light-primary/20
-                     dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
+          className='border border-light-line-reply hover:bg-light-primary/10 active:bg-light-primary/20
+                     dark:border-light-secondary dark:text-light-border dark:hover:bg-light-border/10 
+                     dark:active:bg-light-border/20'
           onClick={cancelUpdateUsername}
         >
-          Skip
+          {cancelLabel}
         </Button>
       </div>
     </form>

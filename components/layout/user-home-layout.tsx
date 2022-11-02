@@ -11,8 +11,8 @@ import { Button } from '@components/ui/button';
 import { Loading } from '@components/ui/loading';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
+import { FollowButton } from '@components/ui/follow-button';
 import { variants } from '@components/user/user-header';
-import { UserFollowButton } from '@components/user/user-follow-button';
 import { UserEditProfile } from '@components/user/user-edit-profile';
 import { UserShare } from '@components/user/user-share';
 import type { LayoutProps } from './common-layout';
@@ -82,7 +82,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                       <HeroIcon className='h-5 w-5' iconName='EnvelopeIcon' />
                       <ToolTip tip='Message' />
                     </Button>
-                    <UserFollowButton
+                    <FollowButton
                       userTargetId={userData.id}
                       userTargetUsername={userData.username}
                     />

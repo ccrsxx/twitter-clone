@@ -1,6 +1,10 @@
-import { AnimatePresence } from 'framer-motion';
-import { query, where, orderBy } from 'firebase/firestore';
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import { useState, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { query, where, orderBy, limit } from 'firebase/firestore';
 import { useCollection } from '@lib/hooks/useCollection';
+import { getHomeTweetsCount } from '@lib/firebase/utils';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { HomeLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
@@ -8,9 +12,6 @@ import { SEO } from '@components/common/seo';
 import { MainContainer } from '@components/home/main-container';
 import { Input } from '@components/input/input';
 import { UpdateUsername } from '@components/home/update-username';
-import { Button } from '@components/ui/button';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { ToolTip } from '@components/ui/tooltip';
 import { MainHeader } from '@components/home/main-header';
 import { Tweet } from '@components/tweet/tweet';
 import { Loading } from '@components/ui/loading';
@@ -18,28 +19,56 @@ import { Error } from '@components/ui/error';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function Home(): JSX.Element {
+  const [tweetsLimit, setTweetsLimit] = useState(10);
+  const [tweetsSize, setTweetsSize] = useState<number | null>(null);
+  const [reachedLimit, setReachedLimit] = useState(false);
+  const [loadMoreInView, setLoadMoreInView] = useState(false);
+
   const { data, loading } = useCollection(
     query(
       tweetsCollection,
-      where('parent', '==', null),
-      orderBy('createdAt', 'desc')
+      ...[
+        where('parent', '==', null),
+        orderBy('createdAt', 'desc'),
+        ...(!reachedLimit ? [limit(tweetsLimit)] : [])
+      ]
     ),
-    { includeUser: true, allowNull: true }
+    { includeUser: true, allowNull: true, preserve: true }
   );
+
+  useEffect(() => {
+    const checkLimit = tweetsSize ? tweetsLimit >= tweetsSize : false;
+    setReachedLimit(checkLimit);
+  }, [tweetsSize, tweetsLimit]);
+
+  useEffect(() => {
+    if (reachedLimit) return;
+
+    const setTweetsLength = async (): Promise<void> => {
+      const currentTweetsSize = await getHomeTweetsCount();
+      setTweetsSize(currentTweetsSize);
+    };
+
+    void setTweetsLength();
+  }, [data]);
+
+  useEffect(() => {
+    if (reachedLimit) return;
+    if (loadMoreInView) setTweetsLimit(tweetsLimit + 10);
+  }, [loadMoreInView]);
+
+  const makeItInView = (): void => setLoadMoreInView(true);
+  const makeItNotInView = (): void => setLoadMoreInView(false);
+
+  const isLoadMoreHidden =
+    reachedLimit && (data?.length ?? 0) >= (tweetsSize ?? 0);
 
   return (
     <MainContainer>
       <SEO title='Home / Twitter' />
       <MainHeader className='flex items-center justify-between'>
         <h2 className='text-xl font-bold'>Home</h2>
-        <Button
-          className='group relative cursor-not-allowed p-2 hover:bg-light-primary/10
-                     active:bg-light-primary/20 dark:hover:bg-dark-primary/10 
-                     dark:active:bg-dark-primary/20'
-        >
-          <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
-          <ToolTip tip='Top tweets' />
-        </Button>
+        <UpdateUsername />
       </MainHeader>
       <Input />
       <section>
@@ -48,14 +77,23 @@ export default function Home(): JSX.Element {
         ) : !data ? (
           <Error message='Something went wrong' />
         ) : (
-          <AnimatePresence mode='popLayout'>
-            {data.map((tweet) => (
-              <Tweet {...tweet} key={tweet.id} />
-            ))}
-          </AnimatePresence>
+          <>
+            <AnimatePresence mode='popLayout'>
+              {data.map((tweet) => (
+                <Tweet {...tweet} key={tweet.id} />
+              ))}
+            </AnimatePresence>
+            <motion.div
+              className={isLoadMoreHidden ? 'hidden' : 'block'}
+              viewport={{ margin: '0px 0px 1500px' }}
+              onViewportEnter={makeItInView}
+              onViewportLeave={makeItNotInView}
+            >
+              <Loading className='m-5' />
+            </motion.div>
+          </>
         )}
       </section>
-      <UpdateUsername />
     </MainContainer>
   );
 }

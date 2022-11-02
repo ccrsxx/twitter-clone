@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu } from '@headlessui/react';
 import cn from 'clsx';
 import { useModal } from '@lib/hooks/useModal';
+import { preventBubbling } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { DisplayModal } from '@components/modal/display-modal';
 import { HeroIcon } from '@components/ui/hero-icon';
@@ -61,10 +62,11 @@ export function MoreSettings(): JSX.Element {
                     {({ active }): JSX.Element => (
                       <MenuLink
                         className={cn(
-                          'flex w-full gap-3 rounded-t-md p-4 duration-200',
+                          'flex w-full cursor-not-allowed gap-3 rounded-t-md p-4 duration-200',
                           active && 'bg-main-sidebar-background'
                         )}
                         href='/settings'
+                        onClick={preventBubbling()}
                       >
                         <HeroIcon iconName='Cog8ToothIcon' />
                         Settings and privacy

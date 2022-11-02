@@ -1,5 +1,6 @@
 import { toast } from 'react-hot-toast';
-import type { FilesWithId, ImagesPreview } from './types/file';
+import { getRandomId } from './random';
+import type { FilesWithId, FileWithId, ImagesPreview } from './types/file';
 
 const IMAGE_EXTENSIONS = [
   'apng',
@@ -33,12 +34,14 @@ export function isValidUsername(
   username: string,
   value: string
 ): string | null {
-  if (value.length < 4) return 'Username must be at least 4 characters';
-  if (value.length > 15) return 'Username must be less than 15 characters';
+  if (value.length < 4)
+    return 'Your username must be longer than 4 characters.';
+  if (value.length > 15)
+    return 'Your username must be shorter than 15 characters.';
   if (!/^\w+$/i.test(value))
-    return 'Username can only contain letters, numbers and _';
-  if (!/[a-z]/i.test(value)) return 'Username must include at least one letter';
-  if (value === username) return 'This is your current username';
+    return "Your username can only contain letters, numbers and '_'.";
+  if (!/[a-z]/i.test(value)) return 'Include a non-number character.';
+  if (value === username) return 'This is your current username.';
 
   return null;
 }
@@ -71,19 +74,39 @@ export function getImagesData(
     return null;
   }
 
-  const imagesId = rawImages.map((_, index) =>
-    Math.floor(Date.now() + Math.random() + index)
-  );
+  const imagesId = rawImages.map(({ name }) => {
+    const randomId = getRandomId();
+    return {
+      id: randomId,
+      name: name === 'image.png' ? `${randomId}.png` : null
+    };
+  });
 
   const imagesPreviewData = rawImages.map((image, index) => ({
-    id: imagesId[index],
+    id: imagesId[index].id,
     src: URL.createObjectURL(image),
-    alt: image.name
+    alt: imagesId[index].name ?? image.name
   }));
 
   const selectedImagesData = rawImages.map((image, index) =>
-    Object.assign(image, { id: imagesId[index] })
+    renameFile(image, imagesId[index].id, imagesId[index].name)
   );
 
   return { imagesPreviewData, selectedImagesData };
+}
+
+function renameFile(
+  file: File,
+  newId: string,
+  newName: string | null
+): FileWithId {
+  return Object.assign(
+    newName
+      ? new File([file], newName, {
+          type: file.type,
+          lastModified: file.lastModified
+        })
+      : file,
+    { id: newId }
+  );
 }

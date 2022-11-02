@@ -29,7 +29,7 @@ export function ViewParentTweet({
     return (
       <div className='px-4 pt-3 pb-2'>
         <p
-          className='bg-sidebar-background rounded-2xl py-3 px-1 pl-4 
+          className='rounded-2xl bg-main-sidebar-background py-3 px-1 pl-4 
                      text-light-secondary dark:text-dark-secondary'
         >
           This Tweet was deleted by the Tweet author.{' '}

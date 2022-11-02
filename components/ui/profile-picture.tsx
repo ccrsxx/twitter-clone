@@ -6,25 +6,23 @@ type ProfilePictureProps = {
   src: string;
   alt: string;
   size?: number;
-  username: string;
-  disableLink?: boolean;
+  username?: string;
 };
 
 export function ProfilePicture({
   src,
   alt,
   size,
-  username,
-  disableLink
+  username
 }: ProfilePictureProps): JSX.Element {
   const pictureSize = size ?? 48;
 
   return (
-    <Link href={`/user/${username}`}>
+    <Link href={username ? `/user/${username}` : '#'}>
       <a
         className={cn(
           'blur-picture self-start',
-          disableLink && 'pointer-events-none'
+          !username && 'pointer-events-none'
         )}
       >
         <NextImage

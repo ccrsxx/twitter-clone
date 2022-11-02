@@ -7,7 +7,8 @@ import { Modal } from '@components/modal/modal';
 import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { ProfilePicture } from '@components/ui/profile-picture';
-import { VerifiedName } from '@components/ui/verified-name';
+import { ProfileTooltip } from '@components/ui/profile-tooltip';
+import { ProfileName } from '@components/ui/profile-name';
 import { variants } from '@components/tweet/tweet';
 import { TweetActions } from '@components/tweet/tweet-actions';
 import { TweetStats } from '@components/tweet/tweet-stats';
@@ -34,8 +35,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     userRetweets,
     userReplies,
     viewTweetRef,
-    user: { name, username, verified, photoURL }
+    user: tweetUserData
   } = tweet;
+
+  const { name, username, verified, photoURL } = tweetUserData;
 
   const { user } = useAuth();
 
@@ -79,26 +82,31 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <ProfilePicture src={photoURL} alt={name} username={username} />
+          <ProfileTooltip {...tweetUserData}>
+            <ProfilePicture src={photoURL} alt={name} username={username} />
+          </ProfileTooltip>
           <div className='flex min-w-0 flex-col gap-1'>
             <div className='flex flex-col'>
               <div className='-mb-1 flex items-center gap-1'>
-                <VerifiedName verified={verified}>
-                  <Link href={userLink}>
-                    <a className='custom-underline font-bold'>{name}</a>
-                  </Link>
-                </VerifiedName>
+                <ProfileTooltip {...tweetUserData}>
+                  <ProfileName username={username} verified={verified}>
+                    <p>{name}</p>
+                  </ProfileName>
+                </ProfileTooltip>
               </div>
-              <Link href={userLink}>
-                <a
-                  className='self-start text-light-secondary outline-none dark:text-dark-secondary'
-                  tabIndex={-1}
-                >
-                  @{username}
-                </a>
-              </Link>
+              <ProfileTooltip {...tweetUserData}>
+                <Link href={userLink}>
+                  <a
+                    className='self-start text-light-secondary outline-none dark:text-dark-secondary'
+                    tabIndex={-1}
+                  >
+                    @{username}
+                  </a>
+                </Link>
+              </ProfileTooltip>
             </div>
             <TweetActions
+              viewTweet
               isOwner={isOwner}
               tweetId={tweetId}
               parentId={parentId}
@@ -125,7 +133,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
         )}
         {images && (
           <ImagePreview
-            tweet
+            viewTweet
             imagesPreview={images}
             previewCount={images.length}
           />

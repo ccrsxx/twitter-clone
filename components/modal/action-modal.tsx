@@ -61,7 +61,8 @@ export function ActionModal({
           className={cn(
             'custom-button smooth-tab text-white',
             mainBtnClassName ??
-              'bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
+              `bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80 dark:bg-light-border
+               dark:text-light-primary dark:hover:bg-light-border/90 dark:active:bg-light-border/75`
           )}
           ref={mainBtn}
           onClick={action}

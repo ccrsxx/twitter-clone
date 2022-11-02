@@ -6,13 +6,19 @@ import { checkUsernameAvailability, updateUsername } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { isValidUsername } from '@lib/validation';
+import { sleep } from '@lib/utils';
+import { Button } from '@components/ui/button';
+import { HeroIcon } from '@components/ui/hero-icon';
+import { ToolTip } from '@components/ui/tooltip';
 import { Modal } from '@components/modal/modal';
 import { UsernameModal } from '@components/modal/username-modal';
 import { InputField } from '@components/input/input-field';
 import type { FormEvent, ChangeEvent } from 'react';
 
 export function UpdateUsername(): JSX.Element {
+  const [alreadySet, setAlreadySet] = useState(false);
   const [available, setAvailable] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -27,7 +33,7 @@ export function UpdateUsername(): JSX.Element {
       if (empty) setAvailable(true);
       else {
         setAvailable(false);
-        setErrorMessage('Username is already taken');
+        setErrorMessage('This username has been taken. Please choose another.');
       }
     };
 
@@ -47,6 +53,7 @@ export function UpdateUsername(): JSX.Element {
 
   useEffect(() => {
     if (!user?.updatedAt) openModal();
+    else setAlreadySet(true);
   }, []);
 
   const changeUsername = async (
@@ -56,16 +63,22 @@ export function UpdateUsername(): JSX.Element {
 
     if (!available) return;
 
+    setLoading(true);
+
+    await sleep(500);
+
     await updateUsername(user?.id as string, inputValue);
 
     closeModal();
+
+    setLoading(false);
 
     toast.success('Username updated successfully');
   };
 
   const cancelUpdateUsername = (): void => {
     closeModal();
-    void updateUsername(user?.id as string);
+    if (!alreadySet) void updateUsername(user?.id as string);
   };
 
   const handleChange = ({
@@ -74,24 +87,37 @@ export function UpdateUsername(): JSX.Element {
     setInputValue(value);
 
   return (
-    <Modal
-      modalClassName='flex flex-col gap-6 max-w-xl bg-main-background w-full p-8 rounded-2xl h-[576px]'
-      open={open}
-      closeModal={cancelUpdateUsername}
-    >
-      <UsernameModal
-        available={available}
-        changeUsername={changeUsername}
-        cancelUpdateUsername={cancelUpdateUsername}
+    <>
+      <Modal
+        modalClassName='flex flex-col gap-6 max-w-xl bg-main-background w-full p-8 rounded-2xl h-[576px]'
+        open={open}
+        closeModal={cancelUpdateUsername}
       >
-        <InputField
-          label='Username'
-          inputId='username'
-          inputValue={inputValue}
-          errorMessage={errorMessage}
-          handleChange={handleChange}
-        />
-      </UsernameModal>
-    </Modal>
+        <UsernameModal
+          loading={loading}
+          available={available}
+          alreadySet={alreadySet}
+          changeUsername={changeUsername}
+          cancelUpdateUsername={cancelUpdateUsername}
+        >
+          <InputField
+            label='Username'
+            inputId='username'
+            inputValue={inputValue}
+            errorMessage={errorMessage}
+            handleChange={handleChange}
+          />
+        </UsernameModal>
+      </Modal>
+      <Button
+        className='group relative p-2 hover:bg-light-primary/10
+                   active:bg-light-primary/20 dark:hover:bg-dark-primary/10 
+                   dark:active:bg-dark-primary/20'
+        onClick={openModal}
+      >
+        <HeroIcon className='h-5 w-5' iconName='SparklesIcon' />
+        <ToolTip tip='Top tweets' />
+      </Button>
+    </>
   );
 }

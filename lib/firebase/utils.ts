@@ -5,6 +5,7 @@ import {
   limit,
   setDoc,
   getDocs,
+  orderBy,
   updateDoc,
   deleteDoc,
   increment,
@@ -37,8 +38,14 @@ export async function checkUsernameAvailability(
   return empty;
 }
 
-export async function getTweetsCount(): Promise<number> {
-  const snapshot = await getCountFromServer(tweetsCollection);
+export async function getHomeTweetsCount(): Promise<number> {
+  const snapshot = await getCountFromServer(
+    query(
+      tweetsCollection,
+      where('parent', '==', null),
+      orderBy('createdAt', 'desc')
+    )
+  );
   return snapshot.data().count;
 }
 

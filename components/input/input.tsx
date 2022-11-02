@@ -8,8 +8,8 @@ import { tweetsCollection } from '@lib/firebase/collections';
 import {
   manageReply,
   uploadImages,
-  manageTotalPhotos,
-  manageTotalTweets
+  manageTotalTweets,
+  manageTotalPhotos
 } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
@@ -141,7 +141,7 @@ export function Input({
     }
   };
 
-  const removeImage = (targetId: number) => (): void => {
+  const removeImage = (targetId: string) => (): void => {
     setSelectedImages(selectedImages.filter(({ id }) => id !== targetId));
     setImagesPreview(imagesPreview.filter(({ id }) => id !== targetId));
 
@@ -217,13 +217,12 @@ export function Input({
       )}
       <label
         className={cn(
-          'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition',
+          'grid grid-cols-[auto,1fr] gap-3 px-4 py-3 transition duration-200',
           reply
             ? 'pt-3 pb-1'
             : replyModal
             ? 'pt-0'
-            : `border-b-2 border-light-border transition-[border]
-               duration-200 dark:border-dark-border`,
+            : 'border-b-2 border-light-border dark:border-dark-border',
           (disabled || loading) && 'pointer-events-none opacity-50'
         )}
         htmlFor={formId}
@@ -249,8 +248,8 @@ export function Input({
           >
             {isUploadingImages && (
               <ImagePreview
-                previewCount={previewCount}
                 imagesPreview={imagesPreview}
+                previewCount={previewCount}
                 removeImage={!loading ? removeImage : undefined}
               />
             )}

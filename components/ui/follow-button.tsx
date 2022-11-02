@@ -6,17 +6,19 @@ import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
 
-type UserFollowButtonProps = {
+type FollowButtonProps = {
   userTargetId: string;
   userTargetUsername: string;
 };
 
-export function UserFollowButton({
+export function FollowButton({
   userTargetId,
   userTargetUsername
-}: UserFollowButtonProps): JSX.Element {
+}: FollowButtonProps): JSX.Element | null {
   const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
+
+  if (user?.id === userTargetId) return null;
 
   const { id: userId, following } = user ?? {};
 

@@ -8,7 +8,8 @@ import { Modal } from '@components/modal/modal';
 import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
 import { ProfilePicture } from '@components/ui/profile-picture';
-import { VerifiedName } from '@components/ui/verified-name';
+import { ProfileTooltip } from '@components/ui/profile-tooltip';
+import { ProfileName } from '@components/ui/profile-name';
 import { TweetActions } from './tweet-actions';
 import { TweetStatus } from './tweet-status';
 import { TweetStats } from './tweet-stats';
@@ -46,8 +47,10 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     parentTweet,
     userReplies,
     userRetweets,
-    user: { name, username, verified, photoURL }
+    user: tweetUserData
   } = tweet;
+
+  const { name, username, verified, photoURL } = tweetUserData;
 
   const { user } = useAuth();
 
@@ -116,7 +119,9 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               )}
             </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>
-              <ProfilePicture src={photoURL} alt={name} username={username} />
+              <ProfileTooltip {...tweetUserData}>
+                <ProfilePicture src={photoURL} alt={name} username={username} />
+              </ProfileTooltip>
               {parentTweet && (
                 <i className='hover-animation h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
               )}
@@ -125,17 +130,22 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               <div className='text-light-secondary dark:text-dark-secondary'>
                 <div className='flex gap-1'>
                   <div className='flex items-center gap-1 text-light-primary dark:text-dark-primary'>
-                    <VerifiedName verified={verified}>
-                      <Link href={userLink}>
-                        <a className='custom-underline font-bold'>{name}</a>
-                      </Link>
-                    </VerifiedName>
+                    <ProfileTooltip {...tweetUserData}>
+                      <ProfileName username={username} verified={verified}>
+                        <p>{name}</p>
+                      </ProfileName>
+                    </ProfileTooltip>
                   </div>
-                  <Link href={userLink}>
-                    <a className='outline-none' tabIndex={-1}>
-                      @{username}
-                    </a>
-                  </Link>
+                  <ProfileTooltip {...tweetUserData}>
+                    <Link href={userLink}>
+                      <a
+                        className='text-light-secondary outline-none dark:text-dark-secondary'
+                        tabIndex={-1}
+                      >
+                        @{username}
+                      </a>
+                    </Link>
+                  </ProfileTooltip>
                   <TweetDate tweetLink={tweetLink} createdAt={createdAt} />
                 </div>
                 {!modal && (

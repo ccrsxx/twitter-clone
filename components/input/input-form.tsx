@@ -99,6 +99,7 @@ export function InputForm({
         <ActionModal
           title='Discard Tweet?'
           description='This can’t be undone and you’ll lose your draft.'
+          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
           mainBtnLabel='Discard'
           action={handleClose}
           closeModal={closeModal}
@@ -136,8 +137,7 @@ export function InputForm({
           />
           {reply && !visited && (
             <Button
-              className='cursor-pointer bg-main-accent px-4 py-1.5 font-bold text-white
-                         opacity-50 dark:brightness-50'
+              className='cursor-pointer bg-main-accent px-4 py-1.5 font-bold text-white opacity-50'
               onClick={handleFocus}
             >
               Reply

@@ -1,10 +1,13 @@
 import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { doc, getDoc } from 'firebase/firestore';
 import { Popover } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
+import { tweetsCollection } from '@lib/firebase/collections';
 import {
   removeTweet,
   manageReply,
@@ -13,7 +16,7 @@ import {
   manageTotalTweets,
   manageTotalPhotos
 } from '@lib/firebase/utils';
-import { preventBubbling } from '@lib/utils';
+import { delayScroll, preventBubbling, sleep } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
@@ -40,6 +43,7 @@ type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   username: string;
   parentId?: string;
   hasImages: boolean;
+  viewTweet?: boolean;
 };
 
 export function TweetActions({
@@ -48,9 +52,11 @@ export function TweetActions({
   parentId,
   username,
   hasImages,
+  viewTweet,
   createdBy
 }: TweetActionsProps): JSX.Element {
   const { user, isAdmin } = useAuth();
+  const { push } = useRouter();
 
   const {
     open: removeOpen,
@@ -70,12 +76,23 @@ export function TweetActions({
   const tweetIsPinned = pinnedTweet === tweetId;
 
   const handleRemove = async (): Promise<void> => {
+    if (viewTweet)
+      if (parentId) {
+        const parentSnapshot = await getDoc(doc(tweetsCollection, parentId));
+        if (parentSnapshot.exists()) {
+          await push(`/tweet/${parentId}`, undefined, { scroll: false });
+          delayScroll(100)();
+          await sleep(50);
+        } else await push('/home');
+      } else await push('/home');
+
     await Promise.all([
       removeTweet(tweetId),
       manageTotalTweets('decrement', userId),
       hasImages && manageTotalPhotos('decrement', createdBy),
-      parentId && manageReply('decrement', parentId)
+      parentId && [manageReply('decrement', parentId)]
     ]);
+
     toast.success(
       `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
     );
@@ -138,6 +155,7 @@ export function TweetActions({
           } profile, the timeline of any accounts that follow ${
             isInAdminControl ? `@${username}` : 'you'
           }, and from Twitter search results.`}
+          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
           mainBtnLabel='Delete'
           focusOnMainBtn
           action={handleRemove}
@@ -151,7 +169,7 @@ export function TweetActions({
       >
         <ActionModal
           {...pinModalData}
-          mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80
+          mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80 dark:text-light-primary
                             dark:bg-light-border dark:hover:bg-light-border/90 dark:active:bg-light-border/75'
           focusOnMainBtn
           action={handlePin}

@@ -9,7 +9,7 @@ import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { ProfilePicture } from '@components/ui/profile-picture';
-import { VerifiedName } from '@components/ui/verified-name';
+import { ProfileName } from '@components/ui/profile-name';
 import { variants } from './more-settings';
 import type { User } from '@lib/types/user';
 
@@ -32,9 +32,6 @@ export function SidebarProfile(): JSX.Element {
           title='Log out of Twitter?'
           description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
           mainBtnLabel='Log out'
-          mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80 
-                            dark:text-light-primary dark:bg-light-border dark:hover:bg-light-border/90 
-                            dark:active:bg-light-border/75'
           action={signOut}
           closeModal={closeModal}
         />
@@ -51,18 +48,12 @@ export function SidebarProfile(): JSX.Element {
               )}
             >
               <div className='flex gap-3'>
-                <ProfilePicture
-                  src={photoURL}
-                  alt={name}
-                  size={40}
-                  username={username}
-                  disableLink
-                />
+                <ProfilePicture src={photoURL} alt={name} size={40} />
                 <div className='text-start leading-5'>
                   <div className='flex items-center gap-1'>
-                    <VerifiedName verified={verified}>
-                      <p className='text-start font-bold'>{name}</p>
-                    </VerifiedName>
+                    <ProfileName verified={verified}>
+                      <p className='text-start'>{name}</p>
+                    </ProfileName>
                   </div>
                   <p className='text-light-secondary dark:text-dark-secondary'>
                     @{username}
@@ -86,16 +77,11 @@ export function SidebarProfile(): JSX.Element {
                     disabled
                   >
                     <div className='flex items-center gap-3'>
-                      <ProfilePicture
-                        src={photoURL}
-                        alt={name}
-                        username={username}
-                        disableLink
-                      />
+                      <ProfilePicture src={photoURL} alt={name} />
                       <div>
-                        <VerifiedName verified={verified}>
-                          <p className='font-bold'>{name}</p>
-                        </VerifiedName>
+                        <ProfileName verified={verified}>
+                          <p>{name}</p>
+                        </ProfileName>
                         <p className='text-light-secondary dark:text-dark-secondary'>
                           @{username}
                         </p>

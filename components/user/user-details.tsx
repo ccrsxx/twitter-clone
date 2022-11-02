@@ -1,7 +1,7 @@
-import { useAuth } from '@lib/context/auth-context';
 import { formatDate } from '@lib/date';
 import { HeroIcon } from '@components/ui/hero-icon';
-import { VerifiedName } from '@components/ui/verified-name';
+import { ProfileName } from '@components/ui/profile-name';
+import { ProfileFollowing } from '@components/ui/profile-following';
 import { ToolTip } from '@components/ui/tooltip';
 import { UserFollowStats } from './user-follow-stats';
 import type { IconName } from '@components/ui/hero-icon';
@@ -35,8 +35,6 @@ export function UserDetails({
   following,
   followers
 }: UserDetailsProps): JSX.Element {
-  const { user } = useAuth();
-
   const detailIcons: Readonly<DetailIcon[]> = [
     [location, 'MapPinIcon'],
     [website, 'LinkIcon'],
@@ -46,20 +44,16 @@ export function UserDetails({
   return (
     <>
       <div>
-        <VerifiedName
+        <ProfileName
           className='-mb-1'
           iconClassName='w-6 h-6'
           verified={verified}
         >
-          <p className='text-xl font-bold'>{name}</p>
-        </VerifiedName>
+          <p className='text-xl'>{name}</p>
+        </ProfileName>
         <div className='flex items-center gap-1 text-light-secondary dark:text-dark-secondary'>
           <p>@{username}</p>
-          {user?.id !== id && user?.followers.includes(id) && (
-            <p className='rounded bg-main-search-background px-1 text-xs'>
-              Follows you
-            </p>
-          )}
+          <ProfileFollowing userTargetId={id} />
         </div>
       </div>
       <div className='flex flex-col gap-2'>

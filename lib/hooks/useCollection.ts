@@ -15,24 +15,39 @@ type DataWithUser<T> = UseCollection<T & { user: User }>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options: { includeUser: true; allowNull?: boolean; disabled?: boolean }
+  options: {
+    includeUser: true;
+    allowNull?: boolean;
+    disabled?: boolean;
+    preserve?: boolean;
+  }
 ): DataWithUser<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: false; allowNull?: boolean; disabled?: boolean }
+  options?: {
+    includeUser?: false;
+    allowNull?: boolean;
+    disabled?: boolean;
+    preserve?: boolean;
+  }
 ): UseCollection<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: { includeUser?: boolean; allowNull?: boolean; disabled?: boolean }
+  options?: {
+    includeUser?: boolean;
+    allowNull?: boolean;
+    disabled?: boolean;
+    preserve?: boolean;
+  }
 ): UseCollection<T> | DataWithUser<T> {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);
 
   const cachedQuery = useCacheQuery(query);
 
-  const { includeUser, allowNull, disabled } = options ?? {};
+  const { includeUser, allowNull, disabled, preserve } = options ?? {};
 
   useEffect(() => {
     if (disabled) {
@@ -40,8 +55,10 @@ export function useCollection<T>(
       return;
     }
 
-    setData(null);
-    setLoading(true);
+    if (!preserve && data) {
+      setData(null);
+      setLoading(true);
+    }
 
     const populateUser = async (currentData: DataWithRef<T>): Promise<void> => {
       const dataWithUser = await Promise.all(

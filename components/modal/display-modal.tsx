@@ -1,5 +1,5 @@
 import { ProfilePicture } from '@components/ui/profile-picture';
-import { VerifiedName } from '@components/ui/verified-name';
+import { ProfileName } from '@components/ui/profile-name';
 import { InputThemeRadio } from '@components/input/input-theme-radio';
 import { Button } from '@components/ui/button';
 import { InputAccentRadio } from '@components/input/input-accent-radio';
@@ -33,19 +33,17 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
           These settings affect all the Twitter accounts on this browser.
         </p>
       </div>
-      <article className='mx-8 rounded-2xl border border-dark-border px-4 py-3'>
+      <article
+        className='hover-animation mx-8 rounded-2xl border 
+                   border-light-border px-4 py-3 dark:border-dark-border'
+      >
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <ProfilePicture
-            src='/assets/twitter-profile.jpg'
-            alt='Twitter'
-            username='#'
-            disableLink
-          />
+          <ProfilePicture src='/assets/twitter-profile.jpg' alt='Twitter' />
           <div>
             <div className='flex gap-1'>
-              <VerifiedName verified>
-                <p className='font-bold'>Twitter</p>
-              </VerifiedName>
+              <ProfileName verified>
+                <p>Twitter</p>
+              </ProfileName>
               <p className='text-light-secondary dark:text-dark-secondary'>
                 @twitter
               </p>

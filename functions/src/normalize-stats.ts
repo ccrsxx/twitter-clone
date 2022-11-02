@@ -1,4 +1,4 @@
-import { functions, firestore, regionalFunctions } from './utils';
+import { functions, firestore, regionalFunctions } from './lib/utils';
 import { tweetConverter, bookmarkConverter } from './types';
 import type { Tweet } from './types';
 

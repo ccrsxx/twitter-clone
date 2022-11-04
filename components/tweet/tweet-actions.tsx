@@ -155,7 +155,8 @@ export function TweetActions({
           } profile, the timeline of any accounts that follow ${
             isInAdminControl ? `@${username}` : 'you'
           }, and from Twitter search results.`}
-          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
+          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75 accent-tab
+                            focus-visible:bg-accent-red/90'
           mainBtnLabel='Delete'
           focusOnMainBtn
           action={handleRemove}
@@ -182,15 +183,16 @@ export function TweetActions({
             <Popover.Button
               as={Button}
               className={cn(
-                `group absolute top-2 right-2 p-2 
-                 hover:bg-accent-blue/10
-                 active:bg-accent-blue/20`,
+                `main-tab group group absolute top-2 right-2 p-2 
+                 hover:bg-accent-blue/10 focus-visible:bg-accent-blue/10
+                 focus-visible:!ring-accent-blue/80 active:bg-accent-blue/20`,
                 open && 'bg-accent-blue/10 [&>div>svg]:text-accent-blue'
               )}
             >
               <div className='group relative'>
                 <HeroIcon
-                  className='h-5 w-5 text-light-secondary group-hover:text-accent-blue dark:text-dark-secondary'
+                  className='h-5 w-5 text-light-secondary group-hover:text-accent-blue
+                             group-focus-visible:text-accent-blue dark:text-dark-secondary/80'
                   iconName='EllipsisHorizontalIcon'
                 />
                 {!open && <ToolTip tip='More' />}
@@ -207,7 +209,7 @@ export function TweetActions({
                 >
                   {(isAdmin || isOwner) && (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-b-none p-4 text-accent-red
+                      className='accent-tab flex w-full gap-3 rounded-md rounded-b-none p-4 text-accent-red
                                  hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(removeOpenModal)}
@@ -218,7 +220,7 @@ export function TweetActions({
                   )}
                   {isOwner ? (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
+                      className='accent-tab flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(pinOpenModal)}
                     >
@@ -236,7 +238,7 @@ export function TweetActions({
                     </Popover.Button>
                   ) : userIsFollowed ? (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
+                      className='accent-tab flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(
                         handleFollow(close, 'unfollow', userId, createdBy)
@@ -247,7 +249,7 @@ export function TweetActions({
                     </Popover.Button>
                   ) : (
                     <Popover.Button
-                      className='flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
+                      className='accent-tab flex w-full gap-3 rounded-md rounded-t-none p-4 hover:bg-main-sidebar-background'
                       as={Button}
                       onClick={preventBubbling(
                         handleFollow(close, 'follow', userId, createdBy)

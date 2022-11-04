@@ -61,14 +61,14 @@ export function SearchBar(): JSX.Element {
         />
         <Button
           className={cn(
-            'scale-50 bg-main-accent p-1 hover:brightness-90 disabled:!opacity-0',
+            'accent-tab scale-50 bg-main-accent p-1 opacity-0 transition hover:brightness-90 disabled:opacity-0',
             inputValue &&
               'focus:scale-100 focus:opacity-100 peer-focus:scale-100 peer-focus:opacity-100'
           )}
           onClick={clearInputValue(true)}
           disabled={!inputValue}
         >
-          <HeroIcon className='h-3 w-3 stroke-black' iconName='XMarkIcon' />
+          <HeroIcon className='h-3 w-3 stroke-white' iconName='XMarkIcon' />
         </Button>
       </label>
     </form>

@@ -21,9 +21,10 @@ export function ProfilePicture({
     <Link href={username ? `/user/${username}` : '#'}>
       <a
         className={cn(
-          'blur-picture self-start',
+          'blur-picture flex self-start',
           !username && 'pointer-events-none'
         )}
+        tabIndex={username ? 0 : -1}
       >
         <NextImage
           useSkeleton

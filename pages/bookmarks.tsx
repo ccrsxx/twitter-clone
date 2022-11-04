@@ -66,7 +66,8 @@ export default function Bookmarks(): JSX.Element {
         <ActionModal
           title='Clear all Bookmarks?'
           description='This can’t be undone and you’ll remove all Tweets you’ve added to your Bookmarks.'
-          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
+          mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75 accent-tab 
+                            focus-visible:bg-accent-red/90'
           mainBtnLabel='Clear'
           action={handleClear}
           closeModal={closeModal}
@@ -80,15 +81,16 @@ export default function Bookmarks(): JSX.Element {
           </p>
         </div>
         <Button
-          className='group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20
-                     dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
+          className='dark-bg-tab group relative p-2 hover:bg-light-primary/10
+                     active:bg-light-primary/20 dark:hover:bg-dark-primary/10 
+                     dark:active:bg-dark-primary/20'
           onClick={openModal}
         >
           <HeroIcon className='h-5 w-5' iconName='ArchiveBoxXMarkIcon' />
           <ToolTip tip='Clear bookmarks' />
         </Button>
       </MainHeader>
-      <section>
+      <section className='mt-0.5'>
         {bookmarksRefLoading || tweetLoading ? (
           <Loading className='mt-5' />
         ) : !bookmarksRef ? (

@@ -111,7 +111,7 @@ export function ImageModal({
                 onClick={preventBubbling()}
               />
               <a
-                className='trim-alt smooth-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
+                className='trim-alt accent-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
                            rounded-md bg-main-background/40 px-2 py-1 text-sm text-light-primary/80 opacity-0
                            transition hover:bg-main-accent hover:text-white focus-visible:translate-y-0
                            focus-visible:bg-main-accent focus-visible:text-white focus-visible:opacity-100

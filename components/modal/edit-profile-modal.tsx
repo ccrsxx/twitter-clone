@@ -58,8 +58,9 @@ export function EditProfileModal({
       >
         <div className='ml-auto flex items-center gap-3'>
           <Button
-            className='group relative p-2 hover:bg-light-primary/10 active:bg-light-primary/20
-                       dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/10'
+            className='dark-bg-tab group relative p-2 hover:bg-light-primary/10
+                       active:bg-light-primary/20 dark:hover:bg-dark-primary/10 
+                       dark:active:bg-dark-primary/10'
             onClick={resetUserEditData}
             disabled={loading}
           >
@@ -67,9 +68,10 @@ export function EditProfileModal({
             <ToolTip tip='Reset' />
           </Button>
           <Button
-            className='bg-light-primary py-1 px-4 font-bold text-white enabled:hover:bg-light-primary/90 
-                       enabled:active:bg-light-primary/80 disabled:brightness-75 dark:bg-light-border
-                       dark:text-light-primary dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
+            className='bg-light-primary py-1 px-4 font-bold text-white focus-visible:bg-light-primary/90 
+                       enabled:hover:bg-light-primary/90 enabled:active:bg-light-primary/80 disabled:brightness-75
+                       dark:bg-light-border dark:text-light-primary dark:focus-visible:bg-light-border/90
+                       dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
             onClick={updateData}
             disabled={!!inputNameError}
             loading={loading}
@@ -96,17 +98,19 @@ export function EditProfileModal({
             <NextImage
               useSkeleton
               className='relative h-full'
-              imgClassName='object-cover transition group-hover:brightness-75 group-hover:duration-200'
+              imgClassName='object-cover transition group-hover:brightness-75 duration-200
+                            group-focus-within:brightness-75'
               src={coverPhotoURL}
               alt={name}
               layout='fill'
             />
           ) : (
-            <div className='h-full bg-dark-line-reply' />
+            <div className='h-full bg-light-line-reply dark:bg-dark-line-reply' />
           )}
           <div className='absolute left-1/2 top-1/2 flex -translate-y-1/2 -translate-x-1/2 gap-4'>
             <Button
-              className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
+              className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
+                         focus-visible:bg-image-preview-hover/50'
               onClick={handleClick('cover')}
             >
               <HeroIcon
@@ -117,7 +121,8 @@ export function EditProfileModal({
             </Button>
             {coverPhotoURL && (
               <Button
-                className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
+                className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
+                           focus-visible:bg-image-preview-hover/50'
                 onClick={removeCoverImage}
               >
                 <HeroIcon
@@ -142,7 +147,8 @@ export function EditProfileModal({
               <NextImage
                 useSkeleton
                 className='bg-main-background p-1 [&>span]:rounded-full'
-                imgClassName='rounded-full transition group-hover:brightness-75 group-hover:duration-200'
+                imgClassName='rounded-full transition group-hover:brightness-75 duration-200
+                              group-focus-within:brightness-75'
                 src={photoURL}
                 alt={name}
                 width={128}
@@ -150,7 +156,8 @@ export function EditProfileModal({
               />
               <Button
                 className='group-inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
-                           bg-light-primary/60 p-2 hover:bg-image-preview-hover/50'
+                           bg-light-primary/60 p-2 hover:bg-image-preview-hover/50 
+                           focus-visible:bg-image-preview-hover/50'
                 onClick={handleClick('profile')}
               >
                 <HeroIcon
@@ -163,7 +170,7 @@ export function EditProfileModal({
           </div>
           {children}
           <Button
-            className='-mx-4 mb-4 flex cursor-not-allowed items-center justify-between rounded-none
+            className='accent-tab -mx-4 mb-4 flex cursor-not-allowed items-center justify-between rounded-none
                        py-2 hover:bg-light-primary/10 active:bg-light-primary/20 disabled:brightness-100
                        dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
           >

@@ -31,7 +31,7 @@ export function TweetOption({
   return (
     <button
       className={cn(
-        `group flex items-center gap-1 p-0 transition-none
+        `group flex items-center gap-1.5 p-0 transition-none
          disabled:cursor-not-allowed inner:transition inner:duration-200`,
         disabled && 'cursor-not-allowed',
         className
@@ -40,9 +40,7 @@ export function TweetOption({
     >
       <i
         className={cn(
-          `relative rounded-full p-2 not-italic
-           group-focus-visible:ring-2
-           group-focus-visible:ring-white`,
+          'relative rounded-full p-2 not-italic group-focus-visible:ring-2',
           iconClassName
         )}
       >

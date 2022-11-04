@@ -38,26 +38,30 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
       {loading ? (
         <Loading />
       ) : trends ? (
-        <motion.div className='inner:px-4 inner:py-3' {...variants}>
+        <motion.div
+          className={cn('inner:px-4 inner:py-3', inTrendsPage && 'mt-0.5')}
+          {...variants}
+        >
           {!inTrendsPage && (
             <h2 className='text-xl font-extrabold'>Trends for you</h2>
           )}
           {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
               <a
-                className='hover-animation smooth-tab hover-card relative 
+                className='hover-animation accent-tab hover-card relative 
                            flex cursor-not-allowed flex-col gap-0.5'
                 onClick={preventBubbling()}
               >
                 <div className='absolute right-2 top-2'>
                   <Button
                     className='hover-animation group relative cursor-not-allowed p-2
-                               hover:bg-accent-blue/10 active:bg-accent-blue/20'
+                               hover:bg-accent-blue/10 focus-visible:bg-accent-blue/20 
+                               focus-visible:!ring-accent-blue/80'
                     onClick={preventBubbling()}
                   >
                     <HeroIcon
                       className='h-5 w-5 text-light-secondary group-hover:text-accent-blue 
-                                 dark:text-dark-secondary'
+                                 group-focus-visible:text-accent-blue dark:text-dark-secondary'
                       iconName='EllipsisHorizontalIcon'
                     />
                     <ToolTip tip='More' />
@@ -79,8 +83,8 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           {!inTrendsPage && (
             <Link href='/trends'>
               <a
-                className='custom-button smooth-tab hover-card block w-full rounded-2xl
-                         rounded-t-none text-center text-main-accent'
+                className='custom-button accent-tab hover-card block w-full rounded-2xl
+                           rounded-t-none text-center text-main-accent'
               >
                 Show more
               </a>

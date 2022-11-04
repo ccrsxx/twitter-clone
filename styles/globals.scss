@@ -37,20 +37,12 @@
 }
 
 @layer components {
-  .trim-alt {
-    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
-  }
-
-  .custom-button {
-    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:opacity-50;
-  }
-
   .hover-animation {
     @apply transition-colors duration-200;
   }
 
-  .hover-card {
-    @apply hover:bg-black/[0.03] dark:hover:bg-white/[0.03];
+  .custom-button {
+    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .custom-underline {
@@ -58,12 +50,35 @@
            hover:decoration-inherit focus-visible:decoration-inherit;
   }
 
-  .smooth-tab {
-    @apply outline-none transition focus-visible:ring-2 focus-visible:ring-white;
+  .main-tab {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-[#878a8c] focus-visible:transition-shadow 
+    focus-visible:duration-200 dark:focus-visible:ring-white;
+  }
+
+  .accent-tab {
+    // prettier-ignore
+    @apply main-tab #{'focus-visible:!ring-main-accent/80'};
+  }
+
+  .accent-bg-tab {
+    @apply focus-visible:bg-main-accent/10;
+  }
+
+  .dark-bg-tab {
+    @apply focus-visible:bg-light-primary/10 dark:focus-visible:bg-dark-primary/10;
   }
 
   .blur-picture {
-    @apply hover-animation smooth-tab rounded-full transition hover:brightness-75 active:brightness-100;
+    @apply hover-animation accent-tab rounded-full transition hover:brightness-75 active:brightness-100;
+  }
+
+  .trim-alt {
+    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
+  }
+
+  .hover-card {
+    @apply hover:bg-black/[0.03] focus-visible:bg-black/[0.03] dark:hover:bg-white/[0.03]
+           dark:focus-visible:bg-white/[0.03];
   }
 
   .menu-container {

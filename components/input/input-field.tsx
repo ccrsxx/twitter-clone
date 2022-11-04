@@ -37,7 +37,7 @@ export function InputField({
     <div className='flex flex-col gap-1'>
       <div
         className={cn(
-          'relative rounded ring-1 transition duration-200',
+          'relative rounded ring-1 transition-shadow duration-200',
           errorMessage
             ? 'ring-accent-red'
             : `ring-light-line-reply focus-within:ring-2 

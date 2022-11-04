@@ -26,6 +26,7 @@ export function ProfileName({
           username ? 'custom-underline' : 'pointer-events-none',
           className
         )}
+        tabIndex={username ? 0 : -1}
       >
         {children}
         {verified && (

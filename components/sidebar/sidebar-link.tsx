@@ -31,7 +31,8 @@ export function SidebarLink({
         <div
           className={cn(
             `custom-button flex gap-4 self-start pr-5 text-xl transition duration-200 group-hover:bg-light-primary/10
-             group-focus-visible:ring-2 group-focus-visible:ring-white dark:group-hover:bg-dark-primary/10`,
+             group-focus-visible:ring-2 group-focus-visible:ring-[#878a8c] dark:group-hover:bg-dark-primary/10
+             dark:group-focus-visible:ring-white`,
             isActive && 'font-bold'
           )}
         >

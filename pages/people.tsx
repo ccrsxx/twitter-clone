@@ -40,7 +40,7 @@ export default function People(): JSX.Element {
         ) : !data ? (
           <Error message='Something went wrong' />
         ) : (
-          <motion.div {...variants}>
+          <motion.div className='mt-0.5' {...variants}>
             {data?.map((userData) => (
               <UserCard {...userData} key={userData.id} follow />
             ))}

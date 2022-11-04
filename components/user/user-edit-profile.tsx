@@ -250,7 +250,7 @@ export function UserEditProfile(): JSX.Element {
         </EditProfileModal>
       </Modal>
       <Button
-        className='self-start border border-light-line-reply px-4 py-1.5 font-bold
+        className='dark-bg-tab self-start border border-light-line-reply px-4 py-1.5 font-bold
                    hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary
                    dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
         onClick={openModal}

@@ -21,7 +21,7 @@ export default function Bookmarks(): JSX.Element {
       <SEO title='Trends / Twitter' />
       <MainHeader useActionButton title='Trends' action={back}>
         <Button
-          className='group relative ml-auto cursor-not-allowed p-2 hover:bg-light-primary/10 
+          className='dark-bg-tab group relative ml-auto cursor-not-allowed p-2 hover:bg-light-primary/10
                      active:bg-light-primary/20 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
         >
           <HeroIcon className='h-5 w-5' iconName='Cog8ToothIcon' />

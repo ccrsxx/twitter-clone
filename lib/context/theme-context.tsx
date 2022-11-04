@@ -66,6 +66,7 @@ export function ThemeContextProvider({
         '--main-search-background',
         `var(--${theme}-search-background)`
       );
+
       root.style.setProperty(
         '--main-sidebar-background',
         `var(--${theme}-sidebar-background)`

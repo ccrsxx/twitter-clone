@@ -23,7 +23,7 @@ export function UserProfile({ profileData }: UserProfileProps): JSX.Element {
         />
       </Modal>
       <Button
-        className='absolute -mt-3 aspect-square w-[144px] -translate-y-1/2 overflow-hidden
+        className='accent-tab absolute -mt-3 aspect-square w-[144px] -translate-y-1/2 overflow-hidden
                    p-0 disabled:cursor-auto disabled:opacity-100 [&:hover>figure>span]:brightness-75'
         onClick={openModal}
         disabled={!profileData}

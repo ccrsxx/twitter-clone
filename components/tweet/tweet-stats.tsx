@@ -91,8 +91,9 @@ export function TweetStats({
         )}
       >
         <TweetOption
-          className='hover:text-accent-blue'
-          iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
+          className='hover:text-accent-blue focus-visible:text-accent-blue'
+          iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
+                         group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'
           tip='Reply'
           move={replyMove}
           stats={currentReplies}
@@ -103,10 +104,11 @@ export function TweetStats({
         />
         <TweetOption
           className={cn(
-            'hover:text-accent-green',
+            'hover:text-accent-green focus-visible:text-accent-green',
             tweetIsRetweeted && 'text-accent-green [&>i>svg]:[stroke-width:2px]'
           )}
-          iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20'
+          iconClassName='group-hover:bg-accent-green/10 group-active:bg-accent-green/20
+                         group-focus-visible:bg-accent-green/10 group-focus-visible:ring-accent-green/80'
           tip={tweetIsRetweeted ? 'Undo Retweet' : 'Retweet'}
           move={tweetMove}
           stats={currentTweets}
@@ -120,10 +122,11 @@ export function TweetStats({
         />
         <TweetOption
           className={cn(
-            'hover:text-accent-pink',
+            'hover:text-accent-pink focus-visible:text-accent-pink',
             tweetIsLiked && 'text-accent-pink [&>i>svg]:fill-accent-pink'
           )}
-          iconClassName='group-hover:bg-accent-pink/10 group-active:bg-accent-pink/20'
+          iconClassName='group-hover:bg-accent-pink/10 group-active:bg-accent-pink/20
+                         group-focus-visible:bg-accent-pink/10 group-focus-visible:ring-accent-pink/80'
           tip={tweetIsLiked ? 'Unlike' : 'Like'}
           move={likeMove}
           stats={currentLikes}
@@ -138,8 +141,9 @@ export function TweetStats({
         <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
         {isOwner && (
           <TweetOption
-            className='hover:text-accent-blue'
-            iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20'
+            className='hover:text-accent-blue focus-visible:text-accent-blue'
+            iconClassName='group-hover:bg-accent-blue/10 group-active:bg-accent-blue/20 
+                           group-focus-visible:bg-accent-blue/10 group-focus-visible:ring-accent-blue/80'
             tip='Analytics'
             iconName='ChartPieIcon'
             disabled

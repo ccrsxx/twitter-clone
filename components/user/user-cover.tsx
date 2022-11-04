@@ -19,7 +19,7 @@ export function UserCover({ coverData }: UserCoverProps): JSX.Element {
       </Modal>
       {coverData ? (
         <Button
-          className='w relative h-full w-full rounded-none p-0 hover:brightness-75'
+          className='accent-tab relative h-full w-full rounded-none p-0 hover:brightness-75'
           onClick={openModal}
         >
           <NextImage

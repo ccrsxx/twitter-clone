@@ -79,8 +79,9 @@ export function Sidebar(): JSX.Element {
           <h1 className='flex'>
             <Link href='/home'>
               <a
-                className='custom-button smooth-tab focus-visible:ring-main-accent-focus relative text-accent-blue
-                           transition hover:bg-light-primary/10 dark:text-twitter-icon dark:hover:bg-dark-primary/10'
+                className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
+                           focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
+                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'
               >
                 <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
               </a>
@@ -104,7 +105,7 @@ export function Sidebar(): JSX.Element {
             <MoreSettings />
           </nav>
           <Button
-            className='w-11/12 bg-main-accent text-lg font-bold text-white
+            className='accent-tab w-11/12 bg-main-accent text-lg font-bold text-white
                        outline-none hover:bg-main-accent/90 active:bg-main-accent/75'
             onClick={openModal}
           >

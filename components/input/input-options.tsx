@@ -91,7 +91,7 @@ export function InputOptions({
         />
         {filteredOptions.map(({ name, iconName, disabled }, index) => (
           <Button
-            className='focus-visible:ring-main-accent-focus group relative rounded-full p-2 
+            className='accent-tab accent-bg-tab group relative rounded-full p-2 
                        hover:bg-main-accent/10 active:bg-main-accent/20'
             onClick={index === 0 ? onClick : undefined}
             disabled={disabled}
@@ -130,7 +130,7 @@ export function InputOptions({
         </motion.div>
         <Button
           type='submit'
-          className='bg-main-accent px-4 py-1.5 font-bold text-white
+          className='accent-tab bg-main-accent px-4 py-1.5 font-bold text-white
                      enabled:hover:bg-main-accent/90
                      enabled:active:bg-main-accent/75'
           disabled={!isValidTweet}

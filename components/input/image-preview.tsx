@@ -109,7 +109,7 @@ export function ImagePreview({
           <motion.button
             type='button'
             className={cn(
-              'smooth-tab relative transition-none transition-[box-shadow]',
+              'accent-tab relative transition-shadow',
               isTweet
                 ? postImageBorderRadius[previewCount][index]
                 : 'rounded-2xl',

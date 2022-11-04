@@ -25,8 +25,9 @@ export function UserShare({ username }: UserShareProps): JSX.Element {
       {({ open, close }): JSX.Element => (
         <>
           <Popover.Button
+            as={Button}
             className={cn(
-              `custom-button smooth-tab group relative border border-light-line-reply p-2
+              `dark-bg-tab group relative border border-light-line-reply p-2
                hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary
                dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
               open && 'bg-light-primary/10 dark:bg-dark-primary/10'

@@ -46,7 +46,7 @@ export function ProfileTooltip({
       <div
         className='menu-container invisible absolute left-1/2 w-72 translate-y-2 -translate-x-1/2 rounded-2xl opacity-0 
                    [transition:visibility_0ms_ease_400ms,opacity_200ms_ease_200ms] group-hover:visible group-hover:opacity-100 
-                   group-hover:delay-500 group-focus-visible:visible group-focus-visible:opacity-100 group-focus-visible:delay-200'
+                   group-hover:delay-500'
       >
         <div className='flex flex-col gap-3 p-4'>
           <div className='flex flex-col gap-2'>
@@ -65,7 +65,10 @@ export function ProfileTooltip({
               </ProfileName>
               <div className='flex items-center gap-1 text-light-secondary dark:text-dark-secondary'>
                 <Link href={userLink}>
-                  <a className='text-light-secondary dark:text-dark-secondary'>
+                  <a
+                    className='text-light-secondary dark:text-dark-secondary'
+                    tabIndex={-1}
+                  >
                     @{username}
                   </a>
                 </Link>
@@ -79,7 +82,7 @@ export function ProfileTooltip({
               <Link href={`${userLink}/${id}`} key={id}>
                 <a
                   className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
-                             hover:border-b-light-primary focus-visible:border-b-light-primary 
+                             outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
                              dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'
                 >
                   <p className='font-bold'>{stat}</p>

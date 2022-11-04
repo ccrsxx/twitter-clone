@@ -41,9 +41,8 @@ export function SidebarProfile(): JSX.Element {
           <>
             <Menu.Button
               className={cn(
-                `custom-button smooth-tab flex w-full items-center justify-between hover:bg-light-primary/10
-                 focus-visible:bg-light-primary/10 active:bg-light-primary/20 dark:hover:bg-dark-primary/10
-                 dark:focus-visible:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
+                `custom-button main-tab dark-bg-tab flex w-full items-center justify-between hover:bg-light-primary/10
+                 active:bg-light-primary/20 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
                 open && 'bg-light-primary/10 dark:bg-dark-primary/10'
               )}
             >
@@ -65,7 +64,7 @@ export function SidebarProfile(): JSX.Element {
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='menu-container absolute left-0 right-0 -top-36 w-full font-medium'
+                  className='menu-container absolute left-0 right-0 -top-36 w-full'
                   as={motion.div}
                   {...variants}
                   static

@@ -16,7 +16,7 @@ export function UserCard(user: UserCardProps): JSX.Element {
   return (
     <Link href={`/user/${username}`}>
       <a
-        className='hover-animation grid grid-cols-[auto,1fr] gap-3 px-4 py-3
+        className='accent-tab hover-animation grid grid-cols-[auto,1fr] gap-3 px-4 py-3
                    hover:bg-light-primary/5 dark:hover:bg-dark-primary/5'
       >
         <ProfileTooltip {...user}>

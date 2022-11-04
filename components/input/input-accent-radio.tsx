@@ -31,8 +31,8 @@ export function InputAccentRadio({ type }: InputAccentRadioProps): JSX.Element {
   return (
     <label
       className={cn(
-        `flex h-10 w-10 cursor-pointer items-center justify-center rounded-full
-         transition duration-200 hover:ring`,
+        `hover-animation flex h-10 w-10 cursor-pointer items-center justify-center
+         rounded-full hover:ring`,
         bgColor
       )}
       htmlFor={type}

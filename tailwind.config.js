@@ -1,9 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
   darkMode: 'class',
   content: ['./pages/**/*.tsx', './components/**/*.tsx'],
   theme: {
+    screens: {
+      xs: '500px',
+      ...defaultTheme.screens
+    },
     extend: {
       fontFamily: {
         'twitter-chirp': ['TwitterChirp', 'sans-serif'],

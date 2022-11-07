@@ -7,9 +7,10 @@ import { delayScroll } from '@lib/utils';
 import { Modal } from '@components/modal/modal';
 import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
-import { ProfilePicture } from '@components/ui/profile-picture';
-import { ProfileTooltip } from '@components/ui/profile-tooltip';
-import { ProfileName } from '@components/ui/profile-name';
+import { UserAvatar } from '@components/user/user-avatar';
+import { UserTooltip } from '@components/user/user-tooltip';
+import { UserName } from '@components/user/user-name';
+import { UserUsername } from '@components/user/user-username';
 import { TweetActions } from './tweet-actions';
 import { TweetStatus } from './tweet-status';
 import { TweetStats } from './tweet-stats';
@@ -59,7 +60,6 @@ export function Tweet(tweet: TweetProps): JSX.Element {
   const tweetLink = `/tweet/${tweetId}`;
 
   const userId = user?.id as string;
-  const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
 
@@ -93,7 +93,8 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       <Link href={tweetLink} scroll={!reply}>
         <a
           className={cn(
-            'accent-tab hover-card relative flex flex-col gap-y-4 px-4 py-3 outline-none duration-200',
+            `accent-tab hover-card relative mx-0.5 mr-1 flex flex-col 
+             gap-y-4 px-4 py-3 outline-none duration-200 md:mx-0 md:mr-0`,
             parentTweet
               ? 'mt-0.5 pt-2.5 pb-0'
               : 'border-b border-light-border dark:border-dark-border'
@@ -119,9 +120,9 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               )}
             </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>
-              <ProfileTooltip {...tweetUserData}>
-                <ProfilePicture src={photoURL} alt={name} username={username} />
-              </ProfileTooltip>
+              <UserTooltip modal={modal} {...tweetUserData}>
+                <UserAvatar src={photoURL} alt={name} username={username} />
+              </UserTooltip>
               {parentTweet && (
                 <i className='hover-animation h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
               )}
@@ -129,23 +130,17 @@ export function Tweet(tweet: TweetProps): JSX.Element {
             <div className='flex min-w-0 flex-col'>
               <div className='text-light-secondary dark:text-dark-secondary'>
                 <div className='flex gap-1'>
-                  <div className='flex items-center gap-1 text-light-primary dark:text-dark-primary'>
-                    <ProfileTooltip {...tweetUserData}>
-                      <ProfileName username={username} verified={verified}>
-                        <p>{name}</p>
-                      </ProfileName>
-                    </ProfileTooltip>
-                  </div>
-                  <ProfileTooltip {...tweetUserData}>
-                    <Link href={userLink}>
-                      <a
-                        className='text-light-secondary outline-none dark:text-dark-secondary'
-                        tabIndex={-1}
-                      >
-                        @{username}
-                      </a>
-                    </Link>
-                  </ProfileTooltip>
+                  <UserTooltip modal={modal} {...tweetUserData}>
+                    <UserName
+                      name={name}
+                      username={username}
+                      verified={verified}
+                      className='text-light-primary dark:text-dark-primary'
+                    />
+                  </UserTooltip>
+                  <UserTooltip modal={modal} {...tweetUserData}>
+                    <UserUsername username={username} />
+                  </UserTooltip>
                   <TweetDate tweetLink={tweetLink} createdAt={createdAt} />
                 </div>
                 {!modal && (

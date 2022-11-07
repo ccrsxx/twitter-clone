@@ -1,12 +1,12 @@
 import { useAuth } from '@lib/context/auth-context';
 
-type ProfileFollowingProps = {
+type UserFollowingProps = {
   userTargetId: string;
 };
 
-export function ProfileFollowing({
+export function UserFollowing({
   userTargetId
-}: ProfileFollowingProps): JSX.Element | null {
+}: UserFollowingProps): JSX.Element | null {
   const { user } = useAuth();
 
   const isOwner =

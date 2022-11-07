@@ -201,8 +201,8 @@ export function TweetActions({
             <AnimatePresence>
               {open && (
                 <Popover.Panel
-                  className='menu-container group absolute top-[50px] right-2 w-full max-w-xs
-                             text-light-primary dark:text-dark-primary'
+                  className='menu-container group absolute top-[50px] right-2 w-max text-light-primary 
+                             dark:text-dark-primary'
                   as={motion.div}
                   {...variants}
                   static

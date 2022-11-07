@@ -5,7 +5,7 @@ import { useDocument } from '@lib/hooks/useDocument';
 import { useUser } from '@lib/context/user-context';
 import { isPlural } from '@lib/utils';
 import { userStatsCollection } from '@lib/firebase/collections';
-import { ProfileName } from '@components/ui/profile-name';
+import { UserName } from './user-name';
 import type { Variants } from 'framer-motion';
 
 export const variants: Variants = {
@@ -59,17 +59,17 @@ export function UserHeader(): JSX.Element {
         </motion.div>
       ) : !user ? (
         <motion.h2 className='text-xl font-bold' {...variants} key='not-found'>
-          {isInFollowPage ? `@${id as string}` : 'Profile'}
+          {isInFollowPage ? `@${id as string}` : 'User'}
         </motion.h2>
       ) : (
         <motion.div className='-mb-1' {...variants} key='found'>
-          <ProfileName
-            className='-mt-1'
+          <UserName
+            tag='h2'
+            name={user.name}
+            className='-mt-1 text-xl'
             iconClassName='w-6 h-6'
             verified={user.verified}
-          >
-            <h2 className='text-xl'>{user.name}</h2>
-          </ProfileName>
+          />
           <p className='text-xs text-light-secondary dark:text-dark-secondary'>
             {isInFollowPage
               ? `@${user.username}`

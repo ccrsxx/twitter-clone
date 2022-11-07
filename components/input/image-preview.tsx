@@ -83,13 +83,15 @@ export function ImagePreview({
     <div
       className={cn(
         'grid grid-cols-2 grid-rows-2 rounded-2xl',
-        viewTweet ? 'h-[305px]' : 'h-[272px]',
+        viewTweet
+          ? 'h-[51vw] xs:h-[42vw] md:h-[305px]'
+          : 'h-[42vw] xs:h-[37vw] md:h-[271px]',
         isTweet ? 'mt-2 gap-0.5' : 'gap-3'
       )}
     >
       <Modal
         modalClassName={cn(
-          'flex justify-between w-full items-center',
+          'flex justify-center w-full items-center relative',
           isTweet && 'h-full'
         )}
         open={open}

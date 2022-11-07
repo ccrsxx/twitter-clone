@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { query, where, orderBy, limit } from 'firebase/firestore';
+import cn from 'clsx';
 import { useCollection } from '@lib/hooks/useCollection';
 import { getHomeTweetsCount } from '@lib/firebase/utils';
 import { tweetsCollection } from '@lib/firebase/collections';
@@ -66,12 +67,15 @@ export default function Home(): JSX.Element {
   return (
     <MainContainer>
       <SEO title='Home / Twitter' />
-      <MainHeader className='flex items-center justify-between'>
-        <h2 className='text-xl font-bold'>Home</h2>
+      <MainHeader
+        useMobileSidebar
+        title='Home'
+        className='flex items-center justify-between'
+      >
         <UpdateUsername />
       </MainHeader>
       <Input />
-      <section>
+      <section className='mt-0.5 xs:mt-0'>
         {loading ? (
           <Loading className='mt-5' />
         ) : !data ? (
@@ -84,7 +88,10 @@ export default function Home(): JSX.Element {
               ))}
             </AnimatePresence>
             <motion.div
-              className={isLoadMoreHidden ? 'hidden' : 'block'}
+              className={cn(
+                'mb-20 xs:mb-0',
+                isLoadMoreHidden ? 'hidden' : 'block'
+              )}
               viewport={{ margin: '0px 0px 1500px' }}
               onViewportEnter={makeItInView}
               onViewportLeave={makeItNotInView}

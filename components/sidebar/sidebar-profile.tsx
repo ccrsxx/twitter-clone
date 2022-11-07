@@ -8,8 +8,9 @@ import { ActionModal } from '@components/modal/action-modal';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { CustomIcon } from '@components/ui/custom-icon';
-import { ProfilePicture } from '@components/ui/profile-picture';
-import { ProfileName } from '@components/ui/profile-name';
+import { UserAvatar } from '@components/user/user-avatar';
+import { UserName } from '@components/user/user-name';
+import { UserUsername } from '@components/user/user-username';
 import { variants } from './more-settings';
 import type { User } from '@lib/types/user';
 
@@ -41,49 +42,43 @@ export function SidebarProfile(): JSX.Element {
           <>
             <Menu.Button
               className={cn(
-                `custom-button main-tab dark-bg-tab flex w-full items-center justify-between hover:bg-light-primary/10
-                 active:bg-light-primary/20 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
+                `custom-button main-tab dark-bg-tab hidden w-full items-center justify-between 
+                 hover:bg-light-primary/10 active:bg-light-primary/20 dark:hover:bg-dark-primary/10
+                 dark:active:bg-dark-primary/20 xs:flex`,
                 open && 'bg-light-primary/10 dark:bg-dark-primary/10'
               )}
             >
               <div className='flex gap-3'>
-                <ProfilePicture src={photoURL} alt={name} size={40} />
-                <div className='text-start leading-5'>
-                  <div className='flex items-center gap-1'>
-                    <ProfileName verified={verified}>
-                      <p className='text-start'>{name}</p>
-                    </ProfileName>
-                  </div>
-                  <p className='text-light-secondary dark:text-dark-secondary'>
-                    @{username}
-                  </p>
+                <UserAvatar src={photoURL} alt={name} size={40} />
+                <div className='hidden text-start leading-5 xl:block'>
+                  <UserName name={name} className='start' verified={verified} />
+                  <UserUsername username={username} disableLink />
                 </div>
               </div>
-              <HeroIcon iconName='EllipsisHorizontalIcon' />
+              <HeroIcon
+                className='hidden h-6 w-6 xl:block'
+                iconName='EllipsisHorizontalIcon'
+              />
             </Menu.Button>
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='menu-container absolute left-0 right-0 -top-36 w-full'
+                  className='menu-container absolute left-0 right-0 -top-36 w-max xl:w-full'
                   as={motion.div}
                   {...variants}
                   static
                 >
                   <Menu.Item
-                    className='flex items-center justify-between gap-2 border-b 
+                    className='flex items-center justify-between gap-4 border-b 
                                border-light-border px-4 py-3 dark:border-dark-border'
                     as='div'
                     disabled
                   >
                     <div className='flex items-center gap-3'>
-                      <ProfilePicture src={photoURL} alt={name} />
+                      <UserAvatar src={photoURL} alt={name} />
                       <div>
-                        <ProfileName verified={verified}>
-                          <p>{name}</p>
-                        </ProfileName>
-                        <p className='text-light-secondary dark:text-dark-secondary'>
-                          @{username}
-                        </p>
+                        <UserName name={name} verified={verified} />
+                        <UserUsername username={username} disableLink />
                       </div>
                     </div>
                     <i>
@@ -108,9 +103,10 @@ export function SidebarProfile(): JSX.Element {
                     )}
                   </Menu.Item>
                   <i
-                    className='absolute -bottom-[10px] left-1/2 -translate-x-1/2 rotate-180
+                    className='absolute -bottom-[10px] left-2 translate-x-1/2 rotate-180
                                [filter:drop-shadow(#cfd9de_1px_-1px_1px)] 
-                               dark:[filter:drop-shadow(#333639_1px_-1px_1px)]'
+                               dark:[filter:drop-shadow(#333639_1px_-1px_1px)]
+                               xl:left-1/2 xl:-translate-x-1/2'
                   >
                     <CustomIcon
                       className='h-4 w-6 fill-main-background'

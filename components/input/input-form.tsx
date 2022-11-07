@@ -82,6 +82,23 @@ export function InputForm({
     else if (ctrlKey && key === 'Enter' && isValidTweet) void sendTweet();
   };
 
+  const handleShowHideNav = (blur?: boolean) => (): void => {
+    const sidebar = document.getElementById('sidebar') as HTMLElement;
+
+    if (blur) {
+      sidebar.style.display = '';
+      return;
+    }
+
+    if (window.innerWidth < 500)
+      setTimeout(() => (sidebar.style.display = 'none'), 200);
+  };
+
+  const handleFormFocus = (): void => {
+    handleShowHideNav()();
+    handleFocus();
+  };
+
   const handleClose = (): void => {
     discardTweet();
     closeModal();
@@ -121,15 +138,16 @@ export function InputForm({
         <div className='flex items-center gap-3'>
           <TextArea
             id={formId}
-            className='w-full resize-none bg-transparent text-xl outline-none
+            className='w-full min-w-0 resize-none bg-transparent text-xl outline-none
                        placeholder:text-light-secondary dark:placeholder:text-dark-secondary'
             value={inputValue}
             placeholder={
               reply || replyModal ? 'Tweet your reply' : "What's happening?"
             }
+            onBlur={handleShowHideNav(true)}
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
             maxRows={isUploadingImages ? 5 : 15}
-            onFocus={handleFocus}
+            onFocus={handleFormFocus}
             onPaste={handleImageUpload}
             onKeyUp={handleKeyboardShortcut}
             onChange={handleChange}

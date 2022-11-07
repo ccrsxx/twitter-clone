@@ -6,9 +6,10 @@ import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { TweetReplyModal } from '@components/modal/tweet-reply-modal';
 import { ImagePreview } from '@components/input/image-preview';
-import { ProfilePicture } from '@components/ui/profile-picture';
-import { ProfileTooltip } from '@components/ui/profile-tooltip';
-import { ProfileName } from '@components/ui/profile-name';
+import { UserAvatar } from '@components/user/user-avatar';
+import { UserTooltip } from '@components/user/user-tooltip';
+import { UserName } from '@components/user/user-name';
+import { UserUsername } from '@components/user/user-username';
 import { variants } from '@components/tweet/tweet';
 import { TweetActions } from '@components/tweet/tweet-actions';
 import { TweetStats } from '@components/tweet/tweet-stats';
@@ -47,7 +48,6 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
   const tweetLink = `/tweet/${tweetId}`;
 
   const userId = user?.id as string;
-  const userLink = `/user/${username}`;
 
   const isOwner = userId === createdBy;
 
@@ -82,28 +82,22 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <ProfileTooltip {...tweetUserData}>
-            <ProfilePicture src={photoURL} alt={name} username={username} />
-          </ProfileTooltip>
+          <UserTooltip {...tweetUserData}>
+            <UserAvatar src={photoURL} alt={name} username={username} />
+          </UserTooltip>
           <div className='flex min-w-0 flex-col gap-1'>
             <div className='flex flex-col'>
-              <div className='-mb-1 flex items-center gap-1'>
-                <ProfileTooltip {...tweetUserData}>
-                  <ProfileName username={username} verified={verified}>
-                    <p>{name}</p>
-                  </ProfileName>
-                </ProfileTooltip>
-              </div>
-              <ProfileTooltip {...tweetUserData}>
-                <Link href={userLink}>
-                  <a
-                    className='self-start text-light-secondary outline-none dark:text-dark-secondary'
-                    tabIndex={-1}
-                  >
-                    @{username}
-                  </a>
-                </Link>
-              </ProfileTooltip>
+              <UserTooltip {...tweetUserData}>
+                <UserName
+                  className='-mb-1'
+                  name={name}
+                  username={username}
+                  verified={verified}
+                />
+              </UserTooltip>
+              <UserTooltip {...tweetUserData}>
+                <UserUsername username={username} />
+              </UserTooltip>
             </div>
             <TweetActions
               viewTweet

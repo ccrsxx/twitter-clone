@@ -1,8 +1,8 @@
 import { formatDate } from '@lib/date';
 import { HeroIcon } from '@components/ui/hero-icon';
-import { ProfileName } from '@components/ui/profile-name';
-import { ProfileFollowing } from '@components/ui/profile-following';
 import { ToolTip } from '@components/ui/tooltip';
+import { UserName } from './user-name';
+import { UserFollowing } from './user-following';
 import { UserFollowStats } from './user-follow-stats';
 import type { IconName } from '@components/ui/hero-icon';
 import type { User } from '@lib/types/user';
@@ -44,21 +44,20 @@ export function UserDetails({
   return (
     <>
       <div>
-        <ProfileName
-          className='-mb-1'
+        <UserName
+          className='-mb-1 text-xl'
+          name={name}
           iconClassName='w-6 h-6'
           verified={verified}
-        >
-          <p className='text-xl'>{name}</p>
-        </ProfileName>
+        />
         <div className='flex items-center gap-1 text-light-secondary dark:text-dark-secondary'>
           <p>@{username}</p>
-          <ProfileFollowing userTargetId={id} />
+          <UserFollowing userTargetId={id} />
         </div>
       </div>
       <div className='flex flex-col gap-2'>
         {bio && <p className='whitespace-pre-line break-words'>{bio}</p>}
-        <div className='flex gap-3 text-light-secondary dark:text-dark-secondary'>
+        <div className='flex flex-wrap gap-x-3 gap-y-1 text-light-secondary dark:text-dark-secondary'>
           {detailIcons.map(
             ([detail, icon], index) =>
               detail && (

@@ -1,20 +1,22 @@
 import Link from 'next/link';
 import cn from 'clsx';
-import { NextImage } from './next-image';
+import { NextImage } from '../ui/next-image';
 
-type ProfilePictureProps = {
+type UserAvatarProps = {
   src: string;
   alt: string;
   size?: number;
   username?: string;
+  className?: string;
 };
 
-export function ProfilePicture({
+export function UserAvatar({
   src,
   alt,
   size,
-  username
-}: ProfilePictureProps): JSX.Element {
+  username,
+  className
+}: UserAvatarProps): JSX.Element {
   const pictureSize = size ?? 48;
 
   return (
@@ -22,7 +24,8 @@ export function ProfilePicture({
       <a
         className={cn(
           'blur-picture flex self-start',
-          !username && 'pointer-events-none'
+          !username && 'pointer-events-none',
+          className
         )}
         tabIndex={username ? 0 : -1}
       >

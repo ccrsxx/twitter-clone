@@ -52,7 +52,7 @@ export function EditProfileModal({
         disableSticky
         iconName='XMarkIcon'
         tip='Close'
-        className='fixed flex w-[561px] items-center gap-6 rounded-tl-2xl'
+        className='absolute flex w-full items-center gap-6 rounded-tl-2xl'
         title='Edit profile'
         action={closeModal}
       >
@@ -86,7 +86,7 @@ export function EditProfileModal({
           loading && 'pointer-events-none opacity-50'
         )}
       >
-        <div className='group relative mt-[52px] h-[192px]'>
+        <div className='group relative mt-[52px] h-36 xs:h-44 sm:h-48'>
           <input
             className='hidden'
             type='file'
@@ -135,7 +135,7 @@ export function EditProfileModal({
           </div>
         </div>
         <div className='relative flex flex-col gap-6 px-4 py-3'>
-          <div className='mb-14'>
+          <div className='mb-8 xs:mb-12 sm:mb-14'>
             <input
               className='hidden'
               type='file'
@@ -143,16 +143,18 @@ export function EditProfileModal({
               ref={profileInputFileRef}
               onChange={editImage('profile')}
             />
-            <div className='group absolute -translate-y-1/2 overflow-hidden rounded-full'>
+            <div
+              className='group absolute aspect-square w-24 -translate-y-1/2
+                         overflow-hidden rounded-full xs:w-32 sm:w-36'
+            >
               <NextImage
                 useSkeleton
-                className='bg-main-background p-1 [&>span]:rounded-full'
+                className='h-full w-full bg-main-background inner:!m-1 inner:rounded-full'
                 imgClassName='rounded-full transition group-hover:brightness-75 duration-200
                               group-focus-within:brightness-75'
                 src={photoURL}
                 alt={name}
-                width={128}
-                height={128}
+                layout='fill'
               />
               <Button
                 className='group-inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2

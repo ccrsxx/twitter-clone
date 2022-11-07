@@ -32,15 +32,15 @@ export function MoreSettings(): JSX.Element {
       >
         <DisplayModal closeModal={closeModal} />
       </Modal>
-      <Menu className='relative' as='div'>
+      <Menu className='relative hidden xs:block' as='div'>
         {({ open }): JSX.Element => (
           <>
             <Menu.Button className='group relative flex w-full py-1 outline-none'>
               <div
                 className={cn(
-                  `custom-button flex gap-4 pr-5 text-xl transition group-hover:bg-light-primary/10
-                   group-focus-visible:ring-2 group-focus-visible:ring-[#878a8c] dark:group-hover:bg-dark-primary/10
-                   dark:group-focus-visible:ring-white`,
+                  `custom-button flex gap-4 text-xl transition group-hover:bg-light-primary/10 group-focus-visible:ring-2
+                   group-focus-visible:ring-[#878a8c] dark:group-hover:bg-dark-primary/10 dark:group-focus-visible:ring-white
+                   xl:pr-5`,
                   open && 'bg-light-primary/10 dark:bg-dark-primary/10'
                 )}
               >
@@ -48,13 +48,13 @@ export function MoreSettings(): JSX.Element {
                   className='h-7 w-7'
                   iconName='EllipsisHorizontalCircleIcon'
                 />{' '}
-                More
+                <p className='hidden xl:block'>More</p>
               </div>
             </Menu.Button>
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='menu-container absolute -top-44 w-11/12 font-medium'
+                  className='menu-container absolute -top-44 w-max font-medium xl:w-11/12'
                   as={motion.div}
                   {...variants}
                   static
@@ -76,18 +76,17 @@ export function MoreSettings(): JSX.Element {
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }): JSX.Element => (
-                      <a
+                      <MenuLink
                         className={cn(
-                          'flex w-full gap-3 rounded-none p-4 duration-200',
+                          'flex w-full cursor-not-allowed gap-3 rounded-t-md p-4 duration-200',
                           active && 'bg-main-sidebar-background'
                         )}
-                        href='https://support.twitter.com'
-                        target='_blank'
-                        rel='noreferrer'
+                        href='/help-center'
+                        onClick={preventBubbling()}
                       >
                         <HeroIcon iconName='QuestionMarkCircleIcon' />
                         Help center
-                      </a>
+                      </MenuLink>
                     )}
                   </Menu.Item>
                   <Menu.Item>

@@ -8,6 +8,7 @@ type ModalProps = {
   open: boolean;
   children: ReactNode;
   className?: string;
+  modalAnimation?: Variants;
   modalClassName?: string;
   closePanelOnClick?: boolean;
   closeModal: () => void;
@@ -36,6 +37,7 @@ export function Modal({
   open,
   children,
   className,
+  modalAnimation,
   modalClassName,
   closePanelOnClick,
   closeModal
@@ -63,7 +65,7 @@ export function Modal({
             <Dialog.Panel
               className={modalClassName}
               as={motion.div}
-              {...modal}
+              {...(modalAnimation ?? modal)}
               onClick={closePanelOnClick ? closeModal : undefined}
             >
               {children}

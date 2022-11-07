@@ -1,23 +1,26 @@
 import cn from 'clsx';
 import Link from 'next/link';
-import { HeroIcon } from './hero-icon';
-import type { ReactNode } from 'react';
+import { HeroIcon } from '@components/ui/hero-icon';
 
-type ProfileNameProps = {
+type UserNameProps = {
+  tag?: keyof JSX.IntrinsicElements;
+  name: string;
   verified: boolean;
-  children: ReactNode;
   username?: string;
   className?: string;
   iconClassName?: string;
 };
 
-export function ProfileName({
+export function UserName({
+  tag,
+  name,
   verified,
-  children,
   username,
   className,
   iconClassName
-}: ProfileNameProps): JSX.Element {
+}: UserNameProps): JSX.Element {
+  const CustomTag = tag ? tag : 'p';
+
   return (
     <Link href={username ? `/user/${username}` : '#'}>
       <a
@@ -28,7 +31,7 @@ export function ProfileName({
         )}
         tabIndex={username ? 0 : -1}
       >
-        {children}
+        <CustomTag>{name}</CustomTag>
         {verified && (
           <i>
             <HeroIcon

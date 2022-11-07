@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import cn from 'clsx';
 import { useUser } from '@lib/context/user-context';
 import { useModal } from '@lib/hooks/useModal';
 import { updateUserData, uploadImages } from '@lib/firebase/utils';
@@ -28,7 +29,11 @@ type TrimmedTexts = Pick<
   Exclude<EditableData, 'photoURL' | 'coverPhotoURL'>
 >;
 
-export function UserEditProfile(): JSX.Element {
+type UserEditProfileProps = {
+  hide?: boolean;
+};
+
+export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
   const { user } = useUser();
   const { open, openModal, closeModal } = useModal();
 
@@ -220,10 +225,9 @@ export function UserEditProfile(): JSX.Element {
   ];
 
   return (
-    <form>
+    <form className={cn(hide && 'hidden md:block')}>
       <Modal
-        modalClassName='relative bg-main-background rounded-2xl max-w-xl w-full 
-                        h-[672px] overflow-hidden'
+        modalClassName='relative bg-main-background rounded-2xl max-w-xl w-full h-[672px] overflow-hidden'
         open={open}
         closeModal={closeModal}
       >

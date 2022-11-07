@@ -14,7 +14,7 @@ import {
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';
-import { ProfilePicture } from '@components/ui/profile-picture';
+import { UserAvatar } from '@components/user/user-avatar';
 import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
@@ -191,7 +191,7 @@ export function Input({
 
   return (
     <form
-      className={cn('flex flex-col', {
+      className={cn(!modal && !reply ? 'hidden xs:flex' : 'flex flex-col', {
         'cursor-not-allowed': disabled,
         '-mx-4': reply,
         'gap-2': replyModal
@@ -217,7 +217,7 @@ export function Input({
       )}
       <label
         className={cn(
-          'hover-animation grid grid-cols-[auto,1fr] gap-3 px-4 py-3',
+          'hover-animation grid w-full grid-cols-[auto,1fr] gap-3 px-4 py-3',
           reply
             ? 'pt-3 pb-1'
             : replyModal
@@ -227,7 +227,7 @@ export function Input({
         )}
         htmlFor={formId}
       >
-        <ProfilePicture src={photoURL} alt={name} username={username} />
+        <UserAvatar src={photoURL} alt={name} username={username} />
         <div className='flex w-full flex-col gap-4'>
           <InputForm
             modal={modal}

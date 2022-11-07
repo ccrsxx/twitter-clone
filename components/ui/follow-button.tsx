@@ -51,7 +51,7 @@ export function FollowButton({
         <Button
           className='dark-bg-tab min-w-[106px] self-start border border-light-line-reply px-4 py-1.5 
                      font-bold hover:border-accent-red hover:bg-accent-red/10 hover:text-accent-red
-                     hover:before:content-["Unfollow"] dark:border-light-secondary [&>span]:hover:hidden'
+                     hover:before:content-["Unfollow"] inner:hover:hidden dark:border-light-secondary'
           onClick={preventBubbling(openModal)}
         >
           <span>Following</span>

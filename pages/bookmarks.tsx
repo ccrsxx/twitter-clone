@@ -87,7 +87,10 @@ export default function Bookmarks(): JSX.Element {
           onClick={openModal}
         >
           <HeroIcon className='h-5 w-5' iconName='ArchiveBoxXMarkIcon' />
-          <ToolTip tip='Clear bookmarks' />
+          <ToolTip
+            className='-translate-x-20 translate-y-3 md:-translate-x-1/2'
+            tip='Clear bookmarks'
+          />
         </Button>
       </MainHeader>
       <section className='mt-0.5'>

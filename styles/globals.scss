@@ -52,11 +52,10 @@
 
   .main-tab {
     @apply outline-none focus-visible:ring-2 focus-visible:ring-[#878a8c] focus-visible:transition-shadow 
-    focus-visible:duration-200 dark:focus-visible:ring-white;
+           focus-visible:duration-200 dark:focus-visible:ring-white;
   }
 
   .accent-tab {
-    // prettier-ignore
     @apply main-tab #{'focus-visible:!ring-main-accent/80'};
   }
 

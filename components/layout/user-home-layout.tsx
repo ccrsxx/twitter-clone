@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@lib/context/auth-context';
 import { useUser } from '@lib/context/user-context';
 import { SEO } from '@components/common/seo';
-import { UserCover } from '@components/user/user-cover';
-import { UserProfile } from '@components/user/user-profile';
+import { UserHomeCover } from '@components/user/user-home-cover';
+import { UserHomeAvatar } from '@components/user/user-home-avatar';
 import { UserDetails } from '@components/user/user-details';
 import { UserNav } from '@components/user/user-nav';
 import { Button } from '@components/ui/button';
@@ -49,10 +49,10 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
           <Loading className='mt-5' />
         ) : !userData ? (
           <>
-            <UserCover />
+            <UserHomeCover />
             <div className='flex flex-col gap-8'>
               <div className='relative flex flex-col gap-3 px-4 py-3'>
-                <UserProfile />
+                <UserHomeAvatar />
                 <p className='text-xl font-bold'>@{id}</p>
               </div>
               <div className='p-8 text-center'>
@@ -65,10 +65,10 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
           </>
         ) : (
           <>
-            <UserCover coverData={coverData} />
+            <UserHomeCover coverData={coverData} />
             <div className='relative flex flex-col gap-3 px-4 py-3'>
               <div className='flex justify-between'>
-                <UserProfile profileData={profileData} />
+                <UserHomeAvatar profileData={profileData} />
                 {isOwner ? (
                   <UserEditProfile />
                 ) : (
@@ -86,7 +86,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
                       userTargetId={userData.id}
                       userTargetUsername={userData.username}
                     />
-                    {isAdmin && <UserEditProfile />}
+                    {isAdmin && <UserEditProfile hide />}
                   </div>
                 )}
               </div>

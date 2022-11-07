@@ -80,8 +80,9 @@ export function ImageModal({
         arrowButtons.map(([name, className, iconName]) => (
           <Button
             className={cn(
-              `hover:bg-light-primary/10 active:bg-light-primary/20
+              `absolute z-10 hover:bg-light-primary/10 active:bg-light-primary/20
                dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
+              name === 'prev' ? 'left-2' : 'right-2',
               className
             )}
             onClick={preventBubbling(handleNextIndex(name))}
@@ -102,10 +103,10 @@ export function ImageModal({
           </motion.div>
         ) : (
           <motion.div className='relative mx-auto' {...modal} key={src}>
-            <picture className='group relative'>
+            <picture className='group relative flex max-w-3xl'>
               <source srcSet={src} type='image/*' />
               <img
-                className='max-h-[75vh] max-w-3xl rounded-md object-contain md:max-h-[80vh]'
+                className='max-h-[75vh] rounded-md object-contain md:max-h-[80vh]'
                 src={src}
                 alt={alt}
                 onClick={preventBubbling()}

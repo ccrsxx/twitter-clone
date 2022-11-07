@@ -2,6 +2,7 @@ import cn from 'clsx';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
+import { MobileSidebar } from '../sidebar/mobile-sidebar';
 import type { ReactNode } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
 
@@ -13,6 +14,7 @@ type HomeHeaderProps = {
   className?: string;
   disableSticky?: boolean;
   useActionButton?: boolean;
+  useMobileSidebar?: boolean;
   action?: () => void;
 };
 
@@ -24,6 +26,7 @@ export function MainHeader({
   className,
   disableSticky,
   useActionButton,
+  useMobileSidebar,
   action
 }: HomeHeaderProps): JSX.Element {
   return (
@@ -48,9 +51,12 @@ export function MainHeader({
         </Button>
       )}
       {title && (
-        <h2 className='text-xl font-bold' key={title}>
-          {title}
-        </h2>
+        <div className='flex gap-8'>
+          {useMobileSidebar && <MobileSidebar />}
+          <h2 className='text-xl font-bold' key={title}>
+            {title}
+          </h2>
+        </div>
       )}
       {children}
     </header>

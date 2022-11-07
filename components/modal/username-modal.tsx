@@ -47,7 +47,9 @@ export function UsernameModal({
             <CustomIcon className='h-10 w-10' iconName='TwitterIcon' />
           </i>
           <div className='flex flex-col gap-2'>
-            <Dialog.Title className='text-4xl font-bold'>{title}</Dialog.Title>
+            <Dialog.Title className='text-2xl font-bold xs:text-3xl sm:text-4xl'>
+              {title}
+            </Dialog.Title>
             <Dialog.Description className='text-light-secondary dark:text-dark-secondary'>
               {description}
             </Dialog.Description>

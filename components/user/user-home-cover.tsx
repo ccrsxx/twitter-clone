@@ -5,21 +5,21 @@ import { Modal } from '@components/modal/modal';
 import { ImageModal } from '@components/modal/image-modal';
 import type { ImageData } from '@lib/types/file';
 
-type UserCoverProps = {
+type UserHomeCoverProps = {
   coverData?: ImageData | null;
 };
 
-export function UserCover({ coverData }: UserCoverProps): JSX.Element {
+export function UserHomeCover({ coverData }: UserHomeCoverProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
   return (
-    <div className='mt-0.5 h-[208px]'>
+    <div className='mt-0.5 h-36 xs:h-48 sm:h-52'>
       <Modal open={open} closeModal={closeModal}>
         <ImageModal imageData={coverData as ImageData} previewCount={1} />
       </Modal>
       {coverData ? (
         <Button
-          className='accent-tab relative h-full w-full rounded-none p-0 hover:brightness-75'
+          className='accent-tab relative h-full w-full rounded-none p-0 transition hover:brightness-75'
           onClick={openModal}
         >
           <NextImage

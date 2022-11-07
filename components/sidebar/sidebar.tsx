@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
@@ -16,6 +15,7 @@ export type NavLink = {
   linkName: string;
   iconName: IconName;
   disabled?: boolean;
+  canBeHidden?: boolean;
 };
 
 const navLinks: Readonly<NavLink[]> = [
@@ -28,7 +28,8 @@ const navLinks: Readonly<NavLink[]> = [
     href: '/explore',
     linkName: 'Explore',
     iconName: 'HashtagIcon',
-    disabled: true
+    disabled: true,
+    canBeHidden: true
   },
   {
     href: '/notifications',
@@ -45,13 +46,15 @@ const navLinks: Readonly<NavLink[]> = [
   {
     href: '/bookmarks',
     linkName: 'Bookmarks',
-    iconName: 'BookmarkIcon'
+    iconName: 'BookmarkIcon',
+    canBeHidden: true
   },
   {
     href: '/lists',
     linkName: 'Lists',
     iconName: 'Bars3BottomLeftIcon',
-    disabled: true
+    disabled: true,
+    canBeHidden: true
   }
 ];
 
@@ -60,12 +63,13 @@ export function Sidebar(): JSX.Element {
 
   const { open, openModal, closeModal } = useModal();
 
-  const { asPath } = useRouter();
-
   const username = user?.username as string;
 
   return (
-    <header className='-mr-4 flex w-full max-w-xs justify-end'>
+    <header
+      id='sidebar'
+      className='flex w-0 shrink-0 xs:w-20 md:w-24 lg:max-w-none xl:-mr-4 xl:w-full xl:max-w-xs xl:justify-end'
+    >
       <Modal
         className='flex items-start justify-center'
         modalClassName='bg-main-background rounded-2xl max-w-xl w-full mt-8 overflow-hidden'
@@ -74,9 +78,13 @@ export function Sidebar(): JSX.Element {
       >
         <Input modal closeModal={closeModal} />
       </Modal>
-      <div className='fixed top-0 flex h-full w-72 flex-col justify-between overflow-auto px-4 py-3 pt-2'>
-        <section className='flex flex-col gap-2'>
-          <h1 className='flex'>
+      <div
+        className='fixed bottom-0 z-10 flex w-full flex-col justify-between border-t border-light-border 
+                   bg-main-background py-0 dark:border-dark-border xs:top-0 xs:h-full xs:w-auto xs:border-0 
+                   xs:bg-transparent xs:px-2 xs:py-3 xs:pt-2 md:px-4 xl:w-72'
+      >
+        <section className='flex flex-col justify-center gap-2 xs:items-center xl:items-stretch'>
+          <h1 className='hidden xs:flex'>
             <Link href='/home'>
               <a
                 className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
@@ -87,29 +95,29 @@ export function Sidebar(): JSX.Element {
               </a>
             </Link>
           </h1>
-          <nav>
+          <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>
             {navLinks.map(({ ...linkData }) => (
-              <SidebarLink
-                pathname={asPath}
-                {...linkData}
-                key={linkData.href}
-              />
+              <SidebarLink {...linkData} key={linkData.href} />
             ))}
             <SidebarLink
               href={`/user/${username}`}
               username={username}
-              pathname={asPath}
               linkName='Profile'
               iconName='UserIcon'
             />
             <MoreSettings />
           </nav>
           <Button
-            className='accent-tab w-11/12 bg-main-accent text-lg font-bold text-white
-                       outline-none hover:bg-main-accent/90 active:bg-main-accent/75'
+            className='accent-tab absolute right-4 -translate-y-[72px] bg-main-accent text-lg font-bold text-white
+                       outline-none transition hover:brightness-90 active:brightness-75 xs:static xs:translate-y-0
+                       xs:hover:bg-main-accent/90 xs:active:bg-main-accent/75 xl:w-11/12'
             onClick={openModal}
           >
-            Tweet
+            <CustomIcon
+              className='block h-6 w-6 xl:hidden'
+              iconName='FeatherIcon'
+            />
+            <p className='hidden xl:block'>Tweet</p>
           </Button>
         </section>
         <SidebarProfile />

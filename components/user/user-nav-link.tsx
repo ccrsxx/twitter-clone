@@ -21,7 +21,7 @@ export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
         className='hover-animation main-tab dark-bg-tab flex flex-1 justify-center
                    hover:bg-light-primary/10 dark:hover:bg-dark-primary/10'
       >
-        <div className='w-max px-8'>
+        <div className='w-max px-6 md:px-8'>
           <p
             className={cn(
               'flex flex-col gap-3 pt-3 font-bold transition-colors duration-200',

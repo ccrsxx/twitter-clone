@@ -20,7 +20,7 @@ export function TweetStatsModal({
         disableSticky
         tip='Close'
         iconName='XMarkIcon'
-        className='fixed flex w-[561px] items-center gap-6 rounded-tl-2xl'
+        className='absolute flex w-full items-center gap-6 rounded-tl-2xl'
         title={`${statsType === 'likes' ? 'Liked' : 'Retweeted'} by`}
         action={handleClose}
       />

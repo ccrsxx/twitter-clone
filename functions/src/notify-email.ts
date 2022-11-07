@@ -27,7 +27,7 @@ export const notifyEmail = regionalFunctions.firestore
     const tweetLink = `https://twitter-clone-ccrsxx.vercel.app/tweet/${snapshot.id}`;
 
     const emailHeader = `New Tweet${
-      parent ? ' Reply' : ''
+      parent ? ' reply' : ''
     } from ${name} (@${username})`;
 
     const emailText = `${text || 'No text provided'}${

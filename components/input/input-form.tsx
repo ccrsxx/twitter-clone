@@ -88,6 +88,8 @@ export function InputForm({
   const handleShowHideNav = (blur?: boolean) => (): void => {
     const sidebar = document.getElementById('sidebar') as HTMLElement;
 
+    if (!sidebar) return;
+
     if (blur) {
       setTimeout(() => (sidebar.style.opacity = ''), 200);
       return;

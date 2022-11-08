@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { query, where, orderBy, limit } from 'firebase/firestore';
 import cn from 'clsx';
+import { useWindow } from '@lib/context/window-context';
 import { useCollection } from '@lib/hooks/useCollection';
 import { getHomeTweetsCount } from '@lib/firebase/utils';
 import { tweetsCollection } from '@lib/firebase/collections';
@@ -24,6 +25,8 @@ export default function Home(): JSX.Element {
   const [tweetsSize, setTweetsSize] = useState<number | null>(null);
   const [reachedLimit, setReachedLimit] = useState(false);
   const [loadMoreInView, setLoadMoreInView] = useState(false);
+
+  const { isMobile } = useWindow();
 
   const { data, loading } = useCollection(
     query(
@@ -74,7 +77,7 @@ export default function Home(): JSX.Element {
       >
         <UpdateUsername />
       </MainHeader>
-      <Input />
+      {!isMobile && <Input />}
       <section className='mt-0.5 xs:mt-0'>
         {loading ? (
           <Loading className='mt-5' />

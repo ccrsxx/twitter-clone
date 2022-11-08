@@ -29,7 +29,7 @@ export function HomeLayout({ children }: LayoutProps): JSX.Element {
   );
 }
 
-export function ProfileLayout({ children }: LayoutProps): JSX.Element {
+export function UserLayout({ children }: LayoutProps): JSX.Element {
   return (
     <>
       {children}

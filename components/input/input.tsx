@@ -82,7 +82,7 @@ export function Input({
     const userId = user?.id as string;
 
     const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
-      text: inputValue.trim(),
+      text: inputValue.trim() || null,
       parent: isReplying && parent ? parent : null,
       images: await uploadImages(userId, selectedImages),
       userLikes: [],
@@ -191,7 +191,7 @@ export function Input({
 
   return (
     <form
-      className={cn(!modal && !reply ? 'hidden xs:flex' : 'flex flex-col', {
+      className={cn('flex flex-col', {
         'cursor-not-allowed': disabled,
         '-mx-4': reply,
         'gap-2': replyModal

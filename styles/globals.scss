@@ -31,6 +31,13 @@
     --accent-green: 0 184 122;
   }
 
+  a,
+  input,
+  button,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
     @apply hover-animation bg-main-background font-twitter-chirp text-light-primary dark:text-dark-primary;
   }

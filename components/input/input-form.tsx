@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import TextArea from 'react-textarea-autosize';
 import { motion } from 'framer-motion';
 import { useModal } from '@lib/hooks/useModal';
@@ -70,6 +71,8 @@ export function InputForm({
 }: InputFormProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
+  useEffect(() => handleShowHideNav(true), []);
+
   const handleKeyboardShortcut = ({
     key,
     ctrlKey
@@ -86,12 +89,11 @@ export function InputForm({
     const sidebar = document.getElementById('sidebar') as HTMLElement;
 
     if (blur) {
-      sidebar.style.display = '';
+      setTimeout(() => (sidebar.style.opacity = ''), 200);
       return;
     }
 
-    if (window.innerWidth < 500)
-      setTimeout(() => (sidebar.style.display = 'none'), 200);
+    if (window.innerWidth < 500) sidebar.style.opacity = '0';
   };
 
   const handleFormFocus = (): void => {

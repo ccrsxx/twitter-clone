@@ -88,7 +88,7 @@ export default function Bookmarks(): JSX.Element {
         >
           <HeroIcon className='h-5 w-5' iconName='ArchiveBoxXMarkIcon' />
           <ToolTip
-            className='-translate-x-20 translate-y-3 md:-translate-x-1/2'
+            className='!-translate-x-20 translate-y-3 md:-translate-x-1/2'
             tip='Clear bookmarks'
           />
         </Button>

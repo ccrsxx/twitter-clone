@@ -9,7 +9,7 @@ import { MainHeader } from '@components/home/main-header';
 import { UserHeader } from '@components/user/user-header';
 import type { LayoutProps } from './common-layout';
 
-export function UserLayout({ children }: LayoutProps): JSX.Element {
+export function UserDataLayout({ children }: LayoutProps): JSX.Element {
   const {
     query: { id },
     back

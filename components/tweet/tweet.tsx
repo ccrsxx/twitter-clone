@@ -93,8 +93,8 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       <Link href={tweetLink} scroll={!reply}>
         <a
           className={cn(
-            `accent-tab hover-card relative mx-0.5 mr-1 flex flex-col 
-             gap-y-4 px-4 py-3 outline-none duration-200 md:mx-0 md:mr-0`,
+            `accent-tab hover-card relative flex flex-col 
+             gap-y-4 px-4 py-3 outline-none duration-200`,
             parentTweet
               ? 'mt-0.5 pt-2.5 pb-0'
               : 'border-b border-light-border dark:border-dark-border'

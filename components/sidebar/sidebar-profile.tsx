@@ -42,9 +42,9 @@ export function SidebarProfile(): JSX.Element {
           <>
             <Menu.Button
               className={cn(
-                `custom-button main-tab dark-bg-tab hidden w-full items-center justify-between 
-                 hover:bg-light-primary/10 active:bg-light-primary/20 dark:hover:bg-dark-primary/10
-                 dark:active:bg-dark-primary/20 xs:flex`,
+                `custom-button main-tab dark-bg-tab flex w-full items-center 
+                 justify-between hover:bg-light-primary/10 active:bg-light-primary/20
+                 dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20`,
                 open && 'bg-light-primary/10 dark:bg-dark-primary/10'
               )}
             >

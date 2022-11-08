@@ -26,8 +26,8 @@ export function UserNav({ follow }: UserNavProps): JSX.Element {
   return (
     <motion.nav
       className={cn(
-        `hover-animation flex justify-between overflow-y-auto border-b
-         border-light-border dark:border-dark-border`,
+        `hover-animation flex justify-between overflow-y-auto
+         border-b border-light-border dark:border-dark-border`,
         follow && 'mt-1 mb-0.5'
       )}
       {...variants}

@@ -32,7 +32,7 @@ export function MoreSettings(): JSX.Element {
       >
         <DisplayModal closeModal={closeModal} />
       </Modal>
-      <Menu className='relative hidden xs:block' as='div'>
+      <Menu className='relative' as='div'>
         {({ open }): JSX.Element => (
           <>
             <Menu.Button className='group relative flex w-full py-1 outline-none'>

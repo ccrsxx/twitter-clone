@@ -73,6 +73,10 @@ export function UpdateUsername(): JSX.Element {
 
     setLoading(false);
 
+    setInputValue('');
+    setVisited(false);
+    setAvailable(false);
+
     toast.success('Username updated successfully');
   };
 

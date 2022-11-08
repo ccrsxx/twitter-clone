@@ -4,7 +4,7 @@ import type { User } from './user';
 
 export type Tweet = {
   id: string;
-  text: string;
+  text: string | null;
   images: ImagesPreview | null;
   parent: { id: string; username: string } | null;
   userLikes: string[];

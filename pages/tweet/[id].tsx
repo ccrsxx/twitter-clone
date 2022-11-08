@@ -53,7 +53,7 @@ export default function TweetId(): JSX.Element {
     : null;
 
   return (
-    <MainContainer className='pb-[448px]'>
+    <MainContainer className='!pb-[1280px]'>
       <MainHeader
         useActionButton
         title={parentId ? 'Thread' : 'Tweet'}

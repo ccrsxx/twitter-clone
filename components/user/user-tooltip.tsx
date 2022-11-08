@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useWindow } from '@lib/context/window-context';
 import { FollowButton } from '@components/ui/follow-button';
 import { NextImage } from '@components/ui/next-image';
 import { UserAvatar } from './user-avatar';
@@ -39,7 +40,9 @@ export function UserTooltip({
   followers,
   coverPhotoURL
 }: UserTooltipProps): JSX.Element {
-  if (modal) return <>{children}</>;
+  const { isMobile } = useWindow();
+
+  if (isMobile || modal) return <>{children}</>;
 
   const userLink = `/user/${username}`;
 
@@ -52,9 +55,9 @@ export function UserTooltip({
     <div className='group relative self-start text-light-primary dark:text-dark-primary'>
       {children}
       <div
-        className='menu-container invisible absolute left-1/2 hidden w-72 translate-y-2 -translate-x-1/2 rounded-2xl 
+        className='menu-container invisible absolute left-1/2 w-72 translate-y-2 -translate-x-1/2 rounded-2xl 
                    opacity-0 [transition:visibility_0ms_ease_400ms,opacity_200ms_ease_200ms] group-hover:visible 
-                   group-hover:opacity-100 group-hover:delay-500 xs:block'
+                   group-hover:opacity-100 group-hover:delay-500'
       >
         <div className='flex flex-col gap-3 p-4'>
           <div className='flex flex-col gap-2'>

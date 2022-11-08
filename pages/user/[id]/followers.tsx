@@ -1,9 +1,6 @@
-import {
-  ProfileLayout,
-  ProtectedLayout
-} from '@components/layout/common-layout';
+import { UserLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
-import { UserLayout } from '@components/layout/user-layout';
+import { UserDataLayout } from '@components/layout/user-data-layout';
 import { UserFollowLayout } from '@components/layout/user-follow-layout';
 import { UserFollow } from '@components/user/user-follow';
 import type { ReactElement, ReactNode } from 'react';
@@ -15,11 +12,11 @@ export default function UserFollowers(): JSX.Element {
 UserFollowers.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <ProfileLayout>
-        <UserLayout>
+      <UserLayout>
+        <UserDataLayout>
           <UserFollowLayout>{page}</UserFollowLayout>
-        </UserLayout>
-      </ProfileLayout>
+        </UserDataLayout>
+      </UserLayout>
     </MainLayout>
   </ProtectedLayout>
 );

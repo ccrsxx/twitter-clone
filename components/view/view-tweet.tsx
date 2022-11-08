@@ -58,9 +58,9 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
   return (
     <motion.article
       className={cn(
-        `accent-tab h- relative flex cursor-default flex-col 
-         gap-3 border-b border-light-border px-4 py-3 outline-none dark:border-dark-border`,
-        reply && 'pt-0 [scroll-margin-top:3.25rem]'
+        `accent-tab h- relative flex cursor-default flex-col gap-3 border-b
+         border-light-border px-4 py-3 outline-none dark:border-dark-border`,
+        reply && 'scroll-m-[3.25rem] pt-0'
       )}
       {...variants}
       animate={{ ...variants.animate, transition: { duration: 0.2 } }}

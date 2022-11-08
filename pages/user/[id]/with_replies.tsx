@@ -4,13 +4,10 @@ import { useCollection } from '@lib/hooks/useCollection';
 import { useDocument } from '@lib/hooks/useDocument';
 import { tweetsCollection } from '@lib/firebase/collections';
 import { useUser } from '@lib/context/user-context';
-import {
-  ProfileLayout,
-  ProtectedLayout
-} from '@components/layout/common-layout';
+import { UserLayout, ProtectedLayout } from '@components/layout/common-layout';
 import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
-import { UserLayout } from '@components/layout/user-layout';
+import { UserDataLayout } from '@components/layout/user-data-layout';
 import { UserHomeLayout } from '@components/layout/user-home-layout';
 import { Tweet } from '@components/tweet/tweet';
 import { Loading } from '@components/ui/loading';
@@ -70,11 +67,11 @@ export default function UserWithReplies(): JSX.Element {
 UserWithReplies.getLayout = (page: ReactElement): ReactNode => (
   <ProtectedLayout>
     <MainLayout>
-      <ProfileLayout>
-        <UserLayout>
+      <UserLayout>
+        <UserDataLayout>
           <UserHomeLayout>{page}</UserHomeLayout>
-        </UserLayout>
-      </ProfileLayout>
+        </UserDataLayout>
+      </UserLayout>
     </MainLayout>
   </ProtectedLayout>
 );

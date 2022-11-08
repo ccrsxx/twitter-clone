@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { useAuth } from '@lib/context/auth-context';
+import { useWindow } from '@lib/context/window-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Modal } from '@components/modal/modal';
 import { Input } from '@components/input/input';
@@ -60,6 +61,7 @@ const navLinks: Readonly<NavLink[]> = [
 
 export function Sidebar(): JSX.Element {
   const { user } = useAuth();
+  const { isMobile } = useWindow();
 
   const { open, openModal, closeModal } = useModal();
 
@@ -68,7 +70,8 @@ export function Sidebar(): JSX.Element {
   return (
     <header
       id='sidebar'
-      className='flex w-0 shrink-0 xs:w-20 md:w-24 lg:max-w-none xl:-mr-4 xl:w-full xl:max-w-xs xl:justify-end'
+      className='flex w-0 shrink-0 transition-opacity duration-200 xs:w-20 md:w-24
+                 lg:max-w-none xl:-mr-4 xl:w-full xl:max-w-xs xl:justify-end'
     >
       <Modal
         className='flex items-start justify-center'
@@ -105,7 +108,7 @@ export function Sidebar(): JSX.Element {
               linkName='Profile'
               iconName='UserIcon'
             />
-            <MoreSettings />
+            {!isMobile && <MoreSettings />}
           </nav>
           <Button
             className='accent-tab absolute right-4 -translate-y-[72px] bg-main-accent text-lg font-bold text-white
@@ -120,7 +123,7 @@ export function Sidebar(): JSX.Element {
             <p className='hidden xl:block'>Tweet</p>
           </Button>
         </section>
-        <SidebarProfile />
+        {!isMobile && <SidebarProfile />}
       </div>
     </header>
   );

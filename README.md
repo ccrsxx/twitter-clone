@@ -8,9 +8,14 @@
   Twitter clone built in Next.js + TypeScript + Tailwind CSS using Cloud Firestore and Storage
 </p>
 
+## Preview 🎬
+
+https://user-images.githubusercontent.com/55032197/201472767-9db0177a-79b5-4913-8666-1744102b0ad7.mp4
+
 ## Features ✨
 
 - Authentication with Firebase Authentication
+- Strongly typed react components with TypeScript
 - Users can Add tweets, Like, Retweet, and Reply
 - Users can Delete tweets, Add tweet to Bookmarks, and Pin their tweet
 - Users can add Images and GIFs to tweet

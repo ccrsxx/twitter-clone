@@ -151,7 +151,7 @@ export function TweetActions({
         <ActionModal
           title='Delete Tweet?'
           description={`This can’t be undone and it will be removed from ${
-            isInAdminControl ? `${username}'s` : 'your'
+            isInAdminControl ? `@${username}'s` : 'your'
           } profile, the timeline of any accounts that follow ${
             isInAdminControl ? `@${username}` : 'you'
           }, and from Twitter search results.`}

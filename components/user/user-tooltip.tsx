@@ -61,20 +61,24 @@ export function UserTooltip({
       >
         <div className='flex flex-col gap-3 p-4'>
           <div className='flex flex-col gap-2'>
-            <Link href={userLink}>
-              <a className='blur-picture relative -mx-4 -mt-4 h-24'>
-                {coverPhotoURL ? (
-                  <NextImage
-                    imgClassName='rounded-t-2xl'
-                    src={coverPhotoURL}
-                    alt={name}
-                    layout='fill'
-                  />
-                ) : (
-                  <div className='h-full rounded-t-2xl bg-light-line-reply dark:bg-dark-line-reply' />
-                )}
-              </a>
-            </Link>
+            <div className='-mx-4 -mt-4'>
+              {coverPhotoURL ? (
+                <Link href={userLink}>
+                  <a className='blur-picture'>
+                    <NextImage
+                      useSkeleton
+                      className='relative h-24'
+                      imgClassName='rounded-t-2xl'
+                      src={coverPhotoURL}
+                      alt={name}
+                      layout='fill'
+                    />
+                  </a>
+                </Link>
+              ) : (
+                <div className='h-16 rounded-t-2xl bg-light-line-reply dark:bg-dark-line-reply' />
+              )}
+            </div>
             <div className='flex justify-between'>
               <div className='mb-10'>
                 <UserAvatar
@@ -83,7 +87,7 @@ export function UserTooltip({
                              [&:hover>figure>span]:brightness-75'
                   src={photoURL}
                   alt={name}
-                  size={60}
+                  size={64}
                   username={username}
                 />
               </div>

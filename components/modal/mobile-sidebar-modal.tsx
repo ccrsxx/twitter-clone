@@ -107,7 +107,7 @@ export function MobileSidebarModal({
   return (
     <>
       <Modal
-        className='flex-items-center justify-center pt-4'
+        className='items-center justify-center xs:flex'
         modalClassName='max-w-xl bg-main-background w-full p-8 rounded-2xl hover-animation'
         open={displayOpen}
         closeModal={displayCloseModal}

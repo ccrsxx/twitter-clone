@@ -46,11 +46,12 @@ export function ThemeContextProvider({
   const { id: userId, theme: userTheme, accent: userAccent } = user ?? {};
 
   useEffect(() => {
-    if (user) {
-      if (userTheme) setTheme(userTheme);
-      if (userAccent) setAccent(userAccent);
-    }
-  }, [userId, userTheme, userAccent]);
+    if (user && userTheme) setTheme(userTheme);
+  }, [userId, userTheme]);
+
+  useEffect(() => {
+    if (user && userAccent) setAccent(userAccent);
+  }, [userId, userAccent]);
 
   useEffect(() => {
     const flipTheme = (theme: Theme): NodeJS.Timeout | undefined => {

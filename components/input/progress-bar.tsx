@@ -2,6 +2,7 @@ import cn from 'clsx';
 import { ToolTip } from '@components/ui/tooltip';
 
 type ProgressBarProps = {
+  modal?: boolean;
   inputLimit: number;
   inputLength: number;
   isCharLimitExceeded: boolean;
@@ -25,6 +26,7 @@ const circleStyles = [
 ] as const;
 
 export function ProgressBar({
+  modal,
   inputLimit,
   inputLength,
   isCharLimitExceeded
@@ -102,6 +104,7 @@ export function ProgressBar({
             ? 'You have exceeded the character limit'
             : `${remainingCharacters} characters remaining`
         }
+        modal={modal}
       />
     </button>
   );

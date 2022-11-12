@@ -2,19 +2,23 @@ import cn from 'clsx';
 
 type ToolTipProps = {
   tip: string;
+  modal?: boolean;
   className?: string;
   groupInner?: boolean;
 };
 
 export function ToolTip({
   tip,
+  modal,
   className,
   groupInner
-}: ToolTipProps): JSX.Element {
+}: ToolTipProps): JSX.Element | null {
+  if (modal) return null;
+
   return (
     <div
       className={cn(
-        `invisible absolute left-1/2 w-max -translate-x-1/2 rounded bg-[#666666] px-1 py-0.5 text-xs 
+        `invisible absolute left-1/2 w-max -translate-x-1/2 rounded bg-[#666666] px-1 py-0.5 text-xs
          text-white opacity-0 [transition:visibility_0ms_ease_200ms,opacity_200ms_ease] dark:bg-[#495A69]`,
         groupInner
           ? `group-inner-hover:visible group-inner-hover:opacity-100 group-inner-hover:delay-500 

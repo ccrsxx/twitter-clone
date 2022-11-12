@@ -258,6 +258,7 @@ export function Input({
             {(reply ? reply && visited && !loading : !loading) && (
               <InputOptions
                 reply={reply}
+                modal={modal}
                 inputLimit={inputLimit}
                 inputLength={inputLength}
                 isValidTweet={isValidTweet}

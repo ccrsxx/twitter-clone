@@ -50,6 +50,7 @@ const options: Readonly<Options> = [
 
 type InputOptionsProps = {
   reply?: boolean;
+  modal?: boolean;
   inputLimit: number;
   inputLength: number;
   isValidTweet: boolean;
@@ -61,6 +62,7 @@ type InputOptionsProps = {
 
 export function InputOptions({
   reply,
+  modal,
   inputLimit,
   inputLength,
   isValidTweet,
@@ -101,7 +103,7 @@ export function InputOptions({
             key={name}
           >
             <HeroIcon className='h-5 w-5' iconName={iconName} />
-            <ToolTip tip={name} />
+            <ToolTip tip={name} modal={modal} />
           </Button>
         ))}
       </div>
@@ -113,6 +115,7 @@ export function InputOptions({
           }
         >
           <ProgressBar
+            modal={modal}
             inputLimit={inputLimit}
             inputLength={inputLength}
             isCharLimitExceeded={isCharLimitExceeded}
@@ -126,7 +129,7 @@ export function InputOptions({
                 disabled
               >
                 <HeroIcon className='h-5 w-5' iconName='PlusIcon' />
-                <ToolTip tip='Add' />
+                <ToolTip tip='Add' modal={modal} />
               </Button>
             </>
           )}

@@ -15,7 +15,6 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
-    "@vercel/analytics": "^0.1.4",
     "clsx": "^1.2.1",
     "firebase": "^9.9.4",
     "framer-motion": "^7.2.1",

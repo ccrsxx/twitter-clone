@@ -71,9 +71,9 @@ export function ViewTweetStats({
         <TweetStatsModal statsType={statsType} handleClose={handleClose}>
           <UserCards
             follow
-            loading={loading}
             type={statsType as StatsType}
             data={data}
+            loading={loading}
           />
         </TweetStatsModal>
       </Modal>

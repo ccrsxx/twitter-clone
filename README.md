@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/55032197/201472767-9db0177a-79b5-4913-
 ## Features ✨
 
 - Authentication with Firebase Authentication
-- Strongly typed react components with TypeScript
+- Strongly typed React components with TypeScript
 - Users can add tweets, like, retweet, and reply
 - Users can delete tweets, add tweet to bookmarks, and pin their tweet
 - Users can add images and GIFs to tweet
@@ -25,7 +25,7 @@ https://user-images.githubusercontent.com/55032197/201472767-9db0177a-79b5-4913-
 - Realtime update like, retweet, and user profile
 - Realtime trending data from Twitter API
 - User can edit their profile
-- Responsive design for mobile, table, and desktop
+- Responsive design for mobile, tablet, and desktop
 - Users can customize site color scheme and color background
 - All images uploads stored on Firebase Cloud Storage
 
@@ -33,9 +33,9 @@ https://user-images.githubusercontent.com/55032197/201472767-9db0177a-79b5-4913-
 
 - [Next.js](https://nextjs.org)
 - [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS](https://tailwindcss.com)
 - [Firebase](https://firebase.google.com)
 - [SWR](https://swr.vercel.app)
-- [Tailwind CSS](https://tailwindcss.com)
 - [Headless UI](https://headlessui.com)
 - [React Hot Toast](https://react-hot-toast.com)
 - [Framer Motion](https://framer.com)
@@ -58,13 +58,25 @@ Here are the steps to run the project locally.
 
 1. Create a Firebase project and select web app
 
-1. Add your Firebase config to `.env.development`
+1. Add your Firebase config to `.env.development`, note that `NEXT_PUBLIC_MEASUREMENT_ID` is optional
 
 1. Make sure you have enabled the following Firebase services:
 
    - Authentication. Enable Google sign-in method.
    - Cloud Firestore. Create a database and set it's location to your nearest region.
    - Cloud Storage. Create a storage bucket.
+
+1. Install Firebase CLI
+
+   ```bash
+   npm i -g firebase-tools
+   ```
+
+1. Login to Firebase
+
+   ```bash
+   firebase login
+   ```
 
 1. Get your project id
 
@@ -78,22 +90,10 @@ Here are the steps to run the project locally.
    firebase use your-project-id
    ```
 
-1. Deploy the Firestore rules
+1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
 
    ```bash
-   firebase deploy --only firestore:rules
-   ```
-
-1. Deploy the Firestore indexes
-
-   ```bash
-   firebase deploy --only firestore:indexes
-   ```
-
-1. Deploy the Cloud Storage rules
-
-   ```bash
-   firebase deploy --only storage
+   firebase deploy --except functions
    ```
 
 1. Run the project

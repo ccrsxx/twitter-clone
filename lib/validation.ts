@@ -1,4 +1,3 @@
-import { toast } from 'react-hot-toast';
 import { getRandomId } from './random';
 import type { FilesWithId, FileWithId, ImagesPreview } from './types/file';
 
@@ -65,14 +64,7 @@ export function getImagesData(
       ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
       : null;
 
-  if (!rawImages || !rawImages.length) {
-    toast.error(
-      singleEditingMode
-        ? 'Please choose a valid GIF or Photo'
-        : 'Please choose a GIF or photo up to 4'
-    );
-    return null;
-  }
+  if (!rawImages || !rawImages.length) return null;
 
   const imagesId = rawImages.map(({ name }) => {
     const randomId = getRandomId();

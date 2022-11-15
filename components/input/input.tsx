@@ -131,14 +131,17 @@ export function Input({
 
     const imagesData = getImagesData(files, previewCount);
 
-    if (imagesData) {
-      const { imagesPreviewData, selectedImagesData } = imagesData;
-
-      setImagesPreview([...imagesPreview, ...imagesPreviewData]);
-      setSelectedImages([...selectedImages, ...selectedImagesData]);
-
-      inputRef.current?.focus();
+    if (!imagesData) {
+      toast.error('Please choose a GIF or photo up to 4');
+      return;
     }
+
+    const { imagesPreviewData, selectedImagesData } = imagesData;
+
+    setImagesPreview([...imagesPreview, ...imagesPreviewData]);
+    setSelectedImages([...selectedImages, ...selectedImagesData]);
+
+    inputRef.current?.focus();
   };
 
   const removeImage = (targetId: string) => (): void => {

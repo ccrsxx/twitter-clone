@@ -119,22 +119,25 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
     ({ target: { files } }: ChangeEvent<HTMLInputElement>): void => {
       const imagesData = getImagesData(files);
 
-      if (imagesData) {
-        const { imagesPreviewData, selectedImagesData } = imagesData;
-
-        const targetKey = type === 'cover' ? 'coverPhotoURL' : 'photoURL';
-        const newImage = imagesPreviewData[0].src;
-
-        setEditUserData({
-          ...editUserData,
-          [targetKey]: newImage
-        });
-
-        setUserImages({
-          ...userImages,
-          [targetKey]: selectedImagesData
-        });
+      if (!imagesData) {
+        toast.error('Please choose a valid GIF or Photo');
+        return;
       }
+
+      const { imagesPreviewData, selectedImagesData } = imagesData;
+
+      const targetKey = type === 'cover' ? 'coverPhotoURL' : 'photoURL';
+      const newImage = imagesPreviewData[0].src;
+
+      setEditUserData({
+        ...editUserData,
+        [targetKey]: newImage
+      });
+
+      setUserImages({
+        ...userImages,
+        [targetKey]: selectedImagesData
+      });
     };
 
   const removeCoverImage = (): void => {

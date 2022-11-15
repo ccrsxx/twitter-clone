@@ -27,6 +27,7 @@
     "no-console": "warn",
     "comma-dangle": ["error", "never"],
     "no-unused-expressions": "error",
+    "no-constant-binary-expression": "error",
     "import/order": [
       "warn",
       {

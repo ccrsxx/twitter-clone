@@ -19,10 +19,9 @@ export type MobileNavLink = Omit<NavLink, 'canBeHidden'>;
 
 const topNavLinks: Readonly<MobileNavLink[]> = [
   {
-    href: '/topics',
+    href: '/trends',
     linkName: 'Topics',
-    iconName: 'ChatBubbleBottomCenterTextIcon',
-    disabled: true
+    iconName: 'ChatBubbleBottomCenterTextIcon'
   },
   {
     href: '/bookmarks',
@@ -36,10 +35,9 @@ const topNavLinks: Readonly<MobileNavLink[]> = [
     disabled: true
   },
   {
-    href: '/circles',
+    href: '/people',
     linkName: 'Twitter Circle',
-    iconName: 'UserGroupIcon',
-    disabled: true
+    iconName: 'UserGroupIcon'
   }
 ];
 

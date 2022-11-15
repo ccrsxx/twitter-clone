@@ -13,6 +13,13 @@ type UseCollection<T> = {
 type DataWithRef<T> = (T & { createdBy: string })[];
 type DataWithUser<T> = UseCollection<T & { user: User }>;
 
+export type UseCollectionOptions = {
+  includeUser?: boolean;
+  allowNull?: boolean;
+  disabled?: boolean;
+  preserve?: boolean;
+};
+
 export function useCollection<T>(
   query: Query<T>,
   options: {
@@ -25,22 +32,12 @@ export function useCollection<T>(
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: {
-    includeUser?: false;
-    allowNull?: boolean;
-    disabled?: boolean;
-    preserve?: boolean;
-  }
+  options?: UseCollectionOptions
 ): UseCollection<T>;
 
 export function useCollection<T>(
   query: Query<T>,
-  options?: {
-    includeUser?: boolean;
-    allowNull?: boolean;
-    disabled?: boolean;
-    preserve?: boolean;
-  }
+  options?: UseCollectionOptions
 ): UseCollection<T> | DataWithUser<T> {
   const [data, setData] = useState<T[] | null>(null);
   const [loading, setLoading] = useState(true);

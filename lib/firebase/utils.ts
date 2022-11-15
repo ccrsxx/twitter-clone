@@ -5,7 +5,6 @@ import {
   limit,
   setDoc,
   getDocs,
-  orderBy,
   updateDoc,
   deleteDoc,
   increment,
@@ -23,7 +22,7 @@ import {
   userStatsCollection,
   userBookmarksCollection
 } from './collections';
-import type { WithFieldValue } from 'firebase/firestore';
+import type { WithFieldValue, Query } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
@@ -38,14 +37,10 @@ export async function checkUsernameAvailability(
   return empty;
 }
 
-export async function getHomeTweetsCount(): Promise<number> {
-  const snapshot = await getCountFromServer(
-    query(
-      tweetsCollection,
-      where('parent', '==', null),
-      orderBy('createdAt', 'desc')
-    )
-  );
+export async function getCollectionCount<T>(
+  collection: Query<T>
+): Promise<number> {
+  const snapshot = await getCountFromServer(collection);
   return snapshot.data().count;
 }
 

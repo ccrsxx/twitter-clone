@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { query, where } from 'firebase/firestore';
+import { where } from 'firebase/firestore';
 import { useAuth } from '@lib/context/auth-context';
 import { usersCollection } from '@lib/firebase/collections';
-import { useCollection } from '@lib/hooks/useCollection';
+import { useInfiniteScroll } from '@lib/hooks/useInfiniteScroll';
 import {
   PeopleLayout,
   ProtectedLayout
@@ -21,11 +21,11 @@ import type { ReactElement, ReactNode } from 'react';
 export default function People(): JSX.Element {
   const { user } = useAuth();
 
-  const { data, loading } = useCollection(
-    query(usersCollection, where('id', '!=', user?.id)),
-    {
-      allowNull: true
-    }
+  const { data, loading, LoadMore } = useInfiniteScroll(
+    usersCollection,
+    [where('id', '!=', user?.id)],
+    { allowNull: true, preserve: true },
+    { marginBottom: 500 }
   );
 
   const { back } = useRouter();
@@ -40,11 +40,14 @@ export default function People(): JSX.Element {
         ) : !data ? (
           <Error message='Something went wrong' />
         ) : (
-          <motion.div className='mt-0.5' {...variants}>
-            {data?.map((userData) => (
-              <UserCard {...userData} key={userData.id} follow />
-            ))}
-          </motion.div>
+          <>
+            <motion.div className='mt-0.5' {...variants}>
+              {data?.map((userData) => (
+                <UserCard {...userData} key={userData.id} follow />
+              ))}
+            </motion.div>
+            <LoadMore />
+          </>
         )}
       </section>
     </MainContainer>

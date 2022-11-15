@@ -2,7 +2,7 @@ import cn from 'clsx';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
-import { MobileSidebar } from '../sidebar/mobile-sidebar';
+import { MobileSidebar } from '@components/sidebar/mobile-sidebar';
 import type { ReactNode } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
 

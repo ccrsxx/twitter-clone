@@ -13,7 +13,7 @@ export type ImagesPreview = (ImageData & {
 })[];
 
 export type Tweet = {
-  text: string;
+  text: string | null;
   images: ImagesPreview | null;
   parent: { id: string; username: string } | null;
   userLikes: string[];

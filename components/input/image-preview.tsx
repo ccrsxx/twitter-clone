@@ -30,11 +30,9 @@ const variants: MotionProps = {
   transition: { type: 'spring', duration: 0.5 }
 };
 
-type PostImageBorderRadius = {
-  [key: number]: string[];
-};
+type PostImageBorderRadius = Record<number, string[]>;
 
-const postImageBorderRadius: PostImageBorderRadius = {
+const postImageBorderRadius: Readonly<PostImageBorderRadius> = {
   1: ['rounded-2xl'],
   2: ['rounded-tl-2xl rounded-bl-2xl', 'rounded-tr-2xl rounded-br-2xl'],
   3: ['rounded-tl-2xl rounded-bl-2xl', 'rounded-tr-2xl', 'rounded-br-2xl'],
@@ -130,7 +128,6 @@ export function ImagePreview({
               className='relative h-full w-full cursor-pointer transition 
                          hover:brightness-75 hover:duration-200'
               imgClassName={cn(
-                // '![border-style:solid] !border !border-light-line-reply dark:!border-dark-border',
                 isTweet
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl'

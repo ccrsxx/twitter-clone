@@ -9,13 +9,13 @@ type DisplayModalProps = {
   closeModal: () => void;
 };
 
-const themes: [Theme, string][] = [
+const themes: Readonly<[Theme, string][]> = [
   ['light', 'Default'],
   ['dim', 'Dim'],
   ['dark', 'Lights out']
 ];
 
-const accentsColor: Accent[] = [
+const accentsColor: Readonly<Accent[]> = [
   'blue',
   'yellow',
   'pink',

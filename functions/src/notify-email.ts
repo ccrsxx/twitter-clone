@@ -30,7 +30,7 @@ export const notifyEmail = regionalFunctions.firestore
       parent ? ' reply' : ''
     } from ${name} (@${username})`;
 
-    const emailText = `${text || 'No text provided'}${
+    const emailText = `${text ?? 'No text provided'}${
       images ? ` (${imagesLength} image${imagesLength > 1 ? 's' : ''})` : ''
     }\n\nLink to Tweet: ${tweetLink}\n\n- Firebase Function.`;
 

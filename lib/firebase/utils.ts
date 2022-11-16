@@ -91,31 +91,32 @@ export async function manageFollow(
   userId: string,
   targetUserId: string
 ): Promise<void> {
+  const batch = writeBatch(db);
+
   const userDocRef = doc(usersCollection, userId);
   const targetUserDocRef = doc(usersCollection, targetUserId);
 
-  if (type === 'follow')
-    await Promise.all([
-      updateDoc(userDocRef, {
-        following: arrayUnion(targetUserId),
-        updatedAt: serverTimestamp()
-      }),
-      updateDoc(targetUserDocRef, {
-        followers: arrayUnion(userId),
-        updatedAt: serverTimestamp()
-      })
-    ]);
-  else
-    await Promise.all([
-      updateDoc(userDocRef, {
-        following: arrayRemove(targetUserId),
-        updatedAt: serverTimestamp()
-      }),
-      updateDoc(targetUserDocRef, {
-        followers: arrayRemove(userId),
-        updatedAt: serverTimestamp()
-      })
-    ]);
+  if (type === 'follow') {
+    batch.update(userDocRef, {
+      following: arrayUnion(targetUserId),
+      updatedAt: serverTimestamp()
+    });
+    batch.update(targetUserDocRef, {
+      followers: arrayUnion(userId),
+      updatedAt: serverTimestamp()
+    });
+  } else {
+    batch.update(userDocRef, {
+      following: arrayRemove(targetUserId),
+      updatedAt: serverTimestamp()
+    });
+    batch.update(targetUserDocRef, {
+      followers: arrayRemove(userId),
+      updatedAt: serverTimestamp()
+    });
+  }
+
+  await batch.commit();
 }
 
 export async function removeTweet(tweetId: string): Promise<void> {
@@ -189,55 +190,39 @@ export async function manageTotalPhotos(
   });
 }
 
-export async function manageUserTweet(
-  type: 'tweet' | 'untweet',
-  userId: string,
-  tweetId: string
-): Promise<void> {
-  const userStatsRef = doc(userStatsCollection(userId), 'stats');
-  await updateDoc(userStatsRef, {
-    tweets: type === 'tweet' ? arrayUnion(tweetId) : arrayRemove(tweetId),
-    updatedAt: serverTimestamp()
-  });
-}
-
 export function manageRetweet(
   type: 'retweet' | 'unretweet',
   userId: string,
   tweetId: string
 ) {
   return async (): Promise<void> => {
+    const batch = writeBatch(db);
+
     const tweetRef = doc(tweetsCollection, tweetId);
+    const userStatsRef = doc(userStatsCollection(userId), 'stats');
 
-    if (type === 'retweet')
-      await Promise.all([
-        updateDoc(tweetRef, {
-          userRetweets: arrayUnion(userId),
-          updatedAt: serverTimestamp()
-        }),
-        manageUserTweet('tweet', userId, tweetId)
-      ]);
-    else
-      await Promise.all([
-        updateDoc(tweetRef, {
-          userRetweets: arrayRemove(userId),
-          updatedAt: serverTimestamp()
-        }),
-        manageUserTweet('untweet', userId, tweetId)
-      ]);
+    if (type === 'retweet') {
+      batch.update(tweetRef, {
+        userRetweets: arrayUnion(userId),
+        updatedAt: serverTimestamp()
+      });
+      batch.update(userStatsRef, {
+        tweets: arrayUnion(tweetId),
+        updatedAt: serverTimestamp()
+      });
+    } else {
+      batch.update(tweetRef, {
+        userRetweets: arrayRemove(userId),
+        updatedAt: serverTimestamp()
+      });
+      batch.update(userStatsRef, {
+        tweets: arrayRemove(tweetId),
+        updatedAt: serverTimestamp()
+      });
+    }
+
+    await batch.commit();
   };
-}
-
-export async function manageUserLike(
-  type: 'like' | 'unlike',
-  userId: string,
-  tweetId: string
-): Promise<void> {
-  const userStatsRef = doc(userStatsCollection(userId), 'stats');
-  await updateDoc(userStatsRef, {
-    likes: type === 'like' ? arrayUnion(tweetId) : arrayRemove(tweetId),
-    updatedAt: serverTimestamp()
-  });
 }
 
 export function manageLike(
@@ -246,24 +231,32 @@ export function manageLike(
   tweetId: string
 ) {
   return async (): Promise<void> => {
+    const batch = writeBatch(db);
+
+    const userStatsRef = doc(userStatsCollection(userId), 'stats');
     const tweetRef = doc(tweetsCollection, tweetId);
 
-    if (type === 'like')
-      await Promise.all([
-        updateDoc(tweetRef, {
-          userLikes: arrayUnion(userId),
-          updatedAt: serverTimestamp()
-        }),
-        manageUserLike('like', userId, tweetId)
-      ]);
-    else
-      await Promise.all([
-        updateDoc(tweetRef, {
-          userLikes: arrayRemove(userId),
-          updatedAt: serverTimestamp()
-        }),
-        manageUserLike('unlike', userId, tweetId)
-      ]);
+    if (type === 'like') {
+      batch.update(tweetRef, {
+        userLikes: arrayUnion(userId),
+        updatedAt: serverTimestamp()
+      });
+      batch.update(userStatsRef, {
+        likes: arrayUnion(tweetId),
+        updatedAt: serverTimestamp()
+      });
+    } else {
+      batch.update(tweetRef, {
+        userLikes: arrayRemove(userId),
+        updatedAt: serverTimestamp()
+      });
+      batch.update(userStatsRef, {
+        likes: arrayRemove(tweetId),
+        updatedAt: serverTimestamp()
+      });
+    }
+
+    await batch.commit();
   };
 }
 

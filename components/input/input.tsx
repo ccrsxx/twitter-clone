@@ -127,7 +127,14 @@ export function Input({
   const handleImageUpload = (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ): void => {
-    const files = 'clipboardData' in e ? e.clipboardData.files : e.target.files;
+    const isClipboardEvent = 'clipboardData' in e;
+
+    if (isClipboardEvent) {
+      const isPastingText = e.clipboardData.getData('text');
+      if (isPastingText) return;
+    }
+
+    const files = isClipboardEvent ? e.clipboardData.files : e.target.files;
 
     const imagesData = getImagesData(files, previewCount);
 

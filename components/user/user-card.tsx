@@ -21,7 +21,7 @@ export function UserCard(user: UserCardProps): JSX.Element {
         className='accent-tab hover-animation grid grid-cols-[auto,1fr] gap-3 px-4
                    py-3 hover:bg-light-primary/5 dark:hover:bg-dark-primary/5'
       >
-        <UserTooltip {...user} modal={modal}>
+        <UserTooltip avatar {...user} modal={modal}>
           <UserAvatar src={photoURL} alt={name} username={username} />
         </UserTooltip>
         <div className='flex flex-col gap-1 truncate xs:overflow-visible'>

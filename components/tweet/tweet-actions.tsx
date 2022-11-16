@@ -90,12 +90,13 @@ export function TweetActions({
       removeTweet(tweetId),
       manageTotalTweets('decrement', userId),
       hasImages && manageTotalPhotos('decrement', createdBy),
-      parentId && [manageReply('decrement', parentId)]
+      parentId && manageReply('decrement', parentId)
     ]);
 
     toast.success(
       `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
     );
+
     removeCloseModal();
   };
 

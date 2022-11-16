@@ -97,7 +97,7 @@ export function useInfiniteScroll<T>(
         onViewportEnter={makeItInView}
         onViewportLeave={makeItNotInView}
       >
-        <Loading className='m-5' />
+        <Loading className='mt-5' />
       </motion.div>
     ),
     [isLoadMoreHidden]

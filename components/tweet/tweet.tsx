@@ -111,7 +111,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 tweetIsRetweeted && (
                   <TweetStatus type='tweet'>
                     <Link href={profileUsername as string}>
-                      <a className='custom-underline text-sm font-bold'>
+                      <a className='custom-underline truncate text-sm font-bold'>
                         {userId === profileId ? 'You' : profileName} Retweeted
                       </a>
                     </Link>
@@ -120,7 +120,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               )}
             </AnimatePresence>
             <div className='flex flex-col items-center gap-2'>
-              <UserTooltip modal={modal} {...tweetUserData}>
+              <UserTooltip avatar modal={modal} {...tweetUserData}>
                 <UserAvatar src={photoURL} alt={name} username={username} />
               </UserTooltip>
               {parentTweet && (

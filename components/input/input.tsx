@@ -202,9 +202,9 @@ export function Input({
   return (
     <form
       className={cn('flex flex-col', {
-        'cursor-not-allowed': disabled,
         '-mx-4': reply,
-        'gap-2': replyModal
+        'gap-2': replyModal,
+        'cursor-not-allowed': disabled
       })}
       onSubmit={handleSubmit}
     >

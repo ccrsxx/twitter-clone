@@ -82,7 +82,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           </div>
         )}
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <UserTooltip {...tweetUserData}>
+          <UserTooltip avatar {...tweetUserData}>
             <UserAvatar src={photoURL} alt={name} username={username} />
           </UserTooltip>
           <div className='flex min-w-0 justify-between'>

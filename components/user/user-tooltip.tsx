@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import cn from 'clsx';
 import { useWindow } from '@lib/context/window-context';
 import { FollowButton } from '@components/ui/follow-button';
 import { NextImage } from '@components/ui/next-image';
@@ -22,6 +23,7 @@ type UserTooltipProps = Pick<
   | 'coverPhotoURL'
 > & {
   modal?: boolean;
+  avatar?: boolean;
   children: ReactNode;
 };
 
@@ -32,6 +34,7 @@ export function UserTooltip({
   bio,
   name,
   modal,
+  avatar,
   verified,
   children,
   photoURL,
@@ -52,10 +55,15 @@ export function UserTooltip({
   ];
 
   return (
-    <div className='group relative self-start text-light-primary dark:text-dark-primary'>
+    <div
+      className={cn(
+        'group relative self-start text-light-primary dark:text-dark-primary',
+        avatar ? '[&>div]:translate-y-2' : 'grid [&>div]:translate-y-[28px]'
+      )}
+    >
       {children}
       <div
-        className='menu-container invisible absolute left-1/2 w-72 translate-y-2 -translate-x-1/2 rounded-2xl 
+        className='menu-container invisible absolute left-1/2 w-72 -translate-x-1/2 rounded-2xl 
                    opacity-0 [transition:visibility_0ms_ease_400ms,opacity_200ms_ease_200ms] group-hover:visible 
                    group-hover:opacity-100 group-hover:delay-500'
       >

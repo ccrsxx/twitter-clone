@@ -62,7 +62,7 @@ export function UserHeader(): JSX.Element {
           {isInFollowPage ? `@${id as string}` : 'User'}
         </motion.h2>
       ) : (
-        <motion.div className='-mb-1' {...variants} key='found'>
+        <motion.div className='-mb-1 truncate' {...variants} key='found'>
           <UserName
             tag='h2'
             name={user.name}

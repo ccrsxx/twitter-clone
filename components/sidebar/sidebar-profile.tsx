@@ -48,9 +48,9 @@ export function SidebarProfile(): JSX.Element {
                 open && 'bg-light-primary/10 dark:bg-dark-primary/10'
               )}
             >
-              <div className='flex gap-3'>
+              <div className='flex gap-3 truncate'>
                 <UserAvatar src={photoURL} alt={name} size={40} />
-                <div className='hidden text-start leading-5 xl:block'>
+                <div className='hidden truncate text-start leading-5 xl:block'>
                   <UserName name={name} className='start' verified={verified} />
                   <UserUsername username={username} disableLink />
                 </div>
@@ -63,7 +63,7 @@ export function SidebarProfile(): JSX.Element {
             <AnimatePresence>
               {open && (
                 <Menu.Items
-                  className='menu-container absolute left-0 right-0 -top-36 w-max xl:w-full'
+                  className='menu-container absolute left-0 right-0 -top-36 w-60 xl:w-full'
                   as={motion.div}
                   {...variants}
                   static

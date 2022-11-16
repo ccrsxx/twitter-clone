@@ -1,5 +1,6 @@
+import { query, where } from 'firebase/firestore';
 import { useUser } from '@lib/context/user-context';
-import { useArrayDocument } from '@lib/hooks/useArrayDocument';
+import { useCollection } from '@lib/hooks/useCollection';
 import { usersCollection } from '@lib/firebase/collections';
 import { SEO } from '@components/common/seo';
 import { UserCards } from '@components/user/user-cards';
@@ -11,11 +12,18 @@ type UserFollowProps = {
 
 export function UserFollow({ type }: UserFollowProps): JSX.Element {
   const { user } = useUser();
-  const { name, username, following, followers } = user as User;
+  const { name, username } = user as User;
 
-  const { data, loading } = useArrayDocument(
-    type === 'following' ? following : followers,
-    usersCollection
+  const { data, loading } = useCollection(
+    query(
+      usersCollection,
+      where(
+        type === 'following' ? 'followers' : 'following',
+        'array-contains',
+        user?.id
+      )
+    ),
+    { allowNull: true }
   );
 
   return (

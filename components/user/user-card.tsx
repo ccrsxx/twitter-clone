@@ -18,18 +18,18 @@ export function UserCard(user: UserCardProps): JSX.Element {
   return (
     <Link href={`/user/${username}`}>
       <a
-        className='accent-tab hover-animation grid grid-cols-[auto,1fr] gap-3 px-4 py-3
-                   hover:bg-light-primary/5 dark:hover:bg-dark-primary/5'
+        className='accent-tab hover-animation grid grid-cols-[auto,1fr] gap-3 px-4
+                   py-3 hover:bg-light-primary/5 dark:hover:bg-dark-primary/5'
       >
         <UserTooltip {...user} modal={modal}>
           <UserAvatar src={photoURL} alt={name} username={username} />
         </UserTooltip>
-        <div className='flex flex-col gap-1'>
-          <div className='flex items-center justify-between'>
-            <div className='flex flex-col justify-center'>
+        <div className='flex flex-col gap-1 truncate xs:overflow-visible'>
+          <div className='flex items-center justify-between gap-2 truncate xs:overflow-visible'>
+            <div className='flex flex-col justify-center truncate xs:overflow-visible xs:whitespace-normal'>
               <UserTooltip {...user} modal={modal}>
                 <UserName
-                  className='-mb-1 self-start'
+                  className='-mb-1'
                   name={name}
                   username={username}
                   verified={verified}
@@ -44,7 +44,7 @@ export function UserCard(user: UserCardProps): JSX.Element {
             </div>
             <FollowButton userTargetId={id} userTargetUsername={username} />
           </div>
-          {follow && bio && <p>{bio}</p>}
+          {follow && bio && <p className='whitespace-normal'>{bio}</p>}
         </div>
       </a>
     </Link>

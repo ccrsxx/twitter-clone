@@ -128,8 +128,8 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               )}
             </div>
             <div className='flex min-w-0 flex-col'>
-              <div className='text-light-secondary dark:text-dark-secondary'>
-                <div className='flex gap-1'>
+              <div className='flex justify-between gap-2 text-light-secondary dark:text-dark-secondary'>
+                <div className='flex gap-1 truncate xs:overflow-visible xs:whitespace-normal'>
                   <UserTooltip modal={modal} {...tweetUserData}>
                     <UserName
                       name={name}
@@ -143,16 +143,18 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                   </UserTooltip>
                   <TweetDate tweetLink={tweetLink} createdAt={createdAt} />
                 </div>
-                {!modal && (
-                  <TweetActions
-                    isOwner={isOwner}
-                    tweetId={tweetId}
-                    parentId={parentId}
-                    username={username}
-                    hasImages={!!images}
-                    createdBy={createdBy}
-                  />
-                )}
+                <div className='px-4'>
+                  {!modal && (
+                    <TweetActions
+                      isOwner={isOwner}
+                      tweetId={tweetId}
+                      parentId={parentId}
+                      username={username}
+                      hasImages={!!images}
+                      createdBy={createdBy}
+                    />
+                  )}
+                </div>
               </div>
               {(reply || modal) && (
                 <p

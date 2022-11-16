@@ -25,13 +25,13 @@ export function UserName({
     <Link href={username ? `/user/${username}` : '#'}>
       <a
         className={cn(
-          'flex items-center gap-1 font-bold',
+          'flex items-center gap-1 truncate font-bold',
           username ? 'custom-underline' : 'pointer-events-none',
           className
         )}
         tabIndex={username ? 0 : -1}
       >
-        <CustomTag>{name}</CustomTag>
+        <CustomTag className='truncate'>{name}</CustomTag>
         {verified && (
           <i>
             <HeroIcon

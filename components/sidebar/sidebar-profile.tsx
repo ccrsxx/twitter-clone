@@ -74,9 +74,9 @@ export function SidebarProfile(): JSX.Element {
                     as='div'
                     disabled
                   >
-                    <div className='flex items-center gap-3'>
+                    <div className='flex items-center gap-3 truncate'>
                       <UserAvatar src={photoURL} alt={name} />
-                      <div>
+                      <div className='truncate'>
                         <UserName name={name} verified={verified} />
                         <UserUsername username={username} disableLink />
                       </div>

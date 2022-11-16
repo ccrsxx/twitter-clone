@@ -16,7 +16,7 @@ export function UserUsername({
     <Link href={`/user/${username}`}>
       <a
         className={cn(
-          'text-light-secondary dark:text-dark-secondary',
+          'truncate text-light-secondary dark:text-dark-secondary',
           className,
           disableLink && 'pointer-events-none'
         )}

@@ -85,8 +85,8 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           <UserTooltip {...tweetUserData}>
             <UserAvatar src={photoURL} alt={name} username={username} />
           </UserTooltip>
-          <div className='flex min-w-0 flex-col gap-1'>
-            <div className='flex flex-col'>
+          <div className='flex min-w-0 justify-between'>
+            <div className='flex flex-col truncate xs:overflow-visible xs:whitespace-normal'>
               <UserTooltip {...tweetUserData}>
                 <UserName
                   className='-mb-1'
@@ -99,15 +99,17 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
                 <UserUsername username={username} />
               </UserTooltip>
             </div>
-            <TweetActions
-              viewTweet
-              isOwner={isOwner}
-              tweetId={tweetId}
-              parentId={parentId}
-              username={username}
-              hasImages={!!images}
-              createdBy={createdBy}
-            />
+            <div className='px-4'>
+              <TweetActions
+                viewTweet
+                isOwner={isOwner}
+                tweetId={tweetId}
+                parentId={parentId}
+                username={username}
+                hasImages={!!images}
+                createdBy={createdBy}
+              />
+            </div>
           </div>
         </div>
       </div>

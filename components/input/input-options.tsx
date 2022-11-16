@@ -122,10 +122,10 @@ export function InputOptions({
           />
           {!reply && (
             <>
-              <i className='h-8 w-[1px] bg-[#B9CAD3] dark:bg-[#3E4144]' />
+              <i className='hidden h-8 w-[1px] bg-[#B9CAD3] dark:bg-[#3E4144] xs:block' />
               <Button
-                className='group relative rounded-full border border-light-line-reply
-                           p-[1px] text-main-accent dark:border-light-secondary'
+                className='group relative hidden rounded-full border border-light-line-reply p-[1px]
+                           text-main-accent dark:border-light-secondary xs:block'
                 disabled
               >
                 <HeroIcon className='h-5 w-5' iconName='PlusIcon' />

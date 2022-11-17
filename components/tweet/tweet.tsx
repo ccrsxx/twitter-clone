@@ -51,7 +51,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
     user: tweetUserData
   } = tweet;
 
-  const { name, username, verified, photoURL } = tweetUserData;
+  const { id: ownerId, name, username, verified, photoURL } = tweetUserData;
 
   const { user } = useAuth();
 
@@ -147,6 +147,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                   {!modal && (
                     <TweetActions
                       isOwner={isOwner}
+                      ownerId={ownerId}
                       tweetId={tweetId}
                       parentId={parentId}
                       username={username}

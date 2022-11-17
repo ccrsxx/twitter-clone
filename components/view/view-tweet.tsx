@@ -39,7 +39,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     user: tweetUserData
   } = tweet;
 
-  const { name, username, verified, photoURL } = tweetUserData;
+  const { id: ownerId, name, username, verified, photoURL } = tweetUserData;
 
   const { user } = useAuth();
 
@@ -103,6 +103,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
               <TweetActions
                 viewTweet
                 isOwner={isOwner}
+                ownerId={ownerId}
                 tweetId={tweetId}
                 parentId={parentId}
                 username={username}

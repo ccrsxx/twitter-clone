@@ -39,6 +39,7 @@ export const variants: Variants = {
 
 type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   isOwner: boolean;
+  ownerId: string;
   tweetId: string;
   username: string;
   parentId?: string;
@@ -48,6 +49,7 @@ type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
 
 export function TweetActions({
   isOwner,
+  ownerId,
   tweetId,
   parentId,
   username,
@@ -88,7 +90,7 @@ export function TweetActions({
 
     await Promise.all([
       removeTweet(tweetId),
-      manageTotalTweets('decrement', userId),
+      manageTotalTweets('decrement', ownerId),
       hasImages && manageTotalPhotos('decrement', createdBy),
       parentId && manageReply('decrement', parentId)
     ]);

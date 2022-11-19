@@ -8,6 +8,7 @@ import { Modal } from '@components/modal/modal';
 import { NextImage } from '@components/ui/next-image';
 import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
+import { ToolTip } from '@components/ui/tooltip';
 import type { MotionProps } from 'framer-motion';
 import type { ImagesPreview, ImageData } from '@lib/types/file';
 
@@ -140,12 +141,13 @@ export function ImagePreview({
             />
             {removeImage && (
               <Button
-                className='absolute top-0 left-0 translate-x-1 translate-y-1
+                className='group absolute top-0 left-0 translate-x-1 translate-y-1
                            bg-light-primary/75 p-1 backdrop-blur-sm 
                            hover:bg-image-preview-hover/75'
                 onClick={preventBubbling(removeImage(id))}
               >
                 <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
+                <ToolTip className='translate-y-2' tip='Remove' />
               </Button>
             )}
           </motion.button>

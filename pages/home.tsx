@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { AnimatePresence } from 'framer-motion';
 import { where, orderBy } from 'firebase/firestore';
 import { useWindow } from '@lib/context/window-context';

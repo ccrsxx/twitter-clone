@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-
 import { useMemo, useEffect } from 'react';
 import { doc } from 'firebase/firestore';
 import { useDocument } from '@lib/hooks/useDocument';
@@ -33,6 +31,7 @@ export function TweetParent({
 
   useEffect(() => {
     addParentId(parentId, componentId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading || !isParentAlreadyLoaded || !data) return null;

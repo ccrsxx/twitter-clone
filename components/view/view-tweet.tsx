@@ -149,14 +149,10 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             userLikes={userLikes}
             userRetweets={userRetweets}
             userReplies={userReplies}
-            openModal={!parent ? openModal : undefined}
+            openModal={openModal}
           />
         </div>
-        <Input
-          reply
-          parent={{ id: tweetId, username: username }}
-          disabled={!!parent}
-        />
+        <Input reply parent={{ id: tweetId, username: username }} />
       </div>
     </motion.article>
   );

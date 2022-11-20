@@ -30,7 +30,6 @@ export default function TweetId(): JSX.Element {
   );
 
   const viewTweetRef = useRef<HTMLElement>(null);
-  const viewTweetHasParent = !!tweetData?.parent;
 
   const { data: repliesData, loading: repliesLoading } = useCollection(
     query(
@@ -38,7 +37,7 @@ export default function TweetId(): JSX.Element {
       where('parent.id', '==', id),
       orderBy('createdAt', 'desc')
     ),
-    { includeUser: true, allowNull: true, disabled: viewTweetHasParent }
+    { includeUser: true, allowNull: true }
   );
 
   const { text, images } = tweetData ?? {};

@@ -81,7 +81,7 @@ export function TweetShare({
           <AnimatePresence>
             {open && (
               <Popover.Panel
-                className='menu-container group absolute right-0 top-11 w-max text-light-primary dark:text-dark-primary'
+                className='menu-container group absolute right-0 top-11 whitespace-nowrap text-light-primary dark:text-dark-primary'
                 as={motion.div}
                 {...variants}
                 static

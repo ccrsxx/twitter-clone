@@ -21,7 +21,7 @@ export function TweetDate({
         <Link href={tweetLink}>
           <a
             className={cn(
-              'custom-underline peer',
+              'custom-underline peer whitespace-nowrap',
               viewTweet && 'text-light-secondary dark:text-dark-secondary'
             )}
           >

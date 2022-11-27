@@ -1,19 +1,23 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth.uid == 'Twt0A27bx9YcG4vu3RTsR7ifJzf2';
+    }
+    
+    function isAuthorized(userId) {
+      return request.auth != null && (userId == request.auth.uid || isAdmin());
+    }
+  
     function isValidImage() {
       return request.resource.contentType.matches('image/.*')
              && request.resource.size < 20 * 1024 * 1024;
     }
 
-    function isAuthorized(userId) {
-      return request.auth != null && userId == request.auth.uid;
-    }
-
     match /images/{userId}/{fileName} {
       allow read: if request.auth != null;
-      allow update, delete: if false;
       allow create: if isAuthorized(userId) && isValidImage();
+      allow update, delete: if false;
     }
   }
 }

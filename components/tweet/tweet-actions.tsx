@@ -47,6 +47,23 @@ type TweetActionsProps = Pick<Tweet, 'createdBy'> & {
   viewTweet?: boolean;
 };
 
+type PinModalData = Record<'title' | 'description' | 'mainBtnLabel', string>;
+
+const pinModalData: Readonly<PinModalData[]> = [
+  {
+    title: 'Unpin Tweet from profile?',
+    description:
+      'This will no longer appear automatically at the top of your profile.',
+    mainBtnLabel: 'Unpin'
+  },
+  {
+    title: 'Pin Tweet to from profile?',
+    description:
+      'This will appear at the top of your profile and replace any previously pinned Tweet.',
+    mainBtnLabel: 'Pin'
+  }
+];
+
 export function TweetActions({
   isOwner,
   ownerId,
@@ -125,21 +142,8 @@ export function TweetActions({
 
   const userIsFollowed = following.includes(createdBy);
 
-  const pinModalData = useMemo(
-    () =>
-      tweetIsPinned
-        ? ({
-            title: 'Unpin Tweet from profile?',
-            description:
-              'This will no longer appear automatically at the top of your profile.',
-            mainBtnLabel: 'Unpin'
-          } as const)
-        : ({
-            title: 'Pin Tweet to from profile?',
-            description:
-              'This will appear at the top of your profile and replace any previously pinned Tweet.',
-            mainBtnLabel: 'Pin'
-          } as const),
+  const currentPinModalData = useMemo(
+    () => pinModalData[+tweetIsPinned],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [pinOpen]
   );
@@ -172,7 +176,7 @@ export function TweetActions({
         closeModal={pinCloseModal}
       >
         <ActionModal
-          {...pinModalData}
+          {...currentPinModalData}
           mainBtnClassName='bg-light-primary hover:bg-light-primary/90 active:bg-light-primary/80 dark:text-light-primary
                             dark:bg-light-border dark:hover:bg-light-border/90 dark:active:bg-light-border/75'
           focusOnMainBtn

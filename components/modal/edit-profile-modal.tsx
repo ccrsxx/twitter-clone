@@ -109,7 +109,7 @@ export function EditProfileModal({
           )}
           <div className='absolute left-1/2 top-1/2 flex -translate-y-1/2 -translate-x-1/2 gap-4'>
             <Button
-              className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
+              className='group/inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
                          focus-visible:bg-image-preview-hover/50'
               onClick={handleClick('cover')}
             >
@@ -121,7 +121,7 @@ export function EditProfileModal({
             </Button>
             {coverPhotoURL && (
               <Button
-                className='group-inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
+                className='group/inner relative bg-light-primary/60 p-2 hover:bg-image-preview-hover/50
                            focus-visible:bg-image-preview-hover/50'
                 onClick={removeCoverImage}
               >
@@ -157,7 +157,7 @@ export function EditProfileModal({
                 layout='fill'
               />
               <Button
-                className='group-inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                className='group/inner absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
                            bg-light-primary/60 p-2 hover:bg-image-preview-hover/50 
                            focus-visible:bg-image-preview-hover/50'
                 onClick={handleClick('profile')}

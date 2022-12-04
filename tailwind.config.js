@@ -41,26 +41,11 @@ module.exports = {
         'twitter-icon': '#D6D9DB',
         'image-preview-hover': '#272C30',
       }
-    },
-    groups: ['inner'],
-    groupVariants: ['hover', 'focus-visible']
+    }
   },
   plugins: [
     ({ addVariant }) => {
       addVariant('inner', '& > *');
-    },
-    ({ addVariant, theme }) => {
-      const groups = theme('groups') ?? [];
-      const groupVariants = theme('groupVariants') ?? [];
-
-      groups.forEach((group) =>
-        groupVariants.forEach((variant) =>
-          addVariant(
-            `group-${group}-${variant}`,
-            () => `:merge(.group-${group}):${variant} &`
-          )
-        )
-      );
     }
   ]
 };

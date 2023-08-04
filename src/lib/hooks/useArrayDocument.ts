@@ -60,9 +60,9 @@ export function useArrayDocument<T>(
           cachedDocsId.map((id) => getDoc(doc(collection, id)))
         );
 
-        const docs = docsSnapshot.map((doc) =>
-          doc.data({ serverTimestamps: 'estimate' })
-        );
+        const docs = docsSnapshot
+          .filter((doc) => doc.exists())
+          .map((doc) => doc.data({ serverTimestamps: 'estimate' }));
 
         if (!docs.length) {
           setData(null);

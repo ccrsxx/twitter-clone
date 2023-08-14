@@ -102,7 +102,7 @@ Here are the steps to run the project locally.
 
         ![](/.github/assets/emu_setup_1.png)
 
-        1. Next, you'll be asked to select the emulators that you want to setup. In this choice, select the following emulators:
+    1. Next, you'll be asked to select the emulators that you want to setup. In this choice, select the following emulators:
 
         - Authentication Emulator
         - Firestore Emulator
@@ -113,7 +113,7 @@ Here are the steps to run the project locally.
 
         ![](/.github/assets/emu_setup_2.png)
 
-        1. Following that, you'll be asked to setup the ports for various emulator services that we just selected. We'll just use the default ones to start so press enter for each of these questions and continue as shown below:
+    1. Following that, you'll be asked to setup the ports for various emulator services that we just selected. We'll just use the default ones to start so press enter for each of these questions and continue as shown below:
 
         - When you're asked to select whether you want to enable the Emulator UI, enter `y` as the response.
         - When you're asked which port to use for the Emulator UI, leave it empty and press Enter to continue.
@@ -121,11 +121,11 @@ Here are the steps to run the project locally.
 
         ![](/.github/assets/emu_setup_3.png)
 
-        1. Finally, if everything went as expected, then you'll be greeted with this screen:
+    1. Finally, if everything went as expected, then you'll be greeted with this screen:
 
         ![](/.github/assets/emu_setup_4.png)
 
-        1. At this point, you can run the following command to have a fully functional Twitter clone running locally:
+    1. At this point, you can run the following command to have a fully functional Twitter clone running locally:
 
         ```bash
         npm run dev:emulators
@@ -133,13 +133,13 @@ Here are the steps to run the project locally.
 
 1. Option 2: Use the Firebase Cloud backend:
 
-        1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
+    1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
 
         ```bash
         firebase deploy --except functions
         ```
 
-        1. Run the project
+    1. Run the project
 
         ```bash
         npm run dev

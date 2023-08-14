@@ -90,60 +90,60 @@ Here are the steps to run the project locally.
 
 1. At this point, you have two choices. Either run this project completely locally using emulators, or, run it using the Firestore backend on the cloud.
 
-1. Option 1: Running the project locally using the Firebase Emulators (Skip to Option 2 if you want to use the real backend or you want to deploy the project)
+    1. Option 1: Running the project locally using the Firebase Emulators (Skip to Option 2 if you want to use the real backend or you want to deploy the project)
 
-1. Follow the steps to setup the Firebase emulators:
+    1. Follow the steps to setup the Firebase emulators:
 
-   ```bash
-   firebase init
-   ```
+        ```bash
+        firebase init
+        ```
 
-   - You'll be greeted with following prompt from Firebase with a lot of choices. You want to use the up and down arrow keys to go through the options and select the option that says: `Emulators: Set up local emulators for Firebase products` by pressing Space key, as seen below. Once selected, press the Enter key to proceed.
+        - You'll be greeted with following prompt from Firebase with a lot of choices. You want to use the up and down arrow keys to go through the options and select the option that says: `Emulators: Set up local emulators for Firebase products` by pressing Space key, as seen below. Once selected, press the Enter key to proceed.
 
-   ![](/.github/assets/emu_setup_1.png)
+        ![](/.github/assets/emu_setup_1.png)
 
-1. Next, you'll be asked to select the emulators that you want to setup. In this choice, select the following emulators:
+        1. Next, you'll be asked to select the emulators that you want to setup. In this choice, select the following emulators:
 
-   - Authentication Emulator
-   - Firestore Emulator
-   - Functions Emulator
-   - Storage Emulator
+        - Authentication Emulator
+        - Firestore Emulator
+        - Functions Emulator
+        - Storage Emulator
 
-   See the image below for more details about the selection:
+        See the image below for more details about the selection:
 
-   ![](/.github/assets/emu_setup_2.png)
+        ![](/.github/assets/emu_setup_2.png)
 
-1. Following that, you'll be asked to setup the ports for various emulator services that we just selected. We'll just use the default ones to start so press enter for each of these questions and continue as shown below:
+        1. Following that, you'll be asked to setup the ports for various emulator services that we just selected. We'll just use the default ones to start so press enter for each of these questions and continue as shown below:
 
-   - When you're asked to select whether you want to enable the Emulator UI, enter `y` as the response.
-   - When you're asked which port to use for the Emulator UI, leave it empty and press Enter to continue.
-   - Finally, it'll ask you to download the Emulators, enter `y` to start downloading them.
+        - When you're asked to select whether you want to enable the Emulator UI, enter `y` as the response.
+        - When you're asked which port to use for the Emulator UI, leave it empty and press Enter to continue.
+        - Finally, it'll ask you to download the Emulators, enter `y` to start downloading them.
 
-   ![](/.github/assets/emu_setup_3.png)
+        ![](/.github/assets/emu_setup_3.png)
 
-1. Finally, if everything went as expected, then you'll be greeted with this screen:
+        1. Finally, if everything went as expected, then you'll be greeted with this screen:
 
-   ![](/.github/assets/emu_setup_4.png)
+        ![](/.github/assets/emu_setup_4.png)
 
-1. At this point, you can run the following command to have a fully functional Twitter clone running locally:
+        1. At this point, you can run the following command to have a fully functional Twitter clone running locally:
 
-   ```bash
-   npm run dev:emulators
-   ```
+        ```bash
+        npm run dev:emulators
+        ```
 
 1. Option 2: Use the Firebase Cloud backend:
 
-1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
+        1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
 
-   ```bash
-   firebase deploy --except functions
-   ```
+        ```bash
+        firebase deploy --except functions
+        ```
 
-1. Run the project
+        1. Run the project
 
-   ```bash
-   npm run dev
-   ```
+        ```bash
+        npm run dev
+        ```
 
 > **_Note_**: When you deploy Firestore indexes rules, it might take a few minutes to complete. So before the indexes are enabled, you will get an error when you fetch the data from Firestore.<br><br>You can check the status of your Firestore indexes with the link below, replace `your-project-id` with your project ID: https://console.firebase.google.com/u/0/project/your-project-id/firestore/indexes
 

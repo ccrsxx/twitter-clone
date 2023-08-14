@@ -2,6 +2,7 @@ import { initializeApp, getApps } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import {
   connectFirestoreEmulator,
+  getFirestore,
   initializeFirestore
 } from 'firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
@@ -23,12 +24,11 @@ function initialize(): {
   firebaseApp: FirebaseApp;
   storage: FirebaseStorage;
   functions: Functions;
+  analytics?: Analytics;
 } {
   const firebaseApp = initializeApp(getFirebaseConfig());
   const auth = getAuth(firebaseApp);
-  const firestore = initializeFirestore(firebaseApp, {
-    experimentalAutoDetectLongPolling: true
-  });
+  const firestore = getFirestore(firebaseApp);
   const storage = getStorage(firebaseApp);
   const functions = getFunctions(firebaseApp);
 

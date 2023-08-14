@@ -82,7 +82,9 @@ export function AuthContextProvider({
           accent: null,
           website: null,
           location: null,
-          photoURL: photoURL as string,
+          photoURL: photoURL
+            ? photoURL
+            : ('/assets/twitter-avatar.jpg' as string),
           username: randomUsername,
           verified: false,
           following: [],

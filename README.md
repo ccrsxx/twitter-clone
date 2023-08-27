@@ -94,6 +94,8 @@ Here are the steps to run the project locally.
 
     1. Follow the steps to setup the Firebase emulators:
 
+        - Kindly install [Java JDK version 11 or higher](https://jdk.java.net/) before proceeding.
+
         ```bash
         firebase init
         ```

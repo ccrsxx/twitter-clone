@@ -1,12 +1,11 @@
-import { getApps, initializeApp } from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getAuth, connectAuthEmulator } from 'firebase/auth';
 import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getStorage, connectStorageEmulator } from 'firebase/storage';
 import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
-import { getAnalytics } from 'firebase/analytics';
+import { isUsingEmulator } from '@lib/env';
 import { getFirebaseConfig } from './config';
 import type { Auth } from 'firebase/auth';
-import type { Analytics } from 'firebase/analytics';
 import type { Functions } from 'firebase/functions';
 import type { Firestore } from 'firebase/firestore';
 import type { FirebaseApp } from 'firebase/app';
@@ -17,7 +16,6 @@ type Firebase = {
   storage: FirebaseStorage;
   firestore: Firestore;
   functions: Functions;
-  analytics?: Analytics;
   firebaseApp: FirebaseApp;
 };
 
@@ -29,45 +27,30 @@ function initialize(): Firebase {
   const firestore = getFirestore(firebaseApp);
   const functions = getFunctions(firebaseApp);
 
-  if (typeof window !== 'undefined') {
-    const analytics = getAnalytics(firebaseApp);
-    return { analytics, firebaseApp, auth, firestore, storage, functions };
-  }
-
   return { firebaseApp, auth, firestore, storage, functions };
 }
 
-function connectToEmulators({
+function connectToEmulator({
   auth,
   storage,
   firestore,
   functions,
-  analytics,
   firebaseApp
 }: Firebase): Firebase {
-  if (
-    typeof window !== 'undefined' &&
-    window.location.hostname === 'localhost' &&
-    process.env.NODE_ENV === 'development'
-  ) {
-    connectAuthEmulator(auth, 'http://localhost:9099', {
-      disableWarnings: true
-    });
-    connectStorageEmulator(storage, 'localhost', 9199);
-    connectFirestoreEmulator(firestore, 'localhost', 8080);
-    connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+  connectStorageEmulator(storage, 'localhost', 9199);
+  connectFirestoreEmulator(firestore, 'localhost', 8080);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
 
-    return { firebaseApp, auth, firestore, storage, functions };
-  }
-
-  return { firebaseApp, auth, firestore, storage, functions, analytics };
+  return { firebaseApp, auth, firestore, storage, functions };
 }
 
 export function getFirebase(): Firebase {
-  const existingApp = getApps().at(0);
-  if (existingApp) return initialize();
-  const services = connectToEmulators(initialize());
-  return services;
+  const firebase = initialize();
+
+  if (isUsingEmulator) return connectToEmulator(firebase);
+
+  return firebase;
 }
 
 export const { firestore: db, auth, storage } = getFirebase();

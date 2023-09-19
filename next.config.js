@@ -4,9 +4,9 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: [
+      'localhost',
       'lh3.googleusercontent.com',
-      'firebasestorage.googleapis.com',
-      'localhost'
+      'firebasestorage.googleapis.com'
     ]
   }
 };

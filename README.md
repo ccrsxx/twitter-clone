@@ -88,17 +88,33 @@ Here are the steps to run the project locally.
    firebase use your-project-id
    ```
 
-1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
+1. At this point, you have two choices. Either run this project using the Firebase on the cloud or locally using emulator.
 
-   ```bash
-   firebase deploy --except functions
-   ```
+   1. Using the Firebase Cloud Backend:
 
-1. Run the project
+      1. Deploy Firestore rules, Firestore indexes, and Cloud Storage rules
 
-   ```bash
-   npm run dev
-   ```
+         ```bash
+         firebase deploy --except functions
+         ```
+
+      1. Run the project
+
+         ```bash
+         npm run dev
+         ```
+
+   1. Using Firebase Local Emulator:
+
+      1. Install [Java JDK version 11 or higher](https://jdk.java.net/) before proceeding. This is required to run the emulators.
+
+      1. Set the environment variable `NEXT_PUBLIC_USE_EMULATOR` to `true` in `.env.development`. This will make the app use the emulators instead of the cloud backend.
+
+      1. At this point, you can run the following command to have a fully functional Twitter clone running locally:
+
+         ```bash
+         npm run dev:emulators
+         ```
 
 > **_Note_**: When you deploy Firestore indexes rules, it might take a few minutes to complete. So before the indexes are enabled, you will get an error when you fetch the data from Firestore.<br><br>You can check the status of your Firestore indexes with the link below, replace `your-project-id` with your project ID: https://console.firebase.google.com/u/0/project/your-project-id/firestore/indexes
 

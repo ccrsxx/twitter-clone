@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "emulators": "firebase emulators:start --only firestore,auth,storage,functions",
     "dev": "next dev -p 80",
+    "dev:emulators": "concurrently npm:dev npm:emulators",
     "build": "next build",
     "start": "next start",
     "format": "prettier --check .",
@@ -35,6 +37,7 @@
     "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.32.0",
     "autoprefixer": "^10.4.8",
+    "concurrently": "^8.2.1",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.4",
     "eslint-import-resolver-typescript": "^3.4.0",

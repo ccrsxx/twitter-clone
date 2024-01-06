@@ -13,7 +13,7 @@ import {
 } from '@lib/firebase/utils';
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
-import { getImagesData } from '@lib/validation';
+import { getMediaData } from '@lib/validation';
 import { UserAvatar } from '@components/user/user-avatar';
 import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
@@ -136,7 +136,8 @@ export function Input({
 
     const files = isClipboardEvent ? e.clipboardData.files : e.target.files;
 
-    const imagesData = getImagesData(files, previewCount);
+    //const imagesData = getMediaData(files, previewCount);
+    const imagesData = getMediaData(files);
 
     if (!imagesData) {
       toast.error('Please choose a GIF or photo up to 4');

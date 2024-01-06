@@ -22,12 +22,14 @@ export function UpdateUsername(): JSX.Element {
   const [visited, setVisited] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [searching, setSearching] = useState(false);
 
   const { user } = useAuth();
   const { open, openModal, closeModal } = useModal();
 
   useEffect(() => {
     const checkAvailability = async (value: string): Promise<void> => {
+      setSearching(true);
       const empty = await checkUsernameAvailability(value);
 
       if (empty) setAvailable(true);
@@ -35,6 +37,7 @@ export function UpdateUsername(): JSX.Element {
         setAvailable(false);
         setErrorMessage('This username has been taken. Please choose another.');
       }
+      setSearching(false);
     };
 
     if (!visited && inputValue.length > 0) setVisited(true);
@@ -62,6 +65,7 @@ export function UpdateUsername(): JSX.Element {
     e.preventDefault();
 
     if (!available) return;
+    if (searching) return;
 
     setLoading(true);
 

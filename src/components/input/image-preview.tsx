@@ -77,7 +77,6 @@ export function ImagePreview({
   };
 
   const isTweet = tweet ?? viewTweet;
-
   return (
     <div
       className={cn(
@@ -125,20 +124,35 @@ export function ImagePreview({
             layout={!isTweet ? true : false}
             key={id}
           >
-            <NextImage
-              className='relative h-full w-full cursor-pointer transition 
-                         hover:brightness-75 hover:duration-200'
-              imgClassName={cn(
-                isTweet
-                  ? postImageBorderRadius[previewCount][index]
-                  : 'rounded-2xl'
-              )}
-              previewCount={previewCount}
-              layout='fill'
-              src={src}
-              alt={alt}
-              useSkeleton={isTweet}
-            />
+            {imagesPreview[index].type === undefined ||
+            !imagesPreview[index].type?.includes('video') ? (
+              <NextImage
+                className='relative h-full w-full cursor-pointer transition 
+                          hover:brightness-75 hover:duration-200'
+                imgClassName={cn(
+                  isTweet
+                    ? postImageBorderRadius[previewCount][index]
+                    : 'rounded-2xl'
+                )}
+                previewCount={previewCount}
+                layout='fill'
+                src={src}
+                alt={alt}
+                useSkeleton={isTweet}
+              />
+            ) : (
+              <video
+                className={cn(
+                  `relative h-full w-full cursor-pointer transition 
+                  hover:brightness-75 hover:duration-200`,
+                  isTweet
+                    ? postImageBorderRadius[previewCount][index]
+                    : 'rounded-2xl'
+                )}
+                src={src}
+                controls
+              />
+            )}
             {removeImage && (
               <Button
                 className='group absolute top-0 left-0 translate-x-1 translate-y-1

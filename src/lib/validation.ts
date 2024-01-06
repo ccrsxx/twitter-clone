@@ -29,6 +29,27 @@ export function isValidImage(name: string, bytes: number): boolean {
   return isValidImageExtension(name) && bytes < 20 * Math.pow(1024, 2);
 }
 
+function isValidMedia(name: string, size: number): boolean {
+  const allowedExtensions = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'mp4',
+    'mov',
+    'avi',
+    'mkv'
+  ];
+  const maxFileSize = 50 * 1024 * 1024; // 50 MB
+
+  const fileExtension = getFileExtension(name);
+  return allowedExtensions.includes(fileExtension) && size <= maxFileSize;
+}
+
+function getFileExtension(fileName: string): string {
+  return fileName.split('.').pop()?.toLowerCase() || '';
+}
+
 export function isValidUsername(
   username: string,
   value: string
@@ -77,11 +98,47 @@ export function getImagesData(
   const imagesPreviewData = rawImages.map((image, index) => ({
     id: imagesId[index].id,
     src: URL.createObjectURL(image),
-    alt: imagesId[index].name ?? image.name
+    alt: imagesId[index].name ?? image.name,
+    type: 'image'
   }));
 
   const selectedImagesData = rawImages.map((image, index) =>
     renameFile(image, imagesId[index].id, imagesId[index].name)
+  );
+
+  return { imagesPreviewData, selectedImagesData };
+}
+
+export function getMediaData(files: FileList | null): ImagesData | null {
+  if (!files || !files.length) return null;
+
+  //const singleEditingMode = currentFiles === undefined;
+
+  const validMediaFiles = Array.from(files).filter(({ name, size }) =>
+    isValidMedia(name, size)
+  );
+
+  if (!validMediaFiles.length) return null;
+
+  const mediaId = validMediaFiles.map(({ name }) => {
+    const randomId = getRandomId();
+    const fileExtension = getFileExtension(name);
+    return {
+      id: randomId,
+      name:
+        name === `file.${fileExtension}` ? `${randomId}.${fileExtension}` : null
+    };
+  });
+
+  const imagesPreviewData = validMediaFiles.map((media, index) => ({
+    id: mediaId[index].id,
+    src: URL.createObjectURL(media),
+    alt: mediaId[index].name ?? media.name,
+    type: media.type
+  }));
+
+  const selectedImagesData = validMediaFiles.map((media, index) =>
+    renameFile(media, mediaId[index].id, mediaId[index].name)
   );
 
   return { imagesPreviewData, selectedImagesData };

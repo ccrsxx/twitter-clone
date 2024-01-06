@@ -134,9 +134,9 @@ export async function uploadImages(
     files.map(async (file) => {
       let src: string;
 
-      const { id, name: alt } = file;
+      const { id, name: alt, type } = file;
 
-      const storageRef = ref(storage, `images/${userId}/${alt}`);
+      const storageRef = ref(storage, `images/${userId}/${alt}`); // You can use any name you want. i just kept it as 'images'.
 
       try {
         src = await getDownloadURL(storageRef);
@@ -145,7 +145,7 @@ export async function uploadImages(
         src = await getDownloadURL(storageRef);
       }
 
-      return { id, src, alt };
+      return { id, src, alt, type };
     })
   );
 

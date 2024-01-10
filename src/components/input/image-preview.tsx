@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { useModal } from '@lib/hooks/useModal';
@@ -49,6 +49,7 @@ export function ImagePreview({
 }: ImagePreviewProps): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   const { open, openModal, closeModal } = useModal();
 
@@ -57,6 +58,12 @@ export function ImagePreview({
     setSelectedImage(imageData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex]);
+
+  const handleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = true;
+    }
+  };
 
   const handleSelectedImage = (index: number) => () => {
     setSelectedIndex(index);
@@ -77,6 +84,7 @@ export function ImagePreview({
   };
 
   const isTweet = tweet ?? viewTweet;
+
   return (
     <div
       className={cn(
@@ -142,6 +150,7 @@ export function ImagePreview({
               />
             ) : (
               <video
+                ref={videoRef}
                 className={cn(
                   `relative h-full w-full cursor-pointer transition 
                   hover:brightness-75 hover:duration-200`,
@@ -150,7 +159,9 @@ export function ImagePreview({
                     : 'rounded-2xl'
                 )}
                 src={src}
+                onClick={handleMute}
                 controls
+                muted
               />
             )}
             {removeImage && (

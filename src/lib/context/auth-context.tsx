@@ -10,7 +10,11 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  getDocs,
+  query,
+  where,
+  limit
 } from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
 import {
@@ -67,11 +71,15 @@ export function AuthContextProvider({
 
           randomUsername = `${normalizeName as string}${randomInt}`;
 
-          const randomUserSnapshot = await getDoc(
-            doc(usersCollection, randomUsername)
+          const randomUserSnapshot = await getDocs(
+            query(
+              usersCollection,
+              where('username', '==', randomUsername),
+              limit(1)
+            )
           );
 
-          if (!randomUserSnapshot.exists()) available = true;
+          if (randomUserSnapshot.empty) available = true;
         }
 
         const userData: WithFieldValue<User> = {

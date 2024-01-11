@@ -136,7 +136,7 @@ export async function uploadImages(
 
       const { id, name: alt, type } = file;
 
-      const storageRef = ref(storage, `images/${userId}/${alt}`); // You can use any name you want. i just kept it as 'images'.
+      const storageRef = ref(storage, `images/${userId}/${id}`); // You can use any name you want. i just kept it as 'images'.
 
       try {
         src = await getDownloadURL(storageRef);

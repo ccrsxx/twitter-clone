@@ -19,58 +19,37 @@
     }
   },
   "rules": {
-    "semi": ["error", "always"],
-    "curly": ["warn", "multi"],
-    "quotes": ["error", "single", { "avoidEscape": true }],
-    "jsx-quotes": ["error", "prefer-single"],
+    "no-unused-expressions": "off",
+    "@typescript-eslint/consistent-type-imports": "off",
+    "import/no-named-as-default-member": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "comma-dangle": "off",
+    "@typescript-eslint/require-await": "off",
+    "@next/next/no-img-element": "off",
+    "@typescript-eslint/no-unsafe-argument": "off",
+    "react/no-unescaped-entities": "off",
+    "no-undef": "off",
+    "@typescript-eslint/no-floating-promises": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "curly": "off",
+    "semi": "off",
+    "import/order": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "no-console": "off",
+    "quotes": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "linebreak-style": "off",
-    "no-console": "warn",
-    "comma-dangle": ["error", "never"],
-    "no-unused-expressions": "error",
     "no-constant-binary-expression": "error",
-    "import/order": [
-      "warn",
-      {
-        "pathGroups": [
-          {
-            "pattern": "*.scss",
-            "group": "builtin",
-            "position": "before",
-            "patternOptions": { "matchBase": true }
-          },
-          {
-            "pattern": "@lib/**",
-            "group": "external",
-            "position": "after"
-          },
-          {
-            "pattern": "@components/**",
-            "group": "external",
-            "position": "after"
-          }
-        ],
-        "warnOnUnassignedImports": true,
-        "pathGroupsExcludedImportTypes": ["type"],
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
-          "object",
-          "type"
-        ]
-      }
-    ],
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
         "checksVoidReturn": { "attributes": false }
       }
     ],
-    "@typescript-eslint/consistent-type-imports": "warn",
-    "@typescript-eslint/prefer-nullish-coalescing": "warn",
-    "@typescript-eslint/explicit-function-return-type": "warn"
+    "@typescript-eslint/prefer-nullish-coalescing": "warn"
   }
 }

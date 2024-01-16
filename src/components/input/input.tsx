@@ -26,6 +26,7 @@ import type { Tweet } from '@lib/types/tweet';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
 import PhotoLock from "../photolock/PhotoLock" ///////// Added
+import { ErrorType } from 'aws-sdk/clients/es';
 
 type InputProps = {
   modal?: boolean;
@@ -206,7 +207,7 @@ export function Input({
   // Handle login success. Replace with your logic.
   console.log("Login successful");
   };
-  const handleLoginFailure = (error) => {
+  const handleLoginFailure = (error: ErrorType) => {
   // Handle login failure. Replace with your logic.
   console.error("Login failed", error);
   };
@@ -225,7 +226,7 @@ export function Input({
     !isCharLimitExceeded && (isValidInput || isUploadingImages);
 
   return (
-    <div
+    <form
       className={cn('flex flex-col', {
         '-mx-4': reply,
         'gap-2': replyModal,
@@ -308,6 +309,6 @@ export function Input({
             )}
         </div>
       </label>
-    </div>
+    </form>
   );
 }

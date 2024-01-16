@@ -22,6 +22,11 @@ const options: Readonly<Options> = [
     disabled: false
   },
   {
+    name: 'AuthMedia',
+    iconName: 'LockClosedIcon',
+    disabled: false
+  },
+  {
     name: 'GIF',
     iconName: 'GifIcon',
     disabled: true
@@ -58,6 +63,7 @@ type InputOptionsProps = {
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
+  handleAuthImageUpload: () => void;
 };
 
 export function InputOptions({
@@ -67,11 +73,10 @@ export function InputOptions({
   inputLength,
   isValidTweet,
   isCharLimitExceeded,
-  handleImageUpload
+  handleImageUpload,
+  handleAuthImageUpload
 }: InputOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
-
-  const onClick = (): void => inputFileRef.current?.click();
 
   let filteredOptions = options;
 
@@ -98,7 +103,17 @@ export function InputOptions({
           <Button
             className='accent-tab accent-bg-tab group relative rounded-full p-2 
                        hover:bg-main-accent/10 active:bg-main-accent/20'
-            onClick={index === 0 ? onClick : undefined}
+            onClick={() => {
+              if (iconName === 'PhotoIcon') {
+                inputFileRef.current?.click();
+              } else if (iconName === 'LockClosedIcon') {
+                console.log("We are calling the handleAuthImageUpload")
+                handleAuthImageUpload(); // Invoke the callback when AuthMedia is clicked
+              }
+              else{
+                undefined
+              }
+            }}
             disabled={disabled}
             key={name}
           >

@@ -17,6 +17,8 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
+    "amazon-cognito-identity-js": "^6.3.7",
+    "aws-sdk": "^2.1536.0",
     "clsx": "^1.2.1",
     "firebase": "^9.9.4",
     "framer-motion": "^7.2.1",

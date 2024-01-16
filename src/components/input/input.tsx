@@ -25,6 +25,8 @@ import type { User } from '@lib/types/user';
 import type { Tweet } from '@lib/types/tweet';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
 
+import PhotoLock from "../photolock/PhotoLock" ///////// Added
+
 type InputProps = {
   modal?: boolean;
   reply?: boolean;
@@ -54,6 +56,7 @@ export function Input({
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
+  const [isPhotoLockVisible, setIsPhotoLockVisible] = useState(false); ///////////// Added 
 
   const { user, isAdmin } = useAuth();
   const { name, username, photoURL } = user as User;
@@ -151,6 +154,10 @@ export function Input({
     inputRef.current?.focus();
   };
 
+  const handleAuthImageUpload = () : void => {
+    togglePhotoLockVisibility();
+  }
+
   const removeImage = (targetId: string) => (): void => {
     setSelectedImages(selectedImages.filter(({ id }) => id !== targetId));
     setImagesPreview(imagesPreview.filter(({ id }) => id !== targetId));
@@ -188,6 +195,24 @@ export function Input({
 
   const handleFocus = (): void => setVisited(!loading);
 
+  //// Added ///////////
+
+  const togglePhotoLockVisibility = () => {
+    setIsPhotoLockVisible(!isPhotoLockVisible);
+  };
+
+  const defaultStyle = {}; // Replace with your style object if needed
+  const handleLoginSuccess = () => {
+  // Handle login success. Replace with your logic.
+  console.log("Login successful");
+  };
+  const handleLoginFailure = (error) => {
+  // Handle login failure. Replace with your logic.
+  console.error("Login failed", error);
+  };
+
+/////////////////////////
+
   const formId = useId();
 
   const inputLimit = isAdmin ? 560 : 280;
@@ -200,7 +225,7 @@ export function Input({
     !isCharLimitExceeded && (isValidInput || isUploadingImages);
 
   return (
-    <form
+    <div
       className={cn('flex flex-col', {
         '-mx-4': reply,
         'gap-2': replyModal,
@@ -274,11 +299,15 @@ export function Input({
                 isValidTweet={isValidTweet}
                 isCharLimitExceeded={isCharLimitExceeded}
                 handleImageUpload={handleImageUpload}
+                handleAuthImageUpload={handleAuthImageUpload}
               />
             )}
           </AnimatePresence>
+          {isPhotoLockVisible && (
+            <PhotoLock/>
+            )}
         </div>
       </label>
-    </form>
+    </div>
   );
 }

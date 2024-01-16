@@ -1,0 +1,299 @@
+/* Adjust the margin around the gallery */
+.imgGallery {
+    width: 80%;
+    margin: 50px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(calc(100% / var(--num-columns)), 1fr));
+    gap: 10px;
+}
+
+/* Adjust the individual image sizes */
+.imgGallery img {
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.15s ease-in-out;
+}
+
+.imgGallery img:hover {
+    transform: scale(1.05);
+    border-radius: 5px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.fullImg {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    position: fixed;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.fullImg.show {
+    display: flex;
+}
+
+.imageDetails {
+    max-width: 80%;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imageDetails img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.imageDetails h3 {
+    width: 100%;
+    margin: 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    color: #3498db;
+    text-align: center;
+}
+
+
+
+.imageDetails .jsonContainer {
+    text-align: center;
+    background-color: #d0d0d0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.imageDetails .jsonContainer li {
+    list-style-type: none;
+    margin-left: 0;
+    padding: 5px 0;
+}
+
+.imageDetails .jsonContainer li:not(:last-child) {
+    border-bottom: 1px solid rgba(3, 3, 3, 0.3);
+}
+
+.imageDetails .jsonContainer button {
+    padding: 5px 15px;
+    margin-top: 10px;
+    background-color: #3498db;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.imageDetails .jsonContainer button:hover {
+    background-color: #2980b9;
+}
+
+.fullImg span {
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.buttonContainer button {
+    width: 80%;
+    padding: 10px 20px;
+    margin: 0; /* Removes any default margin */
+    background-color: #3498db;
+    color: white;
+    border-radius: 20px;
+    font-size: 20px; /* Adjust font-size as needed */
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+.buttonContainer button:hover {
+    background-color: #2980b9;
+}
+
+.sliderContainer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 1); /* Dark background for contrast */
+    padding: 40px;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.3); /* Shadow for depth effect */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* Ensure it's above other content */
+  }
+  
+  .sliderContainer label {
+    margin-right: 15px;
+    color: #fff; /* White color for the label text */
+    font-size: 16px; /* Larger font size */
+    padding-bottom: 80px;
+  }
+  
+  .sliderContainer input[type="range"] {
+    -webkit-appearance: none; /* Override default appearance */
+    appearance: none;
+    width: 600px; /* Adjust width as needed */
+    height: 10px; /* Set the slider thumb height */
+    background: #ddd; /* Background of the slider track */
+    outline: none; /* Remove the outline */
+    opacity: 0.7; /* Make the track slightly transparent */
+    transition: opacity 0.2s;
+    border-radius: 5px; /* Rounded corners for the slider track */
+  }
+  
+  .sliderContainer input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default appearance */
+    appearance: none;
+    width: 40px; /* Width of the thumb */
+    height: 40px; /* Height of the thumb */
+    background: #3498db; /* Thumb color */
+    cursor: pointer; /* Cursor on hover */
+    border-radius: 50%; /* Rounded corners for the thumb */
+    border: 3px solid #fff; /* White border for the thumb */
+  }
+
+  
+  .sliderContainer input[type="range"]:hover,
+  .sliderContainer input[type="range"]:focus {
+    opacity: 1; /* Full opacity on hover/focus */
+  }
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+.signatureModal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This will center the modal vertically */
+    
+}
+  
+.signatureModalContent {
+    background-color: #fff;
+    padding: 20px;
+    width: auto; /* Adjust width as needed */
+    max-width: 60%; /* Set a reasonable max-width */
+    height: auto; /* Allow the height to grow as needed */
+    max-height: 90vh; /* Prevent the modal from being taller than the viewport */
+    overflow: auto; /* Allow scrolling inside the modal */
+    position: relative; /* Position relative for absolute positioning of close button */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align content to the start (left) */
+    border-radius: 20px;
+}
+
+.signatureModalContent pre {
+    white-space: pre-wrap; /* Allows the text to wrap */
+    overflow-wrap: break-word; /* Breaks long words to prevent horizontal overflow */
+    max-width: 100%; /* Ensure it does not exceed its parent */
+}
+
+
+  
+.signatureModalClose {
+    position: absolute;
+    top: 0px; /* Position 10px from the top */
+    right: 8px; /* Position 10px from the right */
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+    z-index: 10; /* Ensure it's above the other content */
+}
+  
+.signatureModalClose:hover,
+.signatureModalClose:focus {
+    color: black;
+    text-decoration: none;
+}
+  
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .imgGallery {
+        margin: 20px auto;
+        grid-gap: 5px;
+    }
+
+    .imgGallery img:hover {
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .fullImg {
+        padding-bottom: 20px;
+    }
+
+    .imageDetails {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    .imageDetails button {
+        padding: 10px 15px;
+    }
+
+    .fullImg span {
+        top: 10px;
+        right: 10px;
+        font-size: 24px;
+        padding: 5px;
+    }
+
+    .loader {
+        border-width: 8px;
+        width: 15px;
+        height: 15px;
+    }
+}

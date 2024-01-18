@@ -10,11 +10,7 @@ import {
   getDoc,
   setDoc,
   onSnapshot,
-  serverTimestamp,
-  getDocs,
-  query,
-  where,
-  limit
+  serverTimestamp
 } from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
 import {
@@ -23,6 +19,7 @@ import {
   userBookmarksCollection
 } from '@lib/firebase/collections';
 import { getRandomId, getRandomInt } from '@lib/random';
+import { checkUsernameAvailability } from '@lib/firebase/utils';
 import type { ReactNode } from 'react';
 import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';
@@ -71,15 +68,11 @@ export function AuthContextProvider({
 
           randomUsername = `${normalizeName as string}${randomInt}`;
 
-          const randomUserSnapshot = await getDocs(
-            query(
-              usersCollection,
-              where('username', '==', randomUsername),
-              limit(1)
-            )
+          const isUsernameAvailable = await checkUsernameAvailability(
+            randomUsername
           );
 
-          if (randomUserSnapshot.empty) available = true;
+          if (isUsernameAvailable) available = true;
         }
 
         const userData: WithFieldValue<User> = {

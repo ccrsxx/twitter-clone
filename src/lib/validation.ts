@@ -17,6 +17,17 @@ const IMAGE_EXTENSIONS = [
 
 type ImageExtensions = typeof IMAGE_EXTENSIONS[number];
 
+const MEDIA_EXTENSIONS = [
+  ...IMAGE_EXTENSIONS,
+  'mp4',
+  'mov',
+  'avi',
+  'mkv',
+  'webm'
+] as const;
+
+type MediaExtensions = typeof MEDIA_EXTENSIONS[number];
+
 function isValidImageExtension(
   extension: string
 ): extension is ImageExtensions {
@@ -25,25 +36,20 @@ function isValidImageExtension(
   );
 }
 
+function isValidMediaExtension(
+  extension: string
+): extension is MediaExtensions {
+  return MEDIA_EXTENSIONS.includes(
+    extension.split('.').pop()?.toLowerCase() as MediaExtensions
+  );
+}
+
 export function isValidImage(name: string, bytes: number): boolean {
   return isValidImageExtension(name) && bytes < 20 * Math.pow(1024, 2);
 }
 
-function isValidMedia(name: string, size: number): boolean {
-  const allowedExtensions = [
-    'jpg',
-    'jpeg',
-    'png',
-    'gif',
-    'mp4',
-    'mov',
-    'avi',
-    'mkv'
-  ];
-  const maxFileSize = 50 * 1024 * 1024; // 50 MB
-
-  const fileExtension = getFileExtension(name);
-  return allowedExtensions.includes(fileExtension) && size <= maxFileSize;
+export function isValidMedia(name: string, size: number): boolean {
+  return isValidMediaExtension(name) && size < 50 * Math.pow(1024, 2);
 }
 
 function getFileExtension(fileName: string): string {
@@ -109,18 +115,19 @@ export function getImagesData(
   return { imagesPreviewData, selectedImagesData };
 }
 
-export function getMediaData(files: FileList | null): ImagesData | null {
+export function getMediaData(
+  files: FileList | null,
+  currentFiles: number
+): ImagesData | null {
   if (!files || !files.length) return null;
 
-  //const singleEditingMode = currentFiles === undefined;
+  const rawImages = !(currentFiles === 4 || files.length > 4 - currentFiles)
+    ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
+    : null;
 
-  const validMediaFiles = Array.from(files).filter(({ name, size }) =>
-    isValidMedia(name, size)
-  );
+  if (!rawImages || !rawImages.length) return null;
 
-  if (!validMediaFiles.length) return null;
-
-  const mediaId = validMediaFiles.map(({ name }) => {
+  const mediaId = rawImages.map(({ name }) => {
     const randomId = getRandomId();
     const fileExtension = getFileExtension(name);
     return {
@@ -130,14 +137,14 @@ export function getMediaData(files: FileList | null): ImagesData | null {
     };
   });
 
-  const imagesPreviewData = validMediaFiles.map((media, index) => ({
+  const imagesPreviewData = rawImages.map((media, index) => ({
     id: mediaId[index].id,
     src: URL.createObjectURL(media),
     alt: mediaId[index].name ?? media.name,
     type: media.type
   }));
 
-  const selectedImagesData = validMediaFiles.map((media, index) =>
+  const selectedImagesData = rawImages.map((media, index) =>
     renameFile(media, mediaId[index].id, mediaId[index].name)
   );
 

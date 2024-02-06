@@ -52,10 +52,6 @@ export function isValidMedia(name: string, size: number): boolean {
   return isValidMediaExtension(name) && size < 50 * Math.pow(1024, 2);
 }
 
-function getFileExtension(fileName: string): string {
-  return fileName.split('.').pop()?.toLowerCase() || '';
-}
-
 export function isValidUsername(
   username: string,
   value: string
@@ -77,9 +73,14 @@ type ImagesData = {
   selectedImagesData: FilesWithId;
 };
 
+type ImagesDataOptions = {
+  currentFiles?: number;
+  allowUploadingVideos?: boolean;
+};
+
 export function getImagesData(
   files: FileList | null,
-  currentFiles?: number
+  { currentFiles, allowUploadingVideos }: ImagesDataOptions = {}
 ): ImagesData | null {
   if (!files || !files.length) return null;
 
@@ -88,7 +89,11 @@ export function getImagesData(
   const rawImages =
     singleEditingMode ||
     !(currentFiles === 4 || files.length > 4 - currentFiles)
-      ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
+      ? Array.from(files).filter(({ name, size }) =>
+          allowUploadingVideos
+            ? isValidMedia(name, size)
+            : isValidImage(name, size)
+        )
       : null;
 
   if (!rawImages || !rawImages.length) return null;
@@ -105,47 +110,11 @@ export function getImagesData(
     id: imagesId[index].id,
     src: URL.createObjectURL(image),
     alt: imagesId[index].name ?? image.name,
-    type: 'image'
+    type: image.type
   }));
 
   const selectedImagesData = rawImages.map((image, index) =>
     renameFile(image, imagesId[index].id, imagesId[index].name)
-  );
-
-  return { imagesPreviewData, selectedImagesData };
-}
-
-export function getMediaData(
-  files: FileList | null,
-  currentFiles: number
-): ImagesData | null {
-  if (!files || !files.length) return null;
-
-  const rawImages = !(currentFiles === 4 || files.length > 4 - currentFiles)
-    ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
-    : null;
-
-  if (!rawImages || !rawImages.length) return null;
-
-  const mediaId = rawImages.map(({ name }) => {
-    const randomId = getRandomId();
-    const fileExtension = getFileExtension(name);
-    return {
-      id: randomId,
-      name:
-        name === `file.${fileExtension}` ? `${randomId}.${fileExtension}` : null
-    };
-  });
-
-  const imagesPreviewData = rawImages.map((media, index) => ({
-    id: mediaId[index].id,
-    src: URL.createObjectURL(media),
-    alt: mediaId[index].name ?? media.name,
-    type: media.type
-  }));
-
-  const selectedImagesData = rawImages.map((media, index) =>
-    renameFile(media, mediaId[index].id, mediaId[index].name)
   );
 
   return { imagesPreviewData, selectedImagesData };

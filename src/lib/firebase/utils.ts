@@ -132,18 +132,13 @@ export async function uploadImages(
 
   const imagesPreview = await Promise.all(
     files.map(async (file) => {
-      let src: string;
-
       const { id, name: alt, type } = file;
 
-      const storageRef = ref(storage, `images/${userId}/${id}`); // You can use any name you want. i just kept it as 'images'.
+      const storageRef = ref(storage, `images/${userId}/${id}`);
 
-      try {
-        src = await getDownloadURL(storageRef);
-      } catch {
-        await uploadBytesResumable(storageRef, file);
-        src = await getDownloadURL(storageRef);
-      }
+      await uploadBytesResumable(storageRef, file);
+
+      const src = await getDownloadURL(storageRef);
 
       return { id, src, alt, type };
     })

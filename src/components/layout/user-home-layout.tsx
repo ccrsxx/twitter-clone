@@ -26,11 +26,11 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
   } = useRouter();
 
   const coverData = userData?.coverPhotoURL
-    ? { src: userData.coverPhotoURL, alt: userData.name, type: 'image/png' }
+    ? { src: userData.coverPhotoURL, alt: userData.name }
     : null;
 
   const profileData = userData
-    ? { src: userData.photoURL, alt: userData.name, type: 'image/png' }
+    ? { src: userData.photoURL, alt: userData.name }
     : null;
 
   const { id: userId } = user ?? {};

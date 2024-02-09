@@ -49,6 +49,7 @@ export function ImagePreview({
 }: ImagePreviewProps): JSX.Element {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const { open, openModal, closeModal } = useModal();
@@ -59,13 +60,13 @@ export function ImagePreview({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedIndex]);
 
-  const handleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-    }
+  const handleVideoStop = (): void => {
+    if (videoRef.current) videoRef.current.pause();
   };
 
-  const handleSelectedImage = (index: number) => () => {
+  const handleSelectedImage = (index: number, isVideo?: boolean) => () => {
+    if (isVideo) handleVideoStop();
+
     setSelectedIndex(index);
     openModal();
   };
@@ -113,70 +114,75 @@ export function ImagePreview({
         />
       </Modal>
       <AnimatePresence mode='popLayout'>
-        {imagesPreview.map(({ id, src, alt }, index) => (
-          <motion.button
-            type='button'
-            className={cn(
-              'accent-tab relative transition-shadow',
-              isTweet
-                ? postImageBorderRadius[previewCount][index]
-                : 'rounded-2xl',
-              {
-                'col-span-2 row-span-2': previewCount === 1,
-                'row-span-2':
-                  previewCount === 2 || (index === 0 && previewCount === 3)
-              }
-            )}
-            {...variants}
-            onClick={preventBubbling(handleSelectedImage(index))}
-            layout={!isTweet ? true : false}
-            key={id}
-          >
-            {imagesPreview[index].type === undefined ||
-            !imagesPreview[index].type?.includes('video') ? (
-              <NextImage
-                className='relative h-full w-full cursor-pointer transition 
-                          hover:brightness-75 hover:duration-200'
-                imgClassName={cn(
-                  isTweet
-                    ? postImageBorderRadius[previewCount][index]
-                    : 'rounded-2xl'
-                )}
-                previewCount={previewCount}
-                layout='fill'
-                src={src}
-                alt={alt}
-                useSkeleton={isTweet}
-              />
-            ) : (
-              <video
-                ref={videoRef}
-                className={cn(
-                  `relative h-full w-full cursor-pointer transition 
-                  hover:brightness-75 hover:duration-200`,
-                  isTweet
-                    ? postImageBorderRadius[previewCount][index]
-                    : 'rounded-2xl'
-                )}
-                src={src}
-                onClick={handleMute}
-                controls
-                muted
-              />
-            )}
-            {removeImage && (
-              <Button
-                className='group absolute top-0 left-0 translate-x-1 translate-y-1
+        {imagesPreview.map(({ id, src, alt }, index) => {
+          const isVideo = imagesPreview[index].type?.includes('video');
+
+          return (
+            <motion.button
+              type='button'
+              className={cn(
+                'accent-tab relative transition-shadow',
+                isTweet
+                  ? postImageBorderRadius[previewCount][index]
+                  : 'rounded-2xl',
+                {
+                  'col-span-2 row-span-2': previewCount === 1,
+                  'row-span-2':
+                    previewCount === 2 || (index === 0 && previewCount === 3)
+                }
+              )}
+              {...variants}
+              onClick={preventBubbling(handleSelectedImage(index, isVideo))}
+              layout={!isTweet ? true : false}
+              key={id}
+            >
+              {isVideo ? (
+                <video
+                  ref={videoRef}
+                  className={cn(
+                    `relative h-full w-full cursor-pointer transition 
+                     hover:brightness-75 hover:duration-200`,
+                    isTweet
+                      ? postImageBorderRadius[previewCount][index]
+                      : 'rounded-2xl'
+                  )}
+                  src={src}
+                  controls
+                  muted
+                />
+              ) : (
+                <NextImage
+                  className='relative h-full w-full cursor-pointer transition 
+                             hover:brightness-75 hover:duration-200'
+                  imgClassName={cn(
+                    isTweet
+                      ? postImageBorderRadius[previewCount][index]
+                      : 'rounded-2xl'
+                  )}
+                  previewCount={previewCount}
+                  layout='fill'
+                  src={src}
+                  alt={alt}
+                  useSkeleton={isTweet}
+                />
+              )}
+              {removeImage && (
+                <Button
+                  className='group absolute top-0 left-0 translate-x-1 translate-y-1
                            bg-light-primary/75 p-1 backdrop-blur-sm 
                            hover:bg-image-preview-hover/75'
-                onClick={preventBubbling(removeImage(id))}
-              >
-                <HeroIcon className='h-5 w-5 text-white' iconName='XMarkIcon' />
-                <ToolTip className='translate-y-2' tip='Remove' />
-              </Button>
-            )}
-          </motion.button>
-        ))}
+                  onClick={preventBubbling(removeImage(id))}
+                >
+                  <HeroIcon
+                    className='h-5 w-5 text-white'
+                    iconName='XMarkIcon'
+                  />
+                  <ToolTip className='translate-y-2' tip='Remove' />
+                </Button>
+              )}
+            </motion.button>
+          );
+        })}
       </AnimatePresence>
     </div>
   );

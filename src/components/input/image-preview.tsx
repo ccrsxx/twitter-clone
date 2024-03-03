@@ -121,7 +121,7 @@ export function ImagePreview({
             <motion.button
               type='button'
               className={cn(
-                'accent-tab relative transition-shadow',
+                'accent-tab group relative transition-shadow',
                 isTweet
                   ? postImageBorderRadius[previewCount][index]
                   : 'rounded-2xl',
@@ -137,19 +137,28 @@ export function ImagePreview({
               key={id}
             >
               {isVideo ? (
-                <video
-                  ref={videoRef}
-                  className={cn(
-                    `relative h-full w-full cursor-pointer transition 
-                     hover:brightness-75 hover:duration-200`,
-                    isTweet
-                      ? postImageBorderRadius[previewCount][index]
-                      : 'rounded-2xl'
-                  )}
-                  src={src}
-                  controls
-                  muted
-                />
+                <>
+                  <Button
+                    className='visible absolute top-0 right-0 z-10 -translate-x-1 translate-y-1 
+                               bg-light-primary/75 p-1 opacity-0 backdrop-blur-sm transition
+                               hover:bg-image-preview-hover/75 group-hover:opacity-100 xs:invisible'
+                  >
+                    <HeroIcon className='h-5 w-5' iconName='ArrowUpRightIcon' />
+                  </Button>
+                  <video
+                    ref={videoRef}
+                    className={cn(
+                      `relative h-full w-full cursor-pointer transition 
+                       hover:brightness-75 hover:duration-200`,
+                      isTweet
+                        ? postImageBorderRadius[previewCount][index]
+                        : 'rounded-2xl'
+                    )}
+                    src={src}
+                    controls
+                    muted
+                  />
+                </>
               ) : (
                 <NextImage
                   className='relative h-full w-full cursor-pointer transition 

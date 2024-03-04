@@ -20,6 +20,7 @@ export function UpdateUsername(): JSX.Element {
   const [available, setAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
+  const [searching, setSearching] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -28,6 +29,8 @@ export function UpdateUsername(): JSX.Element {
 
   useEffect(() => {
     const checkAvailability = async (value: string): Promise<void> => {
+      setSearching(true);
+
       const empty = await checkUsernameAvailability(value);
 
       if (empty) setAvailable(true);
@@ -35,6 +38,8 @@ export function UpdateUsername(): JSX.Element {
         setAvailable(false);
         setErrorMessage('This username has been taken. Please choose another.');
       }
+
+      setSearching(false);
     };
 
     if (!visited && inputValue.length > 0) setVisited(true);
@@ -63,6 +68,8 @@ export function UpdateUsername(): JSX.Element {
 
     if (!available) return;
 
+    if (searching) return;
+
     setLoading(true);
 
     await sleep(500);
@@ -82,6 +89,7 @@ export function UpdateUsername(): JSX.Element {
 
   const cancelUpdateUsername = (): void => {
     closeModal();
+
     if (!alreadySet) void updateUsername(user?.id as string);
   };
 

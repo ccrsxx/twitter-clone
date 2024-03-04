@@ -1,6 +1,7 @@
 export type ImageData = {
   src: string;
   alt: string;
+  type?: string;
 };
 
 export type ImagesPreview = (ImageData & {

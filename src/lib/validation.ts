@@ -17,6 +17,17 @@ const IMAGE_EXTENSIONS = [
 
 type ImageExtensions = typeof IMAGE_EXTENSIONS[number];
 
+const MEDIA_EXTENSIONS = [
+  ...IMAGE_EXTENSIONS,
+  'mp4',
+  'mov',
+  'avi',
+  'mkv',
+  'webm'
+] as const;
+
+type MediaExtensions = typeof MEDIA_EXTENSIONS[number];
+
 function isValidImageExtension(
   extension: string
 ): extension is ImageExtensions {
@@ -25,8 +36,20 @@ function isValidImageExtension(
   );
 }
 
+function isValidMediaExtension(
+  extension: string
+): extension is MediaExtensions {
+  return MEDIA_EXTENSIONS.includes(
+    extension.split('.').pop()?.toLowerCase() as MediaExtensions
+  );
+}
+
 export function isValidImage(name: string, bytes: number): boolean {
   return isValidImageExtension(name) && bytes < 20 * Math.pow(1024, 2);
+}
+
+export function isValidMedia(name: string, size: number): boolean {
+  return isValidMediaExtension(name) && size < 50 * Math.pow(1024, 2);
 }
 
 export function isValidUsername(
@@ -50,9 +73,14 @@ type ImagesData = {
   selectedImagesData: FilesWithId;
 };
 
+type ImagesDataOptions = {
+  currentFiles?: number;
+  allowUploadingVideos?: boolean;
+};
+
 export function getImagesData(
   files: FileList | null,
-  currentFiles?: number
+  { currentFiles, allowUploadingVideos }: ImagesDataOptions = {}
 ): ImagesData | null {
   if (!files || !files.length) return null;
 
@@ -61,7 +89,11 @@ export function getImagesData(
   const rawImages =
     singleEditingMode ||
     !(currentFiles === 4 || files.length > 4 - currentFiles)
-      ? Array.from(files).filter(({ name, size }) => isValidImage(name, size))
+      ? Array.from(files).filter(({ name, size }) =>
+          allowUploadingVideos
+            ? isValidMedia(name, size)
+            : isValidImage(name, size)
+        )
       : null;
 
   if (!rawImages || !rawImages.length) return null;
@@ -77,7 +109,8 @@ export function getImagesData(
   const imagesPreviewData = rawImages.map((image, index) => ({
     id: imagesId[index].id,
     src: URL.createObjectURL(image),
-    alt: imagesId[index].name ?? image.name
+    alt: imagesId[index].name ?? image.name,
+    type: image.type
   }));
 
   const selectedImagesData = rawImages.map((image, index) =>

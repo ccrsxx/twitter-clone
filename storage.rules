@@ -9,14 +9,14 @@ service firebase.storage {
       return request.auth != null && (userId == request.auth.uid || isAdmin());
     }
   
-    function isValidImage() {
-      return request.resource.contentType.matches('image/.*')
-             && request.resource.size < 20 * 1024 * 1024;
+    function isValidMedia() {
+      return request.resource.contentType.matches('image/.*|video/.*')
+             && request.resource.size < 50 * 1024 * 1024;
     }
 
     match /images/{userId}/{fileName} {
       allow read: if request.auth != null;
-      allow create: if isAuthorized(userId) && isValidImage();
+      allow create: if isAuthorized(userId) && isValidMedia();
       allow update, delete: if false;
     }
   }

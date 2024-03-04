@@ -19,6 +19,7 @@ import {
   userBookmarksCollection
 } from '@lib/firebase/collections';
 import { getRandomId, getRandomInt } from '@lib/random';
+import { checkUsernameAvailability } from '@lib/firebase/utils';
 import type { ReactNode } from 'react';
 import type { User as AuthUser } from 'firebase/auth';
 import type { WithFieldValue } from 'firebase/firestore';
@@ -67,11 +68,11 @@ export function AuthContextProvider({
 
           randomUsername = `${normalizeName as string}${randomInt}`;
 
-          const randomUserSnapshot = await getDoc(
-            doc(usersCollection, randomUsername)
+          const isUsernameAvailable = await checkUsernameAvailability(
+            randomUsername
           );
 
-          if (!randomUserSnapshot.exists()) available = true;
+          if (isUsernameAvailable) available = true;
         }
 
         const userData: WithFieldValue<User> = {

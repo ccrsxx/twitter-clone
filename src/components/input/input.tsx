@@ -136,7 +136,10 @@ export function Input({
 
     const files = isClipboardEvent ? e.clipboardData.files : e.target.files;
 
-    const imagesData = getImagesData(files, previewCount);
+    const imagesData = getImagesData(files, {
+      currentFiles: previewCount,
+      allowUploadingVideos: true
+    });
 
     if (!imagesData) {
       toast.error('Please choose a GIF or photo up to 4');

@@ -37,7 +37,9 @@ export function ImageModal({
   const [indexes, setIndexes] = useState<number[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const { src, alt } = imageData;
+  const { src, alt, type } = imageData;
+
+  const isVideo = type?.includes('video');
 
   const requireArrows = handleNextIndex && previewCount > 1;
 
@@ -51,9 +53,14 @@ export function ImageModal({
       setIndexes([...indexes, selectedIndex]);
     }
 
-    const image = new Image();
-    image.src = src;
-    image.onload = (): void => setLoading(false);
+    const media = isVideo ? document.createElement('video') : new Image();
+
+    media.src = src;
+
+    const handleLoadingCompleted = (): void => setLoading(false);
+
+    if (isVideo) media.onloadeddata = handleLoadingCompleted;
+    else media.onload = handleLoadingCompleted;
   }, [...(tweet && previewCount > 1 ? [src] : [])]);
 
   useEffect(() => {
@@ -103,28 +110,45 @@ export function ImageModal({
           </motion.div>
         ) : (
           <motion.div className='relative mx-auto' {...modal} key={src}>
-            <picture className='group relative flex max-w-3xl'>
-              <source srcSet={src} type='image/*' />
-              <img
-                className='max-h-[75vh] rounded-md object-contain md:max-h-[80vh]'
-                src={src}
-                alt={alt}
-                onClick={preventBubbling()}
-              />
-              <a
-                className='trim-alt accent-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
-                           rounded-md bg-main-background/40 px-2 py-1 text-sm text-light-primary/80 opacity-0
-                           transition hover:bg-main-accent hover:text-white focus-visible:translate-y-0
-                           focus-visible:bg-main-accent focus-visible:text-white focus-visible:opacity-100
-                           group-hover:translate-y-0 group-hover:opacity-100 dark:text-dark-primary/80'
-                href={src}
-                target='_blank'
-                rel='noreferrer'
-                onClick={preventBubbling(null, true)}
-              >
-                {alt}
-              </a>
-            </picture>
+            {isVideo ? (
+              <div className='group relative flex max-w-3xl'>
+                <video
+                  className={cn(
+                    'max-h-[75vh] rounded-md object-contain md:max-h-[80vh]',
+                    loading ? 'hidden' : 'block'
+                  )}
+                  src={src}
+                  autoPlay
+                  controls
+                  onClick={preventBubbling()}
+                >
+                  <source srcSet={src} type='video/*' />
+                </video>
+              </div>
+            ) : (
+              <picture className='group relative flex max-w-3xl'>
+                <source srcSet={src} type='image/*' />
+                <img
+                  className='max-h-[75vh] rounded-md object-contain md:max-h-[80vh]'
+                  src={src}
+                  alt={alt}
+                  onClick={preventBubbling()}
+                />
+                <a
+                  className='trim-alt accent-tab absolute bottom-0 right-0 mx-2 mb-2 translate-y-4
+                             rounded-md bg-main-background/40 px-2 py-1 text-sm text-light-primary/80 opacity-0
+                             transition hover:bg-main-accent hover:text-white focus-visible:translate-y-0
+                             focus-visible:bg-main-accent focus-visible:text-white focus-visible:opacity-100
+                             group-hover:translate-y-0 group-hover:opacity-100 dark:text-dark-primary/80'
+                  href={src}
+                  target='_blank'
+                  rel='noreferrer'
+                  onClick={preventBubbling(null, true)}
+                >
+                  {alt}
+                </a>
+              </picture>
+            )}
             <a
               className='custom-underline absolute left-0 -bottom-7 font-medium text-light-primary/80
                          decoration-transparent underline-offset-2 transition hover:text-light-primary hover:underline

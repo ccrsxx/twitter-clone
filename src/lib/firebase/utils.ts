@@ -132,20 +132,15 @@ export async function uploadImages(
 
   const imagesPreview = await Promise.all(
     files.map(async (file) => {
-      let src: string;
+      const { id, name: alt, type } = file;
 
-      const { id, name: alt } = file;
+      const storageRef = ref(storage, `images/${userId}/${id}`);
 
-      const storageRef = ref(storage, `images/${userId}/${alt}`);
+      await uploadBytesResumable(storageRef, file);
 
-      try {
-        src = await getDownloadURL(storageRef);
-      } catch {
-        await uploadBytesResumable(storageRef, file);
-        src = await getDownloadURL(storageRef);
-      }
+      const src = await getDownloadURL(storageRef);
 
-      return { id, src, alt };
+      return { id, src, alt, type };
     })
   );
 

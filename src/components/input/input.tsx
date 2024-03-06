@@ -54,6 +54,7 @@ export function Input({
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [visited, setVisited] = useState(false);
+  const [showLocation, setShowLocation] = useState(false);
 
   const { user, isAdmin } = useAuth();
   const { name, username, photoURL } = user as User;
@@ -180,6 +181,10 @@ export function Input({
     inputRef.current?.blur();
   };
 
+  const toggleShowLocation = () => {
+    setShowLocation((prevState) => !prevState);
+  };
+
   const handleChange = ({
     target: { value }
   }: ChangeEvent<HTMLTextAreaElement>): void => setInputValue(value);
@@ -253,6 +258,7 @@ export function Input({
             inputValue={inputValue}
             isValidTweet={isValidTweet}
             isUploadingImages={isUploadingImages}
+            showLocation={showLocation}
             sendTweet={sendTweet}
             handleFocus={handleFocus}
             discardTweet={discardTweet}
@@ -277,6 +283,7 @@ export function Input({
                 isValidTweet={isValidTweet}
                 isCharLimitExceeded={isCharLimitExceeded}
                 handleImageUpload={handleImageUpload}
+                onToggleShowLocation={toggleShowLocation}
               />
             )}
           </AnimatePresence>

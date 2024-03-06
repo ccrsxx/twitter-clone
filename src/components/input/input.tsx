@@ -331,7 +331,7 @@ export function Input({
         </label>
       </form>
       <Modal
-        modalClassName='flex flex-col gap-6 max-w-xl bg-main-background w-full p-8 rounded-2xl h-[576px]'
+        modalClassName='flex flex-col gap-6 max-w-xl bg-main-background w-full p-8 rounded-2xl flex-grow'
         open={open}
         closeModal={cancelSetLocation}
       >
@@ -341,7 +341,7 @@ export function Input({
           cancelSetLocation={cancelSetLocation}
         >
           <InputField
-            label='Search locations'
+            label='Type locations'
             inputId='location'
             inputValue={locationInputValue}
             errorMessage={errorMessage}

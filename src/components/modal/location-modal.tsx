@@ -22,38 +22,31 @@ export function LocationModal({
       onSubmit={onSetLocation}
     >
       <div className='flex flex-col gap-6'>
-        <div className='flex flex-col gap-4'>
-          <i className='mx-auto'>
-            <CustomIcon className='h-10 w-10' iconName='TwitterIcon' />
-          </i>
-          <div className='flex flex-col gap-2'>
-            <Dialog.Title className='text-2xl font-bold xs:text-3xl sm:text-4xl'>
-              Tag location
-            </Dialog.Title>
+        <div className='flex flex-row gap-4'>
+          <Dialog.Title className='text-2xl font-bold xs:text-3xl sm:text-4xl'>
+            Tag location
+          </Dialog.Title>
+          <div className='ml-auto flex flex-row gap-4'>
+            <Button
+              className='dark-bg-tab self-start border border-light-line-reply px-4 py-1.5 font-bold
+            hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary
+            dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
+              onClick={cancelSetLocation}
+            >
+              Remove
+            </Button>
+            <Button
+              className='custom-button accent-tab accent-bg-tab self-start border border-light-line-reply 
+              px-4 py-1.5 font-bold text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20 
+              dark:border-light-secondary dark:hover:bg-main-accent/10 dark:active:bg-main-accent/20'
+              type='submit'
+              loading={loading}
+            >
+              Done
+            </Button>
           </div>
         </div>
         {children}
-      </div>
-      <div className='flex flex-col gap-3 inner:py-2 inner:font-bold'>
-        <Button
-          className='bg-light-primary text-white transition focus-visible:bg-light-primary/90
-                     enabled:hover:bg-light-primary/90 enabled:active:bg-light-primary/80 
-                     dark:bg-light-border dark:text-light-primary dark:focus-visible:bg-light-border/90 
-                     dark:enabled:hover:bg-light-border/90 dark:enabled:active:bg-light-border/75'
-          type='submit'
-          loading={loading}
-        >
-          Done
-        </Button>
-        <Button
-          className='border border-light-line-reply hover:bg-light-primary/10 focus-visible:bg-light-primary/10
-                     active:bg-light-primary/20 dark:border-light-secondary dark:text-light-border 
-                     dark:hover:bg-light-border/10 dark:focus-visible:bg-light-border/10 
-                     dark:active:bg-light-border/20'
-          onClick={cancelSetLocation}
-        >
-          Remove
-        </Button>
       </div>
     </form>
   );

@@ -27,6 +27,7 @@ type InputFormProps = {
   replyModal?: boolean;
   isValidTweet: boolean;
   isUploadingImages: boolean;
+  location?: string;
   showLocation: boolean;
   sendTweet: () => Promise<void>;
   handleFocus: () => void;
@@ -64,6 +65,7 @@ export function InputForm({
   inputValue,
   isValidTweet,
   isUploadingImages,
+  location,
   showLocation,
   sendTweet,
   handleFocus,
@@ -194,7 +196,7 @@ export function InputForm({
                        py-0 px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
           >
             <HeroIcon className='h-4 w-4' iconName='MapPinIcon' />
-            <p className='font-bold'>City, Country</p>
+            <p className='font-bold'>{location ? location : 'Nowhere'}</p>
           </button>
         )}
       </motion.div>

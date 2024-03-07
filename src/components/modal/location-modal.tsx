@@ -6,14 +6,14 @@ type LocationModalProps = {
   loading: boolean;
   children: ReactNode;
   onSetLocation: (e: FormEvent<HTMLFormElement>) => void;
-  cancelSetLocation: () => void;
+  removeSetLocation: () => void;
 };
 
 export function LocationModal({
   loading,
   children,
   onSetLocation,
-  cancelSetLocation
+  removeSetLocation
 }: LocationModalProps): JSX.Element {
   return (
     <form
@@ -30,7 +30,7 @@ export function LocationModal({
               className='dark-bg-tab self-start border border-light-line-reply px-4 py-1.5 font-bold
             hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary
             dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
-              onClick={cancelSetLocation}
+              onClick={removeSetLocation}
             >
               Remove
             </Button>

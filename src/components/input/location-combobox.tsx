@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Combobox } from '@headlessui/react';
 
 const locations = [
@@ -10,13 +10,15 @@ const locations = [
 ];
 
 type LocationComboboxProps = {
+  defaultLocation: string;
   handleLocationChange: (location: string) => void;
 };
 
 export function LocationCombobox({
+  defaultLocation,
   handleLocationChange
 }: LocationComboboxProps) {
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
   const [query, setQuery] = useState('');
 
   const filteredLocations =
@@ -32,15 +34,30 @@ export function LocationCombobox({
   };
 
   return (
-    <Combobox value={selectedLocation} onChange={handleSelect} name='location'>
-      <Combobox.Input onChange={(e) => setQuery(e.target.value)} />
-      <Combobox.Options>
-        {filteredLocations.map((location) => (
-          <Combobox.Option key={location} value={location}>
-            {location}
-          </Combobox.Option>
-        ))}
-      </Combobox.Options>
-    </Combobox>
+    <div className='flex flex-col gap-1'>
+      <Combobox
+        value={selectedLocation}
+        onChange={handleSelect}
+        name='location'
+      >
+        <Combobox.Input
+          className='w-full rounded-md border border-gray-300 bg-inherit px-3 py-2
+        text-light-primary outline-none dark:text-dark-primary'
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder='Search locations'
+        />
+        <Combobox.Options className='max-h-36 overflow-y-auto rounded-md'>
+          {filteredLocations.map((location) => (
+            <Combobox.Option
+              key={location}
+              value={location}
+              className='cursor-pointer p-2 hover:bg-light-primary/10 dark:hover:bg-dark-primary/10'
+            >
+              {location}
+            </Combobox.Option>
+          ))}
+        </Combobox.Options>
+      </Combobox>
+    </div>
   );
 }

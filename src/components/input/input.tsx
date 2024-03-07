@@ -61,7 +61,6 @@ export function Input({
   const [showLocation, setShowLocation] = useState(false);
   const [location, setLocation] = useState('');
   const [locationInputValue, setLocationInputValue] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const { user, isAdmin } = useAuth();
   const { name, username, photoURL } = user as User;
@@ -196,11 +195,9 @@ export function Input({
 
   const toggleShowLocation = () => {
     if (!showLocation) {
-      openLocationModal();
-    } else {
-      setLocation('');
+      setShowLocation(true);
     }
-    setShowLocation((prevState) => !prevState);
+    openLocationModal();
   };
 
   const handleChange = ({
@@ -223,6 +220,16 @@ export function Input({
 
   const cancelSetLocation = (): void => {
     setLocationInputValue('');
+    if (showLocation && location === '') {
+      setShowLocation(false);
+    }
+    closeLocationModal();
+  };
+
+  const removeSetLocation = (): void => {
+    setLocationInputValue('');
+    setLocation('');
+    setShowLocation(false);
     closeLocationModal();
   };
 
@@ -302,6 +309,7 @@ export function Input({
               discardTweet={discardTweet}
               handleChange={handleChange}
               handleImageUpload={handleImageUpload}
+              onToggleShowLocation={toggleShowLocation}
             >
               {isUploadingImages && (
                 <ImagePreview
@@ -336,9 +344,12 @@ export function Input({
         <LocationModal
           loading={loading}
           onSetLocation={onSetLocation}
-          cancelSetLocation={cancelSetLocation}
+          removeSetLocation={removeSetLocation}
         >
-          <LocationCombobox handleLocationChange={handleLocationChange} />
+          <LocationCombobox
+            defaultLocation={location}
+            handleLocationChange={handleLocationChange}
+          />
         </LocationModal>
       </Modal>
     </>

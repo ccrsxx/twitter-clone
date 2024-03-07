@@ -38,6 +38,7 @@ type InputFormProps = {
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
+  onToggleShowLocation: () => void;
 };
 
 const variants: Variants[] = [
@@ -71,7 +72,8 @@ export function InputForm({
   handleFocus,
   discardTweet,
   handleChange,
-  handleImageUpload
+  handleImageUpload,
+  onToggleShowLocation
 }: InputFormProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
@@ -189,14 +191,15 @@ export function InputForm({
             <p className='font-bold'>Everyone can reply</p>
           </button>
         )}
-        {isLocationShown && (
+        {isLocationShown && location !== '' && (
           <button
             type='button'
             className='custom-button accent-tab accent-bg-tab ml-auto flex items-center gap-1
                        py-0 px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
+            onClick={onToggleShowLocation}
           >
             <HeroIcon className='h-4 w-4' iconName='MapPinIcon' />
-            <p className='font-bold'>{location ? location : 'Nowhere'}</p>
+            <p className='font-bold'>{location}</p>
           </button>
         )}
       </motion.div>

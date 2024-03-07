@@ -21,7 +21,7 @@ import { InputOptions } from './input-options';
 import { Modal } from '@components/modal/modal';
 import { useModal } from '@lib/hooks/useModal';
 import { LocationModal } from '@components/modal/location-modal';
-import { InputField } from '@components/input/input-field';
+import { LocationCombobox } from '@components/input/location-combobox';
 import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
 import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
@@ -226,10 +226,8 @@ export function Input({
     closeLocationModal();
   };
 
-  const handleLocationChange = ({
-    target: { value }
-  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void =>
-    setLocationInputValue(value);
+  const handleLocationChange = (location: string): void =>
+    setLocationInputValue(location);
 
   const formId = useId();
 
@@ -340,13 +338,7 @@ export function Input({
           onSetLocation={onSetLocation}
           cancelSetLocation={cancelSetLocation}
         >
-          <InputField
-            label='Type locations'
-            inputId='location'
-            inputValue={locationInputValue}
-            errorMessage={errorMessage}
-            handleChange={handleLocationChange}
-          />
+          <LocationCombobox handleLocationChange={handleLocationChange} />
         </LocationModal>
       </Modal>
     </>

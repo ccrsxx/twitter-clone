@@ -22,6 +22,7 @@ export type Tweet = {
   updatedAt: Timestamp | null;
   userReplies: number;
   userRetweets: string[];
+  location: string;
 };
 
 export const tweetConverter: FirestoreDataConverter<Tweet> = {

@@ -178,7 +178,7 @@ export function InputForm({
       {children}
 
       <motion.div
-        className='flex border-b border-light-border pb-2 dark:border-dark-border'
+        className='flex flex-wrap border-b border-light-border pb-2 dark:border-dark-border'
         {...fromBottom}
       >
         {isVisibilityShown && (
@@ -194,12 +194,12 @@ export function InputForm({
         {isLocationShown && location !== '' && (
           <button
             type='button'
-            className='custom-button accent-tab accent-bg-tab ml-auto flex items-center gap-1
-                       py-0 px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
+            className='custom-button accent-tab accent-bg-tab ml-auto flex max-w-[200px] items-center
+                       gap-1 py-0 px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
             onClick={onToggleShowLocation}
           >
-            <HeroIcon className='h-4 w-4' iconName='MapPinIcon' />
-            <p className='font-bold'>{location}</p>
+            <HeroIcon className='h-4 w-4 flex-shrink-0' iconName='MapPinIcon' />
+            <p className='truncate font-bold'>{location}</p>
           </button>
         )}
       </motion.div>

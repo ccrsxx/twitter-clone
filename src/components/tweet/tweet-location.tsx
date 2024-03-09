@@ -28,18 +28,18 @@ export function TweetLocation({
           <Link href={tweetLink}>
             <a
               className={cn(
-                'custom-underline peer whitespace-nowrap',
+                'custom-underline peer whitespace-pre-line',
                 viewTweet && 'text-light-secondary dark:text-dark-secondary'
               )}
             >
-              {location}
+              {location.length > 20 ? `${location.slice(0, 20)}...` : location}
             </a>
           </Link>
         </div>
 
         <ToolTip
-          className='translate-y-1 peer-focus:opacity-100 peer-focus-visible:visible
-                     peer-focus-visible:delay-200'
+          className='translate-y-1 whitespace-pre-line peer-focus:opacity-100
+                     peer-focus-visible:visible peer-focus-visible:delay-200'
           tip={location}
         />
       </div>

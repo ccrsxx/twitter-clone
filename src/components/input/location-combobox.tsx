@@ -6,7 +6,8 @@ const locations = [
   'New York, USA',
   'Beijing, China',
   'Seoul, Korea',
-  'Toronto, Canada'
+  'Toronto, Canada',
+  'Edinburgh of the Seven Seas, Saint Helena, Ascension, and Tristan da Cunha'
 ];
 
 type LocationComboboxProps = {

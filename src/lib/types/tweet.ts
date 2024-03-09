@@ -13,6 +13,7 @@ export type Tweet = {
   updatedAt: Timestamp | null;
   userReplies: number;
   userRetweets: string[];
+  location: string;
 };
 
 export type TweetWithUser = Tweet & { user: User };

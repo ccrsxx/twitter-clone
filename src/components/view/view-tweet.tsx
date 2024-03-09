@@ -14,6 +14,7 @@ import { variants } from '@components/tweet/tweet';
 import { TweetActions } from '@components/tweet/tweet-actions';
 import { TweetStats } from '@components/tweet/tweet-stats';
 import { TweetDate } from '@components/tweet/tweet-date';
+import { TweetLocation } from '@components/tweet/tweet-location';
 import { Input } from '@components/input/input';
 import type { RefObject } from 'react';
 import type { User } from '@lib/types/user';
@@ -35,6 +36,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     createdAt,
     userRetweets,
     userReplies,
+    location,
     viewTweetRef,
     user: tweetUserData
   } = tweet;
@@ -139,7 +141,18 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
           className='inner:hover-animation inner:border-b inner:border-light-border
                      dark:inner:border-dark-border'
         >
-          <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
+          <div className='flex items-center'>
+            <TweetDate viewTweet tweetLink={tweetLink} createdAt={createdAt} />
+            {location !== '' && (
+              <div className='ml-1'>
+                <TweetLocation
+                  viewTweet
+                  tweetLink={tweetLink}
+                  location={location}
+                />
+              </div>
+            )}
+          </div>
           <TweetStats
             viewTweet
             reply={reply}

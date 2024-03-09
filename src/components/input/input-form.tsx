@@ -27,6 +27,8 @@ type InputFormProps = {
   replyModal?: boolean;
   isValidTweet: boolean;
   isUploadingImages: boolean;
+  location?: string;
+  showLocation: boolean;
   sendTweet: () => Promise<void>;
   handleFocus: () => void;
   discardTweet: () => void;
@@ -36,6 +38,7 @@ type InputFormProps = {
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
+  onToggleShowLocation: () => void;
 };
 
 const variants: Variants[] = [
@@ -63,11 +66,14 @@ export function InputForm({
   inputValue,
   isValidTweet,
   isUploadingImages,
+  location,
+  showLocation,
   sendTweet,
   handleFocus,
   discardTweet,
   handleChange,
-  handleImageUpload
+  handleImageUpload,
+  onToggleShowLocation
 }: InputFormProps): JSX.Element {
   const { open, openModal, closeModal } = useModal();
 
@@ -109,6 +115,8 @@ export function InputForm({
   };
 
   const isVisibilityShown = visited && !reply && !replyModal && !loading;
+
+  const isLocationShown = visited && !loading && showLocation;
 
   return (
     <div className='flex min-h-[48px] w-full flex-col justify-center gap-4'>
@@ -168,11 +176,12 @@ export function InputForm({
         </div>
       </div>
       {children}
-      {isVisibilityShown && (
-        <motion.div
-          className='flex border-b border-light-border pb-2 dark:border-dark-border'
-          {...fromBottom}
-        >
+
+      <motion.div
+        className='flex flex-wrap border-b border-light-border pb-2 dark:border-dark-border'
+        {...fromBottom}
+      >
+        {isVisibilityShown && (
           <button
             type='button'
             className='custom-button accent-tab accent-bg-tab flex cursor-not-allowed items-center gap-1 py-0
@@ -181,8 +190,19 @@ export function InputForm({
             <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' />
             <p className='font-bold'>Everyone can reply</p>
           </button>
-        </motion.div>
-      )}
+        )}
+        {isLocationShown && location !== '' && (
+          <button
+            type='button'
+            className='custom-button accent-tab accent-bg-tab ml-auto flex max-w-[200px] items-center
+                       gap-1 py-0 px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
+            onClick={onToggleShowLocation}
+          >
+            <HeroIcon className='h-4 w-4 flex-shrink-0' iconName='MapPinIcon' />
+            <p className='truncate font-bold'>{location}</p>
+          </button>
+        )}
+      </motion.div>
     </div>
   );
 }

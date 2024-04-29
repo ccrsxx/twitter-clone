@@ -1,14 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Combobox } from '@headlessui/react';
+import locationsData from '../../../public/resource/worldcities.json';
 
-const locations = [
-  'Tokyo, Japan',
-  'New York, USA',
-  'Beijing, China',
-  'Seoul, Korea',
-  'Toronto, Canada',
-  'Edinburgh of the Seven Seas, Saint Helena, Ascension, and Tristan da Cunha'
-];
+const locations = locationsData.map((location) => location.location);
 
 type LocationComboboxProps = {
   defaultLocation: string;
@@ -21,13 +15,23 @@ export function LocationCombobox({
 }: LocationComboboxProps) {
   const [selectedLocation, setSelectedLocation] = useState(defaultLocation);
   const [query, setQuery] = useState('');
+  const [debouncedQuery, setDebouncedQuery] = useState('');
 
-  const filteredLocations =
-    query === ''
-      ? locations
-      : locations.filter((location) => {
-          return location.toLowerCase().includes(query.toLowerCase());
-        });
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
+  const filteredLocations = useMemo(() => {
+    if (debouncedQuery === '') return [];
+    const lowerCaseQuery = debouncedQuery.toLowerCase();
+    return locations.filter((location) =>
+      location.toLowerCase().startsWith(lowerCaseQuery)
+    );
+  }, [debouncedQuery]);
 
   const handleSelect = (selectedValue: string) => {
     setSelectedLocation(selectedValue);

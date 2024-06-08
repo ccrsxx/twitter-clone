@@ -1,6 +1,7 @@
 import cn from 'clsx';
+import { useRef } from 'react';
 import type { User, EditableData } from '@lib/types/user';
-import type { KeyboardEvent, ChangeEvent } from 'react';
+import type { KeyboardEvent, ChangeEvent, RefObject } from 'react';
 
 export type InputFieldProps = {
   label: string;
@@ -28,10 +29,14 @@ export function InputField({
   handleChange,
   handleKeyboardShortcut
 }: InputFieldProps): JSX.Element {
+  const ref: RefObject<HTMLInputElement & HTMLTextAreaElement> = useRef(null);
+
   const slicedInputValue = inputValue?.slice(0, inputLimit) ?? '';
 
   const inputLength = slicedInputValue.length;
   const isHittingInputLimit = inputLimit && inputLength > inputLimit;
+
+  const handleRefClicked = (): void => ref.current?.focus();
 
   return (
     <div className='flex flex-col gap-1'>
@@ -43,9 +48,11 @@ export function InputField({
             : `ring-light-line-reply focus-within:ring-2 
                  focus-within:!ring-main-accent dark:ring-dark-border`
         )}
+        onClick={handleRefClicked}
       >
         {useTextArea ? (
           <textarea
+            ref={ref}
             className='peer mt-6 w-full resize-none bg-inherit px-3 pb-1
                        placeholder-transparent outline-none transition'
             id={inputId}
@@ -57,6 +64,7 @@ export function InputField({
           />
         ) : (
           <input
+            ref={ref}
             className='peer mt-6 w-full bg-inherit px-3 pb-1
                        placeholder-transparent outline-none transition'
             id={inputId}
@@ -78,6 +86,7 @@ export function InputField({
               : 'peer-focus:text-main-accent'
           )}
           htmlFor={inputId}
+          onClick={handleRefClicked}
         >
           {label}
         </label>

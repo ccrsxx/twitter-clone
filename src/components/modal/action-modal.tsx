@@ -79,7 +79,7 @@ export function ActionModal({
           )}
           onClick={closeModal}
         >
-          {secondaryBtnLabel ?? 'Cancel'}
+          {secondaryBtnLabel ?? 'Cancelar'}
         </Button>
       </div>
     </div>

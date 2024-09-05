@@ -43,7 +43,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           {...variants}
         >
           {!inTrendsPage && (
-            <h2 className='text-xl font-extrabold'>Trends for you</h2>
+            <h2 className='text-xl font-extrabold'>Tendências para você</h2>
           )}
           {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
@@ -68,14 +68,14 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                   </Button>
                 </div>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  Trending{' '}
+                  Tendências{' '}
                   {location === 'Worldwide'
                     ? 'Worldwide'
                     : `in ${location as string}`}
                 </p>
                 <p className='font-bold'>{name}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {formatNumber(tweet_volume)} tweets
+                  {formatNumber(tweet_volume)} tuítes
                 </p>
               </a>
             </Link>
@@ -86,7 +86,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                 className='custom-button accent-tab hover-card block w-full rounded-2xl
                            rounded-t-none text-center text-main-accent'
               >
-                Show more
+                Mostrar mais
               </a>
             </Link>
           )}

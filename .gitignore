@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env.development
 
 # vercel
 .vercel
@@ -38,3 +39,7 @@ next-env.d.ts
 # python
 /.mypy_cache
 *.py
+
+#
+firestore-debug.log
+ui-debug.log

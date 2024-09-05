@@ -54,7 +54,7 @@ export function FollowButton({
                      hover:before:content-["Unfollow"] inner:hover:hidden dark:border-light-secondary'
           onClick={preventBubbling(openModal)}
         >
-          <span>Following</span>
+          <span>Seguindo</span>
         </Button>
       ) : (
         <Button
@@ -64,7 +64,7 @@ export function FollowButton({
                      dark:active:bg-light-border/75'
           onClick={preventBubbling(handleFollow)}
         >
-          Follow
+          Seguir
         </Button>
       )}
     </>

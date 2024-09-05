@@ -14,15 +14,16 @@ type UsernameModalProps = {
 
 const usernameModalData = [
   {
-    title: 'What should we call you?',
-    description: 'Your @username is unique. You can always change it later.',
-    cancelLabel: 'Skip'
+    title: 'Como devemos chamá-lo?',
+    description:
+      'Seu @nomedeusuario é único. Você sempre pode alterá-lo mais tarde.',
+    cancelLabel: 'Pular'
   },
   {
-    title: 'Change your username?',
+    title: 'Alterar seu nome de usuário?',
     description:
-      'Your @username is unique. You can always change it here again.',
-    cancelLabel: 'Cancel'
+      'Seu @nomedeusuario é único. Você sempre pode alterá-lo aqui novamente.',
+    cancelLabel: 'Cancelar'
   }
 ] as const;
 
@@ -67,7 +68,7 @@ export function UsernameModal({
           loading={loading}
           disabled={!available}
         >
-          Set username
+          Definir nome de usuário
         </Button>
         <Button
           className='border border-light-line-reply hover:bg-light-primary/10 focus-visible:bg-light-primary/10

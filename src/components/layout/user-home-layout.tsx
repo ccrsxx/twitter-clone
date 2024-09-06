@@ -103,4 +103,4 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
       )}
     </>
   );
-}
+};

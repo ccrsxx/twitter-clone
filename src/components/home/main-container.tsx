@@ -13,7 +13,7 @@ export function MainContainer({
   return (
     <main
       className={cn(
-        `hover-animation flex min-h-screen w-full max-w-xl flex-col pb-96`,
+        'hover-animation flex min-h-screen w-full max-w-xl flex-col pb-96',
         className
       )}
     >

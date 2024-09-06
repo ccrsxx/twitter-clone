@@ -10,9 +10,16 @@ import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
-import { CiHome, CiHashtag, CiMail, CiBellOn, CiBookmark, CiTextAlignLeft, CiUser } from "react-icons/ci";
+import {
+  CiHome,
+  CiHashtag,
+  CiMail,
+  CiBellOn,
+  CiBookmark,
+  CiTextAlignLeft,
+  CiUser
+} from 'react-icons/ci';
 import { ReactNode } from 'react';
-import Image from 'next/image';
 
 export type NavLink = {
   href: string;
@@ -20,7 +27,7 @@ export type NavLink = {
   iconName: IconName;
   disabled?: boolean;
   canBeHidden?: boolean;
-  icon?: ReactNode
+  icon?: ReactNode;
 };
 
 const navLinks: Readonly<NavLink[]> = [

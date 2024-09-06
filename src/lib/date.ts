@@ -79,7 +79,7 @@ function getJoinedTime(date: Date): string {
     year: 'numeric'
   }).format(date);
 
-  return `Ingressou em ${capitalizeFirstLetter(joinedDate)}`;
+  return capitalizeFirstLetter(joinedDate);
 }
 
 function getShortTime(date: Date): string {

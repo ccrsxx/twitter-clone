@@ -6,8 +6,12 @@ import type { NotificationWithUser } from '@lib/types/notification';
 
 const placeholder = {
   follower: {
-    title: 'Um novo usuário seguiu você!',
-    description: 'Agora o #name tá acompanhando tuas fofocas de pertinho'
+    title: 'Um novo fofoqueiro seguiu você!',
+    description: 'Agora #name tá acompanhando(a) tuas fofocas de pertinho'
+  },
+  liked: {
+    title: 'Alguém curtiu sua fofoca.',
+    description: '#name tá adorando o que tu tá falando'
   }
 };
 

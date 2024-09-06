@@ -1,20 +1,18 @@
 import Link from 'next/link';
 import cn from 'clsx';
 import { motion } from 'framer-motion';
-import { query, where } from 'firebase/firestore';
+import { query, updateDoc, where, doc } from 'firebase/firestore';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { preventBubbling } from '@lib/utils';
 import { notificationsCollection } from '@lib/firebase/collections';
 import { useInfiniteScroll } from '@lib/hooks/useInfiniteScroll';
-import { Error } from '@components/ui/error';
-import { HeroIcon } from '@components/ui/hero-icon';
-import { Button } from '@components/ui/button';
-import { ToolTip } from '@components/ui/tooltip';
-import { Loading } from '@components/ui/loading';
-import type { MotionProps } from 'framer-motion';
-import { NotificationTypes } from '@components/common/notifications';
-import { NotificationWithUser } from '@lib/types/notification';
-import Image from 'next/image';
 import { useAuth } from '@lib/context/auth-context';
+import { Error } from '@components/ui/error';
+import { Loading } from '@components/ui/loading';
+import { NotificationTypes } from '@components/common/notifications';
+import type { NotificationWithUser } from '@lib/types/notification';
+import type { MotionProps } from 'framer-motion';
 
 export const variants: MotionProps = {
   initial: { opacity: 0 },
@@ -30,6 +28,7 @@ export function AsideNotifications({
   inNotificationsPage
 }: AsideNotificationsProps): JSX.Element {
   const { user } = useAuth();
+  const navigator = useRouter();
 
   const { data, loading } = useInfiniteScroll(
     query(notificationsCollection),
@@ -64,11 +63,27 @@ export function AsideNotifications({
             );
 
             return (
-              <Link href={NotificationProps.url} key={notification.id}>
-                <span
+              <Link
+                href={NotificationProps.url}
+                key={notification.id}
+                legacyBehavior
+              >
+                <a
                   className='hover-animation accent-tab hover-card relative 
                          flex  flex-col gap-0.5 px-4 py-2'
-                  onClick={preventBubbling()}
+                  onClick={async () => {
+                    preventBubbling();
+                    void navigator.push(NotificationProps.url);
+
+                    const docRef = doc(
+                      notificationsCollection,
+                      notification.id
+                    );
+
+                    await updateDoc(docRef, {
+                      isChecked: true
+                    });
+                  }}
                 >
                   <div className='flex w-full items-center'>
                     <Image
@@ -89,12 +104,14 @@ export function AsideNotifications({
                     </div>
                   </div>
 
-                  <div className='absolute right-2 top-2'>
-                    <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                      Nova
-                    </p>
-                  </div>
-                </span>
+                  {!notification.isChecked && (
+                    <div className='absolute right-2 top-2'>
+                      <p className='text-sm text-light-secondary dark:text-dark-secondary'>
+                        Nova
+                      </p>
+                    </div>
+                  )}
+                </a>
               </Link>
             );
           })}

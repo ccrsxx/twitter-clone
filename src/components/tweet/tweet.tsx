@@ -94,10 +94,8 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         <span
           className={cn(
             `accent-tab relative flex flex-col 
-            gap-y-4 px-8 hover:shadow-md border bg-white rounded-md py-6 outline-none duration-200 dark:bg-zinc-900 dark:border-main-background`,
-            parentTweet
-              ? 'mt-0.5 pt-2.5 pb-0'
-              : 'mb-4'
+            gap-y-4 rounded-md border bg-white px-8 py-6 outline-none duration-200 hover:shadow-md dark:border-main-background dark:bg-zinc-900`,
+            parentTweet ? 'mt-0.5 pt-2.5 pb-0' : 'mb-4'
           )}
           draggable={false}
           onClick={delayScroll(200)}
@@ -190,6 +188,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                     userId={userId}
                     isOwner={isOwner}
                     tweetId={tweetId}
+                    tweetCreatedBy={createdBy}
                     userLikes={userLikes}
                     userReplies={userReplies}
                     userRetweets={userRetweets}

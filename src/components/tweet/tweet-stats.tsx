@@ -16,6 +16,7 @@ type TweetStatsProps = Pick<
   userId: string;
   isOwner: boolean;
   tweetId: string;
+  tweetCreatedBy: string;
   viewTweet?: boolean;
   openModal?: () => void;
 };
@@ -25,6 +26,7 @@ export function TweetStats({
   userId,
   isOwner,
   tweetId,
+  tweetCreatedBy,
   userLikes,
   viewTweet,
   userRetweets,
@@ -132,11 +134,10 @@ export function TweetStats({
           stats={currentLikes}
           iconName='HeartIcon'
           viewTweet={viewTweet}
-          onClick={manageLike(
-            tweetIsLiked ? 'unlike' : 'like',
-            userId,
-            tweetId
-          )}
+          onClick={manageLike(tweetIsLiked ? 'unlike' : 'like', userId, {
+            id: tweetId,
+            createdBy: tweetCreatedBy
+          } as Tweet)}
         />
         <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
         {isOwner && (

@@ -10,9 +10,16 @@ import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
-import { CiHome, CiHashtag, CiMail, CiBellOn, CiBookmark, CiTextAlignLeft, CiUser } from "react-icons/ci";
+import {
+  CiHome,
+  CiHashtag,
+  CiMail,
+  CiBellOn,
+  CiBookmark,
+  CiTextAlignLeft,
+  CiUser
+} from 'react-icons/ci';
 import { ReactNode } from 'react';
-import Image from 'next/image';
 
 export type NavLink = {
   href: string;
@@ -20,7 +27,7 @@ export type NavLink = {
   iconName: IconName;
   disabled?: boolean;
   canBeHidden?: boolean;
-  icon?: ReactNode
+  icon?: ReactNode;
 };
 
 const navLinks: Readonly<NavLink[]> = [
@@ -32,7 +39,7 @@ const navLinks: Readonly<NavLink[]> = [
   },
   {
     href: '/explore',
-    linkName: 'Explore',
+    linkName: 'Explorar',
     iconName: 'HashtagIcon',
     disabled: true,
     canBeHidden: true,
@@ -40,28 +47,28 @@ const navLinks: Readonly<NavLink[]> = [
   },
   {
     href: '/notifications',
-    linkName: 'Notifications',
+    linkName: 'Notificações',
     iconName: 'BellIcon',
     disabled: false,
     icon: <CiBellOn size={34} />
   },
   {
     href: '/messages',
-    linkName: 'Messages',
+    linkName: 'Mensagens',
     iconName: 'EnvelopeIcon',
     disabled: true,
     icon: <CiMail size={34} />
   },
   {
     href: '/bookmarks',
-    linkName: 'Bookmarks',
+    linkName: 'Babados',
     iconName: 'BookmarkIcon',
     canBeHidden: true,
     icon: <CiBookmark size={34} />
   },
   {
     href: '/lists',
-    linkName: 'Lists',
+    linkName: 'Listas',
     iconName: 'Bars3BottomLeftIcon',
     disabled: true,
     canBeHidden: true,
@@ -131,7 +138,7 @@ export function Sidebar(): JSX.Element {
               className='block h-6 w-6 xl:hidden'
               iconName='FeatherIcon'
             />
-            <p className='hidden xl:block'>Tweet</p>
+            <p className='hidden xl:block'>Fofocar</p>
           </Button>
         </section>
         {!isMobile && <SidebarProfile />}

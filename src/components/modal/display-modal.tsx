@@ -10,9 +10,9 @@ type DisplayModalProps = {
 };
 
 const themes: Readonly<[Theme, string][]> = [
-  ['light', 'Default'],
-  ['dim', 'Dim'],
-  ['dark', 'Lights out']
+  ['light', 'Padrão'],
+  ['dim', 'Escurecer'],
+  ['dark', 'Apagão']
 ];
 
 const accentsColor: Readonly<Accent[]> = [
@@ -30,7 +30,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
       <div className='flex flex-col gap-3 text-center'>
         <h2 className='text-2xl font-bold'>Personalize sua visualização</h2>
         <p className='text-light-secondary dark:text-dark-secondary'>
-          Essas configurações afetam todas as contas do Twitter neste navegador.
+          Essas configurações afetam todas as contas do Fofoca neste navegador.
         </p>
       </div>
       <article
@@ -51,7 +51,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
               </div>
             </div>
             <p className='whitespace-pre-line break-words'>
-              No coração do Twitter estão mensagens curtas chamadas Tweets –
+              No coração do Fofoca.me estão mensagens curtas chamadas fofocas –
               apenas como este - que pode incluir fotos, vídeos, links, texto,
               hashtags e menções como{' '}
               <span className='text-main-accent'>@fofoca</span>.

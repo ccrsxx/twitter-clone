@@ -55,7 +55,7 @@ export default function TweetId(): JSX.Element {
     <MainContainer className='!pb-[1280px]'>
       <MainHeader
         useActionButton
-        title={parentId ? 'Thread' : 'Tweet'}
+        title={parentId ? 'Fio' : 'Fofoca'}
         action={back}
       />
       <section>
@@ -63,8 +63,8 @@ export default function TweetId(): JSX.Element {
           <Loading className='mt-5' />
         ) : !tweetData ? (
           <>
-            <SEO title='Tweet not found / Fofoca-me' />
-            <Error message='Tweet not found' />
+            <SEO title='Fofoquinha não encontrada / Fofoca.me' />
+            <Error message='Fofoca não encontrada' />
           </>
         ) : (
           <>

@@ -34,7 +34,7 @@ export function AsideNotifications({
   const { data, loading } = useInfiniteScroll(
     query(notificationsCollection),
     [where('targetUserId', '==', user?.id)],
-    { includeUser: 'targetUserId' }
+    { includeUser: 'userId' }
   );
 
   return (

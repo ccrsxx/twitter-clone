@@ -45,8 +45,8 @@ export function UserFollowStats({
   const userPath = `/user/${id as string}`;
 
   const allStats: Readonly<Stats[]> = [
-    ['Following', `${userPath}/following`, followingMove, currentFollowing],
-    ['Follower', `${userPath}/followers`, followersMove, currentFollowers]
+    ['Seguindo', `${userPath}/following`, followingMove, currentFollowing],
+    ['Seguidores', `${userPath}/followers`, followersMove, currentFollowers]
   ];
 
   return (

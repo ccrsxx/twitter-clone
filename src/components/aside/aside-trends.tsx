@@ -1,18 +1,17 @@
 import Link from 'next/link';
 import cn from 'clsx';
 import { motion } from 'framer-motion';
+import { limit, orderBy, query } from 'firebase/firestore';
 import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
-import { useTrends } from '@lib/api/trends';
+import { trendsCollection } from '@lib/firebase/collections';
+import { useCollection } from '@lib/hooks/useCollection';
 import { Error } from '@components/ui/error';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
 import { ToolTip } from '@components/ui/tooltip';
 import { Loading } from '@components/ui/loading';
 import type { MotionProps } from 'framer-motion';
-import { useCollection } from '@lib/hooks/useCollection';
-import { trendsCollection } from '@lib/firebase/collections';
-import { limit, orderBy, query, where } from 'firebase/firestore';
 
 export const variants: MotionProps = {
   initial: { opacity: 0 },

@@ -25,7 +25,7 @@ export function UserHomeAvatar({
         />
       </Modal>
       <Button
-        className='accent-tab absolute -mt-3 aspect-square w-24 -translate-y-1/2 overflow-hidden p-0 
+        className='accent-tab absolute rounded-full -mt-3 aspect-square w-24 -translate-y-1/2 overflow-hidden p-0 
                    disabled:cursor-auto disabled:opacity-100 xs:w-32 sm:w-36
                    [&:hover>figure>span]:brightness-75'
         onClick={openModal}

@@ -10,6 +10,16 @@ import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
 import type { IconName } from '@components/ui/hero-icon';
+import {
+  CiHome,
+  CiHashtag,
+  CiMail,
+  CiBellOn,
+  CiBookmark,
+  CiTextAlignLeft,
+  CiUser
+} from 'react-icons/ci';
+import { ReactNode } from 'react';
 
 export type NavLink = {
   href: string;
@@ -17,45 +27,52 @@ export type NavLink = {
   iconName: IconName;
   disabled?: boolean;
   canBeHidden?: boolean;
+  icon?: ReactNode;
 };
 
 const navLinks: Readonly<NavLink[]> = [
   {
     href: '/home',
     linkName: 'Home',
-    iconName: 'HomeIcon'
+    iconName: 'HomeIcon',
+    icon: <CiHome size={34} />
   },
   {
     href: '/explore',
     linkName: 'Explorar',
     iconName: 'HashtagIcon',
     disabled: true,
-    canBeHidden: true
+    canBeHidden: true,
+    icon: <CiHashtag size={34} />
   },
   {
     href: '/notifications',
     linkName: 'Notificações',
     iconName: 'BellIcon',
-    disabled: true
+    disabled: false,
+    icon: <CiBellOn size={34} />
   },
   {
     href: '/messages',
     linkName: 'Mensagens',
     iconName: 'EnvelopeIcon',
-    disabled: true
+    disabled: true,
+    icon: <CiMail size={34} />
   },
   {
     href: '/bookmarks',
     linkName: 'Babados',
     iconName: 'BookmarkIcon',
-    canBeHidden: true
+    canBeHidden: true,
+    icon: <CiBookmark size={34} />
   },
   {
     href: '/lists',
     linkName: 'Listas',
     iconName: 'Bars3BottomLeftIcon',
     disabled: true,
-    canBeHidden: true
+    canBeHidden: true,
+    icon: <CiTextAlignLeft size={34} />
   }
 ];
 
@@ -107,6 +124,7 @@ export function Sidebar(): JSX.Element {
               username={username}
               linkName='Perfil'
               iconName='UserIcon'
+              icon={<CiUser size={34} />}
             />
             {!isMobile && <MoreSettings />}
           </nav>

@@ -32,7 +32,7 @@ export default function UserLikes(): JSX.Element {
       <SEO
         title={`Fofocas curtidas por ${name as string} (@${
           username as string
-        }) / Fofoca-me`}
+        }) / Fofoca-Me`}
       />
       {loading ? (
         <Loading className='mt-5' />

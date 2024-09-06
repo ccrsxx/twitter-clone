@@ -1,6 +1,6 @@
 import type { Timestamp } from 'firebase/firestore';
 
-const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('pt-BR', {
+const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('pt-Br', {
   style: 'short',
   numeric: 'auto'
 });
@@ -27,14 +27,14 @@ export function formatDate(
 }
 
 export function formatNumber(number: number): string {
-  return new Intl.NumberFormat('pt-BR', {
+  return new Intl.NumberFormat('pt-Br', {
     notation: number > 10_000 ? 'compact' : 'standard',
     maximumFractionDigits: 1
   }).format(number);
 }
 
 function getFullTime(date: Date): string {
-  const fullDate = new Intl.DateTimeFormat('pt-BR', {
+  const fullDate = new Intl.DateTimeFormat('pt-Br', {
     hour: 'numeric',
     minute: 'numeric',
     day: 'numeric',
@@ -57,12 +57,12 @@ function getFullTime(date: Date): string {
 function getPostTime(date: Date): string {
   if (isToday(date)) return getRelativeTime(date);
   if (isYesterday(date))
-    return new Intl.DateTimeFormat('pt-BR', {
+    return new Intl.DateTimeFormat('pt-Br', {
       day: 'numeric',
       month: 'short'
     }).format(date);
 
-  return new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat('pt-Br', {
     day: 'numeric',
     month: 'short',
     year: isCurrentYear(date) ? undefined : 'numeric'
@@ -75,7 +75,7 @@ function capitalizeFirstLetter(string: string): string {
 }
 
 function getJoinedTime(date: Date): string {
-  const joinedDate = new Intl.DateTimeFormat('pt-BR', {
+  return new Intl.DateTimeFormat('pt-Br', {
     month: 'long',
     year: 'numeric'
   }).format(date);
@@ -101,7 +101,7 @@ function getRelativeTime(date: Date): string {
 
   const [number, unit] = relativeTime.split(' ');
 
-  return `${number}${unit[0]}`;
+  return `${number} ${unit}mins`;
 }
 
 function calculateRelativeTime(date: Date): string {

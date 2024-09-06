@@ -39,7 +39,7 @@ export function TweetShare({
               <span className='flex gap-2'>
                 Tweet adicionado aos seus favoritos
                 <Link href='/bookmarks'>
-                  <a className='custom-underline font-bold'>Visualizar</a>
+                  <span className='custom-underline font-bold'>Visualizar</span>
                 </Link>
               </span>
             )

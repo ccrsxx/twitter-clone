@@ -17,7 +17,7 @@ export function MobileSidebarLink({
 }: MobileSidebarLinkProps): JSX.Element {
   return (
     <Link href={href} key={href}>
-      <a
+      <span
         className={cn(
           `custom-button accent-tab accent-bg-tab flex items-center rounded-md font-bold 
            transition hover:bg-light-primary/10 focus-visible:ring-2 first:focus-visible:ring-[#878a8c]
@@ -32,7 +32,7 @@ export function MobileSidebarLink({
           iconName={iconName}
         />
         {linkName}
-      </a>
+      </span>
     </Link>
   );
 }

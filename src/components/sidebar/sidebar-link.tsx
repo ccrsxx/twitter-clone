@@ -22,7 +22,7 @@ export function SidebarLink({
 
   return (
     <Link href={href}>
-      <a
+      <span
         className={cn(
           'group py-1 outline-none',
           canBeHidden ? 'hidden xs:flex' : 'flex',
@@ -51,7 +51,7 @@ export function SidebarLink({
           />
           <p className='hidden xl:block'>{linkName}</p>
         </div>
-      </a>
+      </span>
     </Link>
   );
 }

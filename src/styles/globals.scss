@@ -44,6 +44,12 @@
 }
 
 @layer components {
+  .tweet-parent-list {
+    & > :not(:first-child) .accent-tab {
+      @apply border-t-0 rounded-t-none rounded-b-md; /* ou qualquer estilo de borda que queira aplicar */
+    }
+  }
+
   .hover-animation {
     @apply transition-colors duration-200;
   }

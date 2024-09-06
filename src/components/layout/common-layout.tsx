@@ -22,7 +22,7 @@ export function HomeLayout({ children }: LayoutProps): JSX.Element {
     <>
       {children}
       <Aside>
-        {/* <AsideTrends /> */}
+        <AsideTrends />
         <Suggestions />
       </Aside>
     </>

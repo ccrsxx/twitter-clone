@@ -83,7 +83,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       }}
     >
       <Modal
-        className='flex items-start justify-center'
+        className='flex items-start justify-center  tweet-with-parent border border-blue-400'
         modalClassName='bg-main-background rounded-2xl max-w-xl w-full my-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
@@ -94,10 +94,10 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         <span
           className={cn(
             `accent-tab relative flex flex-col 
-            gap-y-4 px-8 hover:shadow-md border bg-white rounded-md py-6 outline-none duration-200 dark:bg-zinc-900 dark:border-main-background`,
+            gap-y-4 px-8 py-6 outline-none duration-200 bg-white hover:shadow-md dark:bg-zinc-900 rounded-md border dark:border-main-background`,
             parentTweet
               ? 'mt-0.5 pt-2.5 pb-0'
-              : 'mb-4'
+              : 'mb-4 '
           )}
           draggable={false}
           onClick={delayScroll(200)}

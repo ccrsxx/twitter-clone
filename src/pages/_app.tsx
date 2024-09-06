@@ -1,5 +1,6 @@
 import '@styles/globals.scss';
 
+import { GoogleTagManager } from '@next/third-parties/google';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
 import { AppHead } from '@components/common/app-head';
@@ -27,6 +28,11 @@ export default function App({
       <AuthContextProvider>
         <ThemeContextProvider>
           {getLayout(<Component {...pageProps} />)}
+          {process.env.NEXT_PUBLIC_GTM_CONTAINER_ID && (
+            <GoogleTagManager
+              gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID}
+            />
+          )}
         </ThemeContextProvider>
       </AuthContextProvider>
     </>

@@ -116,7 +116,7 @@ export function Input({
         <span className='flex gap-2'>
           Your Tweet was sent
           <Link href={`/tweet/${tweetId}`}>
-            <a className='custom-underline font-bold'>View</a>
+            <span className='custom-underline font-bold'>View</span>
           </Link>
         </span>
       ),
@@ -222,9 +222,9 @@ export function Input({
         >
           Replying to{' '}
           <Link href={`/user/${parent?.username as string}`}>
-            <a className='custom-underline text-main-accent'>
+            <span className='custom-underline text-main-accent'>
               {parent?.username as string}
-            </a>
+            </span>
           </Link>
         </motion.p>
       )}

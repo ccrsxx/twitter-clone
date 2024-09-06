@@ -159,7 +159,7 @@ export function ImageModal({
               rel='noreferrer'
               onClick={preventBubbling(null, true)}
             >
-              Open original
+              Abrir original
             </a>
           </motion.div>
         )}

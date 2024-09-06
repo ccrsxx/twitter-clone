@@ -5,6 +5,8 @@
 /.pnp
 .pnp.js
 
+.env
+
 # testing
 /coverage
 
@@ -42,3 +44,7 @@ next-env.d.ts
 # python
 /.mypy_cache
 *.py
+
+#
+firestore-debug.log
+ui-debug.log

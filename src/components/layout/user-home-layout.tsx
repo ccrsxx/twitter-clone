@@ -41,7 +41,7 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
     <>
       {userData && (
         <SEO
-          title={`${`${userData.name} (@${userData.username})`} / Twitter`}
+          title={`${`${userData.name} (@${userData.username})`} / Fofoca-me`}
         />
       )}
       <motion.section {...variants} exit={undefined}>
@@ -56,9 +56,9 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
                 <p className='text-xl font-bold'>@{id}</p>
               </div>
               <div className='p-8 text-center'>
-                <p className='text-3xl font-bold'>This account doesn’t exist</p>
+                <p className='text-3xl font-bold'>Esta conta não existe</p>
                 <p className='text-light-secondary dark:text-dark-secondary'>
-                  Try searching for another.
+                  Tente procurar outro.
                 </p>
               </div>
             </div>

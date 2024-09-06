@@ -35,7 +35,7 @@ export function LoginFooter(): JSX.Element {
             {linkName}
           </a>
         ))}
-        <p>© 2022 Twitter, Inc.</p>
+        <p>© 2024 Fofoca, Inc.</p>
       </nav>
     </footer>
   );

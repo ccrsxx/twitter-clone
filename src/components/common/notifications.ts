@@ -40,8 +40,6 @@ export const NotificationTypes = (notification: NotificationWithUser) => {
       name: notification.user.name
     }) as typeof placeholderProp),
     image_url: notification.user.photoURL,
-    url: `${process.env.NEXT_PUBLIC_URL as string}/user/${
-      notification.user.username
-    }`
+    url: `/user/${notification.user.username}`
   };
 };

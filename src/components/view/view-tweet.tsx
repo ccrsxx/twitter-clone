@@ -146,6 +146,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             userId={userId}
             isOwner={isOwner}
             tweetId={tweetId}
+            tweetCreatedBy={createdBy}
             userLikes={userLikes}
             userRetweets={userRetweets}
             userReplies={userReplies}

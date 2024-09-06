@@ -122,8 +122,8 @@ export function TweetActions({
   const handlePin = async (): Promise<void> => {
     await managePinnedTweet(tweetIsPinned ? 'unpin' : 'pin', userId, tweetId);
     toast.success(
-      `Seu tweet foi ${
-        tweetIsPinned ? 'desafixado' : 'fizado'
+      `Sua fofoca foi ${
+        tweetIsPinned ? 'desafixada' : 'fizada'
       } para o seu perfil`
     );
     pinCloseModal();

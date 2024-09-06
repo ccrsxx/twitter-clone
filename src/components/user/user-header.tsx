@@ -76,7 +76,7 @@ export function UserHeader(): JSX.Element {
               : isInTweetPage
               ? totalTweets
                 ? `${totalTweets} ${`Fofoca${isPlural(totalTweets)}`}`
-                : 'No Tweet'
+                : 'Sem fofocas'
               : currentPage === 'media'
               ? totalPhotos
                 ? `${totalPhotos} Photo${isPlural(totalPhotos)} & GIF${isPlural(

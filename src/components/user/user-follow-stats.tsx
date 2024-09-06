@@ -64,7 +64,8 @@ export function UserFollowStats({
                        dark:focus-visible:border-b-dark-primary'
           >
             <NumberStats move={move} stats={stats} alwaysShowStats />
-            <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>
+
+            <p>{index === 1 && stats > 1 ? `${title}` : title}</p>
           </span>
         </Link>
       ))}

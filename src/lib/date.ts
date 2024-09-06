@@ -69,23 +69,27 @@ function getPostTime(date: Date): string {
   }).format(date);
 }
 
+// Função para capitalizar a primeira letra do mês
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function getJoinedTime(date: Date): string {
   return new Intl.DateTimeFormat('pt-Br', {
     month: 'long',
     year: 'numeric'
   }).format(date);
+
+  // Capitalizar a primeira letra do mês
+  return `Ingressou em ${capitalizeFirstLetter(joinedDate)}`;
 }
 
 function getShortTime(date: Date): string {
-  const isNear = isToday(date)
-    ? 'today'
-    : isYesterday(date)
-    ? 'yesterday'
-    : null;
+  const isNear = isToday(date) ? 'hoje' : isYesterday(date) ? 'ontem' : null;
 
   return isNear
-    ? `${isNear === 'today' ? 'Today' : 'Yesterday'} at ${date
-        .toLocaleTimeString('pt-Br')
+    ? `${isNear === 'hoje' ? 'Hoje' : 'Ontem'} às ${date
+        .toLocaleTimeString('pt-BR')
         .slice(0, -3)}`
     : getFullTime(date);
 }
@@ -93,7 +97,7 @@ function getShortTime(date: Date): string {
 function getRelativeTime(date: Date): string {
   const relativeTime = calculateRelativeTime(date);
 
-  if (relativeTime === 'now') return relativeTime;
+  if (relativeTime === 'now') return 'agora';
 
   const [number, unit] = relativeTime.split(' ');
 
@@ -103,7 +107,7 @@ function getRelativeTime(date: Date): string {
 function calculateRelativeTime(date: Date): string {
   const elapsed = +date - +new Date();
 
-  if (elapsed > 0) return 'now';
+  if (elapsed > 0) return 'agora';
 
   const unitsItems = Object.entries(UNITS) as [keyof Units, number][];
 

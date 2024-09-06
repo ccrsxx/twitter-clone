@@ -47,7 +47,7 @@ export function MainHeader({
             className='h-5 w-5'
             iconName={iconName ?? 'ArrowLeftIcon'}
           />
-          <ToolTip tip={tip ?? 'Back'} />
+          <ToolTip tip={tip ?? 'Voltar'} />
         </Button>
       )}
       {title && (

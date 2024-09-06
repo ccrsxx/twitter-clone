@@ -37,7 +37,7 @@ export function TweetShare({
         type === 'bookmark'
           ? (): JSX.Element => (
               <span className='flex gap-2'>
-                Tweet adicionado aos seus favoritos
+                Fofoca adicionada aos seus babados
                 <Link href='/bookmarks'>
                   <span className='custom-underline font-bold'>Visualizar</span>
                 </Link>
@@ -75,7 +75,7 @@ export function TweetShare({
                 className={viewTweet ? 'h-6 w-6' : 'h-5 w-5'}
                 iconName='ArrowUpTrayIcon'
               />
-              {!open && <ToolTip tip='Share' />}
+              {!open && <ToolTip tip='Compartilhar' />}
             </i>
           </Popover.Button>
           <AnimatePresence>

@@ -26,10 +26,11 @@ export default function Home(): JSX.Element {
 
   return (
     <MainContainer>
-      <SEO title='Home / Fofoca-me' />
+      <SEO title='Home / Fofoca.me' />
+
       <MainHeader
         useMobileSidebar
-        title='Home'
+        title='Só fuxico'
         className='flex items-center justify-between'
       >
         <UpdateUsername />
@@ -39,7 +40,7 @@ export default function Home(): JSX.Element {
         {loading ? (
           <Loading className='mt-5' />
         ) : !data ? (
-          <Error message='Something went wrong' />
+          <Error message='Algo deu errado' />
         ) : (
           <>
             <AnimatePresence mode='popLayout'>

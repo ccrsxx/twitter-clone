@@ -20,23 +20,23 @@ export type MobileNavLink = Omit<NavLink, 'canBeHidden'>;
 const topNavLinks: Readonly<MobileNavLink[]> = [
   {
     href: '/trends',
-    linkName: 'Topics',
+    linkName: 'Topicos',
     iconName: 'ChatBubbleBottomCenterTextIcon'
   },
   {
     href: '/bookmarks',
-    linkName: 'Bookmarks',
+    linkName: 'Babados',
     iconName: 'BookmarkIcon'
   },
   {
     href: '/lists',
-    linkName: 'Lists',
+    linkName: 'Listas',
     iconName: 'Bars3BottomLeftIcon',
     disabled: true
   },
   {
     href: '/people',
-    linkName: 'Twitter Circle',
+    linkName: 'Fofoqueiros',
     iconName: 'UserGroupIcon'
   }
 ];
@@ -44,13 +44,13 @@ const topNavLinks: Readonly<MobileNavLink[]> = [
 const bottomNavLinks: Readonly<MobileNavLink[]> = [
   {
     href: '/settings',
-    linkName: 'Settings and privacy',
+    linkName: 'Configurações e privacidade',
     iconName: 'Cog8ToothIcon',
     disabled: true
   },
   {
     href: '/help-center',
-    linkName: 'Help center',
+    linkName: 'Central de ajuda',
     iconName: 'QuestionMarkCircleIcon',
     disabled: true
   }
@@ -96,8 +96,8 @@ export function MobileSidebarModal({
   } = useModal();
 
   const allStats: Readonly<Stats[]> = [
-    ['following', 'Following', following.length],
-    ['followers', 'Followers', followers.length]
+    ['following', 'Seguindo', following.length],
+    ['followers', 'Seguidores', followers.length]
   ];
 
   const userLink = `/user/${username}`;
@@ -120,9 +120,9 @@ export function MobileSidebarModal({
         <ActionModal
           useIcon
           focusOnMainBtn
-          title='Log out of Twitter?'
-          description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
-          mainBtnLabel='Log out'
+          title='Sair do Fofoca.me?'
+          description='Você sempre pode fazer login novamente a qualquer momento. Se quiser apenas trocar de conta, você pode fazer isso adicionando uma conta existente.'
+          mainBtnLabel='Sair'
           action={signOut}
           closeModal={logOutCloseModal}
         />
@@ -131,7 +131,7 @@ export function MobileSidebarModal({
         useActionButton
         className='flex flex-row-reverse items-center justify-between'
         iconName='XMarkIcon'
-        title='Account info'
+        title='Informações da conta'
         tip='Close'
         action={closeModal}
       />
@@ -193,7 +193,7 @@ export function MobileSidebarModal({
             <MobileSidebarLink
               href={`/user/${username}`}
               iconName='UserIcon'
-              linkName='Profile'
+              linkName='Perfil'
             />
             {topNavLinks.map((linkData) => (
               <MobileSidebarLink {...linkData} key={linkData.href} />

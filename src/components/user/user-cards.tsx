@@ -24,9 +24,9 @@ type NoStatsData = Record<CombinedTypes, StatsEmptyProps>;
 const allNoStatsData: Readonly<NoStatsData> = {
   retweets: {
     title: 'Amplifique os tweets que você gosta',
-    imageData: { src: '/assets/no-retweets.png', alt: 'Sem retuítes' },
+    imageData: { src: '/assets/no-retweets.png', alt: 'Sem refofocas' },
     description:
-      'Compartilhe o Tweet de outra pessoa em sua linha do tempo, retweetando-o. Quando você fizer isso, ele aparecerá aqui.'
+      'Compartilhe o Tweet de outra pessoa em sua linha do tempo, refofocando-o. Quando você fizer isso, ele aparecerá aqui.'
   },
   likes: {
     title: 'Ainda não há curtidas no Tweet',
@@ -42,7 +42,7 @@ const allNoStatsData: Readonly<NoStatsData> = {
     title: 'Procurando por seguidores?',
     imageData: { src: '/assets/no-followers.png', alt: 'Sem seguidores' },
     description:
-      'Quando alguém segue esta conta, ele aparecerá aqui. Tweetar e interagir com outras pessoas ajuda a aumentar os seguidores.'
+      'Quando alguém segue esta conta, ele aparecerá aqui. Fofocar e interagir com outras pessoas ajuda a aumentar os seguidores.'
   }
 };
 

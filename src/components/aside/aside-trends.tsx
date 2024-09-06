@@ -76,7 +76,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                   Criada por {name}
                 </p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {formatNumber(counter + 1)} fofocas
+                  {formatNumber(tweet_volume)} Fofocas
                 </p>
               </span>
             </Link>

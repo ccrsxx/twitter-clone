@@ -14,7 +14,7 @@ type DataWithRef<T> = (T & { createdBy: string })[];
 type DataWithUser<T> = UseCollection<T & { user: User }>;
 
 export type UseCollectionOptions = {
-  includeUser?: boolean;
+  includeUser?: boolean | string;
   allowNull?: boolean;
   disabled?: boolean;
   preserve?: boolean;
@@ -61,7 +61,16 @@ export function useCollection<T>(
       const dataWithUser = await Promise.all(
         currentData.map(async (currentData) => {
           const user = (
-            await getDoc(doc(usersCollection, currentData.createdBy))
+            await getDoc(
+              doc(
+                usersCollection,
+                typeof options?.includeUser === 'string'
+                  ? (currentData[
+                      options.includeUser as keyof typeof currentData
+                    ] as string)
+                  : currentData.createdBy
+              )
+            )
           ).data();
           return { ...currentData, user };
         })

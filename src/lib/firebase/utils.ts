@@ -12,7 +12,9 @@ import {
   arrayUnion,
   arrayRemove,
   serverTimestamp,
-  getCountFromServer
+  getCountFromServer,
+  addDoc,
+  getDoc
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { db, storage } from './app';
@@ -20,13 +22,15 @@ import {
   usersCollection,
   tweetsCollection,
   userStatsCollection,
-  userBookmarksCollection
+  userBookmarksCollection,
+  notificationsCollection
 } from './collections';
 import type { WithFieldValue, Query } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
 import type { Bookmark } from '@lib/types/bookmark';
 import type { Theme, Accent } from '@lib/types/theme';
+import { Notification } from '@lib/types/notification';
 
 export async function checkUsernameAvailability(
   username: string
@@ -95,16 +99,28 @@ export async function manageFollow(
 
   const userDocRef = doc(usersCollection, userId);
   const targetUserDocRef = doc(usersCollection, targetUserId);
+  const targetUserDoc = await getDoc(doc(usersCollection, targetUserId));
+  const targetUser = targetUserDoc.data();
 
   if (type === 'follow') {
     batch.update(userDocRef, {
       following: arrayUnion(targetUserId),
       updatedAt: serverTimestamp()
     });
+
     batch.update(targetUserDocRef, {
       followers: arrayUnion(userId),
       updatedAt: serverTimestamp()
     });
+
+    await addDoc(notificationsCollection, {
+      type: 'follower',
+      userId: userId,
+      targetUserId: targetUserId,
+      createdAt: serverTimestamp(),
+      updatedAt: null,
+      isChecked: false
+    } as WithFieldValue<Omit<Notification, 'id'>>);
   } else {
     batch.update(userDocRef, {
       following: arrayRemove(targetUserId),

@@ -13,6 +13,7 @@ export function SidebarLink({
   href,
   username,
   iconName,
+  icon,
   linkName,
   disabled,
   canBeHidden
@@ -39,7 +40,7 @@ export function SidebarLink({
             isActive && 'font-bold'
           )}
         >
-          <HeroIcon
+          {/* <HeroIcon
             className={cn(
               'h-7 w-7',
               isActive &&
@@ -48,7 +49,8 @@ export function SidebarLink({
             )}
             iconName={iconName}
             solid={isActive}
-          />
+          /> */}
+          {icon}
           <p className='hidden xl:block'>{linkName}</p>
         </div>
       </a>

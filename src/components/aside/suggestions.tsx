@@ -36,7 +36,7 @@ export function Suggestions(): JSX.Element {
   );
 
   return (
-    <section className='hover-animation rounded-2xl bg-main-sidebar-background'>
+    <section className='hover-animation rounded-md shadow-md bg-white border border-gray-200 dark:bg-zinc-900 dark:border-main-background'>
       {adminLoading || suggestionsLoading ? (
         <Loading className='flex h-52 items-center justify-center p-4' />
       ) : suggestionsData ? (
@@ -48,7 +48,7 @@ export function Suggestions(): JSX.Element {
           ))}
           <Link href='/people'>
             <a
-              className='custom-button accent-tab hover-card block w-full rounded-2xl
+              className='custom-button accent-tab hover-card block w-full rounded-md
                          rounded-t-none text-center text-main-accent'
             >
               Show more

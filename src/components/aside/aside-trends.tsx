@@ -47,7 +47,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           )}
           {trends.map(({ name, query, tweet_volume, url }) => (
             <Link href={url} key={query}>
-              <a
+              <span
                 className='hover-animation accent-tab hover-card relative 
                            flex cursor-not-allowed flex-col gap-0.5'
                 onClick={preventBubbling()}
@@ -77,17 +77,17 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
                   {formatNumber(tweet_volume)} Fofocas
                 </p>
-              </a>
+              </span>
             </Link>
           ))}
           {!inTrendsPage && (
             <Link href='/trends'>
-              <a
+              <span
                 className='custom-button accent-tab hover-card block w-full rounded-2xl
                            rounded-t-none text-center text-main-accent'
               >
                 Mostrar mais
-              </a>
+              </span>
             </Link>
           )}
         </motion.div>

@@ -63,7 +63,7 @@ export default function TweetId(): JSX.Element {
           <Loading className='mt-5' />
         ) : !tweetData ? (
           <>
-            <SEO title='Fofoquinha não encontrada / Fofoca' />
+            <SEO title='Fofoquinha não encontrada / Fofoca.me' />
             <Error message='Fofoca não encontrada' />
           </>
         ) : (

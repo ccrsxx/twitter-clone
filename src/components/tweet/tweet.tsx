@@ -91,7 +91,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         <TweetReplyModal tweet={tweet} closeModal={closeModal} />
       </Modal>
       <Link href={tweetLink} scroll={!reply}>
-        <a
+        <span
           className={cn(
             `accent-tab hover-card relative flex flex-col 
              gap-y-4 px-4 py-3 outline-none duration-200`,
@@ -167,9 +167,9 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 >
                   Respondendo a{' '}
                   <Link href={`/user/${parentUsername}`}>
-                    <a className='custom-underline text-main-accent'>
+                    <span className='custom-underline text-main-accent'>
                       @{parentUsername}
-                    </a>
+                    </span>
                   </Link>
                 </p>
               )}
@@ -199,7 +199,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               </div>
             </div>
           </div>
-        </a>
+        </span>
       </Link>
     </motion.article>
   );

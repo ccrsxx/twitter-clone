@@ -57,7 +57,8 @@ export default function Bookmarks(): JSX.Element {
 
   return (
     <MainContainer>
-      <SEO title='Babados / Fofoca' />
+      <SEO title='Babados / Fofoca.me' />
+
       <Modal
         modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}

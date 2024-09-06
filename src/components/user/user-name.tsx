@@ -23,7 +23,7 @@ export function UserName({
 
   return (
     <Link href={username ? `/user/${username}` : '#'}>
-      <a
+      <span
         className={cn(
           'flex items-center gap-1 truncate font-bold',
           username ? 'custom-underline' : 'pointer-events-none',
@@ -41,7 +41,7 @@ export function UserName({
             />
           </i>
         )}
-      </a>
+      </span>
     </Link>
   );
 }

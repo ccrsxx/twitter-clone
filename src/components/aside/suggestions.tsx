@@ -47,12 +47,12 @@ export function Suggestions(): JSX.Element {
             <UserCard {...userData} key={userData.id} />
           ))}
           <Link href='/people'>
-            <a
+            <span
               className='custom-button accent-tab hover-card block w-full rounded-2xl
                          rounded-t-none text-center text-main-accent'
             >
               Mostrar mais
-            </a>
+            </span>
           </Link>
         </motion.div>
       ) : (

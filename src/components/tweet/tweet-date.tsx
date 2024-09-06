@@ -19,14 +19,14 @@ export function TweetDate({
       {!viewTweet && <i>·</i>}
       <div className='group relative'>
         <Link href={tweetLink}>
-          <a
+          <span
             className={cn(
               'custom-underline peer whitespace-nowrap',
               viewTweet && 'text-light-secondary dark:text-dark-secondary'
             )}
           >
             {formatDate(createdAt, viewTweet ? 'full' : 'tweet')}
-          </a>
+          </span>
         </Link>
         <ToolTip
           className='translate-y-1 peer-focus:opacity-100 peer-focus-visible:visible

@@ -8,8 +8,8 @@ export default function Login(): JSX.Element {
   return (
     <div className='grid min-h-screen grid-rows-[1fr,auto]'>
       <SEO
-        title='Twitter - It’s what’s happening'
-        description='From breaking news and entertainment to sports and politics, get the full story with all the live commentary.'
+        title='Fofoca-me - A nossa rede social!'
+        description='Desde os nossos memes aos debates políticos, tudo você encontra aqui.'
       />
       <LoginMain />
       <LoginFooter />

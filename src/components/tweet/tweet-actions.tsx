@@ -139,7 +139,7 @@ export function TweetActions({
 
       toast.success(
         `Você ${
-          type === 'seguir' ? 'seguido' : 'deixar de seguir'
+          type === 'follow' ? 'seguido' : 'deixar de seguir'
         } @${username}`
       );
     };

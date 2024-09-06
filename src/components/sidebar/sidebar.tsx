@@ -21,6 +21,7 @@ import { SidebarProfile } from './sidebar-profile';
 import type { ReactNode } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
 import { SidebarLinkWrapper } from './sidebar-wrapper';
+import Image from 'next/image';
 
 export type NavLink = {
   href: string;
@@ -110,11 +111,16 @@ export function Sidebar(): JSX.Element {
           <h1 className='hidden xs:flex'>
             <Link href='/home'>
               <span
-                className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
+                className='custom-button main-tab text-accent-blue transition 
                            focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
-                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'
+                           '
               >
-                <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
+                <Image
+                  alt='Logo da fofoca-me'
+                  width={64}
+                  height={64}
+                  src={'/logo-fofocame.png'}
+                />
               </span>
             </Link>
           </h1>

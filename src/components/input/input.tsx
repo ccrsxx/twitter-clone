@@ -297,12 +297,12 @@ export function Input({
       )}
       <label
         className={cn(
-          'hover-animation grid w-full grid-cols-[auto,1fr] gap-3 px-4 py-3',
+          'hover-animation grid w-full bg-white dark:bg-zinc-900 dark:border-main-background rounded-b-md shadow-md grid-cols-[auto,1fr] gap-3 px-4 py-3',
           reply
             ? 'pt-3 pb-1'
             : replyModal
             ? 'pt-0'
-            : 'border-b-2 border-light-border dark:border-dark-border',
+            : 'rounded-md shadow-md',
           (disabled || loading) && 'pointer-events-none opacity-50'
         )}
         htmlFor={formId}

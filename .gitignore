@@ -25,6 +25,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+firestore-debug.log
+firebase-debug.log
+ui-debug.log
 .pnpm-debug.log*
 
 # local env files

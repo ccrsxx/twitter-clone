@@ -69,18 +69,16 @@ function getPostTime(date: Date): string {
   }).format(date);
 }
 
-// Função para capitalizar a primeira letra do mês
 function capitalizeFirstLetter(string: string): string {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function getJoinedTime(date: Date): string {
-  return new Intl.DateTimeFormat('pt-Br', {
+  const joinedDate = new Intl.DateTimeFormat('pt-Br', {
     month: 'long',
     year: 'numeric'
   }).format(date);
 
-  // Capitalizar a primeira letra do mês
   return `Ingressou em ${capitalizeFirstLetter(joinedDate)}`;
 }
 

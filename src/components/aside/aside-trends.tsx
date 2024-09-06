@@ -33,7 +33,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
     <section
       className={cn(
         !inTrendsPage &&
-          'hover-animation rounded-md shadow-md bg-white dark:bg-zinc-900 dark:border-main-background border border-gray-200'
+          'hover-animation rounded-md border border-gray-200 bg-white shadow-md dark:border-main-background dark:bg-zinc-900'
       )}
     >
       {loading ? (
@@ -76,7 +76,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                   Criada por {name}
                 </p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {formatNumber(tweet_volume)} Fofocas
+                  {formatNumber(counter + 1)} fofocas
                 </p>
               </span>
             </Link>

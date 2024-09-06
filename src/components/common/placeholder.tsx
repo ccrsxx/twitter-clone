@@ -7,7 +7,7 @@ export function Placeholder(): JSX.Element {
       <SEO
         title='Fofoca-me'
         description='Desde os nossos memes aos debates políticos, tudo você encontra aqui.'
-        image='/home.png'
+        image='/home.jpg'
       />
       <i>
         <CustomIcon

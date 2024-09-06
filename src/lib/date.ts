@@ -1,6 +1,6 @@
 import type { Timestamp } from 'firebase/firestore';
 
-const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('en-gb', {
+const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('pt-BR', {
   style: 'short',
   numeric: 'auto'
 });
@@ -27,14 +27,14 @@ export function formatDate(
 }
 
 export function formatNumber(number: number): string {
-  return new Intl.NumberFormat('en-GB', {
+  return new Intl.NumberFormat('pt-BR', {
     notation: number > 10_000 ? 'compact' : 'standard',
     maximumFractionDigits: 1
   }).format(number);
 }
 
 function getFullTime(date: Date): string {
-  const fullDate = new Intl.DateTimeFormat('en-gb', {
+  const fullDate = new Intl.DateTimeFormat('pt-BR', {
     hour: 'numeric',
     minute: 'numeric',
     day: 'numeric',
@@ -57,35 +57,39 @@ function getFullTime(date: Date): string {
 function getPostTime(date: Date): string {
   if (isToday(date)) return getRelativeTime(date);
   if (isYesterday(date))
-    return new Intl.DateTimeFormat('en-gb', {
+    return new Intl.DateTimeFormat('pt-BR', {
       day: 'numeric',
       month: 'short'
     }).format(date);
 
-  return new Intl.DateTimeFormat('en-gb', {
+  return new Intl.DateTimeFormat('pt-BR', {
     day: 'numeric',
     month: 'short',
     year: isCurrentYear(date) ? undefined : 'numeric'
   }).format(date);
 }
 
+// Função para capitalizar a primeira letra do mês
+function capitalizeFirstLetter(string: string): string {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 function getJoinedTime(date: Date): string {
-  return new Intl.DateTimeFormat('en-gb', {
+  const joinedDate = new Intl.DateTimeFormat('pt-BR', {
     month: 'long',
     year: 'numeric'
   }).format(date);
+
+  // Capitalizar a primeira letra do mês
+  return `Ingressou em ${capitalizeFirstLetter(joinedDate)}`;
 }
 
 function getShortTime(date: Date): string {
-  const isNear = isToday(date)
-    ? 'today'
-    : isYesterday(date)
-    ? 'yesterday'
-    : null;
+  const isNear = isToday(date) ? 'hoje' : isYesterday(date) ? 'ontem' : null;
 
   return isNear
-    ? `${isNear === 'today' ? 'Today' : 'Yesterday'} at ${date
-        .toLocaleTimeString('en-gb')
+    ? `${isNear === 'hoje' ? 'Hoje' : 'Ontem'} às ${date
+        .toLocaleTimeString('pt-BR')
         .slice(0, -3)}`
     : getFullTime(date);
 }
@@ -93,7 +97,7 @@ function getShortTime(date: Date): string {
 function getRelativeTime(date: Date): string {
   const relativeTime = calculateRelativeTime(date);
 
-  if (relativeTime === 'now') return relativeTime;
+  if (relativeTime === 'now') return 'agora';
 
   const [number, unit] = relativeTime.split(' ');
 
@@ -103,7 +107,7 @@ function getRelativeTime(date: Date): string {
 function calculateRelativeTime(date: Date): string {
   const elapsed = +date - +new Date();
 
-  if (elapsed > 0) return 'now';
+  if (elapsed > 0) return 'agora';
 
   const unitsItems = Object.entries(UNITS) as [keyof Units, number][];
 

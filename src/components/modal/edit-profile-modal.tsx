@@ -53,7 +53,7 @@ export function EditProfileModal({
         iconName='XMarkIcon'
         tip='Close'
         className='absolute flex w-full items-center gap-6 rounded-tl-2xl'
-        title='Edit profile'
+        title='Editar prefil'
         action={closeModal}
       >
         <div className='ml-auto flex items-center gap-3'>

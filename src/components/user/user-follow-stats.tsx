@@ -45,8 +45,8 @@ export function UserFollowStats({
   const userPath = `/user/${id as string}`;
 
   const allStats: Readonly<Stats[]> = [
-    ['Following', `${userPath}/following`, followingMove, currentFollowing],
-    ['Follower', `${userPath}/followers`, followersMove, currentFollowers]
+    ['Seguindo', `${userPath}/following`, followingMove, currentFollowing],
+    ['Seguidores', `${userPath}/followers`, followersMove, currentFollowers]
   ];
 
   return (
@@ -64,7 +64,7 @@ export function UserFollowStats({
                        dark:focus-visible:border-b-dark-primary'
           >
             <NumberStats move={move} stats={stats} alwaysShowStats />
-            <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>
+            <p>{index === 1 && stats > 1 ? `${title}` : title}</p>
           </a>
         </Link>
       ))}

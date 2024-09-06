@@ -17,7 +17,7 @@ type Options = {
 
 const options: Readonly<Options> = [
   {
-    name: 'Media',
+    name: 'Mídia',
     iconName: 'PhotoIcon',
     disabled: false
   },
@@ -27,7 +27,7 @@ const options: Readonly<Options> = [
     disabled: true
   },
   {
-    name: 'Poll',
+    name: 'Enquete',
     iconName: 'ChartBarIcon',
     disabled: true
   },
@@ -37,12 +37,12 @@ const options: Readonly<Options> = [
     disabled: true
   },
   {
-    name: 'Schedule',
+    name: 'Agendar',
     iconName: 'CalendarDaysIcon',
     disabled: true
   },
   {
-    name: 'Location',
+    name: 'Localização',
     iconName: 'MapPinIcon',
     disabled: true
   }
@@ -141,7 +141,7 @@ export function InputOptions({
                      enabled:active:bg-main-accent/75'
           disabled={!isValidTweet}
         >
-          {reply ? 'Reply' : 'Tweet'}
+          {reply ? 'Responder' : 'Fofocar'}
         </Button>
       </div>
     </motion.div>

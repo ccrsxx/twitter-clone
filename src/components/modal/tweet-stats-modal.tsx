@@ -21,7 +21,7 @@ export function TweetStatsModal({
         tip='Close'
         iconName='XMarkIcon'
         className='absolute flex w-full items-center gap-6 rounded-tl-2xl'
-        title={`${statsType === 'likes' ? 'Liked' : 'Retweeted'} by`}
+        title={`${statsType === 'likes' ? 'Liked' : 'Refofocar'} by`}
         action={handleClose}
       />
       {children}

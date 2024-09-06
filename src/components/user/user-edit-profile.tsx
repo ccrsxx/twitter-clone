@@ -200,7 +200,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
 
   const inputFields: Readonly<RequiredInputFieldProps[]> = [
     {
-      label: 'Name',
+      label: 'Nome',
       inputId: 'name',
       inputValue: editUserData.name,
       inputLimit: 50,
@@ -214,13 +214,13 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
       useTextArea: true
     },
     {
-      label: 'Location',
+      label: 'Localização',
       inputId: 'location',
       inputValue: editUserData.location,
       inputLimit: 30
     },
     {
-      label: 'Website',
+      label: 'Site web',
       inputId: 'website',
       inputValue: editUserData.website,
       inputLimit: 100

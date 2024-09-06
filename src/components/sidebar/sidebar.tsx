@@ -27,32 +27,32 @@ const navLinks: Readonly<NavLink[]> = [
   },
   {
     href: '/explore',
-    linkName: 'Explore',
+    linkName: 'Explorar',
     iconName: 'HashtagIcon',
     disabled: true,
     canBeHidden: true
   },
   {
     href: '/notifications',
-    linkName: 'Notifications',
+    linkName: 'Notificações',
     iconName: 'BellIcon',
     disabled: true
   },
   {
     href: '/messages',
-    linkName: 'Messages',
+    linkName: 'Mensagens',
     iconName: 'EnvelopeIcon',
     disabled: true
   },
   {
     href: '/bookmarks',
-    linkName: 'Bookmarks',
+    linkName: 'Babados',
     iconName: 'BookmarkIcon',
     canBeHidden: true
   },
   {
     href: '/lists',
-    linkName: 'Lists',
+    linkName: 'Listas',
     iconName: 'Bars3BottomLeftIcon',
     disabled: true,
     canBeHidden: true
@@ -120,7 +120,7 @@ export function Sidebar(): JSX.Element {
               className='block h-6 w-6 xl:hidden'
               iconName='FeatherIcon'
             />
-            <p className='hidden xl:block'>Tweet</p>
+            <p className='hidden xl:block'>Fofocar</p>
           </Button>
         </section>
         {!isMobile && <SidebarProfile />}

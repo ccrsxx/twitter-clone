@@ -35,7 +35,7 @@ export default function UserMedia(): JSX.Element {
       <SEO
         title={`Media Tweets by ${name as string} (@${
           username as string
-        }) / Fofoca-Me`}
+        }) / Fofoca-me`}
       />
       {loading ? (
         <Loading className='mt-5' />

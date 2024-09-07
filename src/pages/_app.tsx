@@ -7,6 +7,8 @@ import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import WebSocketInitializer from '@lib/context/web-socket-initializer';
+import { SocketContextProvider } from '@lib/context/web-socket-context';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -26,14 +28,16 @@ export default function App({
     <>
       <AppHead />
       <AuthContextProvider>
-        <ThemeContextProvider>
-          {getLayout(<Component {...pageProps} />)}
-          {process.env.NEXT_PUBLIC_GTM_CONTAINER_ID && (
-            <GoogleTagManager
-              gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID}
-            />
-          )}
-        </ThemeContextProvider>
+        <SocketContextProvider>
+          <ThemeContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+            {process.env.NEXT_PUBLIC_GTM_CONTAINER_ID && (
+              <GoogleTagManager
+                gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID}
+              />
+            )}
+          </ThemeContextProvider>
+        </SocketContextProvider>
       </AuthContextProvider>
     </>
   );

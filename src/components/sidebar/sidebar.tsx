@@ -60,7 +60,7 @@ const navLinks: Readonly<NavLink[]> = [
     href: '/messages',
     linkName: 'Mensagens',
     iconName: 'EnvelopeIcon',
-    disabled: true,
+    disabled: false,
     icon: <CiMail size={34} />
   },
   {

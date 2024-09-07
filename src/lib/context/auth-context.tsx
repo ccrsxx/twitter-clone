@@ -12,6 +12,7 @@ import {
   onSnapshot,
   serverTimestamp
 } from 'firebase/firestore';
+import nookies from 'nookies';
 import { auth } from '@lib/firebase/app';
 import {
   usersCollection,
@@ -55,6 +56,9 @@ export function AuthContextProvider({
   useEffect(() => {
     const manageUser = async (authUser: AuthUser): Promise<void> => {
       const { uid, displayName, photoURL } = authUser;
+
+      const token = await authUser.getIdToken();
+      nookies.set(undefined, 'token', token, { path: '/' });
 
       const userSnapshot = await getDoc(doc(usersCollection, uid));
 
@@ -121,7 +125,7 @@ export function AuthContextProvider({
       setLoading(false);
     };
 
-    const handleUserAuth = (authUser: AuthUser | null): void => {
+    const handleUserAuth = (authUser: AuthUser | null) => {
       setLoading(true);
 
       if (authUser) void manageUser(authUser);
@@ -175,7 +179,7 @@ export function AuthContextProvider({
     }
   };
 
-  const isAdmin = user ? user.username === 'ccrsxx' : false;
+  const isAdmin = user ? user.username === 'codaisa' : false;
   const randomSeed = useMemo(getRandomId, [user?.id]);
 
   const value: AuthContext = {

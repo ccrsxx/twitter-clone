@@ -1,7 +1,16 @@
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import {
+  WithFieldValue,
+  addDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  where
+} from 'firebase/firestore';
 import { useAuth } from '@lib/context/auth-context';
 import { useUser } from '@lib/context/user-context';
+import { conversationsCollection } from '@lib/firebase/collections';
 import { SEO } from '@components/common/seo';
 import { UserHomeCover } from '@components/user/user-home-cover';
 import { UserHomeAvatar } from '@components/user/user-home-avatar';
@@ -16,10 +25,12 @@ import { variants } from '@components/user/user-header';
 import { UserEditProfile } from '@components/user/user-edit-profile';
 import { UserShare } from '@components/user/user-share';
 import type { LayoutProps } from './common-layout';
+import { Conversation } from '@lib/types/conversation';
 
 export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
   const { user, isAdmin } = useAuth();
   const { user: userData, loading } = useUser();
+  const router = useRouter();
 
   const {
     query: { id }
@@ -36,6 +47,33 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
   const { id: userId } = user ?? {};
 
   const isOwner = userData?.id === userId;
+
+  const handleSendMessage = async () => {
+    try {
+      const senders = await getDocs(
+        query(conversationsCollection, where('userId', '==', userData?.id))
+      );
+
+      const emitters = await getDocs(
+        query(
+          conversationsCollection,
+          where('targetUserId', '==', userData?.id)
+        )
+      );
+      const unique = [...senders.docs, ...emitters.docs];
+
+      const doc = await addDoc(conversationsCollection, {
+        userId: user?.id as string,
+        targetUserId: userData?.id as string,
+        createdAt: serverTimestamp(),
+        updatedAt: null
+      } as WithFieldValue<Omit<Conversation, 'id'>>);
+
+      void router.push(`/messages/${doc.id}`);
+    } catch (err) {
+      console.log('Deu rum ao enviar a msg');
+    }
+  };
 
   return (
     <>
@@ -75,6 +113,7 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
                   <div className='flex gap-2 self-start'>
                     <UserShare username={userData.username} />
                     <Button
+                      onClick={handleSendMessage}
                       className='dark-bg-tab group relative cursor-not-allowed border border-light-line-reply p-2
                                  hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary 
                                  dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'

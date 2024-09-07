@@ -39,6 +39,18 @@ service cloud.firestore {
       allow delete: if isAuthorized(resource.data.userId);
     }
 
+    match /conversations/{tweetId} {
+      allow read, update: if request.auth != null;
+      allow create: if isAuthorized(request.resource.data.userId)
+      allow delete: if isAuthorized(resource.data.userId);
+    }
+
+    match /messages/{tweetId} {
+      allow read, update: if request.auth != null;
+      allow create: if isAuthorized(request.resource.data.userId)
+      allow delete: if isAuthorized(resource.data.userId);
+    }
+
     match /users/{document=**} {
       allow read, write: if request.auth != null;
     }

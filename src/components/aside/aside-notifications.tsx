@@ -71,7 +71,7 @@ export function AsideNotifications({
                 <a
                   className='hover-animation accent-tab hover-card relative 
                          flex  flex-col gap-0.5 px-4 py-2'
-                  onClick={async (): Promise<void>  => {
+                  onClick={async (): Promise<void> => {
                     preventBubbling();
                     void navigator.push(NotificationProps.url);
 

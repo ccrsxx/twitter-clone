@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
@@ -15,7 +17,10 @@ const placeholder = {
   }
 };
 
-const ReplaceParams = (toReplace: Record<string, string>, replace: object):unknown => {
+const ReplaceParams = (
+  toReplace: Record<string, string>,
+  replace: object
+): unknown => {
   const result: Record<string, string> = { ...toReplace };
 
   Object.keys(toReplace).forEach((key) => {
@@ -28,19 +33,16 @@ const ReplaceParams = (toReplace: Record<string, string>, replace: object):unkno
       );
   });
 
-  console.log({result})
-
   return result;
 };
 
-export const NotificationTypes = (notification: NotificationWithUser):any => {
+export const NotificationTypes = (notification: NotificationWithUser) => {
   const placeholderProp =
     placeholder[notification.type as keyof typeof placeholder];
 
-  const userInfo = ReplaceParams(
-    placeholderProp,
-    { name: notification.user.name }
-  ) as typeof placeholderProp
+  const userInfo = ReplaceParams(placeholderProp, {
+    name: notification.user.name
+  }) as typeof placeholderProp;
 
   return {
     ...userInfo,

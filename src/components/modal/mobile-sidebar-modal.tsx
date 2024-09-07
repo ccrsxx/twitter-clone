@@ -29,12 +29,6 @@ const topNavLinks: Readonly<MobileNavLink[]> = [
     iconName: 'BookmarkIcon'
   },
   {
-    href: '/lists',
-    linkName: 'Listas',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true
-  },
-  {
     href: '/people',
     linkName: 'Fofoqueiros',
     iconName: 'UserGroupIcon'

@@ -69,14 +69,6 @@ const navLinks: Readonly<NavLink[]> = [
     iconName: 'BookmarkIcon',
     canBeHidden: true,
     icon: <CiBookmark size={34} />
-  },
-  {
-    href: '/lists',
-    linkName: 'Listas',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true,
-    canBeHidden: true,
-    icon: <CiTextAlignLeft size={34} />
   }
 ];
 

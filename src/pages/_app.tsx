@@ -3,12 +3,11 @@ import '@styles/globals.scss';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
+import { SocketContextProvider } from '@lib/context/web-socket-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import WebSocketInitializer from '@lib/context/web-socket-initializer';
-import { SocketContextProvider } from '@lib/context/web-socket-context';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;

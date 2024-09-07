@@ -73,6 +73,7 @@ export function InputForm({
 
   useEffect(() => handleShowHideNav(true), []);
 
+
   const handleKeyboardShortcut = ({
     key,
     ctrlKey

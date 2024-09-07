@@ -23,18 +23,17 @@ import {
 import { useAuth } from '@lib/context/auth-context';
 import { sleep } from '@lib/utils';
 import { getImagesData } from '@lib/validation';
+import { Trend } from '@lib/types/trend';
 import { UserAvatar } from '@components/user/user-avatar';
 import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
 import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
-import type { Query, WithFieldValue } from 'firebase/firestore';
+import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
 import type { Tweet } from '@lib/types/tweet';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
-import { Trend } from '@lib/types/trend';
-import { useCollection } from '@lib/hooks/useCollection';
 
 type InputProps = {
   modal?: boolean;
@@ -284,7 +283,7 @@ export function Input({
       {children}
       {reply && visited && (
         <motion.p
-          className='ml-[75px] -mb-2 mt-2 text-light-secondary dark:text-dark-secondary'
+          className='ml-[75px] -mb-2 mt-2 text-light-secondary text-sm dark:text-dark-secondary'
           {...fromTop}
         >
           Replying to{' '}
@@ -297,12 +296,12 @@ export function Input({
       )}
       <label
         className={cn(
-          'hover-animation grid w-full bg-white dark:bg-zinc-900 dark:border-main-background rounded-b-md shadow-md grid-cols-[auto,1fr] gap-3 px-4 py-3',
+          'hover-animation grid w-full grid-cols-[auto,1fr] gap-3 px-4 py-3',
           reply
             ? 'pt-3 pb-1'
             : replyModal
             ? 'pt-0'
-            : 'rounded-md shadow-md',
+            : 'bg-white dark:bg-zinc-900 dark:border-main-background rounded-b-md shadow-md',
           (disabled || loading) && 'pointer-events-none opacity-50'
         )}
         htmlFor={formId}

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import cn from 'clsx';
 import { motion } from 'framer-motion';
-import { limit, orderBy, query, where } from 'firebase/firestore';
+import { limit, orderBy, query } from 'firebase/firestore';
 import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
 import { trendsCollection } from '@lib/firebase/collections';

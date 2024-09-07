@@ -88,7 +88,7 @@ export default function MessagePage(): JSX.Element {
   return (
     <main
       className={cn(
-        'hover-animation flex min-h-screen w-full max-w-xl flex-col'
+        'hover-animation flex min-h-[90vh] w-full max-w-xl flex-col xl:min-h-screen'
       )}
     >
       <SEO title='Mensagens / Fofoca.me' />
@@ -147,7 +147,7 @@ export default function MessagePage(): JSX.Element {
             />
 
             <Button
-              className='accent-tab absolute right-4 w-full -translate-y-[72px] bg-main-accent text-lg font-bold
+              className='w-full bg-main-accent text-lg font-bold
                        text-white outline-none transition hover:brightness-90 active:brightness-75 xs:static
                        xs:translate-y-0 xs:hover:bg-main-accent/90 xs:active:bg-main-accent/75'
               onClick={handleSendMessage}

@@ -4,6 +4,7 @@ export type Message = {
   id: string;
   conversationId: string;
   text: string;
+  userId: string;
   createdAt: Timestamp;
   updatedAt: Timestamp | null;
 };

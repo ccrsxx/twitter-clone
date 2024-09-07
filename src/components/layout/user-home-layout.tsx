@@ -61,15 +61,25 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
         )
       );
       const unique = [...senders.docs, ...emitters.docs];
+      const chat = unique
+        .find(
+          (doc) =>
+            doc.data().userId === user?.id ||
+            doc.data().targetUserId === user?.id
+        )
+        ?.data();
 
-      const doc = await addDoc(conversationsCollection, {
-        userId: user?.id as string,
-        targetUserId: userData?.id as string,
-        createdAt: serverTimestamp(),
-        updatedAt: null
-      } as WithFieldValue<Omit<Conversation, 'id'>>);
+      if (chat) void router.push(`/messages/${chat.id}`);
+      else {
+        const doc = await addDoc(conversationsCollection, {
+          userId: user?.id as string,
+          targetUserId: userData?.id as string,
+          createdAt: serverTimestamp(),
+          updatedAt: null
+        } as WithFieldValue<Omit<Conversation, 'id'>>);
 
-      void router.push(`/messages/${doc.id}`);
+        void router.push(`/messages/${doc.id}`);
+      }
     } catch (err) {
       console.log('Deu rum ao enviar a msg');
     }
@@ -114,7 +124,7 @@ export const UserHomeLayout = ({ children }: LayoutProps): JSX.Element => {
                     <UserShare username={userData.username} />
                     <Button
                       onClick={handleSendMessage}
-                      className='dark-bg-tab group relative cursor-not-allowed border border-light-line-reply p-2
+                      className='dark-bg-tab group relative border border-light-line-reply p-2
                                  hover:bg-light-primary/10 active:bg-light-primary/20 dark:border-light-secondary 
                                  dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
                     >

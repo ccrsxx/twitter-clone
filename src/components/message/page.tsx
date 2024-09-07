@@ -23,7 +23,7 @@ export function MessageTable(): JSX.Element {
   const { data: senders, loading: sLoading } = useInfiniteScroll(
     query(conversationsCollection),
     [where('userId', '==', user?.id)],
-    { includeUser: 'userId' }
+    { includeUser: 'targetUserId' }
   );
 
   const { data: emitters, loading: eLoading } = useInfiniteScroll(

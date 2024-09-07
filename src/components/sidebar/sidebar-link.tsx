@@ -1,24 +1,28 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import cn from 'clsx';
+import { AnimatePresence, motion } from 'framer-motion';
 import { preventBubbling } from '@lib/utils';
 import type { NavLink } from './sidebar';
 
 type SidebarLinkProps = NavLink & {
   username?: string;
+  count?: number;
 };
 
 export function SidebarLink({
   href,
   username,
-  iconName,
   icon,
   linkName,
   disabled,
+  count,
   canBeHidden
 }: SidebarLinkProps): JSX.Element {
   const { asPath } = useRouter();
   const isActive = username ? asPath.includes(username) : asPath === href;
+
+  console.log(count);
 
   return (
     <Link href={href}>
@@ -39,18 +43,22 @@ export function SidebarLink({
             isActive && 'font-bold'
           )}
         >
-          {/* <HeroIcon
-            className={cn(
-              'h-7 w-7',
-              isActive &&
-                ['Explore', 'Lists'].includes(linkName) &&
-                'stroke-white'
-            )}
-            iconName={iconName}
-            solid={isActive}
-          /> */}
           {icon}
           <p className='hidden xl:block'>{linkName}</p>
+          <AnimatePresence>
+            {count && count !== 0 ? (
+              <motion.div
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.8, opacity: 0 }}
+                className='hidden h-4 w-4 items-center justify-center rounded-full bg-white xl:flex'
+              >
+                <p className='text-xs text-black'>{count}</p>
+              </motion.div>
+            ) : (
+              <></>
+            )}
+          </AnimatePresence>
         </div>
       </span>
     </Link>

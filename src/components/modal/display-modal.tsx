@@ -10,19 +10,12 @@ type DisplayModalProps = {
 };
 
 const themes: Readonly<[Theme, string][]> = [
-  ['light', 'Padrão'],
-  ['dim', 'Escurecer'],
+  ['light', 'Astigmatismo'],
+  ['dim', 'Cineminha'],
   ['dark', 'Apagão']
 ];
 
-const accentsColor: Readonly<Accent[]> = [
-  'blue',
-  'yellow',
-  'pink',
-  'purple',
-  'orange',
-  'green'
-];
+const accentsColor: Readonly<Accent[]> = ['pink', 'green', 'orange'];
 
 export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
   return (
@@ -41,7 +34,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
           <UserAvatar src='/assets/twitter-avatar.jpg' alt='Twitter' />
           <div>
             <div className='flex gap-1'>
-              <UserName verified name='Twitter' />
+              <UserName verified name='Fofoca.me' />
               <p className='text-light-secondary dark:text-dark-secondary'>
                 @fofoca
               </p>

@@ -2,6 +2,7 @@ import { collection } from 'firebase/firestore';
 import { userConverter } from '@lib/types/user';
 import { tweetConverter } from '@lib/types/tweet';
 import { bookmarkConverter } from '@lib/types/bookmark';
+import { notificationConverter } from '@lib/types/notification';
 import { statsConverter } from '@lib/types/stats';
 import { trendConverter } from '@lib/types/trend';
 import { db } from './app';
@@ -20,6 +21,11 @@ export const tweetsCollection = collection(db, 'tweets').withConverter(
 export const trendsCollection = collection(db, 'trends').withConverter(
   trendConverter
 );
+
+export const notificationsCollection = collection(
+  db,
+  'notifications'
+).withConverter(notificationConverter);
 
 export function userBookmarksCollection(
   id: string

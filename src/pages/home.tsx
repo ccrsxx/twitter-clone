@@ -36,7 +36,7 @@ export default function Home(): JSX.Element {
         <UpdateUsername />
       </MainHeader>
       {!isMobile && <Input />}
-      <section className='mt-0.5 xs:mt-0 py-4'>
+      <section className='mt-0.5 py-4 xs:mt-0'>
         {loading ? (
           <Loading className='mt-5' />
         ) : !data ? (

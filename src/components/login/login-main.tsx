@@ -2,6 +2,7 @@ import { useAuth } from '@lib/context/auth-context';
 import { NextImage } from '@components/ui/next-image';
 import { CustomIcon } from '@components/ui/custom-icon';
 import { Button } from '@components/ui/button';
+import Image from 'next/image';
 
 export function LoginMain(): JSX.Element {
   const { signInWithGoogle } = useAuth();
@@ -23,9 +24,11 @@ export function LoginMain(): JSX.Element {
       </div>
       <div className='flex flex-col items-center justify-between gap-6 p-8 lg:items-start lg:justify-center'>
         <i className='mb-0 self-center lg:mb-10 lg:self-auto'>
-          <CustomIcon
-            className='-mt-4 h-6 w-6 text-accent-blue lg:h-12 lg:w-12 dark:lg:text-twitter-icon'
-            iconName='TwitterIcon'
+          <Image
+            alt='Logo da fofoca-me'
+            width={64}
+            height={64}
+            src={'/logo-fofocame.png'}
           />
         </i>
         <div className='flex max-w-xs flex-col gap-4 font-twitter-chirp-extended lg:max-w-none lg:gap-16'>
@@ -54,17 +57,7 @@ export function LoginMain(): JSX.Element {
             >
               <CustomIcon iconName='AppleIcon' /> Inscreva-se na Apple
             </Button>
-            <div className='grid w-full grid-cols-[1fr,auto,1fr] items-center gap-2'>
-              <i className='border-b border-light-border dark:border-dark-border' />
-              <p>ou</p>
-              <i className='border-b border-light-border dark:border-dark-border' />
-            </div>
-            <Button
-              className='cursor-not-allowed bg-accent-blue text-white transition hover:brightness-90
-                         focus-visible:!ring-accent-blue/80 focus-visible:brightness-90 active:brightness-75'
-            >
-              Inscreva-se com telefone ou e-mail
-            </Button>
+
             <p
               className='inner:custom-underline inner:custom-underline text-center text-xs
                          text-light-secondary inner:text-accent-blue dark:text-dark-secondary'

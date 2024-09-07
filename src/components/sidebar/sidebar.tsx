@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import {
+  CiHome,
+  CiHashtag,
+  CiMail,
+  CiBellOn,
+  CiBookmark,
+  CiTextAlignLeft,
+  CiUser
+} from 'react-icons/ci';
 import { useAuth } from '@lib/context/auth-context';
 import { useWindow } from '@lib/context/window-context';
 import { useModal } from '@lib/hooks/useModal';
@@ -9,22 +18,16 @@ import { Button } from '@components/ui/button';
 import { SidebarLink } from './sidebar-link';
 import { MoreSettings } from './more-settings';
 import { SidebarProfile } from './sidebar-profile';
+import type { ReactNode } from 'react';
 import type { IconName } from '@components/ui/hero-icon';
-import {
-  CiHome,
-  CiHashtag,
-  CiMail,
-  CiBellOn,
-  CiBookmark,
-  CiTextAlignLeft,
-  CiUser
-} from 'react-icons/ci';
-import { ReactNode } from 'react';
+import { SidebarLinkWrapper } from './sidebar-wrapper';
+import Image from 'next/image';
 
 export type NavLink = {
   href: string;
   linkName: string;
   iconName: IconName;
+  isNotification?: boolean;
   disabled?: boolean;
   canBeHidden?: boolean;
   icon?: ReactNode;
@@ -50,6 +53,7 @@ const navLinks: Readonly<NavLink[]> = [
     linkName: 'Notificações',
     iconName: 'BellIcon',
     disabled: false,
+    isNotification: true,
     icon: <CiBellOn size={34} />
   },
   {
@@ -107,22 +111,31 @@ export function Sidebar(): JSX.Element {
           <h1 className='hidden xs:flex'>
             <Link href='/home'>
               <span
-                className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
+                className='custom-button main-tab text-accent-blue transition 
                            focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
-                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'
+                           '
               >
-                <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
+                <Image
+                  alt='Logo da fofoca-me'
+                  width={64}
+                  height={64}
+                  src={'/logo-fofocame.png'}
+                />
               </span>
             </Link>
           </h1>
           <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>
-            {navLinks.map(({ ...linkData }) => (
-              <SidebarLink {...linkData} key={linkData.href} />
-            ))}
+            {navLinks.map(({ ...linkData }) =>
+              linkData.isNotification ? (
+                <SidebarLinkWrapper {...linkData} Component={SidebarLink} />
+              ) : (
+                <SidebarLink {...linkData} key={linkData.href} />
+              )
+            )}
             <SidebarLink
               href={`/user/${username}`}
               username={username}
-              linkName='Profile'
+              linkName='Perfil'
               iconName='UserIcon'
               icon={<CiUser size={34} />}
             />

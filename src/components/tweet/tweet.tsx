@@ -111,7 +111,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               ) : (
                 tweetIsRetweeted && (
                   <TweetStatus type='tweet'>
-                    <Link href={profileUsername as string}>
+                    <Link href={profileUsername as string} legacyBehavior>
                       <a className='custom-underline truncate text-sm font-bold'>
                         {userId === profileId ? 'Você' : profileName} Resultado
                       </a>
@@ -190,6 +190,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                     userId={userId}
                     isOwner={isOwner}
                     tweetId={tweetId}
+                    tweetCreatedBy={createdBy}
                     userLikes={userLikes}
                     userReplies={userReplies}
                     userRetweets={userRetweets}

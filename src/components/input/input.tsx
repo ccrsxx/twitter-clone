@@ -3,8 +3,17 @@ import { useState, useEffect, useRef, useId } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
-import { addDoc, getDoc, serverTimestamp } from 'firebase/firestore';
-import { tweetsCollection } from '@lib/firebase/collections';
+import {
+  addDoc,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where
+} from 'firebase/firestore';
+import { trendsCollection, tweetsCollection } from '@lib/firebase/collections';
 import {
   manageReply,
   uploadImages,
@@ -19,11 +28,13 @@ import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
 import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
-import type { WithFieldValue } from 'firebase/firestore';
+import type { Query, WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
 import type { Tweet } from '@lib/types/tweet';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
+import { Trend } from '@lib/types/trend';
+import { useCollection } from '@lib/hooks/useCollection';
 
 type InputProps = {
   modal?: boolean;
@@ -73,55 +84,111 @@ export function Input({
   );
 
   const sendTweet = async (): Promise<void> => {
-    inputRef.current?.blur();
+    try {
+      inputRef.current?.blur();
+      const trendRegex = /#\w+/g;
 
-    setLoading(true);
+      setLoading(true);
 
-    const isReplying = reply ?? replyModal;
+      const isReplying = reply ?? replyModal;
 
-    const userId = user?.id as string;
+      const userId = user?.id as string;
 
-    const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
-      text: inputValue.trim() || null,
-      parent: isReplying && parent ? parent : null,
-      images: await uploadImages(userId, selectedImages),
-      userLikes: [],
-      createdBy: userId,
-      createdAt: serverTimestamp(),
-      updatedAt: null,
-      userReplies: 0,
-      userRetweets: []
-    };
+      const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
+        text: inputValue.trim() || null,
+        parent: isReplying && parent ? parent : null,
+        images: await uploadImages(userId, selectedImages),
+        userLikes: [],
+        createdBy: userId,
+        createdAt: serverTimestamp(),
+        updatedAt: null,
+        userReplies: 0,
+        userRetweets: []
+      };
 
-    await sleep(500);
+      await sleep(500);
 
-    const [tweetRef] = await Promise.all([
-      addDoc(tweetsCollection, tweetData),
-      manageTotalTweets('increment', userId),
-      tweetData.images && manageTotalPhotos('increment', userId),
-      isReplying && manageReply('increment', parent?.id as string)
-    ]);
+      const trends = tweetData?.text?.toString().match(trendRegex);
+      const trendsQueries = trends?.map((trend) =>
+        query(trendsCollection, where('text', '==', trend))
+      );
 
-    const { id: tweetId } = await getDoc(tweetRef);
+      const trendsUpdated =
+        trendsQueries &&
+        (await Promise.all(
+          trendsQueries?.map(async (trendQuery) => {
+            const querySnapshot = await getDocs(trendQuery);
+            const docToUpdate = querySnapshot.docs[0];
+            if (docToUpdate) {
+              const trendRef = doc(trendsCollection, docToUpdate.id);
 
-    if (!modal && !replyModal) {
-      discardTweet();
-      setLoading(false);
+              await updateDoc(trendRef, {
+                updatedAt: new Date(),
+                counter: (docToUpdate.data().counter || 0) + 1
+              });
+
+              return docToUpdate.data();
+            }
+          })
+        ));
+
+      const trendsToCreate =
+        trends?.filter(
+          (trend) => !trendsUpdated?.find((nTrend) => nTrend?.text === trend)
+        ) ?? [];
+
+      await Promise.all(
+        trendsToCreate.map(
+          async (trend) =>
+            await addDoc(trendsCollection, {
+              text: trend,
+              parent: isReplying && parent ? parent : null,
+              createdBy: userId,
+              createdAt: serverTimestamp(),
+              updatedAt: null,
+              counter: 0
+            } as WithFieldValue<Omit<Trend, 'id'>>)
+        )
+      );
+
+      const [tweetRef] = await Promise.all([
+        addDoc(tweetsCollection, tweetData),
+        manageTotalTweets('increment', userId),
+        tweetData.images && manageTotalPhotos('increment', userId),
+        isReplying && manageReply('increment', parent?.id as string)
+      ]);
+
+      const { id: tweetId } = await getDoc(tweetRef);
+
+      if (!modal && !replyModal) {
+        discardTweet();
+        setLoading(false);
+      }
+
+      if (closeModal) closeModal();
+
+      toast.success(
+        () => (
+          <span className='flex gap-2'>
+            Your Tweet was sent
+            <Link href={`/tweet/${tweetId}`}>
+              <span className='custom-underline font-bold'>View</span>
+            </Link>
+          </span>
+        ),
+        { duration: 6000 }
+      );
+    } catch (err) {
+      toast.error(
+        () => (
+          <span className='flex gap-2'>
+            Oops, we couldn&#39;t send your Tweet
+          </span>
+        ),
+        { duration: 6000 }
+      );
+      console.log(err);
     }
-
-    if (closeModal) closeModal();
-
-    toast.success(
-      () => (
-        <span className='flex gap-2'>
-          Your Tweet was sent
-          <Link href={`/tweet/${tweetId}`}>
-            <a className='custom-underline font-bold'>View</a>
-          </Link>
-        </span>
-      ),
-      { duration: 6000 }
-    );
   };
 
   const handleImageUpload = (

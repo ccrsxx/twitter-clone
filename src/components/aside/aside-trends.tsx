@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import cn from 'clsx';
 import { motion } from 'framer-motion';
+import { limit, orderBy, query } from 'firebase/firestore';
 import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
-import { useTrends } from '@lib/api/trends';
+import { trendsCollection } from '@lib/firebase/collections';
+import { useCollection } from '@lib/hooks/useCollection';
 import { Error } from '@components/ui/error';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { Button } from '@components/ui/button';
@@ -22,11 +24,10 @@ type AsideTrendsProps = {
 };
 
 export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
-  const { data, loading } = useTrends(1, inTrendsPage ? 100 : 10, {
-    refreshInterval: 30000
-  });
-
-  const { trends, location } = data ?? {};
+  const { data, loading } = useCollection(
+    query(trendsCollection, orderBy('counter', 'desc'), limit(10)),
+    { allowNull: true, includeUser: true }
+  );
 
   return (
     <section
@@ -37,7 +38,7 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
     >
       {loading ? (
         <Loading />
-      ) : trends ? (
+      ) : data ? (
         <motion.div
           className={cn('inner:px-4 inner:py-3', inTrendsPage && 'mt-0.5')}
           {...variants}
@@ -45,16 +46,16 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           {!inTrendsPage && (
             <h2 className='text-xl font-extrabold'>Trends for you</h2>
           )}
-          {trends.map(({ name, query, tweet_volume, url }) => (
-            <Link href={url} key={query}>
-              <a
+          {data.map(({ text, counter, user: { name } }) => (
+            <Link href={''} key={text}>
+              <span
                 className='hover-animation accent-tab hover-card relative 
-                           flex cursor-not-allowed flex-col gap-0.5'
+                           flex  flex-col gap-0.5 px-4'
                 onClick={preventBubbling()}
               >
                 <div className='absolute right-2 top-2'>
                   <Button
-                    className='hover-animation group relative cursor-not-allowed p-2
+                    className='hover-animation group relative  p-2
                                hover:bg-accent-blue/10 focus-visible:bg-accent-blue/20 
                                focus-visible:!ring-accent-blue/80'
                     onClick={preventBubbling()}
@@ -68,26 +69,26 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                   </Button>
                 </div>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  Trending{' '}
-                  {location === 'Worldwide'
-                    ? 'Worldwide'
-                    : `in ${location as string}`}
+                  Trending
                 </p>
-                <p className='font-bold'>{name}</p>
+                <p className='font-bold'>{text}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {formatNumber(tweet_volume)} tweets
+                  Created by {name}
                 </p>
-              </a>
+                <p className='text-sm text-light-secondary dark:text-dark-secondary'>
+                  {`${formatNumber(counter + 1)} tweet${counter === 0 ? '' : 's'}`}
+                </p>
+              </span>
             </Link>
           ))}
           {!inTrendsPage && (
             <Link href='/trends'>
-              <a
+              <span
                 className='custom-button accent-tab hover-card block w-full rounded-2xl
                            rounded-t-none text-center text-main-accent'
               >
                 Show more
-              </a>
+              </span>
             </Link>
           )}
         </motion.div>

@@ -20,7 +20,7 @@ export function UserAvatar({
   const pictureSize = size ?? 48;
 
   return (
-    <Link href={username ? `/user/${username}` : '#'}>
+    <Link href={username ? `/${username}` : '#'}>
       <a
         className={cn(
           'blur-picture flex self-start',

@@ -57,7 +57,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
 
   const { open, openModal, closeModal } = useModal();
 
-  const tweetLink = `/tweet/${tweetId}`;
+  const tweetLink = `/${username}/${tweetId}`;
 
   const userId = user?.id as string;
 
@@ -166,7 +166,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                   )}
                 >
                   Replying to{' '}
-                  <Link href={`/user/${parentUsername}`}>
+                  <Link href={`/${parentUsername}`}>
                     <a className='custom-underline text-main-accent'>
                       @{parentUsername}
                     </a>

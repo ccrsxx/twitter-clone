@@ -11,12 +11,12 @@ import type { LayoutProps } from './common-layout';
 
 export function UserDataLayout({ children }: LayoutProps): JSX.Element {
   const {
-    query: { id },
+    query: { username },
     back
   } = useRouter();
 
   const { data, loading } = useCollection(
-    query(usersCollection, where('username', '==', id), limit(1)),
+    query(usersCollection, where('username', '==', username), limit(1)),
     { allowNull: true }
   );
 

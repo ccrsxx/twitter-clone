@@ -1,13 +1,14 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { orderBy, query } from 'firebase/firestore';
+import { preventBubbling } from '@lib/utils';
+import { trendsCollection } from '@lib/firebase/collections';
+import { formatNumber } from '@lib/date';
+import { useCollection } from '@lib/hooks/useCollection';
 import {
   TrendsLayout,
   ProtectedLayout
 } from '@components/layout/common-layout';
-import { preventBubbling } from '@lib/utils';
-import { orderBy, query } from 'firebase/firestore';
-import { trendsCollection } from '@lib/firebase/collections';
-import { formatNumber } from '@lib/date';
 import { MainLayout } from '@components/layout/main-layout';
 import { SEO } from '@components/common/seo';
 import { MainHeader } from '@components/home/main-header';
@@ -15,12 +16,11 @@ import { MainContainer } from '@components/home/main-container';
 import { Button } from '@components/ui/button';
 import { ToolTip } from '@components/ui/tooltip';
 import { HeroIcon } from '@components/ui/hero-icon';
-import { useCollection } from '@lib/hooks/useCollection';
 import type { ReactElement, ReactNode } from 'react';
 
 export default function Bookmarks(): JSX.Element {
   const { back } = useRouter();
-  const { data, loading } = useCollection(
+  const { data } = useCollection(
     query(
       trendsCollection,
       orderBy('counter', 'desc'),

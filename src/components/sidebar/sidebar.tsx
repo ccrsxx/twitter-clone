@@ -103,7 +103,7 @@ export function Sidebar(): JSX.Element {
               <SidebarLink {...linkData} key={linkData.href} />
             ))}
             <SidebarLink
-              href={`/user/${username}`}
+              href={`/${username}`}
               username={username}
               linkName='Profile'
               iconName='UserIcon'

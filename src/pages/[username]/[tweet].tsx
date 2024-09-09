@@ -20,12 +20,12 @@ import type { ReactElement, ReactNode } from 'react';
 
 export default function TweetId(): JSX.Element {
   const {
-    query: { id },
+    query: { tweet },
     back
   } = useRouter();
 
   const { data: tweetData, loading: tweetLoading } = useDocument(
-    doc(tweetsCollection, id as string),
+    doc(tweetsCollection, tweet as string),
     { includeUser: true, allowNull: true }
   );
 
@@ -34,7 +34,7 @@ export default function TweetId(): JSX.Element {
   const { data: repliesData, loading: repliesLoading } = useCollection(
     query(
       tweetsCollection,
-      where('parent.id', '==', id),
+      where('parent.id', '==', tweet),
       orderBy('createdAt', 'desc')
     ),
     { includeUser: true, allowNull: true }

@@ -11,6 +11,7 @@ import { Button } from '@components/ui/button';
 import { HeroIcon } from '@components/ui/hero-icon';
 import { ToolTip } from '@components/ui/tooltip';
 import { variants } from './tweet-actions';
+import type { User } from '@lib/types/user';
 
 type TweetShareProps = {
   userId: string;
@@ -23,7 +24,8 @@ export function TweetShare({
   tweetId,
   viewTweet
 }: TweetShareProps): JSX.Element {
-  const { userBookmarks } = useAuth();
+  const { user, userBookmarks } = useAuth();
+  const { username } = user as User;
 
   const handleBookmark =
     (closeMenu: () => void, ...args: Parameters<typeof manageBookmark>) =>
@@ -49,7 +51,7 @@ export function TweetShare({
 
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
-    await navigator.clipboard.writeText(`${siteURL}/tweet/${tweetId}`);
+    await navigator.clipboard.writeText(`${siteURL}/${username}/${tweetId}`);
     toast.success('Copied to clipboard');
   };
 

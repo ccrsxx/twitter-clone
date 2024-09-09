@@ -45,7 +45,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
 
   const { open, openModal, closeModal } = useModal();
 
-  const tweetLink = `/tweet/${tweetId}`;
+  const tweetLink = `/${username}/${tweetId}`;
 
   const userId = user?.id as string;
 
@@ -117,7 +117,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       {reply && (
         <p className='text-light-secondary dark:text-dark-secondary'>
           Replying to{' '}
-          <Link href={`/user/${parentUsername}`}>
+          <Link href={`/${parentUsername}`}>
             <a className='custom-underline text-main-accent'>
               @{parentUsername}
             </a>

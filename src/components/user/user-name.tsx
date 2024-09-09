@@ -22,7 +22,7 @@ export function UserName({
   const CustomTag = tag ? tag : 'p';
 
   return (
-    <Link href={username ? `/user/${username}` : '#'}>
+    <Link href={username ? `/${username}` : '#'}>
       <a
         className={cn(
           'flex items-center gap-1 truncate font-bold',

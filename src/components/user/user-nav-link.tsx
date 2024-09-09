@@ -13,7 +13,7 @@ export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
     query: { id }
   } = useRouter();
 
-  const userPath = `/user/${id as string}${path ? `/${path}` : ''}`;
+  const userPath = `/${id as string}${path ? `/${path}` : ''}`;
 
   return (
     <Link href={userPath} scroll={false}>

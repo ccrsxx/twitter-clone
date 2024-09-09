@@ -13,7 +13,7 @@ export function UserUsername({
   disableLink
 }: UserUsernameProps): JSX.Element {
   return (
-    <Link href={`/user/${username}`}>
+    <Link href={`/${username}`}>
       <a
         className={cn(
           'truncate text-light-secondary dark:text-dark-secondary',

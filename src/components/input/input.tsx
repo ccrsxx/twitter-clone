@@ -27,14 +27,13 @@ import { UserAvatar } from '@components/user/user-avatar';
 import { InputForm, fromTop } from './input-form';
 import { ImagePreview } from './image-preview';
 import { InputOptions } from './input-options';
+import type { Trend } from '@lib/types/trend';
 import type { ReactNode, FormEvent, ChangeEvent, ClipboardEvent } from 'react';
-import type { Query, WithFieldValue } from 'firebase/firestore';
+import type { WithFieldValue } from 'firebase/firestore';
 import type { Variants } from 'framer-motion';
 import type { User } from '@lib/types/user';
 import type { Tweet } from '@lib/types/tweet';
 import type { FilesWithId, ImagesPreview, ImageData } from '@lib/types/file';
-import { Trend } from '@lib/types/trend';
-import { useCollection } from '@lib/hooks/useCollection';
 
 type InputProps = {
   modal?: boolean;
@@ -171,7 +170,7 @@ export function Input({
         () => (
           <span className='flex gap-2'>
             Your Tweet was sent
-            <Link href={`/tweet/${tweetId}`}>
+            <Link href={`/${username}/${tweetId}`}>
               <span className='custom-underline font-bold'>View</span>
             </Link>
           </span>
@@ -187,7 +186,6 @@ export function Input({
         ),
         { duration: 6000 }
       );
-      console.log(err);
     }
   };
 
@@ -288,7 +286,7 @@ export function Input({
           {...fromTop}
         >
           Replying to{' '}
-          <Link href={`/user/${parent?.username as string}`}>
+          <Link href={`/${parent?.username as string}`}>
             <a className='custom-underline text-main-accent'>
               {parent?.username as string}
             </a>

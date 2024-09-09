@@ -99,7 +99,7 @@ export function TweetActions({
       if (parentId) {
         const parentSnapshot = await getDoc(doc(tweetsCollection, parentId));
         if (parentSnapshot.exists()) {
-          await push(`/${parentId}`, undefined, { scroll: false });
+          await push(`/${username}/${parentId}`, undefined, { scroll: false });
           delayScroll(200)();
           await sleep(50);
         } else await push('/home');

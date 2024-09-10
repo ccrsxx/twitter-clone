@@ -2,6 +2,7 @@ import Link from 'next/link';
 import cn from 'clsx';
 import { motion } from 'framer-motion';
 import { limit, orderBy, query } from 'firebase/firestore';
+import { twemojiParse } from '@lib/twemoji';
 import { formatNumber } from '@lib/date';
 import { preventBubbling } from '@lib/utils';
 import { trendsCollection } from '@lib/firebase/collections';
@@ -73,7 +74,9 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                 </p>
                 <p className='font-bold'>{text}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  Created by {name}
+                  Created by {
+                    <span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />
+                  }
                 </p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
                   {`${formatNumber(counter + 1)} tweet${counter === 0 ? '' : 's'}`}

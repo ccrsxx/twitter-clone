@@ -1,5 +1,6 @@
 import cn from 'clsx';
 import Link from 'next/link';
+import { twemojiParse } from '@lib/twemoji';
 import { HeroIcon } from '@components/ui/hero-icon';
 
 type UserNameProps = {
@@ -31,7 +32,9 @@ export function UserName({
         )}
         tabIndex={username ? 0 : -1}
       >
-        <CustomTag className='truncate'>{name}</CustomTag>
+        <CustomTag className='truncate'>{
+          <span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />
+        }</CustomTag>
         {verified && (
           <i>
             <HeroIcon

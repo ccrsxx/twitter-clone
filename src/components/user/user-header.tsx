@@ -41,7 +41,7 @@ export function UserHeader(): JSX.Element {
 
   const currentPage = pathname.split('/').pop() ?? '';
 
-  const isInTweetPage = ['[id]', 'with_replies'].includes(currentPage);
+  const isInTweetPage = ['[username]', 'with_replies'].includes(currentPage);
   const isInFollowPage = ['following', 'followers'].includes(currentPage);
 
   return (

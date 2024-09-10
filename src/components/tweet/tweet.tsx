@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { AnimatePresence, motion } from 'framer-motion';
 import cn from 'clsx';
+import { twemojiParse } from '@lib/twemoji';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { delayScroll } from '@lib/utils';
@@ -113,7 +114,9 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                   <TweetStatus type='tweet'>
                     <Link href={profileUsername as string}>
                       <a className='custom-underline truncate text-sm font-bold'>
-                        {userId === profileId ? 'You' : profileName} Retweeted
+                        {userId === profileId ? 'You' : (
+                          <span dangerouslySetInnerHTML={{ __html: twemojiParse(profileName as string) }} />
+                        )} Retweeted
                       </a>
                     </Link>
                   </TweetStatus>
@@ -174,7 +177,9 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                 </p>
               )}
               {text && (
-                <p className='whitespace-pre-line break-words'>{text}</p>
+                <p className='whitespace-pre-line break-words'>{
+                  <span dangerouslySetInnerHTML={{ __html: twemojiParse(text) }} />
+                }</p>
               )}
               <div className='mt-1 flex flex-col gap-2'>
                 {images && (

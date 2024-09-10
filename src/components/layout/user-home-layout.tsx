@@ -22,7 +22,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
   const { user: userData, loading } = useUser();
 
   const {
-    query: { id }
+    query: { username }
   } = useRouter();
 
   const coverData = userData?.coverPhotoURL
@@ -33,7 +33,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
     ? { src: userData.photoURL, alt: userData.name }
     : null;
 
-  const { id: userId } = user ?? {};
+  const { username: userId } = user ?? {};
 
   const isOwner = userData?.id === userId;
 
@@ -53,10 +53,10 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
             <div className='flex flex-col gap-8'>
               <div className='relative flex flex-col gap-3 px-4 py-3'>
                 <UserHomeAvatar />
-                <p className='text-xl font-bold'>@{id}</p>
+                <p className='text-xl font-bold'>@{username}</p>
               </div>
               <div className='p-8 text-center'>
-                <p className='text-3xl font-bold'>This account doesn’t exist</p>
+                <p className='text-3xl font-bold'>This account doesn&#39;t exist</p>
                 <p className='text-light-secondary dark:text-dark-secondary'>
                   Try searching for another.
                 </p>

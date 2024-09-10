@@ -32,12 +32,11 @@ export function UserHeader(): JSX.Element {
     }
   );
 
-  const { tweets, likes } = statsData ?? {};
+  const { tweets } = statsData ?? {};
 
-  const [totalTweets, totalPhotos, totalLikes] = [
+  const [totalTweets, totalPhotos] = [
     (user?.totalTweets ?? 0) + (tweets?.length ?? 0),
-    user?.totalPhotos,
-    likes?.length
+    user?.totalPhotos
   ];
 
   const currentPage = pathname.split('/').pop() ?? '';
@@ -75,17 +74,17 @@ export function UserHeader(): JSX.Element {
               ? `@${user.username}`
               : isInTweetPage
               ? totalTweets
-                ? `${totalTweets} ${`Tweet${isPlural(totalTweets)}`}`
-                : 'No Tweet'
+                ? `${totalTweets} ${`post${isPlural(totalTweets)}`}`
+                : '0 posts'
               : currentPage === 'media'
               ? totalPhotos
-                ? `${totalPhotos} Photo${isPlural(totalPhotos)} & GIF${isPlural(
+                ? `${totalPhotos} photo${isPlural(totalPhotos)} & video${isPlural(
                     totalPhotos
                   )}`
-                : 'No Photo & GIF'
-              : totalLikes
-              ? `${totalLikes} Like${isPlural(totalLikes)}`
-              : 'No Like'}
+                : '0 photos & videos'
+              : totalTweets
+                ? `${totalTweets} post${isPlural(totalTweets)}`
+                : '0 posts'}
           </p>
         </motion.div>
       )}

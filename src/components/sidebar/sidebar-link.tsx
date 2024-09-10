@@ -26,7 +26,7 @@ export function SidebarLink({
         className={cn(
           'group py-1 outline-none',
           canBeHidden ? 'hidden xs:flex' : 'flex',
-          disabled && 'cursor-not-allowed'
+          disabled && ''
         )}
         onClick={disabled ? preventBubbling() : undefined}
       >

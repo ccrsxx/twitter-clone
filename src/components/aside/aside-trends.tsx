@@ -83,12 +83,12 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
           ))}
           {!inTrendsPage && (
             <Link href='/trends'>
-              <span
+              <a
                 className='custom-button accent-tab hover-card block w-full rounded-2xl
-                           rounded-t-none text-center text-main-accent'
+                           rounded-t-none text-main-accent'
               >
                 Show more
-              </span>
+              </a>
             </Link>
           )}
         </motion.div>

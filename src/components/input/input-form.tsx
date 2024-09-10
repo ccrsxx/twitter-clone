@@ -130,7 +130,7 @@ export function InputForm({
         {isVisibilityShown && (
           <motion.button
             type='button'
-            className='custom-button accent-tab accent-bg-tab flex cursor-not-allowed items-center gap-1
+            className='custom-button accent-tab accent-bg-tab flex  items-center gap-1
                        self-start border border-light-line-reply py-0 px-3 text-main-accent
                        hover:bg-main-accent/10 active:bg-main-accent/20 dark:border-light-secondary'
             {...fromTop}
@@ -175,7 +175,7 @@ export function InputForm({
         >
           <button
             type='button'
-            className='custom-button accent-tab accent-bg-tab flex cursor-not-allowed items-center gap-1 py-0
+            className='custom-button accent-tab accent-bg-tab flex  items-center gap-1 py-0
                        px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
           >
             <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' />

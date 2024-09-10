@@ -33,7 +33,7 @@ export function TweetOption({
       className={cn(
         `group flex items-center gap-1.5 p-0 transition-none
          disabled:cursor-not-allowed inner:transition inner:duration-200`,
-        disabled && 'cursor-not-allowed',
+        disabled && '',
         className
       )}
       onClick={preventBubbling(onClick)}

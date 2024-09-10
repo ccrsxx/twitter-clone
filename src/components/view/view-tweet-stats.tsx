@@ -92,7 +92,7 @@ export function ViewTweetStats({
                      border-b-transparent outline-none hover:border-b-light-primary 
                      focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
                      dark:focus-visible:border-b-dark-primary`,
-                    index === 0 && 'cursor-not-allowed'
+                    index === 0 && ''
                   )}
                   key={title}
                   onClick={type ? handleOpen(type) : undefined}

@@ -171,7 +171,7 @@ export function Input({
           <span className='flex gap-2'>
             Your Tweet was sent
             <Link href={`/${username}/${tweetId}`}>
-              <span className='custom-underline font-bold'>View</span>
+              <a className='custom-underline font-bold'>View</a>
             </Link>
           </span>
         ),
@@ -272,7 +272,7 @@ export function Input({
       className={cn('flex flex-col', {
         '-mx-4': reply,
         'gap-2': replyModal,
-        'cursor-not-allowed': disabled
+        '': disabled
       })}
       onSubmit={handleSubmit}
     >

@@ -49,7 +49,7 @@ export function Suggestions(): JSX.Element {
           <Link href='/people'>
             <a
               className='custom-button accent-tab hover-card block w-full rounded-2xl
-                         rounded-t-none text-center text-main-accent'
+                         rounded-t-none text-main-accent'
             >
               Show more
             </a>

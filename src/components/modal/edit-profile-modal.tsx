@@ -172,7 +172,7 @@ export function EditProfileModal({
           </div>
           {children}
           <Button
-            className='accent-tab -mx-4 mb-4 flex cursor-not-allowed items-center justify-between rounded-none
+            className='accent-tab -mx-4 mb-4 flex  items-center justify-between rounded-none
                        py-2 hover:bg-light-primary/10 active:bg-light-primary/20 disabled:brightness-100
                        dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
           >

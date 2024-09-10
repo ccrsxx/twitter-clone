@@ -10,10 +10,10 @@ type UserNavLinkProps = {
 export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
   const {
     asPath,
-    query: { id }
+    query: { username }
   } = useRouter();
 
-  const userPath = `/${id as string}${path ? `/${path}` : ''}`;
+  const userPath = `/${username as string}${path ? `/${path}` : ''}`;
 
   return (
     <Link href={userPath} scroll={false}>

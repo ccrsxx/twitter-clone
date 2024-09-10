@@ -49,10 +49,10 @@ const bottomNavLinks: Readonly<MobileNavLink[]> = [
     disabled: true
   },
   {
-    href: '/help-center',
+    href: 'https://help.twitter.com',
     linkName: 'Help center',
     iconName: 'QuestionMarkCircleIcon',
-    disabled: true
+    disabled: false
   }
 ];
 

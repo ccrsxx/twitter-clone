@@ -81,8 +81,7 @@ export function MoreSettings(): JSX.Element {
                           'flex w-full  gap-3 rounded-t-md p-4 duration-200',
                           active && 'bg-main-sidebar-background'
                         )}
-                        href='/help-center'
-                        onClick={preventBubbling()}
+                        href='https://help.twitter.com/'
                       >
                         <HeroIcon iconName='QuestionMarkCircleIcon' />
                         Help center

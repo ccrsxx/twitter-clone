@@ -1,5 +1,7 @@
 import '@styles/globals.scss';
 
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
 import { AppHead } from '@components/common/app-head';
@@ -23,12 +25,14 @@ export default function App({
 
   return (
     <>
-      <AppHead />
+      <AppHead/>
       <AuthContextProvider>
         <ThemeContextProvider>
           {getLayout(<Component {...pageProps} />)}
         </ThemeContextProvider>
       </AuthContextProvider>
+      <Analytics/>
+      <SpeedInsights/>
     </>
   );
 }

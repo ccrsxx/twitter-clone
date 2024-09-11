@@ -98,7 +98,7 @@ export function Sidebar(): JSX.Element {
               </a>
             </Link>
           </h1>
-          <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>
+          <nav className='flex items-center justify-around xs:flex-col xs:justify-evenly xl:block'>
             {navLinks.map(({ ...linkData }) => (
               <SidebarLink {...linkData} key={linkData.href} />
             ))}

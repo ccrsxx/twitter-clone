@@ -35,7 +35,7 @@ export function UserHomeLayout({ children }: LayoutProps): JSX.Element {
 
   const { username: userId } = user ?? {};
 
-  const isOwner = userData?.id === userId;
+  const isOwner = userData?.username === userId;
 
   return (
     <>

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState, useEffect, useRef, useId } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import * as emoji from 'node-emoji';
 import cn from 'clsx';
 import { toast } from 'react-hot-toast';
 import {
@@ -94,7 +95,7 @@ export function Input({
       const userId = user?.id as string;
 
       const tweetData: WithFieldValue<Omit<Tweet, 'id'>> = {
-        text: inputValue.trim() || null,
+        text: emoji.emojify(inputValue.trim()) || null,
         parent: isReplying && parent ? parent : null,
         images: await uploadImages(userId, selectedImages),
         userLikes: [],

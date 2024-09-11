@@ -32,9 +32,9 @@ export function UserName({
         )}
         tabIndex={username ? 0 : -1}
       >
-        <CustomTag className='truncate'>{
-          <span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />
-        }</CustomTag>
+        <CustomTag className='truncate'>
+          {<span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />}
+        </CustomTag>
         {verified && (
           <i>
             <HeroIcon

@@ -127,9 +127,9 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       )}
       <div>
         {text && (
-          <p className='whitespace-pre-line break-words text-2xl'>{
-            <span dangerouslySetInnerHTML={{ __html: twemojiParse(text) }} />
-          }</p>
+          <p className='whitespace-pre-line break-words text-2xl'>
+            {<span dangerouslySetInnerHTML={{ __html: twemojiParse(text) }} />}
+          </p>
         )}
         {images && (
           <ImagePreview

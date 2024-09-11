@@ -122,7 +122,9 @@ export function TweetActions({
   const handlePin = async (): Promise<void> => {
     await managePinnedTweet(tweetIsPinned ? 'unpin' : 'pin', userId, tweetId);
     toast.success(
-      `Your Tweet was ${tweetIsPinned ? 'unpinned from' : 'pinned to'} your profile`
+      `Your Tweet was ${
+        tweetIsPinned ? 'unpinned from' : 'pinned to'
+      } your profile`
     );
     pinCloseModal();
   };

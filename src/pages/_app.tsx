@@ -25,14 +25,14 @@ export default function App({
 
   return (
     <>
-      <AppHead/>
+      <AppHead />
       <AuthContextProvider>
         <ThemeContextProvider>
           {getLayout(<Component {...pageProps} />)}
         </ThemeContextProvider>
       </AuthContextProvider>
-      <Analytics/>
-      <SpeedInsights/>
+      <Analytics />
+      <SpeedInsights />
     </>
   );
 }

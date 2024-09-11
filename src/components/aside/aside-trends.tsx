@@ -74,12 +74,17 @@ export function AsideTrends({ inTrendsPage }: AsideTrendsProps): JSX.Element {
                 </p>
                 <p className='font-bold'>{text}</p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  Created by {
-                    <span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />
+                  Created by{' '}
+                  {
+                    <span
+                      dangerouslySetInnerHTML={{ __html: twemojiParse(name) }}
+                    />
                   }
                 </p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {`${formatNumber(counter + 1)} post${counter === 0 ? '' : 's'}`}
+                  {`${formatNumber(counter + 1)} post${
+                    counter === 0 ? '' : 's'
+                  }`}
                 </p>
               </span>
             </Link>

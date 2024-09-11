@@ -78,13 +78,13 @@ export function UserHeader(): JSX.Element {
                 : '0 posts'
               : currentPage === 'media'
               ? totalPhotos
-                ? `${totalPhotos} photo${isPlural(totalPhotos)} & video${isPlural(
+                ? `${totalPhotos} photo${isPlural(
                     totalPhotos
-                  )}`
+                  )} & video${isPlural(totalPhotos)}`
                 : '0 photos & videos'
               : totalTweets
-                ? `${totalTweets} post${isPlural(totalTweets)}`
-                : '0 posts'}
+              ? `${totalTweets} post${isPlural(totalTweets)}`
+              : '0 posts'}
           </p>
         </motion.div>
       )}

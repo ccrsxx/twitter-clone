@@ -17,5 +17,5 @@ export function twemojiParse(input: string): string {
     } else result += char;
   });
 
-  return result;
+  return result;  // why vercel?
 }

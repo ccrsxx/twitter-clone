@@ -39,10 +39,10 @@ export function UserFollowStats({
   );
 
   const {
-    query: { id }
+    query: { username }
   } = useRouter();
 
-  const userPath = `/${id as string}`;
+  const userPath = `/${username as string}`;
 
   const allStats: Readonly<Stats[]> = [
     ['Following', `${userPath}/following`, followingMove, currentFollowing],

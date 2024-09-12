@@ -21,37 +21,36 @@ export function SidebarLink({
   const isActive = username ? asPath.includes(username) : asPath === href;
 
   return (
-    <Link href={href}>
-      <a
+    <Link
+      href={href}
+      className={cn(
+        'group py-1 outline-none',
+        canBeHidden ? 'hidden xs:flex' : 'flex',
+        disabled && ''
+      )}
+      onClick={disabled ? preventBubbling() : undefined}
+    >
+      <div
         className={cn(
-          'group py-1 outline-none',
-          canBeHidden ? 'hidden xs:flex' : 'flex',
-          disabled && ''
-        )}
-        onClick={disabled ? preventBubbling() : undefined}
-      >
-        <div
-          className={cn(
-            `custom-button flex items-center justify-center gap-4 self-start p-2 text-xl transition 
+          `custom-button flex items-center justify-center gap-4 self-start p-2 text-xl transition 
              duration-200 group-hover:bg-light-primary/10 group-focus-visible:ring-2 
              group-focus-visible:ring-[#878a8c] dark:group-hover:bg-dark-primary/10 
              dark:group-focus-visible:ring-white xs:p-3 xl:pr-5`,
-            isActive && 'font-bold'
+          isActive && 'font-bold'
+        )}
+      >
+        <HeroIcon
+          className={cn(
+            'h-7 w-7',
+            isActive &&
+              ['Explore', 'Lists'].includes(linkName) &&
+              'stroke-white'
           )}
-        >
-          <HeroIcon
-            className={cn(
-              'h-7 w-7',
-              isActive &&
-                ['Explore', 'Lists'].includes(linkName) &&
-                'stroke-white'
-            )}
-            iconName={iconName}
-            solid={isActive}
-          />
-          <p className='hidden xl:block'>{linkName}</p>
-        </div>
-      </a>
+          iconName={iconName}
+          solid={isActive}
+        />
+        <p className='hidden xl:block'>{linkName}</p>
+      </div>
     </Link>
   );
 }

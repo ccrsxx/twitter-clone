@@ -1,6 +1,6 @@
 import type { Timestamp } from 'firebase/firestore';
 
-const LOCALE = 
+const LOCALE =
   typeof navigator !== 'undefined' && navigator.language
     ? navigator.language
     : 'en-gb';
@@ -42,15 +42,15 @@ export function getTweetTime(targetDate: Timestamp): string {
   const date = targetDate.toDate();
 
   const dateFormatter = new Intl.DateTimeFormat(LOCALE, {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric'
   });
 
   const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
   });
 
   const formattedDate = dateFormatter.format(date);

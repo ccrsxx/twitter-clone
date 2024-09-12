@@ -150,7 +150,7 @@ export function ImageModal({
               </picture>
             )}
             <a
-              className='custom-underline absolute left-0 -bottom-7 font-medium text-light-primary/80
+              className='custom-underline absolute -bottom-7 left-0 font-medium text-light-primary/80
                          decoration-transparent underline-offset-2 transition hover:text-light-primary hover:underline
                          hover:decoration-light-primary focus-visible:text-light-primary dark:text-dark-primary/80 
                          dark:hover:text-dark-primary dark:hover:decoration-dark-primary dark:focus-visible:text-dark-primary'

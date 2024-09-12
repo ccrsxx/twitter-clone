@@ -56,18 +56,18 @@ export function UserFollowStats({
                  dark:[&>a>div]:text-dark-primary'
     >
       {allStats.map(([title, link, move, stats], index) => (
-        <Link href={link} key={title}>
-          <a
-            className='hover-animation mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b 
+        <Link
+          href={link}
+          key={title}
+          className='hover-animation mb-[3px] mt-0.5 flex h-4 items-center gap-1 border-b 
                        border-b-transparent outline-none hover:border-b-light-primary 
                        focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
                        dark:focus-visible:border-b-dark-primary'
-          >
-            <NumberStats move={move} stats={stats} alwaysShowStats />
-            <p>
-              {index === 1 && stats >= 0 && stats !== 1 ? `${title}s` : title}
-            </p>
-          </a>
+        >
+          <NumberStats move={move} stats={stats} alwaysShowStats />
+          <p>
+            {index === 1 && stats >= 0 && stats !== 1 ? `${title}s` : title}
+          </p>
         </Link>
       ))}
     </div>

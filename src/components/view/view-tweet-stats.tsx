@@ -88,7 +88,7 @@ export function ViewTweetStats({
               !!stats && (
                 <button
                   className={cn(
-                    `hover-animation mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b 
+                    `hover-animation mb-[3px] mt-0.5 flex h-4 items-center gap-1 border-b 
                      border-b-transparent outline-none hover:border-b-light-primary 
                      focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
                      dark:focus-visible:border-b-dark-primary`,

@@ -45,7 +45,7 @@ export function NextImage({
             ? blurClassName ??
                 'animate-pulse bg-light-secondary dark:bg-dark-secondary'
             : previewCount === 1
-            ? '!h-auto !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
+            ? '!mx-auto !h-auto !max-h-full !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
             : 'object-cover'
         )}
         src={src}

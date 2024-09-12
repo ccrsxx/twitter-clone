@@ -79,7 +79,7 @@
   }
 
   .trim-alt {
-    @apply overflow-hidden text-ellipsis break-all [display:-webkit-box] [-webkit-line-clamp:1] [-webkit-box-orient:vertical];
+    @apply overflow-hidden text-ellipsis break-all [-webkit-box-orient:vertical] [-webkit-line-clamp:1] [display:-webkit-box];
   }
 
   .hover-card {

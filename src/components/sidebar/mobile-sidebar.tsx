@@ -27,7 +27,7 @@ export function MobileSidebar(): JSX.Element {
   return (
     <>
       <Modal
-        className='p-0'
+        className='!p-0'
         modalAnimation={variant}
         modalClassName='pb-4 pl-2 min-h-screen w-72 bg-main-background'
         open={open}

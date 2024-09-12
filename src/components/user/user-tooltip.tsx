@@ -71,17 +71,15 @@ export function UserTooltip({
           <div className='flex flex-col gap-2'>
             <div className='-mx-4 -mt-4'>
               {coverPhotoURL ? (
-                <Link href={userLink}>
-                  <a className='blur-picture'>
-                    <NextImage
-                      useSkeleton
-                      className='relative h-24'
-                      imgClassName='rounded-t-2xl'
-                      src={coverPhotoURL}
-                      alt={name}
-                      layout='fill'
-                    />
-                  </a>
+                <Link href={userLink} className='blur-picture'>
+                  <NextImage
+                    useSkeleton
+                    className='relative h-24'
+                    imgClassName='rounded-t-2xl'
+                    src={coverPhotoURL}
+                    alt={name}
+                    layout='fill'
+                  />
                 </Link>
               ) : (
                 <div className='h-16 rounded-t-2xl bg-light-line-reply dark:bg-dark-line-reply' />
@@ -91,8 +89,8 @@ export function UserTooltip({
               <div className='mb-10'>
                 <UserAvatar
                   className='absolute -translate-y-1/2 bg-main-background p-1 
-                             hover:brightness-100 [&>figure>span]:[transition:200ms]
-                             [&:hover>figure>span]:brightness-75'
+                             hover:brightness-100 [&:hover>figure>span]:brightness-75
+                             [&>figure>span]:[transition:200ms]'
                   src={photoURL}
                   alt={name}
                   size={64}
@@ -117,17 +115,17 @@ export function UserTooltip({
           {bio && <p>{bio}</p>}
           <div className='text-secondary flex gap-4'>
             {allStats.map(([id, label, stat]) => (
-              <Link href={`${userLink}/${id}`} key={id}>
-                <a
-                  className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
+              <Link
+                href={`${userLink}/${id}`}
+                key={id}
+                className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
                              outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
                              dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'
-                >
-                  <p className='font-bold'>{stat}</p>
-                  <p className='text-light-secondary dark:text-dark-secondary'>
-                    {label}
-                  </p>
-                </a>
+              >
+                <p className='font-bold'>{stat}</p>
+                <p className='text-light-secondary dark:text-dark-secondary'>
+                  {label}
+                </p>
               </Link>
             ))}
           </div>

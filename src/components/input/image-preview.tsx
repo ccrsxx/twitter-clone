@@ -139,7 +139,7 @@ export function ImagePreview({
               {isVideo ? (
                 <>
                   <Button
-                    className='visible absolute top-0 right-0 z-10 -translate-x-1 translate-y-1 
+                    className='visible absolute right-0 top-0 z-10 -translate-x-1 translate-y-1 
                                bg-light-primary/75 p-1 opacity-0 backdrop-blur-sm transition
                                hover:bg-image-preview-hover/75 group-hover:opacity-100 xs:invisible'
                   >
@@ -149,7 +149,7 @@ export function ImagePreview({
                     ref={videoRef}
                     className={cn(
                       `relative h-full w-full cursor-pointer transition 
-                       hover:brightness-75 hover:duration-200`,
+                       hover:brightness-75 hover:duration-200 !max-h-full !mx-auto`,
                       isTweet
                         ? postImageBorderRadius[previewCount][index]
                         : 'rounded-2xl'
@@ -177,7 +177,7 @@ export function ImagePreview({
               )}
               {removeImage && (
                 <Button
-                  className='group absolute top-0 left-0 translate-x-1 translate-y-1
+                  className='group absolute left-0 top-0 translate-x-1 translate-y-1
                            bg-light-primary/75 p-1 backdrop-blur-sm 
                            hover:bg-image-preview-hover/75'
                   onClick={preventBubbling(removeImage(id))}

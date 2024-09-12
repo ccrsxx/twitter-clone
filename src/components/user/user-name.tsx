@@ -23,28 +23,27 @@ export function UserName({
   const CustomTag = tag ? tag : 'p';
 
   return (
-    <Link href={username ? `/${username}` : '#'}>
-      <a
-        className={cn(
-          'flex items-center gap-1 truncate font-bold',
-          username ? 'custom-underline' : 'pointer-events-none',
-          className
-        )}
-        tabIndex={username ? 0 : -1}
-      >
-        <CustomTag className='truncate'>
-          {<span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />}
-        </CustomTag>
-        {verified && (
-          <i>
-            <HeroIcon
-              className={cn('fill-accent-blue', iconClassName ?? 'h-5 w-5')}
-              iconName='CheckBadgeIcon'
-              solid
-            />
-          </i>
-        )}
-      </a>
+    <Link
+      href={username ? `/${username}` : '#'}
+      className={cn(
+        'flex items-center gap-1 truncate font-bold',
+        username ? 'custom-underline' : 'pointer-events-none',
+        className
+      )}
+      tabIndex={username ? 0 : -1}
+    >
+      <CustomTag className='truncate'>
+        {<span dangerouslySetInnerHTML={{ __html: twemojiParse(name) }} />}
+      </CustomTag>
+      {verified && (
+        <i>
+          <HeroIcon
+            className={cn('fill-accent-blue', iconClassName ?? 'h-5 w-5')}
+            iconName='CheckBadgeIcon'
+            solid
+          />
+        </i>
+      )}
     </Link>
   );
 }

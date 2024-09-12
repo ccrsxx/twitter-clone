@@ -26,23 +26,23 @@ const allNoStatsData: Readonly<NoStatsData> = {
     title: 'Amplify Tweets you like',
     imageData: { src: '/assets/no-retweets.png', alt: 'No retweets' },
     description:
-      'Share someone else&#39;s Tweet on your timeline by Retweeting it. When you do, it&#39;ll show up here.'
+      'Share someone else’s Tweet on your timeline by Retweeting it. When you do, it’ll show up here.'
   },
   likes: {
     title: 'No Tweet likes yet',
     imageData: { src: '/assets/no-likes.png', alt: 'No likes' },
-    description: 'When you like a Tweet, it&#39;ll show up here.'
+    description: 'When you like a Tweet, it’ll show up here.'
   },
   following: {
     title: 'Be in the know',
     description:
-      'Following accounts is an easy way to curate your timeline and know what&#39;s happening with the topics and people you&#39;re interested in.'
+      'Following accounts is an easy way to curate your timeline and know what’s happening with the topics and people you’re interested in.'
   },
   followers: {
     title: 'Looking for followers?',
     imageData: { src: '/assets/no-followers.png', alt: 'No followers' },
     description:
-      'When someone follows this account, they&#39;ll show up here. Tweeting and interacting with others helps boost followers.'
+      'When someone follows this account, they’ll show up here. Tweeting and interacting with others helps boost followers.'
   }
 };
 

@@ -31,7 +31,7 @@ export function UserAvatar({
     >
       <NextImage
         useSkeleton
-        imgClassName='rounded-full w-12'
+        imgClassName='rounded-full'
         width={pictureSize}
         height={pictureSize}
         src={src}

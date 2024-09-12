@@ -1,6 +1,11 @@
 import type { Timestamp } from 'firebase/firestore';
 
-const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat('en-gb', {
+const LOCALE = 
+  typeof navigator !== 'undefined' && navigator.language
+    ? navigator.language
+    : 'en-gb';
+
+const RELATIVE_TIME_FORMATTER = new Intl.RelativeTimeFormat(LOCALE, {
   style: 'short',
   numeric: 'auto'
 });
@@ -27,14 +32,35 @@ export function formatDate(
 }
 
 export function formatNumber(number: number): string {
-  return new Intl.NumberFormat('en-GB', {
+  return new Intl.NumberFormat(LOCALE, {
     notation: number > 10_000 ? 'compact' : 'standard',
     maximumFractionDigits: 1
   }).format(number);
 }
 
+export function getTweetTime(targetDate: Timestamp): string {
+  const date = targetDate.toDate();
+
+  const dateFormatter = new Intl.DateTimeFormat(LOCALE, {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+  });
+
+  const timeFormatter = new Intl.DateTimeFormat(LOCALE, {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+  });
+
+  const formattedDate = dateFormatter.format(date);
+  const formattedTime = timeFormatter.format(date);
+
+  return `${formattedTime} · ${formattedDate}`;
+}
+
 function getFullTime(date: Date): string {
-  const fullDate = new Intl.DateTimeFormat('en-gb', {
+  const fullDate = new Intl.DateTimeFormat(LOCALE, {
     hour: 'numeric',
     minute: 'numeric',
     day: 'numeric',
@@ -57,12 +83,12 @@ function getFullTime(date: Date): string {
 function getPostTime(date: Date): string {
   if (isToday(date)) return getRelativeTime(date);
   if (isYesterday(date))
-    return new Intl.DateTimeFormat('en-gb', {
+    return new Intl.DateTimeFormat(LOCALE, {
       day: 'numeric',
       month: 'short'
     }).format(date);
 
-  return new Intl.DateTimeFormat('en-gb', {
+  return new Intl.DateTimeFormat('LOCALE', {
     day: 'numeric',
     month: 'short',
     year: isCurrentYear(date) ? undefined : 'numeric'
@@ -70,7 +96,7 @@ function getPostTime(date: Date): string {
 }
 
 function getJoinedTime(date: Date): string {
-  return new Intl.DateTimeFormat('en-gb', {
+  return new Intl.DateTimeFormat(LOCALE, {
     month: 'long',
     year: 'numeric'
   }).format(date);
@@ -85,7 +111,7 @@ function getShortTime(date: Date): string {
 
   return isNear
     ? `${isNear === 'today' ? 'Today' : 'Yesterday'} at ${date
-        .toLocaleTimeString('en-gb')
+        .toLocaleTimeString(LOCALE)
         .slice(0, -3)}`
     : getFullTime(date);
 }

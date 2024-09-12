@@ -185,7 +185,7 @@ export function Input({
       toast.error(
         () => (
           <span className='flex gap-2'>
-            Oops, we couldn&#39;t send your Tweet
+            Oops, we couldn’t send your Tweet
           </span>
         ),
         { duration: 6000 }

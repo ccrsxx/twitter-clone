@@ -119,7 +119,7 @@ export function InputForm({
       >
         <ActionModal
           title='Discard Tweet?'
-          description='This can&#39;t be undone and you&#39;ll lose your draft.'
+          description='This can’t be undone and you’ll lose your draft.'
           mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75'
           mainBtnLabel='Discard'
           action={handleClose}

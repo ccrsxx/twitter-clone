@@ -148,8 +148,8 @@ export function ImagePreview({
                   <video
                     ref={videoRef}
                     className={cn(
-                      `relative !mx-auto h-full !max-h-full w-full 
-                       cursor-pointer transition hover:brightness-75 hover:duration-200`,
+                      `relative m-auto h-full w-full 
+                       cursor-pointer transition hover:brightness-75 hover:duration-200 !max-h-full`,
                       isTweet
                         ? postImageBorderRadius[previewCount][index]
                         : 'rounded-2xl'
@@ -162,7 +162,7 @@ export function ImagePreview({
               ) : (
                 <NextImage
                   className='relative h-full w-full cursor-pointer transition 
-                             hover:brightness-75 hover:duration-200'
+                             hover:brightness-75 hover:duration-200 !max-h-full !mx-auto'
                   imgClassName={cn(
                     isTweet
                       ? postImageBorderRadius[previewCount][index]

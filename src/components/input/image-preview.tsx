@@ -165,8 +165,8 @@ export function ImagePreview({
                              hover:brightness-75 hover:duration-200'
                   imgClassName={cn(
                     isTweet
-                      ? postImageBorderRadius[previewCount][index]
-                      : 'rounded-2xl m-auto !max-h-full'
+                      ? `${postImageBorderRadius[previewCount][index]} !max-h-full m-auto`
+                      : 'rounded-2xl !max-h-full m-auto'
                   )}
                   previewCount={previewCount}
                   layout='fill'

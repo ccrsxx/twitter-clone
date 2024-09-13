@@ -162,11 +162,11 @@ export function ImagePreview({
               ) : (
                 <NextImage
                   className='relative h-full w-full cursor-pointer transition 
-                             hover:brightness-75 hover:duration-200 !max-h-full m-auto'
+                             hover:brightness-75 hover:duration-200'
                   imgClassName={cn(
                     isTweet
                       ? postImageBorderRadius[previewCount][index]
-                      : 'rounded-2xl'
+                      : 'rounded-2xl m-auto !max-h-full'
                   )}
                   previewCount={previewCount}
                   layout='fill'

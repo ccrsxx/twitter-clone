@@ -37,7 +37,7 @@ export function NextImage({
   const handleLoad = (): void => setLoading(false);
 
   return (
-    <figure style={{ width }} className={className}>
+    <figure style={{ width, height }} className={className}>
       <Image
         className={cn(
           imgClassName,

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Image from 'next/legacy/image';
+import Image from 'next/image';
 import cn from 'clsx';
 import type { ReactNode } from 'react';
-import type { ImageProps } from 'next/legacy/image';
+import type { ImageProps } from 'next/image';
 
 type NextImageProps = {
   alt: string;
@@ -45,7 +45,7 @@ export function NextImage({
             ? blurClassName ??
                 'animate-pulse bg-light-secondary dark:bg-dark-secondary'
             : previewCount === 1
-            ? '!mx-auto !h-auto !max-h-full !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
+            ? '!h-auto !min-h-0 !w-auto !min-w-0 rounded-lg object-contain'
             : 'object-cover'
         )}
         src={src}
@@ -53,9 +53,12 @@ export function NextImage({
         height={height}
         alt={alt}
         onLoadingComplete={handleLoad}
-        layout='responsive'
         {...rest}
-      />
+        sizes='100vw'
+        style={{
+          width: '100%',
+          height: '100%'
+        }} />
       {children}
     </figure>
   );

@@ -91,7 +91,7 @@ export function ProgressBar({
           `absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[45%]
            scale-50 text-xs opacity-0`,
           {
-            'scale-100 opacity-100 transition': isCloseToLimit,
+            '!scale-100 opacity-100 transition': isCloseToLimit,
             'text-accent-red': isHittingCharLimit
           }
         )}

@@ -17,7 +17,7 @@ service cloud.firestore {
       return (images is list && images.size() <= 4) || images == null;
     }
     
-    match /{path=**}/{tweetId} {
+    match /{path=**}/status/{tweetId} {
       allow read, update: if request.auth != null;
       allow create: if isAuthorized(request.resource.data.createdBy)
                        && isValidText(request.resource.data.text)

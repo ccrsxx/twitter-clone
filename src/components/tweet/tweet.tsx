@@ -58,7 +58,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
 
   const { open, openModal, closeModal } = useModal();
 
-  const tweetLink = `/${username}/${tweetId}`;
+  const tweetLink = `/${username}/status/${tweetId}`;
 
   const userId = user?.id as string;
 

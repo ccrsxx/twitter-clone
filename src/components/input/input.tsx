@@ -172,7 +172,7 @@ export function Input({
           <span className='flex gap-2'>
             Your Tweet was sent
             <Link
-              href={`/${username}/${tweetId}`}
+              href={`/${username}/status/${tweetId}`}
               className='custom-underline font-bold'
             >
               View

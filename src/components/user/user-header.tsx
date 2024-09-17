@@ -74,8 +74,8 @@ export function UserHeader(): JSX.Element {
               ? `@${user.username}`
               : isInTweetPage
               ? totalTweets
-                ? `${totalTweets} ${`post${isPlural(totalTweets)}`}`
-                : '0 posts'
+                ? `${totalTweets} ${`Tweet${isPlural(totalTweets)}`}`
+                : '0 Tweets'
               : currentPage === 'media'
               ? totalPhotos
                 ? `${totalPhotos} photo${isPlural(
@@ -83,8 +83,8 @@ export function UserHeader(): JSX.Element {
                   )} & video${isPlural(totalPhotos)}`
                 : '0 photos & videos'
               : totalTweets
-              ? `${totalTweets} post${isPlural(totalTweets)}`
-              : '0 posts'}
+              ? `${totalTweets} Tweet${isPlural(totalTweets)}`
+              : '0 Tweets'}
           </p>
         </motion.div>
       )}

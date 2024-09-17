@@ -78,7 +78,7 @@ export default function Bookmarks(): JSX.Element {
                   }
                 </p>
                 <p className='text-sm text-light-secondary dark:text-dark-secondary'>
-                  {`${formatNumber(counter + 1)} post${
+                  {`${formatNumber(counter + 1)} Tweet${
                     counter === 0 ? '' : 's'
                   }`}
                 </p>

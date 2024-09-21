@@ -32,6 +32,25 @@ service cloud.firestore {
       allow delete: if isAuthorized(resource.data.createdBy);
     }
 
+    match /notifications/{tweetId} {
+      allow read, update: if request.auth != null;
+      allow create: if isAuthorized(request.resource.data.userId)
+                       && isValidText(request.resource.data.type)
+      allow delete: if isAuthorized(resource.data.userId);
+    }
+
+    match /conversations/{tweetId} {
+      allow read, update: if request.auth != null;
+      allow create: if isAuthorized(request.resource.data.userId)
+      allow delete: if isAuthorized(resource.data.userId);
+    }
+
+    match /messages/{tweetId} {
+      allow read, update: if request.auth != null;
+      allow create: if isAuthorized(request.resource.data.userId)
+      allow delete: if isAuthorized(resource.data.userId);
+    }
+
     match /{document=**} {
       allow read, write: if request.auth != null;
     }

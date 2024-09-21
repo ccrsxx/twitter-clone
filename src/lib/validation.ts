@@ -15,7 +15,7 @@ const IMAGE_EXTENSIONS = [
   'webp'
 ] as const;
 
-type ImageExtensions = (typeof IMAGE_EXTENSIONS)[number];
+type ImageExtensions = typeof IMAGE_EXTENSIONS[number];
 
 const MEDIA_EXTENSIONS = [
   ...IMAGE_EXTENSIONS,
@@ -26,7 +26,7 @@ const MEDIA_EXTENSIONS = [
   'webm'
 ] as const;
 
-type MediaExtensions = (typeof MEDIA_EXTENSIONS)[number];
+type MediaExtensions = typeof MEDIA_EXTENSIONS[number];
 
 function isValidImageExtension(
   extension: string

@@ -209,6 +209,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                   userId={userId}
                   isOwner={isOwner}
                   tweetId={tweetId}
+                  tweetCreatedBy={createdBy}
                   userLikes={userLikes}
                   userReplies={userReplies}
                   userRetweets={userRetweets}

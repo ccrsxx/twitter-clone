@@ -1,4 +1,6 @@
+/* eslint-disable linebreak-style */
 import Link from 'next/link';
+import { CiSearch } from 'react-icons/ci';
 import { useAuth } from '@lib/context/auth-context';
 import { useModal } from '@lib/hooks/useModal';
 import { Button } from '@components/ui/button';
@@ -20,7 +22,7 @@ export type MobileNavLink = Omit<NavLink, 'canBeHidden'>;
 const topNavLinks: Readonly<MobileNavLink[]> = [
   {
     href: '/trends',
-    linkName: 'Topics',
+    linkName: 'Trends',
     iconName: 'ChatBubbleBottomCenterTextIcon'
   },
   {
@@ -29,15 +31,11 @@ const topNavLinks: Readonly<MobileNavLink[]> = [
     iconName: 'BookmarkIcon'
   },
   {
-    href: '/lists',
-    linkName: 'Lists',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true
-  },
-  {
-    href: '/people',
-    linkName: 'Twitter Circle',
-    iconName: 'UserGroupIcon'
+    href: '/explore',
+    linkName: 'Search',
+    iconName: 'MagnifyingGlassIcon',
+    disabled: false,
+    icon: <CiSearch size={34} />
   }
 ];
 
@@ -128,38 +126,38 @@ export function MobileSidebarModal({
         />
       </Modal>
       <MainHeader
-        useActionButton
-        className='flex flex-row-reverse items-center justify-between'
-        iconName='XMarkIcon'
-        title='Account info'
-        tip='Close'
-        action={closeModal}
-      />
-      <section className='mt-0.5 flex flex-col gap-2 px-4'>
-        <Link href={userLink} className='blur-picture relative h-20 rounded-md'>
-          {coverPhotoURL ? (
-            <NextImage
-              useSkeleton
-              imgClassName='rounded-md'
-              src={coverPhotoURL}
-              alt={name ?? username}
-              layout='fill'
-            />
-          ) : (
-            <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
-          )}
-        </Link>
-        <div className='-mt-4 mb-8 ml-2'>
-          <UserAvatar
-            className='absolute -translate-y-1/2 bg-main-background p-1 hover:brightness-100
-                       [&:hover>figure>span]:brightness-75
-                       [&>figure>span]:[transition:200ms]'
-            username={username}
-            src={photoURL}
-            alt={name ?? username}
-            size={60}
-          />
-        </div>
+                useActionButton
+                className='flex flex-row-reverse items-center justify-between'
+                iconName='XMarkIcon'
+                title='Account info'
+                tip='Close'
+                action={closeModal}
+              />
+              <section className='mt-0.5 flex flex-col gap-2 px-4'>
+                <Link href={userLink} className='blur-picture relative h-20 rounded-md'>
+                  {coverPhotoURL ? (
+                    <NextImage
+                      useSkeleton
+                      imgClassName='rounded-md'
+                      src={coverPhotoURL}
+                      alt={name}
+                      layout='fill'
+                    />
+                  ) : (
+                    <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
+                  )}
+                </Link>
+                <div className='-mt-4 mb-8 ml-2'>
+                  <UserAvatar
+                    className='absolute -translate-y-1/2 bg-main-background p-1 hover:brightness-100
+                               [&:hover>figure>span]:brightness-75
+                               [&>figure>span]:[transition:200ms]'
+                    username={username}
+                    src={photoURL}
+                    alt={name}
+                    size={60}
+                  />
+                </div>
         <div className='flex flex-col gap-4 rounded-xl bg-main-sidebar-background p-4'>
           <div className='flex flex-col'>
             <UserName
@@ -172,17 +170,17 @@ export function MobileSidebarModal({
           </div>
           <div className='text-secondary flex gap-4'>
             {allStats.map(([id, label, stat]) => (
-              <Link
-                href={`${userLink}/${id}`}
-                key={id}
-                className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
+              <Link href={`${userLink}/${id}`} key={id}>
+                <span
+                  className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
                              outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
                              dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'
-              >
-                <p className='font-bold'>{stat}</p>
-                <p className='text-light-secondary dark:text-dark-secondary'>
-                  {label}
-                </p>
+                >
+                  <p className='font-bold'>{stat}</p>
+                  <p className='text-light-secondary dark:text-dark-secondary'>
+                    {label}
+                  </p>
+                </span>
               </Link>
             ))}
           </div>

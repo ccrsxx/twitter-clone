@@ -51,7 +51,9 @@ export function TweetShare({
 
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
-    await navigator.clipboard.writeText(`${siteURL}/${username}/status/${tweetId}`);
+    await navigator.clipboard.writeText(
+      `${siteURL}/${username}/status/${tweetId}`
+    );
     toast.success('Copied to clipboard');
   };
 

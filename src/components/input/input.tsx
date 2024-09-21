@@ -308,7 +308,7 @@ export function Input({
         )}
         htmlFor={formId}
       >
-        <UserAvatar src={photoURL} alt={name} username={username} />
+        <UserAvatar src={photoURL} alt={name ?? username} username={username} />
         <div className='flex w-full flex-col gap-4'>
           <InputForm
             modal={modal}

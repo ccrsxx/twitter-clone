@@ -31,7 +31,7 @@ export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
               : 'text-light-secondary dark:text-dark-secondary'
           )}
         >
-          {name}
+          {name ?? username}
           <i className='h-1 scale-50 rounded-full bg-main-accent opacity-0 transition duration-200' />
         </p>
       </div>

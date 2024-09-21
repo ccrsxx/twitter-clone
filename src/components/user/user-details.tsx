@@ -46,7 +46,7 @@ export function UserDetails({
       <div>
         <UserName
           className='-mb-1 text-xl'
-          name={name}
+          name={name ?? username}
           iconClassName='w-6 h-6'
           verified={verified}
         />

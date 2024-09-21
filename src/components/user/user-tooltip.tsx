@@ -77,7 +77,7 @@ export function UserTooltip({
                     className='relative h-24'
                     imgClassName='rounded-t-2xl'
                     src={coverPhotoURL}
-                    alt={name}
+                    alt={name ?? username}
                     layout='fill'
                   />
                 </Link>
@@ -92,7 +92,7 @@ export function UserTooltip({
                              hover:brightness-100 [&:hover>figure>span]:brightness-75
                              [&>figure>span]:[transition:200ms]'
                   src={photoURL}
-                  alt={name}
+                  alt={name ?? username}
                   size={64}
                   username={username}
                 />
@@ -102,7 +102,7 @@ export function UserTooltip({
             <div>
               <UserName
                 className='-mb-1 text-lg'
-                name={name}
+                name={name ?? username}
                 username={username}
                 verified={verified}
               />

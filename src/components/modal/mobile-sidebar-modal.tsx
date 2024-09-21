@@ -142,7 +142,7 @@ export function MobileSidebarModal({
               useSkeleton
               imgClassName='rounded-md'
               src={coverPhotoURL}
-              alt={name}
+              alt={name ?? username}
               layout='fill'
             />
           ) : (
@@ -156,14 +156,14 @@ export function MobileSidebarModal({
                        [&>figure>span]:[transition:200ms]'
             username={username}
             src={photoURL}
-            alt={name}
+            alt={name ?? username}
             size={60}
           />
         </div>
         <div className='flex flex-col gap-4 rounded-xl bg-main-sidebar-background p-4'>
           <div className='flex flex-col'>
             <UserName
-              name={name}
+              name={name ?? username}
               username={username}
               verified={verified}
               className='-mb-1'

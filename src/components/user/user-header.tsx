@@ -64,7 +64,7 @@ export function UserHeader(): JSX.Element {
         <motion.div className='-mb-1 truncate' {...variants} key='found'>
           <UserName
             tag='h2'
-            name={user.name}
+            name={user.name ?? user.username}
             className='-mt-1 text-xl'
             iconClassName='w-6 h-6'
             verified={user.verified}

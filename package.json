@@ -17,17 +17,24 @@
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^2.0.11",
+    "@next/third-parties": "^14.2.8",
     "@vercel/analytics": "^1.3.1",
     "@vercel/speed-insights": "^1.0.12",
     "clsx": "^1.2.1",
     "firebase": "^9.9.4",
+    "firebase-admin": "^12.4.0",
     "framer-motion": "^7.2.1",
-    "next": "^14.0.0",
+    "install": "^0.13.0",
+    "next": "^14.2.8",
     "node-emoji": "^2.1.3",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.3.0",
+    "react-icons": "^5.3.0",
     "react-textarea-autosize": "^8.3.4",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "swr": "^1.3.0"
   },
   "devDependencies": {
@@ -43,7 +50,7 @@
     "concurrently": "^8.2.1",
     "eslint": "8.21.0",
     "eslint-config-next": "12.2.4",
-    "eslint-import-resolver-typescript": "^3.4.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.26.0",
     "husky": "^8.0.1",
     "jest": "^28.1.3",
@@ -58,5 +65,6 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

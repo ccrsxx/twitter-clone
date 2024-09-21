@@ -134,7 +134,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
           </AnimatePresence>
           <div className='flex flex-col items-center gap-2'>
             <UserTooltip avatar modal={modal} {...tweetUserData}>
-              <UserAvatar src={photoURL} alt={name} username={username} />
+              <UserAvatar src={photoURL} alt={name ?? username} username={username} />
             </UserTooltip>
             {parentTweet && (
               <i className='hover-animation h-full w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
@@ -145,7 +145,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               <div className='flex gap-1 truncate xs:overflow-visible xs:whitespace-normal'>
                 <UserTooltip modal={modal} {...tweetUserData}>
                   <UserName
-                    name={name}
+                    name={name ?? username}
                     username={username}
                     verified={verified}
                     className='text-light-primary dark:text-dark-primary'

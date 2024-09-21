@@ -4,7 +4,7 @@ export function twemojiParse(input: string): string {
 
   let result = '';
 
-  Array.from(input).forEach((char) => {
+  Array.from(input ?? '').forEach((char) => {
     if (emojiRegex.test(char)) {
       const codePoints = Array.from(char)
         .map((c) => c.codePointAt(0)?.toString(16))

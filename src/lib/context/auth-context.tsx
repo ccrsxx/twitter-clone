@@ -1,31 +1,29 @@
-import { useState, useEffect, useContext, createContext, useMemo } from 'react';
+import { setCookie } from 'nookies';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signOut as signOutFirebase
+	createUserWithEmailAndPassword,
+	GoogleAuthProvider,
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+	signInWithPopup,
+	signOut as signOutFirebase
 } from 'firebase/auth';
-import {
-  doc,
-  getDoc,
-  setDoc,
-  onSnapshot,
-  serverTimestamp
-} from 'firebase/firestore';
 import { auth } from '@lib/firebase/app';
 import {
+  userBookmarksCollection,
   usersCollection,
-  userStatsCollection,
-  userBookmarksCollection
+  userStatsCollection
 } from '@lib/firebase/collections';
-import { getRandomId, getRandomInt } from '@lib/random';
 import { checkUsernameAvailability } from '@lib/firebase/utils';
-import type { ReactNode } from 'react';
-import type { User as AuthUser } from 'firebase/auth';
-import type { WithFieldValue } from 'firebase/firestore';
-import type { User } from '@lib/types/user';
+import { getRandomId, getRandomInt } from '@lib/random';
 import type { Bookmark } from '@lib/types/bookmark';
 import type { Stats } from '@lib/types/stats';
+import type { User } from '@lib/types/user';
+import type { User as AuthUser } from 'firebase/auth';
+
+import type { WithFieldValue } from 'firebase/firestore';
+import type { ReactNode } from 'react';
 
 type AuthContext = {
   user: User | null;
@@ -36,6 +34,8 @@ type AuthContext = {
   userBookmarks: Bookmark[] | null;
   signOut: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
+  signUpWithEmail: (email: string, password: string) => Promise<void>;
+  signInManual: (email: string, password: string) => Promise<void>;
 };
 
 export const AuthContext = createContext<AuthContext | null>(null);
@@ -56,17 +56,23 @@ export function AuthContextProvider({
     const manageUser = async (authUser: AuthUser): Promise<void> => {
       const { uid, displayName, photoURL } = authUser;
 
+      const token = await authUser.getIdToken();
+      setCookie(undefined, 'token', token, { path: '/' });
+
       const userSnapshot = await getDoc(doc(usersCollection, uid));
 
       if (!userSnapshot.exists()) {
-        let available = false;
-        let randomUsername = '';
+        
+        let available = await checkUsernameAvailability(
+			displayName?.replace(/\s/g, '').toLowerCase() ?? 'user'
+        );
+        let randomUsername = displayName?.replace(/\s/g, '') ?? 'user';
 
         while (!available) {
-          const normalizeName = displayName?.replace(/\s/g, '').toLowerCase();
-          const randomInt = getRandomInt(1, 10_000);
+          const normalizeName = displayName?.replace(/\s/g, '').toLowerCase() ?? 'user';
+          const randomInt = getRandomInt(0, 1e5);
 
-          randomUsername = `${normalizeName as string}${randomInt}`;
+          randomUsername = `${normalizeName}${randomInt}`;
 
           const isUsernameAvailable = await checkUsernameAvailability(
             randomUsername
@@ -83,7 +89,7 @@ export function AuthContextProvider({
           accent: null,
           website: null,
           location: null,
-          photoURL: photoURL ?? '/assets/twitter-avatar.jpg',
+          photoURL: photoURL ?? '/default-avatar.png',
           username: randomUsername,
           verified: false,
           following: [],
@@ -167,6 +173,21 @@ export function AuthContextProvider({
     }
   };
 
+  const signUpWithEmail = async (email: string, password: string): Promise<void> => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      setError(error as Error);
+    }
+  };
+  const signInManual = async (email: string, password: string): Promise<void> => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      setError(error as Error);
+    }
+  };
+
   const signOut = async (): Promise<void> => {
     try {
       await signOutFirebase(auth);
@@ -175,7 +196,7 @@ export function AuthContextProvider({
     }
   };
 
-  const isAdmin = user ? user.username === 'ccrsxx' : false;
+  const isAdmin = user ? user.username === 'luna' : false;
   const randomSeed = useMemo(getRandomId, [user?.id]);
 
   const value: AuthContext = {
@@ -186,7 +207,9 @@ export function AuthContextProvider({
     randomSeed,
     userBookmarks,
     signOut,
-    signInWithGoogle
+    signInWithGoogle,
+    signUpWithEmail,
+    signInManual
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

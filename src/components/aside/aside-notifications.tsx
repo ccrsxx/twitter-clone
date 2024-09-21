@@ -48,7 +48,7 @@ export function AsideNotifications({
       ) : data ? (
         <motion.div
           className={cn(
-            'inner:px-4 inner:py-3 space-y-6',
+            'inner:px-4 inner:py-3 space-y-6 py-4',
             inNotificationsPage && 'mt-0.5'
           )}
           {...variants}

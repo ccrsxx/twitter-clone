@@ -69,7 +69,7 @@ export function AsideNotifications({
                 legacyBehavior
               >
                 <a
-                  className='hover-animation accent-tab relative flex flex-col gap-0.5 rounded-md border bg-white p-4 duration-200 hover:shadow-md dark:border-main-background dark:bg-zinc-900 mx-4'
+                  className='hover-animation accent-tab relative mx-4 flex flex-col gap-0.5 rounded-md border bg-white p-4 duration-200 hover:shadow-md dark:border-main-background dark:bg-zinc-900'
                   onClick={async (): Promise<void> => {
                     preventBubbling();
                     void navigator.push(NotificationProps.url);

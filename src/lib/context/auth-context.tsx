@@ -1,12 +1,18 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { doc, getDoc, onSnapshot, serverTimestamp, setDoc } from 'firebase/firestore';
 import {
-	createUserWithEmailAndPassword,
-	GoogleAuthProvider,
-	onAuthStateChanged,
-	signInWithEmailAndPassword,
-	signInWithPopup,
-	signOut as signOutFirebase
+  doc,
+  getDoc,
+  onSnapshot,
+  serverTimestamp,
+  setDoc
+} from 'firebase/firestore';
+import {
+  createUserWithEmailAndPassword,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut as signOutFirebase
 } from 'firebase/auth';
 import nookies from 'nookies';
 import { auth } from '@lib/firebase/app';
@@ -62,14 +68,14 @@ export function AuthContextProvider({
       const userSnapshot = await getDoc(doc(usersCollection, uid));
 
       if (!userSnapshot.exists()) {
-        
         let available = await checkUsernameAvailability(
-			displayName?.replace(/\s/g, '').toLowerCase() ?? 'user'
+          displayName?.replace(/\s/g, '').toLowerCase() ?? 'user'
         );
         let randomUsername = displayName?.replace(/\s/g, '') ?? 'user';
 
         while (!available) {
-          const normalizeName = displayName?.replace(/\s/g, '').toLowerCase() ?? 'user';
+          const normalizeName =
+            displayName?.replace(/\s/g, '').toLowerCase() ?? 'user';
           const randomInt = getRandomInt(0, 1e5);
 
           randomUsername = `${normalizeName}${randomInt}`;
@@ -173,14 +179,20 @@ export function AuthContextProvider({
     }
   };
 
-  const signUpWithEmail = async (email: string, password: string): Promise<void> => {
+  const signUpWithEmail = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
       setError(error as Error);
     }
   };
-  const signInManual = async (email: string, password: string): Promise<void> => {
+  const signInManual = async (
+    email: string,
+    password: string
+  ): Promise<void> => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {

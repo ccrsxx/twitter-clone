@@ -39,12 +39,12 @@ export function LoginSingUp({
         onClick={(e): void => e.stopPropagation()}
       >
         <div className='flex max-w-[364px] flex-col gap-4'>
-          <i className='mb-0 self-center lg:mb-10 lg:self-auto flex justify-center'>
+          <i className='mb-0 flex justify-center self-center lg:mb-10 lg:self-auto'>
             <CustomIcon
               className='mt-4 h-6 w-6 text-accent-blue lg:h-12 lg:w-12 dark:lg:text-twitter-icon'
               iconName='TwitterIcon'
             />
-        </i>
+          </i>
 
           <h2 className='font-twitter-chirp-extended text-3xl'>{title}</h2>
 
@@ -55,7 +55,8 @@ export function LoginSingUp({
                          dark:hover:brightness-90 dark:focus-visible:brightness-90 dark:active:brightness-75'
               onClick={signInWithGoogle}
             >
-              <CustomIcon iconName='GoogleIcon' /> {googleProviderTitle} with Google
+              <CustomIcon iconName='GoogleIcon' /> {googleProviderTitle} with
+              Google
             </Button>
 
             <Button
@@ -63,7 +64,8 @@ export function LoginSingUp({
                          transition hover:bg-[#e6e6e6] focus-visible:bg-[#e6e6e6] active:bg-[#cccccc] dark:border-0
                          dark:bg-white dark:hover:brightness-90 dark:focus-visible:brightness-90 dark:active:brightness-75'
             >
-              <CustomIcon iconName='AppleIcon' /> {googleProviderTitle} with Apple
+              <CustomIcon iconName='AppleIcon' /> {googleProviderTitle} with
+              Apple
             </Button>
 
             <div className='flex items-center justify-center'>

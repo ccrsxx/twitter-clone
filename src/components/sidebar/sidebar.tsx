@@ -144,8 +144,14 @@ export function Sidebar(): JSX.Element {
       >
         <section className='flex flex-col justify-center gap-2 xs:items-center xl:items-stretch'>
           <h1 className='hidden xs:flex'>
-            <Link href='/home' className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10  focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80 dark:text-twitter-icon dark:hover:bg-dark-primary/10'>
-              <CustomIcon className='fill-current h-7 w-7' iconName='TwitterIcon' />
+            <Link
+              href='/home'
+              className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10  focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80 dark:text-twitter-icon dark:hover:bg-dark-primary/10'
+            >
+              <CustomIcon
+                className='h-7 w-7 fill-current'
+                iconName='TwitterIcon'
+              />
             </Link>
           </h1>
           <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>

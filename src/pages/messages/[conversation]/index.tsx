@@ -106,25 +106,26 @@ export default function MessagePage(): JSX.Element {
           conversation?.user.name ? `with ${conversation.user.name}` : ''
         }`}
         action={back}
-      >
-      </MainHeader>
+      ></MainHeader>
 
       {loading ? (
         <Loading />
       ) : (
-        <div className='w-full h-[calc(100dvh-52px)] '>
-          <div className='
-            items-center relative gap-0.5
-            rounded-md bg-white dark:border-main-background
-            dark:bg-main-background flex h-full w-full flex-col justify-end'>
-            <div className='h-full overflow-auto with-scroll flex w-full flex-col-reverse'>
-              <div className='mb-2 flex w-full h-full flex-col justify-end gap-2 pb-2 px-2'>
+        <div className='h-[calc(100dvh-52px)] w-full '>
+          <div
+            className='
+            relative flex h-full
+            w-full flex-col items-center
+            justify-end gap-0.5 rounded-md bg-white dark:border-main-background dark:bg-main-background'
+          >
+            <div className='with-scroll flex h-full w-full flex-col-reverse overflow-auto'>
+              <div className='mb-2 flex h-full w-full flex-col justify-end gap-2 px-2 pb-2'>
                 {data
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   ?.sort((a, b) => (a.createdAt as any) - (b.createdAt as any))
                   .map((message) => (
                     <motion.div
-                      className={`flex w-full justify-start items-end relative ${
+                      className={`relative flex w-full items-end justify-start ${
                         message.userId === user?.id
                           ? 'flex-row-reverse'
                           : ' flex-row'
@@ -132,22 +133,24 @@ export default function MessagePage(): JSX.Element {
                       key={message.id}
                       {...variants}
                     >
-                      <div className={`border-4 border-t-transparent border-b-main-accent 
-                          ${message.userId === user?.id
-                            ? 'border-r-transparent border-l-main-accent rounded-r-lg'
-                            : 'border-l-transparent border-r-main-accent rounded-l-lg'
+                      <div
+                        className={`border-4 border-t-transparent border-b-main-accent 
+                          ${
+                            message.userId === user?.id
+                              ? 'rounded-r-lg border-r-transparent border-l-main-accent'
+                              : 'rounded-l-lg border-l-transparent border-r-main-accent'
                           }
-                        `}>
-
+                        `}
+                      >
                         {message.userId !== user?.id && (
-                          <div className='border-[3px] border-t-transparent border-l-transparent border-r-white border-b-white dark:border-r-zinc-900 dark:border-b-zinc-900 absolute bottom-[1px] left-[3px]'></div>
+                          <div className='absolute bottom-[1px] left-[3px] border-[3px] border-t-transparent border-l-transparent border-r-white border-b-white dark:border-r-zinc-900 dark:border-b-zinc-900'></div>
                         )}
                       </div>
                       <div
-                        className={`rounded-md max-w-[80%] px-2 py-1 border border-main-accent ${
+                        className={`max-w-[80%] rounded-md border border-main-accent px-2 py-1 ${
                           message.userId === user?.id
-                            ? 'bg-main-accent text-white rounded-br-none '
-                            : 'text-main-accent  rounded-bl-none '
+                            ? 'rounded-br-none bg-main-accent text-white '
+                            : 'rounded-bl-none  text-main-accent '
                         }
                       `}
                       >
@@ -158,13 +161,15 @@ export default function MessagePage(): JSX.Element {
               </div>
             </div>
 
-
-            <form className='bg-red flex w-full gap-3 p-3' onSubmit={handleSendMessage}>
+            <form
+              className='bg-red flex w-full gap-3 p-3'
+              onSubmit={handleSendMessage}
+            >
               <input
                 className='
-                  bg-transparent outline-none placeholder:text-light-secondary dark:placeholder:text-dark-secondary
-                  rounded-full shadow-full bg-white px-4 py-3 transition focus-within:bg-main-background focus-within:ring-2
-                  focus-within:ring-main-accent border border-gray-200 dark:bg-zinc-900 dark:border-main-background w-full h-12
+                  shadow-full h-12 w-full rounded-full
+                  border border-gray-200 bg-transparent bg-white px-4 py-3 outline-none transition
+                  placeholder:text-light-secondary focus-within:bg-main-background focus-within:ring-2 focus-within:ring-main-accent dark:border-main-background dark:bg-zinc-900 dark:placeholder:text-dark-secondary
                 '
                 placeholder='Send a message'
                 onChange={(e): void => setInputValue(e.target.value)}
@@ -173,7 +178,7 @@ export default function MessagePage(): JSX.Element {
 
               <Button
                 type='submit'
-                className='bg-main-accent flex justify-center place-items-center w-12 h-12 text-lg font-bold
+                className='flex h-12 w-12 place-items-center justify-center bg-main-accent text-lg font-bold
                         text-white outline-none transition hover:brightness-90 active:brightness-75'
               >
                 <BiNavigation className='text-white' />

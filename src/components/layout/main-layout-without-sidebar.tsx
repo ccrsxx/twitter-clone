@@ -5,7 +5,7 @@ import { WindowContextProvider, useWindow } from '@lib/context/window-context';
 import { Sidebar } from '@components/sidebar/sidebar';
 import type { DefaultToastOptions } from 'react-hot-toast';
 import type { LayoutProps } from './common-layout';
- 
+
 const toastOptions: DefaultToastOptions = {
   style: {
     color: 'white',
@@ -18,17 +18,16 @@ const toastOptions: DefaultToastOptions = {
 const IndexedLayout = (): JSX.Element => {
   const { isMobile } = useWindow();
 
-  if(!isMobile) return <Sidebar />;
-  
-  return (
-    <></>
-  );
+  if (!isMobile) return <Sidebar />;
+
+  return <></>;
 };
 
-export function MainLayoutWithoutSidebar({ children }: LayoutProps): JSX.Element {
-
+export function MainLayoutWithoutSidebar({
+  children
+}: LayoutProps): JSX.Element {
   return (
-    <div className='flex w-full bg-gray-100 dark:bg-main-background justify-center gap-0 lg:gap-4'>
+    <div className='flex w-full justify-center gap-0 bg-gray-100 dark:bg-main-background lg:gap-4'>
       <WindowContextProvider>
         <IndexedLayout />
         <SWRConfig value={{ fetcher: fetchJSON }}>{children}</SWRConfig>

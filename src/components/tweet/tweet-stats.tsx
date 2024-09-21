@@ -135,9 +135,9 @@ export function TweetStats({
           iconName='HeartIcon'
           viewTweet={viewTweet}
           onClick={manageLike(tweetIsLiked ? 'unlike' : 'like', userId, {
-                      id: tweetId,
-                      createdBy: tweetCreatedBy
-                    } as Tweet)}
+            id: tweetId,
+            createdBy: tweetCreatedBy
+          } as Tweet)}
         />
         <TweetShare userId={userId} tweetId={tweetId} viewTweet={viewTweet} />
         {isOwner && (

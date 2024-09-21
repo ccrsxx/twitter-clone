@@ -164,7 +164,7 @@ export default function MessagePage(): JSX.Element {
             </div>
 
             <form
-              className='bg-red flex w-full gap-3 p-3'
+              className='bg-red flex w-full gap-2 p-3'
               onSubmit={handleSendMessage}
             >
               <input

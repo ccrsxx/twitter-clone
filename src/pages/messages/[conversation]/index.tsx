@@ -82,6 +82,8 @@ export default function MessagePage(): JSX.Element {
   const handleSendMessage = async (event: React.FormEvent): Promise<void> => {
     event.preventDefault();
 
+    if (!inputValue) return;
+
     setInputValue('');
 
     await addDoc(messagesCollection, {

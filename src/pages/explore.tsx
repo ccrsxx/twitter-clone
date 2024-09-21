@@ -6,6 +6,7 @@ import {
   endAt,
   limit
 } from 'firebase/firestore';
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState, type ReactElement, type ReactNode } from 'react';
 import { useCollection } from '@lib/hooks/useCollection';
 import { usersCollection } from '@lib/firebase/collections';
@@ -39,11 +40,15 @@ const UsersList: React.FC<{ users: User[] }> = ({ users }) => {
 };
 
 export default function SearchPage(): JSX.Element {
-  const [input, setInput] = useState('');
+  const searchParams = useSearchParams();
+  const searchQuery = searchParams.get('q');
+
+  const [input, setInput] = useState(searchQuery ?? '');
 
   const [dataUsers, setDataUsers] = useState<User[]>([]);
 
   const { user } = useAuth();
+
   const debouncedInput = useDebounce(input, 500);
 
   const { data: usersData, loading } = useCollection(

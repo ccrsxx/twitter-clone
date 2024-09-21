@@ -170,7 +170,7 @@ export default function MessagePage(): JSX.Element {
               <input
                 className='
                   shadow-full h-12 w-full rounded-full
-                  border border-gray-200 bg-transparent bg-white px-4 py-3 outline-none transition
+                  border border-gray-200 bg-transparent bg-white px-3 py-3 outline-none transition
                   placeholder:text-light-secondary focus-within:bg-main-background focus-within:ring-2 focus-within:ring-main-accent dark:border-main-background dark:bg-zinc-900 dark:placeholder:text-dark-secondary
                 '
                 placeholder='Send a message'

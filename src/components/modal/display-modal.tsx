@@ -30,7 +30,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
       <div className='flex flex-col gap-3 text-center'>
         <h2 className='text-2xl font-bold'>Customize your view</h2>
         <p className='text-light-secondary dark:text-dark-secondary'>
-          These settings affect all the Twitter accounts on this browser.
+          These settings affect all the VOX accounts on this browser.
         </p>
       </div>
       <article
@@ -38,12 +38,12 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
                    border-light-border px-4 py-3 dark:border-dark-border'
       >
         <div className='grid grid-cols-[auto,1fr] gap-3'>
-          <UserAvatar src='/assets/twitter-avatar.jpg' alt='Twitter' />
+          <UserAvatar src='/assets/v-avatar.png' alt='V' />
           <div>
             <div className='flex gap-1'>
               <UserName verified name='Twitter' />
               <p className='text-light-secondary dark:text-dark-secondary'>
-                @twitter
+                @vox
               </p>
               <div className='flex gap-1 text-light-secondary dark:text-dark-secondary'>
                 <i>·</i>

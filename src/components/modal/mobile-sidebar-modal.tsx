@@ -136,20 +136,20 @@ export function MobileSidebarModal({
         action={closeModal}
       />
       <section className='mt-0.5 flex flex-col gap-2 px-4'>
-        <Link href={userLink}>
-          <a className='blur-picture relative h-20 rounded-md'>
-            {coverPhotoURL ? (
-              <NextImage
-                useSkeleton
-                imgClassName='rounded-md'
-                src={coverPhotoURL}
-                alt={name}
-                layout='fill'
-              />
-            ) : (
-              <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
-            )}
-          </a>
+        <Link href={userLink} className='blur-picture relative h-20 rounded-md'>
+
+          {coverPhotoURL ? (
+            <NextImage
+              useSkeleton
+              imgClassName='rounded-md'
+              src={coverPhotoURL}
+              alt={name}
+              layout='fill'
+            />
+          ) : (
+            <div className='h-full rounded-md bg-light-line-reply dark:bg-dark-line-reply' />
+          )}
+
         </Link>
         <div className='mb-8 ml-2 -mt-4'>
           <UserAvatar
@@ -174,17 +174,18 @@ export function MobileSidebarModal({
           </div>
           <div className='text-secondary flex gap-4'>
             {allStats.map(([id, label, stat]) => (
-              <Link href={`${userLink}/${id}`} key={id}>
-                <a
-                  className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
-                             outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
-                             dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'
-                >
-                  <p className='font-bold'>{stat}</p>
-                  <p className='text-light-secondary dark:text-dark-secondary'>
-                    {label}
-                  </p>
-                </a>
+              <Link
+                href={`${userLink}/${id}`}
+                key={id}
+                className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
+                           outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
+                           dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'>
+
+                <p className='font-bold'>{stat}</p>
+                <p className='text-light-secondary dark:text-dark-secondary'>
+                  {label}
+                </p>
+
               </Link>
             ))}
           </div>

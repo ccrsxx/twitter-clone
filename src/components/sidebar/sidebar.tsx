@@ -25,38 +25,38 @@ const navLinks: Readonly<NavLink[]> = [
     linkName: 'Home',
     iconName: 'HomeIcon'
   },
-  {
-    href: '/explore',
-    linkName: 'Explore',
-    iconName: 'HashtagIcon',
-    disabled: true,
-    canBeHidden: true
-  },
-  {
-    href: '/notifications',
-    linkName: 'Notifications',
-    iconName: 'BellIcon',
-    disabled: true
-  },
-  {
-    href: '/messages',
-    linkName: 'Messages',
-    iconName: 'EnvelopeIcon',
-    disabled: true
-  },
+  // {
+  //   href: '/explore',
+  //   linkName: 'Explore',
+  //   iconName: 'HashtagIcon',
+  //   disabled: true,
+  //   canBeHidden: true
+  // },
+  // {
+  //   href: '/notifications',
+  //   linkName: 'Notifications',
+  //   iconName: 'BellIcon',
+  //   disabled: true
+  // },
+  // {
+  //   href: '/messages',
+  //   linkName: 'Messages',
+  //   iconName: 'EnvelopeIcon',
+  //   disabled: true
+  // },
   {
     href: '/bookmarks',
     linkName: 'Bookmarks',
     iconName: 'BookmarkIcon',
     canBeHidden: true
   },
-  {
-    href: '/lists',
-    linkName: 'Lists',
-    iconName: 'Bars3BottomLeftIcon',
-    disabled: true,
-    canBeHidden: true
-  }
+  // {
+  //   href: '/lists',
+  //   linkName: 'Lists',
+  //   iconName: 'Bars3BottomLeftIcon',
+  //   disabled: true,
+  //   canBeHidden: true
+  // }
 ];
 
 export function Sidebar(): JSX.Element {
@@ -88,14 +88,14 @@ export function Sidebar(): JSX.Element {
       >
         <section className='flex flex-col justify-center gap-2 xs:items-center xl:items-stretch'>
           <h1 className='hidden xs:flex'>
-            <Link href='/home'>
-              <a
-                className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
-                           focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
-                           dark:text-twitter-icon dark:hover:bg-dark-primary/10'
-              >
-                <CustomIcon className='h-7 w-7' iconName='TwitterIcon' />
-              </a>
+            <Link
+              href='/home'
+              className='custom-button main-tab text-accent-blue transition hover:bg-light-primary/10 
+                         focus-visible:bg-accent-blue/10 focus-visible:!ring-accent-blue/80
+                         dark:text-twitter-icon dark:hover:bg-dark-primary/10'>
+
+              <img src='/assets/v-avatar.png' alt='V' className='h-7 w-7' />
+
             </Link>
           </h1>
           <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>
@@ -120,7 +120,7 @@ export function Sidebar(): JSX.Element {
               className='block h-6 w-6 xl:hidden'
               iconName='FeatherIcon'
             />
-            <p className='hidden xl:block'>Tweet</p>
+            <p className='hidden xl:block'>Post</p>
           </Button>
         </section>
         {!isMobile && <SidebarProfile />}

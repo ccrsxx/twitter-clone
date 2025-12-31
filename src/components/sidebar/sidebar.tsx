@@ -26,23 +26,20 @@ const navLinks: Readonly<NavLink[]> = [
     iconName: 'HomeIcon'
   },
   {
-    href: '/explore',
-    linkName: 'Explore',
+    href: '/topics',
+    linkName: 'Topics',
     iconName: 'HashtagIcon',
-    disabled: true,
     canBeHidden: true
   },
   {
     href: '/notifications',
     linkName: 'Notifications',
-    iconName: 'BellIcon',
-    disabled: true
+    iconName: 'BellIcon'
   },
   {
     href: '/messages',
     linkName: 'Messages',
-    iconName: 'EnvelopeIcon',
-    disabled: true
+    iconName: 'EnvelopeIcon'
   },
   {
     href: '/bookmarks',
@@ -54,18 +51,27 @@ const navLinks: Readonly<NavLink[]> = [
     href: '/lists',
     linkName: 'Lists',
     iconName: 'Bars3BottomLeftIcon',
-    disabled: true,
+    canBeHidden: true
+  },
+  {
+    href: '/admin',
+    linkName: 'Admin',
+    iconName: 'ShieldCheckIcon',
     canBeHidden: true
   }
 ];
 
 export function Sidebar(): JSX.Element {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const { isMobile } = useWindow();
 
   const { open, openModal, closeModal } = useModal();
 
   const username = user?.username as string;
+
+  const adminNavLink = navLinks.filter(({ linkName }) =>
+    isAdmin ? true : linkName !== 'Admin'
+  );
 
   return (
     <header
@@ -99,7 +105,7 @@ export function Sidebar(): JSX.Element {
             </Link>
           </h1>
           <nav className='flex items-center justify-around xs:flex-col xs:justify-center xl:block'>
-            {navLinks.map(({ ...linkData }) => (
+            {adminNavLink.map(({ ...linkData }) => (
               <SidebarLink {...linkData} key={linkData.href} />
             ))}
             <SidebarLink

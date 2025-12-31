@@ -83,7 +83,7 @@ export function AuthContextProvider({
           accent: null,
           website: null,
           location: null,
-          photoURL: photoURL ?? '/assets/twitter-avatar.jpg',
+          photoURL: photoURL ?? '/assets/twitblox-avatar.jpg',
           username: randomUsername,
           verified: false,
           following: [],
@@ -175,7 +175,7 @@ export function AuthContextProvider({
     }
   };
 
-  const isAdmin = user ? user.username === 'ccrsxx' : false;
+  const isAdmin = user ? user.username === 'twitblox' : false;
   const randomSeed = useMemo(getRandomId, [user?.id]);
 
   const value: AuthContext = {

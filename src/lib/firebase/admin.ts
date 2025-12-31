@@ -1,5 +1,5 @@
 import admin from 'firebase-admin';
-import { env } from '@/lib/env';
+import { env } from '@lib/env';
 
 const serviceAccount: admin.ServiceAccount = {
   projectId: env.FIREBASE_PROJECT_ID,

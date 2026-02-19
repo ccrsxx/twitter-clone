@@ -6,7 +6,7 @@
   Twitter clone built in Next.js + TypeScript + Tailwind CSS using Cloud Firestore and Storage
 </p>
 
-## ⚠️ Project Archived
+## Notice ⚠️
 
 Please note that this repository is now archived. This project was built as an incredible learning frontend experience, but my focus has since shifted to other work and newer projects.
 

@@ -8,7 +8,8 @@
 
 ## ⚠️ Project Archived
 
-Please note that this repository is now archived. This project was built as an incredible learning frontend experience, but my focus has since shifted to other work and newer projects. 
+Please note that this repository is now archived. This project was built as an incredible learning frontend experience, but my focus has since shifted to other work and newer projects.
+
 The live site will remain available for an undisclosed amount of time, provided it does not exceed the free usage tier on GCP/Firebase. Thank you to everyone who checked it out!
 
 ## Preview 🎬

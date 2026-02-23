@@ -44,7 +44,7 @@ const options: Readonly<Options> = [
   {
     name: 'Location',
     iconName: 'MapPinIcon',
-    disabled: true
+    disabled: false
   }
 ];
 
@@ -58,6 +58,7 @@ type InputOptionsProps = {
   handleImageUpload: (
     e: ChangeEvent<HTMLInputElement> | ClipboardEvent<HTMLTextAreaElement>
   ) => void;
+  onToggleShowLocation: () => void;
 };
 
 export function InputOptions({
@@ -67,11 +68,18 @@ export function InputOptions({
   inputLength,
   isValidTweet,
   isCharLimitExceeded,
-  handleImageUpload
+  handleImageUpload,
+  onToggleShowLocation
 }: InputOptionsProps): JSX.Element {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
-  const onClick = (): void => inputFileRef.current?.click();
+  const handleOnClick = (optionName: string) => () => {
+    if (optionName === 'Media') {
+      inputFileRef.current?.click();
+    } else if (optionName === 'Location') {
+      onToggleShowLocation();
+    }
+  };
 
   let filteredOptions = options;
 
@@ -83,8 +91,8 @@ export function InputOptions({
   return (
     <motion.div className='flex justify-between' {...variants}>
       <div
-        className='flex text-main-accent xs:[&>button:nth-child(n+6)]:hidden 
-                   md:[&>button]:!block [&>button:nth-child(n+4)]:hidden'
+        className='flex text-main-accent [&>button:nth-child(n+3):not(:nth-child(n+7))]:hidden 
+                   xs:[&>button:nth-child(n+3):not(:nth-child(n+7))]:hidden md:[&>button]:!block'
       >
         <input
           className='hidden'
@@ -98,7 +106,7 @@ export function InputOptions({
           <Button
             className='accent-tab accent-bg-tab group relative rounded-full p-2 
                        hover:bg-main-accent/10 active:bg-main-accent/20'
-            onClick={index === 0 ? onClick : undefined}
+            onClick={handleOnClick(name)}
             disabled={disabled}
             key={name}
           >

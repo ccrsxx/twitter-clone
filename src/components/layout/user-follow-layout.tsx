@@ -16,9 +16,9 @@ export function UserFollowLayout({ children }: LayoutProps): JSX.Element {
             <Loading className='mt-5 w-full' />
           ) : (
             <div className='w-full p-8 text-center'>
-              <p className='text-3xl font-bold'>This account doesn’t exist</p>
+              <p className='text-3xl font-bold'>Esta conta não existe</p>
               <p className='text-light-secondary dark:text-dark-secondary'>
-                Try searching for another.
+                Tente procurar outro.
               </p>
             </div>
           )}

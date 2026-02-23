@@ -17,7 +17,7 @@ export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
 
   return (
     <Link href={userPath} scroll={false}>
-      <a
+      <span
         className='hover-animation main-tab dark-bg-tab flex flex-1 justify-center
                    hover:bg-light-primary/10 dark:hover:bg-dark-primary/10'
       >
@@ -34,7 +34,7 @@ export function UserNavLink({ name, path }: UserNavLinkProps): JSX.Element {
             <i className='h-1 scale-50 rounded-full bg-main-accent opacity-0 transition duration-200' />
           </p>
         </div>
-      </a>
+      </span>
     </Link>
   );
 }

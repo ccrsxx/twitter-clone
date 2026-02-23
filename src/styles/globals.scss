@@ -39,17 +39,23 @@
   }
 
   body {
-    @apply hover-animation bg-main-background font-twitter-chirp text-light-primary dark:text-dark-primary;
+    @apply hover-animation bg-gray-100 dark:bg-main-background font-twitter-chirp text-light-primary dark:text-dark-primary;
   }
 }
 
 @layer components {
+  .tweet-parent-list {
+    & > :not(:first-child) .accent-tab {
+      @apply border-t-0 rounded-t-none rounded-b-md; /* ou qualquer estilo de borda que queira aplicar */
+    }
+  }
+
   .hover-animation {
     @apply transition-colors duration-200;
   }
 
   .custom-button {
-    @apply hover-animation rounded-full p-3 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply hover-animation rounded-md p-3 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .custom-underline {

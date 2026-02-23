@@ -60,7 +60,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
   useEffect(() => cleanImage, []);
 
   const inputNameError = !editUserData.name?.trim()
-    ? "Name can't be blank"
+    ? 'O nome não pode ficar em branco'
     : '';
 
   const updateData = async (): Promise<void> => {
@@ -111,7 +111,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
     setLoading(false);
     setEditUserData(newUserData);
 
-    toast.success('Profile updated successfully');
+    toast.success('Perfil atualizado com sucesso');
   };
 
   const editImage =
@@ -120,7 +120,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
       const imagesData = getImagesData(files);
 
       if (!imagesData) {
-        toast.error('Please choose a valid GIF or Photo');
+        toast.error('Escolha um GIF ou foto válido');
         return;
       }
 
@@ -200,7 +200,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
 
   const inputFields: Readonly<RequiredInputFieldProps[]> = [
     {
-      label: 'Name',
+      label: 'Nome',
       inputId: 'name',
       inputValue: editUserData.name,
       inputLimit: 50,
@@ -214,13 +214,13 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
       useTextArea: true
     },
     {
-      label: 'Location',
+      label: 'Localização',
       inputId: 'location',
       inputValue: editUserData.location,
       inputLimit: 30
     },
     {
-      label: 'Website',
+      label: 'Site web',
       inputId: 'website',
       inputValue: editUserData.website,
       inputLimit: 100
@@ -262,7 +262,7 @@ export function UserEditProfile({ hide }: UserEditProfileProps): JSX.Element {
                    dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
         onClick={openModal}
       >
-        Edit profile
+        Editar perfil
       </Button>
     </form>
   );

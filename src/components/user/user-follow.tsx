@@ -18,7 +18,7 @@ export function UserFollow({ type }: UserFollowProps): JSX.Element {
     query(
       usersCollection,
       where(
-        type === 'following' ? 'followers' : 'following',
+        type === 'following' ? 'seguidores' : 'seguindo',
         'array-contains',
         user?.id
       )
@@ -30,8 +30,8 @@ export function UserFollow({ type }: UserFollowProps): JSX.Element {
     <>
       <SEO
         title={`People ${
-          type === 'following' ? 'followed by' : 'following'
-        } ${name} (@${username}) / Twitter`}
+          type === 'following' ? 'seguido pela' : 'seguindo'
+        } ${name} (@${username}) / Fofoca.me`}
       />
       <UserCards follow data={data} type={type} loading={loading} />
     </>

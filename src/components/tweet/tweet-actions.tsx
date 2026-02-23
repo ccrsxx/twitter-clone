@@ -51,16 +51,16 @@ type PinModalData = Record<'title' | 'description' | 'mainBtnLabel', string>;
 
 const pinModalData: Readonly<PinModalData[]> = [
   {
-    title: 'Pin Tweet to from profile?',
+    title: 'Fixar tweet no perfil?',
     description:
-      'This will appear at the top of your profile and replace any previously pinned Tweet.',
-    mainBtnLabel: 'Pin'
+      'Isso aparecerá no topo do seu perfil e substituirá qualquer tweet fixado anteriormente.',
+    mainBtnLabel: 'Fixar'
   },
   {
-    title: 'Unpin Tweet from profile?',
+    title: 'Desafixar tweet do perfil?',
     description:
-      'This will no longer appear automatically at the top of your profile.',
-    mainBtnLabel: 'Unpin'
+      'Isso não aparecerá mais automaticamente no topo do seu perfil.',
+    mainBtnLabel: 'Desafixar'
   }
 ];
 
@@ -113,7 +113,7 @@ export function TweetActions({
     ]);
 
     toast.success(
-      `${isInAdminControl ? `@${username}'s` : 'Your'} Tweet was deleted`
+      `${isInAdminControl ? `@${username}'s` : 'Seu'} Tweet foi excluído`
     );
 
     removeCloseModal();
@@ -122,7 +122,9 @@ export function TweetActions({
   const handlePin = async (): Promise<void> => {
     await managePinnedTweet(tweetIsPinned ? 'unpin' : 'pin', userId, tweetId);
     toast.success(
-      `Your tweet was ${tweetIsPinned ? 'unpinned' : 'pinned'} to your profile`
+      `Sua fofoca foi ${
+        tweetIsPinned ? 'desafixada' : 'fizada'
+      } para o seu perfil`
     );
     pinCloseModal();
   };
@@ -136,7 +138,9 @@ export function TweetActions({
       await manageFollow(...args);
 
       toast.success(
-        `You ${type === 'follow' ? 'followed' : 'unfollowed'} @${username}`
+        `Você ${
+          type === 'follow' ? 'seguido' : 'deixar de seguir'
+        } @${username}`
       );
     };
 
@@ -222,7 +226,7 @@ export function TweetActions({
                       onClick={preventBubbling(removeOpenModal)}
                     >
                       <HeroIcon iconName='TrashIcon' />
-                      Delete
+                      Deletar
                     </Popover.Button>
                   )}
                   {isOwner ? (
@@ -234,12 +238,12 @@ export function TweetActions({
                       {tweetIsPinned ? (
                         <>
                           <CustomIcon iconName='PinOffIcon' />
-                          Unpin from profile
+                          Desafixar do perfil
                         </>
                       ) : (
                         <>
                           <CustomIcon iconName='PinIcon' />
-                          Pin to your profile
+                          Fixe no seu perfil
                         </>
                       )}
                     </Popover.Button>
@@ -252,7 +256,7 @@ export function TweetActions({
                       )}
                     >
                       <HeroIcon iconName='UserMinusIcon' />
-                      Unfollow @{username}
+                      Deixar de seguir @{username}
                     </Popover.Button>
                   ) : (
                     <Popover.Button
@@ -263,7 +267,7 @@ export function TweetActions({
                       )}
                     >
                       <HeroIcon iconName='UserPlusIcon' />
-                      Follow @{username}
+                      Seguir @{username}
                     </Popover.Button>
                   )}
                 </Popover.Panel>

@@ -50,8 +50,8 @@ export function UserTooltip({
   const userLink = `/user/${username}`;
 
   const allStats: Readonly<Stats[]> = [
-    ['following', 'Following', following.length],
-    ['followers', 'Followers', followers.length]
+    ['following', 'Seguindo', following.length],
+    ['followers', 'Seguidores', followers.length]
   ];
 
   return (
@@ -72,7 +72,7 @@ export function UserTooltip({
             <div className='-mx-4 -mt-4'>
               {coverPhotoURL ? (
                 <Link href={userLink}>
-                  <a className='blur-picture'>
+                  <span className='blur-picture'>
                     <NextImage
                       useSkeleton
                       className='relative h-24'
@@ -81,7 +81,7 @@ export function UserTooltip({
                       alt={name}
                       layout='fill'
                     />
-                  </a>
+                  </span>
                 </Link>
               ) : (
                 <div className='h-16 rounded-t-2xl bg-light-line-reply dark:bg-dark-line-reply' />
@@ -118,7 +118,7 @@ export function UserTooltip({
           <div className='text-secondary flex gap-4'>
             {allStats.map(([id, label, stat]) => (
               <Link href={`${userLink}/${id}`} key={id}>
-                <a
+                <span
                   className='hover-animation flex h-4 items-center gap-1 border-b border-b-transparent 
                              outline-none hover:border-b-light-primary focus-visible:border-b-light-primary
                              dark:hover:border-b-dark-primary dark:focus-visible:border-b-dark-primary'
@@ -127,7 +127,7 @@ export function UserTooltip({
                   <p className='text-light-secondary dark:text-dark-secondary'>
                     {label}
                   </p>
-                </a>
+                </span>
               </Link>
             ))}
           </div>

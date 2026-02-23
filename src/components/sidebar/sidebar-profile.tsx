@@ -30,9 +30,9 @@ export function SidebarProfile(): JSX.Element {
         <ActionModal
           useIcon
           focusOnMainBtn
-          title='Log out of Twitter?'
-          description='You can always log back in at any time. If you just want to switch accounts, you can do that by adding an existing account.'
-          mainBtnLabel='Log out'
+          title='Sair do Fofoca.me?'
+          description='Você sempre pode fazer login novamente a qualquer momento. Se quiser apenas trocar de conta, você pode fazer isso adicionando uma conta existente.'
+          mainBtnLabel='Sair'
           action={signOut}
           closeModal={closeModal}
         />
@@ -98,7 +98,7 @@ export function SidebarProfile(): JSX.Element {
                         onClick={openModal}
                       >
                         <HeroIcon iconName='ArrowRightOnRectangleIcon' />
-                        Log out @{username}
+                        Sair @{username}
                       </Button>
                     )}
                   </Menu.Item>

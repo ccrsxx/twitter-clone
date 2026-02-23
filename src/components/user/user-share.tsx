@@ -17,7 +17,7 @@ export function UserShare({ username }: UserShareProps): JSX.Element {
   const handleCopy = (closeMenu: () => void) => async (): Promise<void> => {
     closeMenu();
     await navigator.clipboard.writeText(`${siteURL}/user/${username}`);
-    toast.success('Copied to clipboard');
+    toast.success('Copiado para a área de transferência');
   };
 
   return (
@@ -51,7 +51,7 @@ export function UserShare({ username }: UserShareProps): JSX.Element {
                   onClick={preventBubbling(handleCopy(close))}
                 >
                   <HeroIcon iconName='LinkIcon' />
-                  Copy link to Profile
+                  Copiar link para perfil
                 </Popover.Button>
               </Popover.Panel>
             )}

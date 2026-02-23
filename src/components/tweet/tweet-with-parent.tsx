@@ -26,7 +26,7 @@ export function TweetWithParent({ data }: TweetWithParentProps): JSX.Element {
   return (
     <>
       {filteredData.map((tweet) => (
-        <div className='[&>article:nth-child(2)]:-mt-1' key={tweet.id}>
+        <div className='[&>article:nth-child(2)]:-mt-1 tweet-parent-list' key={tweet.id}>
           {tweet.parent && (
             <TweetParent
               parentId={tweet.parent.id}

@@ -73,6 +73,7 @@ export function InputForm({
 
   useEffect(() => handleShowHideNav(true), []);
 
+
   const handleKeyboardShortcut = ({
     key,
     ctrlKey
@@ -135,7 +136,7 @@ export function InputForm({
                        hover:bg-main-accent/10 active:bg-main-accent/20 dark:border-light-secondary'
             {...fromTop}
           >
-            <p className='font-bold'>Everyone</p>
+            <p className='font-bold'>Todos</p>
             <HeroIcon className='h-4 w-4' iconName='ChevronDownIcon' />
           </motion.button>
         )}
@@ -146,7 +147,7 @@ export function InputForm({
                        placeholder:text-light-secondary dark:placeholder:text-dark-secondary'
             value={inputValue}
             placeholder={
-              reply || replyModal ? 'Tweet your reply' : "What's happening?"
+              reply || replyModal ? 'Fofoque sua resposta' : 'Fofoca? Rasga!'
             }
             onBlur={handleShowHideNav(true)}
             minRows={loading ? 1 : modal && !isUploadingImages ? 3 : 1}
@@ -162,7 +163,7 @@ export function InputForm({
               className='cursor-pointer bg-main-accent px-4 py-1.5 font-bold text-white opacity-50'
               onClick={handleFocus}
             >
-              Reply
+              Responder
             </Button>
           )}
         </div>
@@ -179,7 +180,7 @@ export function InputForm({
                        px-3 text-main-accent hover:bg-main-accent/10 active:bg-main-accent/20'
           >
             <HeroIcon className='h-4 w-4' iconName='GlobeAmericasIcon' />
-            <p className='font-bold'>Everyone can reply</p>
+            <p className='font-bold'>Todos podem responder</p>
           </button>
         </motion.div>
       )}

@@ -59,7 +59,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
     <motion.article
       className={cn(
         `accent-tab h- relative flex cursor-default flex-col gap-3 border-b
-         border-light-border px-4 py-3 outline-none dark:border-dark-border`,
+         border-light-border mb-4 px-4 py-3 outline-none bg-white dark:bg-zinc-900 dark:border-main-background rounded-b-md shadow-md`,
         reply && 'scroll-m-[3.25rem] pt-0'
       )}
       {...variants}
@@ -75,7 +75,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       >
         <TweetReplyModal tweet={tweet} closeModal={closeModal} />
       </Modal>
-      <div className='flex flex-col gap-2'>
+      <div className='flex flex-col gap-2 '>
         {reply && (
           <div className='flex w-12 items-center justify-center'>
             <i className='hover-animation h-2 w-0.5 bg-light-line-reply dark:bg-dark-line-reply' />
@@ -116,11 +116,11 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
       </div>
       {reply && (
         <p className='text-light-secondary dark:text-dark-secondary'>
-          Replying to{' '}
+          Respondendo a{' '}
           <Link href={`/user/${parentUsername}`}>
-            <a className='custom-underline text-main-accent'>
+            <span className='custom-underline text-main-accent'>
               @{parentUsername}
-            </a>
+            </span>
           </Link>
         </p>
       )}
@@ -146,6 +146,7 @@ export function ViewTweet(tweet: ViewTweetProps): JSX.Element {
             userId={userId}
             isOwner={isOwner}
             tweetId={tweetId}
+            tweetCreatedBy={createdBy}
             userLikes={userLikes}
             userRetweets={userRetweets}
             userReplies={userReplies}

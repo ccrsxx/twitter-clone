@@ -1,7 +1,9 @@
 import '@styles/globals.scss';
 
+import { GoogleTagManager } from '@next/third-parties/google';
 import { AuthContextProvider } from '@lib/context/auth-context';
 import { ThemeContextProvider } from '@lib/context/theme-context';
+import { SocketContextProvider } from '@lib/context/web-socket-context';
 import { AppHead } from '@components/common/app-head';
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
@@ -25,9 +27,16 @@ export default function App({
     <>
       <AppHead />
       <AuthContextProvider>
-        <ThemeContextProvider>
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeContextProvider>
+        <SocketContextProvider>
+          <ThemeContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+            {process.env.NEXT_PUBLIC_GTM_CONTAINER_ID && (
+              <GoogleTagManager
+                gtmId={process.env.NEXT_PUBLIC_GTM_CONTAINER_ID}
+              />
+            )}
+          </ThemeContextProvider>
+        </SocketContextProvider>
       </AuthContextProvider>
     </>
   );

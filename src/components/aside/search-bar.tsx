@@ -34,13 +34,13 @@ export function SearchBar(): JSX.Element {
 
   return (
     <form
-      className='hover-animation sticky top-0 z-10 -my-2 bg-main-background py-2'
+      className='hover-animation sticky top-0 z-10 -my-2 py-2'
       onSubmit={handleSubmit}
     >
       <label
-        className='group flex items-center justify-between gap-4 rounded-full
-                   bg-main-search-background px-4 py-2 transition focus-within:bg-main-background
-                   focus-within:ring-2 focus-within:ring-main-accent'
+        className='group flex items-center justify-between gap-4 rounded-md shadow-md
+                   bg-white px-4 py-2 transition focus-within:bg-main-background
+                   focus-within:ring-2 focus-within:ring-main-accent border border-gray-200 dark:bg-zinc-900 dark:border-main-background'
       >
         <i>
           <HeroIcon
@@ -53,7 +53,7 @@ export function SearchBar(): JSX.Element {
           className='peer flex-1 bg-transparent outline-none 
                      placeholder:text-light-secondary dark:placeholder:text-dark-secondary'
           type='text'
-          placeholder='Search Twitter'
+          placeholder='Pesquise no Fofoca'
           ref={inputRef}
           value={inputValue}
           onChange={handleChange}

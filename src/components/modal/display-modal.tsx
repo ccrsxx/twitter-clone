@@ -10,27 +10,20 @@ type DisplayModalProps = {
 };
 
 const themes: Readonly<[Theme, string][]> = [
-  ['light', 'Default'],
-  ['dim', 'Dim'],
-  ['dark', 'Lights out']
+  ['light', 'Astigmatismo'],
+  ['dim', 'Cineminha'],
+  ['dark', 'Apagão']
 ];
 
-const accentsColor: Readonly<Accent[]> = [
-  'blue',
-  'yellow',
-  'pink',
-  'purple',
-  'orange',
-  'green'
-];
+const accentsColor: Readonly<Accent[]> = ['pink', 'green', 'orange'];
 
 export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
   return (
     <div className='flex flex-col items-center gap-6'>
       <div className='flex flex-col gap-3 text-center'>
-        <h2 className='text-2xl font-bold'>Customize your view</h2>
+        <h2 className='text-2xl font-bold'>Personalize sua visualização</h2>
         <p className='text-light-secondary dark:text-dark-secondary'>
-          These settings affect all the Twitter accounts on this browser.
+          Essas configurações afetam todas as contas do Fofoca neste navegador.
         </p>
       </div>
       <article
@@ -41,9 +34,9 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
           <UserAvatar src='/assets/twitter-avatar.jpg' alt='Twitter' />
           <div>
             <div className='flex gap-1'>
-              <UserName verified name='Twitter' />
+              <UserName verified name='Fofoca.me' />
               <p className='text-light-secondary dark:text-dark-secondary'>
-                @twitter
+                @fofoca
               </p>
               <div className='flex gap-1 text-light-secondary dark:text-dark-secondary'>
                 <i>·</i>
@@ -51,17 +44,17 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
               </div>
             </div>
             <p className='whitespace-pre-line break-words'>
-              At the heart of Twitter are short messages called Tweets — just
-              like this one — which can include photos, videos, links, text,
-              hashtags, and mentions like{' '}
-              <span className='text-main-accent'>@twitter</span>.
+              No coração do Fofoca.me estão mensagens curtas chamadas fofocas –
+              apenas como este - que pode incluir fotos, vídeos, links, texto,
+              hashtags e menções como{' '}
+              <span className='text-main-accent'>@fofoca</span>.
             </p>
           </div>
         </div>
       </article>
       <div className='flex w-full flex-col gap-1'>
         <p className='text-sm font-bold text-light-secondary dark:text-dark-secondary'>
-          Color
+          Cor
         </p>
         <div
           className='hover-animation grid grid-cols-3 grid-rows-2 justify-items-center gap-3 
@@ -74,7 +67,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
       </div>
       <div className='flex w-full flex-col gap-1'>
         <p className='text-sm font-bold text-light-secondary dark:text-dark-secondary'>
-          Background
+          Fundo
         </p>
         <div
           className='hover-animation grid grid-rows-3 gap-3 rounded-2xl bg-main-sidebar-background
@@ -90,7 +83,7 @@ export function DisplayModal({ closeModal }: DisplayModalProps): JSX.Element {
                    text-white hover:bg-main-accent/90 active:bg-main-accent/75'
         onClick={closeModal}
       >
-        Done
+        Feito
       </Button>
     </div>
   );

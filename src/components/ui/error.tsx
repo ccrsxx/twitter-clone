@@ -13,7 +13,7 @@ export function Error({ message }: ErrorProps): JSX.Element {
       <i>
         <HeroIcon className='h-10 w-10' iconName='ExclamationTriangleIcon' />
       </i>
-      <p>{message ?? 'Something went wrong. Try Loading.'}</p>
+      <p>{message ?? 'Algo deu errado. Tente carregar.'}</p>
     </div>
   );
 }

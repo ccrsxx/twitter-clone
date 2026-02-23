@@ -1,18 +1,20 @@
-import { CustomIcon } from '@components/ui/custom-icon';
+import Image from 'next/image';
 import { SEO } from './seo';
 
 export function Placeholder(): JSX.Element {
   return (
     <main className='flex min-h-screen items-center justify-center'>
       <SEO
-        title='Twitter'
-        description='From breaking news and entertainment to sports and politics, get the full story with all the live commentary.'
-        image='/home.png'
+        title='Fofoca-me'
+        description='Desde os nossos memes aos debates políticos, tudo você encontra aqui.'
+        image='/home.jpg'
       />
       <i>
-        <CustomIcon
-          className='h-20 w-20 text-[#1DA1F2]'
-          iconName='TwitterIcon'
+        <Image
+          src={'/logo512.png'}
+          alt='Logo da Fofoca-me'
+          width={144}
+          height={144}
         />
       </i>
     </main>

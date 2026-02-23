@@ -12,16 +12,21 @@ import {
   arrayUnion,
   arrayRemove,
   serverTimestamp,
-  getCountFromServer
+  getCountFromServer,
+  addDoc,
+  getDoc
 } from 'firebase/firestore';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
-import { db, storage } from './app';
 import {
   usersCollection,
   tweetsCollection,
   userStatsCollection,
-  userBookmarksCollection
+  userBookmarksCollection,
+  notificationsCollection
 } from './collections';
+import { db, storage } from './app';
+import type { Notification } from '@lib/types/notification';
+import type { Tweet } from '@lib/types/tweet';
 import type { WithFieldValue, Query } from 'firebase/firestore';
 import type { EditableUserData } from '@lib/types/user';
 import type { FilesWithId, ImagesPreview } from '@lib/types/file';
@@ -101,10 +106,20 @@ export async function manageFollow(
       following: arrayUnion(targetUserId),
       updatedAt: serverTimestamp()
     });
+
     batch.update(targetUserDocRef, {
       followers: arrayUnion(userId),
       updatedAt: serverTimestamp()
     });
+
+    await addDoc(notificationsCollection, {
+      type: 'follower',
+      userId: userId,
+      targetUserId: targetUserId,
+      createdAt: serverTimestamp(),
+      updatedAt: null,
+      isChecked: false
+    } as WithFieldValue<Omit<Notification, 'id'>>);
   } else {
     batch.update(userDocRef, {
       following: arrayRemove(targetUserId),
@@ -223,9 +238,11 @@ export function manageRetweet(
 export function manageLike(
   type: 'like' | 'unlike',
   userId: string,
-  tweetId: string
+  tweet: Tweet
 ) {
   return async (): Promise<void> => {
+    const tweetId = tweet.id;
+    const { createdBy } = tweet;
     const batch = writeBatch(db);
 
     const userStatsRef = doc(userStatsCollection(userId), 'stats');
@@ -240,6 +257,16 @@ export function manageLike(
         likes: arrayUnion(tweetId),
         updatedAt: serverTimestamp()
       });
+
+      if (createdBy !== userId)
+        await addDoc(notificationsCollection, {
+          type: 'liked',
+          userId: userId,
+          targetUserId: createdBy,
+          createdAt: serverTimestamp(),
+          updatedAt: null,
+          isChecked: false
+        } as WithFieldValue<Omit<Notification, 'id'>>);
     } else {
       batch.update(tweetRef, {
         userLikes: arrayRemove(userId),

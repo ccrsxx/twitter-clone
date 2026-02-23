@@ -53,7 +53,7 @@ export function EditProfileModal({
         iconName='XMarkIcon'
         tip='Close'
         className='absolute flex w-full items-center gap-6 rounded-tl-2xl'
-        title='Edit profile'
+        title='Editar prefil'
         action={closeModal}
       >
         <div className='ml-auto flex items-center gap-3'>
@@ -76,7 +76,7 @@ export function EditProfileModal({
             disabled={!!inputNameError}
             loading={loading}
           >
-            Save
+            Salvar
           </Button>
         </div>
       </MainHeader>
@@ -176,7 +176,7 @@ export function EditProfileModal({
                        py-2 hover:bg-light-primary/10 active:bg-light-primary/20 disabled:brightness-100
                        dark:hover:bg-dark-primary/10 dark:active:bg-dark-primary/20'
           >
-            <span className='mx-2 text-xl'>Switch to professional</span>
+            <span className='mx-2 text-xl'>Mude para profissional</span>
             <i>
               <HeroIcon
                 className='h-6 w-6 text-light-secondary dark:text-dark-secondary'

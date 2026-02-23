@@ -1,8 +1,8 @@
 const footerLinks = [
-  ['Terms of Service', 'https://twitter.com/tos'],
-  ['Privacy Policy', 'https://twitter.com/privacy'],
-  ['Cookie Policy', 'https://support.twitter.com/articles/20170514'],
-  ['Accessibility', 'https://help.twitter.com/resources/accessibility'],
+  ['Termos de Serviço', 'https://twitter.com/tos'],
+  ['Política de Privacidade', 'https://twitter.com/privacy'],
+  ['Política de Cookies', 'https://support.twitter.com/articles/20170514'],
+  ['Acessibilidade', 'https://help.twitter.com/resources/accessibility'],
   [
     'Ads Info',
     'https://business.twitter.com/en/help/troubleshooting/how-twitter-ads-work.html'
@@ -28,7 +28,7 @@ export function AsideFooter(): JSX.Element {
           </a>
         ))}
       </nav>
-      <p>© 2022 Twitter, Inc.</p>
+      <p>© 2024 Fofoca, Inc.</p>
     </footer>
   );
 }

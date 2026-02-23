@@ -52,30 +52,30 @@ export default function Bookmarks(): JSX.Element {
   const handleClear = async (): Promise<void> => {
     await clearAllBookmarks(userId);
     closeModal();
-    toast.success('Successfully cleared all bookmarks');
+    toast.success('Todos os favoritos foram limpos com sucesso');
   };
 
   return (
     <MainContainer>
-      <SEO title='Bookmarks / Twitter' />
+      <SEO title='Babados / Fofoca.me' />
       <Modal
         modalClassName='max-w-xs bg-main-background w-full p-8 rounded-2xl'
         open={open}
         closeModal={closeModal}
       >
         <ActionModal
-          title='Clear all Bookmarks?'
-          description='This can’t be undone and you’ll remove all Tweets you’ve added to your Bookmarks.'
+          title='Limpar todos os favoritos?'
+          description='Isso não pode ser desfeito e você removerá todas as Fofocas adicionadas aos seus Favoritos.'
           mainBtnClassName='bg-accent-red hover:bg-accent-red/90 active:bg-accent-red/75 accent-tab 
                             focus-visible:bg-accent-red/90'
-          mainBtnLabel='Clear'
+          mainBtnLabel='Limpar'
           action={handleClear}
           closeModal={closeModal}
         />
       </Modal>
       <MainHeader className='flex items-center justify-between'>
         <div className='-mb-1 flex flex-col'>
-          <h2 className='-mt-1 text-xl font-bold'>Bookmarks</h2>
+          <h2 className='-mt-1 text-xl font-bold'>Babado</h2>
           <p className='text-xs text-light-secondary dark:text-dark-secondary'>
             @{user?.username}
           </p>
@@ -98,8 +98,8 @@ export default function Bookmarks(): JSX.Element {
           <Loading className='mt-5' />
         ) : !bookmarksRef ? (
           <StatsEmpty
-            title='Save Tweets for later'
-            description='Don’t let the good ones fly away! Bookmark Tweets to easily find them again in the future.'
+            title='Salvar fofoquinhas para mais tarde'
+            description='Não perca os bons momentos! Salve suas Fofocas para encontrá-las facilmente no futuro.'
             imageData={{ src: '/assets/no-bookmarks.png', alt: 'No bookmarks' }}
           />
         ) : (

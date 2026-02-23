@@ -45,8 +45,8 @@ export function UserFollowStats({
   const userPath = `/user/${id as string}`;
 
   const allStats: Readonly<Stats[]> = [
-    ['Following', `${userPath}/following`, followingMove, currentFollowing],
-    ['Follower', `${userPath}/followers`, followersMove, currentFollowers]
+    ['Seguindo', `${userPath}/following`, followingMove, currentFollowing],
+    ['Seguidores', `${userPath}/followers`, followersMove, currentFollowers]
   ];
 
   return (
@@ -57,15 +57,16 @@ export function UserFollowStats({
     >
       {allStats.map(([title, link, move, stats], index) => (
         <Link href={link} key={title}>
-          <a
+          <span
             className='hover-animation mt-0.5 mb-[3px] flex h-4 items-center gap-1 border-b 
                        border-b-transparent outline-none hover:border-b-light-primary 
                        focus-visible:border-b-light-primary dark:hover:border-b-dark-primary
                        dark:focus-visible:border-b-dark-primary'
           >
             <NumberStats move={move} stats={stats} alwaysShowStats />
-            <p>{index === 1 && stats > 1 ? `${title}s` : title}</p>
-          </a>
+
+            <p>{index === 1 && stats > 1 ? `${title}` : title}</p>
+          </span>
         </Link>
       ))}
     </div>

@@ -83,7 +83,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
       }}
     >
       <Modal
-        className='flex items-start justify-center'
+        className='flex items-start justify-center  tweet-with-parent border border-blue-400'
         modalClassName='bg-main-background rounded-2xl max-w-xl w-full my-8 overflow-hidden'
         open={open}
         closeModal={closeModal}
@@ -91,13 +91,13 @@ export function Tweet(tweet: TweetProps): JSX.Element {
         <TweetReplyModal tweet={tweet} closeModal={closeModal} />
       </Modal>
       <Link href={tweetLink} scroll={!reply}>
-        <a
+        <span
           className={cn(
-            `accent-tab hover-card relative flex flex-col 
-             gap-y-4 px-4 py-3 outline-none duration-200`,
+            `accent-tab relative flex flex-col 
+            gap-y-4 px-8 py-6 outline-none duration-200 bg-white hover:shadow-md dark:bg-zinc-900 rounded-md border dark:border-main-background`,
             parentTweet
               ? 'mt-0.5 pt-2.5 pb-0'
-              : 'border-b border-light-border dark:border-dark-border'
+              : 'mb-4 '
           )}
           draggable={false}
           onClick={delayScroll(200)}
@@ -106,14 +106,14 @@ export function Tweet(tweet: TweetProps): JSX.Element {
             <AnimatePresence initial={false}>
               {modal ? null : pinned ? (
                 <TweetStatus type='pin'>
-                  <p className='text-sm font-bold'>Pinned Tweet</p>
+                  <p className='text-sm font-bold'>Fofoca fixada</p>
                 </TweetStatus>
               ) : (
                 tweetIsRetweeted && (
                   <TweetStatus type='tweet'>
-                    <Link href={profileUsername as string}>
+                    <Link href={profileUsername as string} legacyBehavior>
                       <a className='custom-underline truncate text-sm font-bold'>
-                        {userId === profileId ? 'You' : profileName} Retweeted
+                        {userId === profileId ? 'Você' : profileName} Resultado
                       </a>
                     </Link>
                   </TweetStatus>
@@ -165,11 +165,11 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                     modal && 'order-1 my-2'
                   )}
                 >
-                  Replying to{' '}
+                  Respondendo a{' '}
                   <Link href={`/user/${parentUsername}`}>
-                    <a className='custom-underline text-main-accent'>
+                    <span className='custom-underline text-main-accent'>
                       @{parentUsername}
-                    </a>
+                    </span>
                   </Link>
                 </p>
               )}
@@ -190,6 +190,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
                     userId={userId}
                     isOwner={isOwner}
                     tweetId={tweetId}
+                    tweetCreatedBy={createdBy}
                     userLikes={userLikes}
                     userReplies={userReplies}
                     userRetweets={userRetweets}
@@ -199,7 +200,7 @@ export function Tweet(tweet: TweetProps): JSX.Element {
               </div>
             </div>
           </div>
-        </a>
+        </span>
       </Link>
     </motion.article>
   );

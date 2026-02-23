@@ -26,20 +26,21 @@ export default function Home(): JSX.Element {
 
   return (
     <MainContainer>
-      <SEO title='Home / Twitter' />
+      <SEO title='Home / Fofoca.me' />
+
       <MainHeader
         useMobileSidebar
-        title='Home'
+        title='Só fuxico'
         className='flex items-center justify-between'
       >
         <UpdateUsername />
       </MainHeader>
       {!isMobile && <Input />}
-      <section className='mt-0.5 xs:mt-0'>
+      <section className='mt-0.5 py-4 xs:mt-0'>
         {loading ? (
           <Loading className='mt-5' />
         ) : !data ? (
-          <Error message='Something went wrong' />
+          <Error message='Algo deu errado' />
         ) : (
           <>
             <AnimatePresence mode='popLayout'>
